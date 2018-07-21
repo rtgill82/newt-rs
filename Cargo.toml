@@ -1,0 +1,6 @@
+[package]
+name = "newt"
+version = "0.1.0"
+authors = ["Robert Gill <locke@sdf.lonestar.org>"]
+
+[dependencies]
