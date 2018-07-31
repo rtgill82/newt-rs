@@ -4,3 +4,8 @@ version = "0.1.0"
 authors = ["Robert Gill <locke@sdf.lonestar.org>"]
 
 [dependencies]
+libc = "0.2.0"
+
+[lib]
+name = "newt"
+path = "src/lib.rs"
