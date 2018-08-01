@@ -7,6 +7,10 @@ use std::ptr;
 #[macro_use]
 mod intern;
 
+use intern::structs::ExitStructEnum;
+use intern::structs::ExitStructUnion;
+use intern::structs::ExitStruct;
+
 pub enum NewtComponentStruct {}
 pub type NewtComponentPtr = *const NewtComponentStruct;
 
@@ -27,29 +31,6 @@ pub enum FlagsSense {
     Set,
     Reset,
     Toggle
-}
-
-#[repr(C)]
-#[allow(dead_code)]
-pub enum ExitStructEnum {
-    HotKey,
-    Component,
-    FDReady,
-    Timer,
-    Error
-}
-
-#[repr(C)]
-pub union ExitStructUnion {
-    watch: c_int,
-    key: c_int,
-    co: NewtComponentPtr
-}
-
-#[repr(C)]
-pub struct ExitStruct {
-    reason: ExitStructEnum,
-    u: ExitStructUnion
 }
 
 pub const COLORSET_ROOT: i32          = 2;
