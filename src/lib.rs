@@ -1,3 +1,4 @@
+use std::ffi::CStr;
 use std::ffi::CString;
 use std::os::raw::c_char;
 use std::os::raw::c_int;
@@ -191,4 +192,20 @@ pub fn get_screen_size() -> (i32, i32) {
     let mut rows: c_int = 0;
     unsafe { newtGetScreenSize(&mut cols, &mut rows); }
     return (cols, rows);
+}
+
+pub fn reflow_text(text: &str, width: i32, flex_down: i32, flex_up: i32,
+                   actual_width: &mut i32, actual_height: &mut i32) -> String {
+    #[link(name="newt")]
+    extern "C" {
+        fn newtReflowText(text: *const c_char, width: c_int, flexDown: c_int,
+                          flexUp: c_int, actualWidth: *mut c_int,
+                          actualHeight: *mut c_int) -> *const c_char;
+    }
+    let c_str = CString::new(text).unwrap();
+    unsafe {
+        let rstr = newtReflowText(c_str.as_ptr(), width, flex_down, flex_up,
+                                  actual_width, actual_height);
+        CStr::from_ptr(rstr).to_string_lossy().into_owned()
+    }
 }
