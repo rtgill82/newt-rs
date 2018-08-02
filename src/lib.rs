@@ -51,6 +51,11 @@ pub const COLORSET_COMPACTBUTTON: i32 = 22;
 pub const COLORSET_ACTSELLISTBOX: i32 = 23;
 pub const COLORSET_SELLISTBOX: i32    = 24;
 
+#[allow(non_snake_case)]
+pub fn COLORSET_CUSTOM(x: i32) -> i32 {
+    30 + x
+}
+
 pub fn init() -> i32 {
     #[link(name="newt")]
     extern "C" { fn newtInit() -> c_int; }
