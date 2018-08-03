@@ -6,8 +6,8 @@ macro_rules! newt_component {
             }
         }
 
-        impl<T: NewtComponent> std::cmp::PartialEq<T> for $type {
-            fn eq(&self, other: &T) -> bool {
+        impl<NC: NewtComponent> std::cmp::PartialEq<NC> for $type {
+            fn eq(&self, other: &NC) -> bool {
                 self.co == other.co()
             }
         }
