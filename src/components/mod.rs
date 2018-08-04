@@ -3,6 +3,7 @@ pub type NewtComponentPtr = *const NewtComponentStruct;
 
 pub trait NewtComponent {
     fn co(&self) -> NewtComponentPtr;
+    fn takes_focus(&self, value: bool);
 }
 
 mod compact_button;

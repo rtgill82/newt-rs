@@ -17,6 +17,16 @@ impl<T> NewtComponent for Listitem<T> {
     fn co(&self) -> NewtComponentPtr {
         self.co
     }
+
+    fn takes_focus(&self, value: bool) {
+        #[link(name="newt")]
+        extern "C" {
+            fn newtComponentTakesFocus(co: NewtComponentPtr,
+                                       val: c_int);
+        }
+
+        unsafe { newtComponentTakesFocus(self.co, value as c_int); }
+    }
 }
 
 impl<T, NC: NewtComponent> std::cmp::PartialEq<NC> for Listitem<T> {
