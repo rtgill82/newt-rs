@@ -57,6 +57,24 @@ impl Form {
         }
     }
 
+    pub fn set_height(&self, height: i32) {
+        #[link(name="newt")]
+        extern "C" {
+            fn newtFormSetHeight(co: NewtComponentPtr, height: c_int);
+        }
+
+        unsafe { newtFormSetHeight(self.co, height); }
+    }
+
+    pub fn set_width(&self, width: i32) {
+        #[link(name="newt")]
+        extern "C" {
+            fn newtFormSetWidth(co: NewtComponentPtr, width: c_int);
+        }
+
+        unsafe { newtFormSetWidth(self.co, width); }
+    }
+
     pub fn run(&self) -> Result {
         #[link(name="newt")]
         extern "C" {
@@ -77,5 +95,23 @@ impl Form {
                 ExitStructEnum::Error => Result::Err
             }
         }
+    }
+
+    pub fn draw(&self) {
+        #[link(name="newt")]
+        extern "C" {
+            fn newtDrawForm(co: NewtComponentPtr);
+        }
+
+        unsafe { newtDrawForm(self.co); }
+    }
+
+    pub fn add_hot_key(&self, key: i32) {
+        #[link(name="newt")]
+        extern "C" {
+            fn newtFormAddHotKey(co: NewtComponentPtr, key: c_int);
+        }
+
+        unsafe { newtFormAddHotKey(self.co, key); }
     }
 }
