@@ -29,8 +29,8 @@ impl<T> NewtComponent for Listitem<T> {
     }
 }
 
-impl<T, NC: NewtComponent> std::cmp::PartialEq<NC> for Listitem<T> {
-    fn eq(&self, other: &NC) -> bool {
+impl<T, Rhs: NewtComponent> std::cmp::PartialEq<Rhs> for Listitem<T> {
+    fn eq(&self, other: &Rhs) -> bool {
         self.co == other.co()
     }
 }
