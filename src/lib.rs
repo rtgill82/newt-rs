@@ -8,9 +8,11 @@ use std::ptr;
 #[macro_use]
 mod intern;
 pub mod components;
+pub mod constants;
+pub use constants::*;
 
-use components::NewtComponentPtr;
 use components::NewtComponent;
+use components::NewtComponentPtr;
 
 pub enum Result {
     HotKey(i32),
@@ -25,35 +27,6 @@ pub enum FlagsSense {
     Set,
     Reset,
     Toggle
-}
-
-pub const COLORSET_ROOT: i32          = 2;
-pub const COLORSET_BORDER: i32        = 3;
-pub const COLORSET_WINDOW: i32        = 4;
-pub const COLORSET_SHADOW: i32        = 5;
-pub const COLORSET_TITLE: i32         = 6;
-pub const COLORSET_BUTTON: i32        = 7;
-pub const COLORSET_ACTBUTTON: i32     = 8;
-pub const COLORSET_CHECKBOX: i32      = 9;
-pub const COLORSET_ACTCHECKBOX: i32   = 10;
-pub const COLORSET_ENTRY: i32         = 11;
-pub const COLORSET_LABEL: i32         = 12;
-pub const COLORSET_LISTBOX: i32       = 13;
-pub const COLORSET_ACTLISTBOX: i32    = 14;
-pub const COLORSET_TEXTBOX: i32       = 15;
-pub const COLORSET_ACTTEXTBOX: i32    = 16;
-pub const COLORSET_HELPLINE: i32      = 17;
-pub const COLORSET_ROOTTEXT: i32      = 18;
-pub const COLORSET_EMPTYSCALE: i32    = 19;
-pub const COLORSET_FULLSCALE: i32     = 20;
-pub const COLORSET_DISENTRY: i32      = 21;
-pub const COLORSET_COMPACTBUTTON: i32 = 22;
-pub const COLORSET_ACTSELLISTBOX: i32 = 23;
-pub const COLORSET_SELLISTBOX: i32    = 24;
-
-#[allow(non_snake_case)]
-pub fn COLORSET_CUSTOM(x: i32) -> i32 {
-    30 + x
 }
 
 pub fn init() -> i32 {
