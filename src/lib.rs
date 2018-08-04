@@ -22,13 +22,6 @@ pub enum Result {
     Err
 }
 
-#[repr(C)]
-pub enum FlagsSense {
-    Set,
-    Reset,
-    Toggle
-}
-
 pub fn init() -> i32 {
     #[link(name="newt")]
     extern "C" { fn newtInit() -> c_int; }

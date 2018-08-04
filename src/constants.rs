@@ -1,3 +1,10 @@
+#[repr(C)]
+pub enum FlagsSense {
+    Set,
+    Reset,
+    Toggle
+}
+
 pub const COLORSET_ROOT: i32          = 2;
 pub const COLORSET_BORDER: i32        = 3;
 pub const COLORSET_WINDOW: i32        = 4;
