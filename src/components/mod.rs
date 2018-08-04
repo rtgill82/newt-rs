@@ -21,3 +21,5 @@ mod textbox;
 pub use self::textbox::Textbox;
 mod form;
 pub use self::form::Form;
+mod entry;
+pub use self::entry::Entry;
