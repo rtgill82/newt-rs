@@ -8,38 +8,10 @@ use std::os::raw::c_void;
 use components::NewtComponent;
 use components::NewtComponentPtr;
 
+newt_component!(Listitem, T);
 pub struct Listitem<T> {
     co: NewtComponentPtr,
     data: PhantomData<T>
-}
-
-impl<T> NewtComponent for Listitem<T> {
-    fn co(&self) -> NewtComponentPtr {
-        self.co
-    }
-
-    fn takes_focus(&self, value: bool) {
-        #[link(name="newt")]
-        extern "C" {
-            fn newtComponentTakesFocus(co: NewtComponentPtr,
-                                       val: c_int);
-        }
-
-        unsafe { newtComponentTakesFocus(self.co, value as c_int); }
-    }
-}
-
-impl<T, Rhs: NewtComponent> std::cmp::PartialEq<Rhs> for Listitem<T> {
-    fn eq(&self, other: &Rhs) -> bool {
-        self.co == other.co()
-    }
-}
-
-impl<T> std::ops::Deref for Listitem<T> {
-    type Target = NewtComponentPtr;
-    fn deref(&self) -> &Self::Target {
-        &self.co
-    }
 }
 
 impl<T> Listitem<T> {

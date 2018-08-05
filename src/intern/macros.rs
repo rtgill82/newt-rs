@@ -1,4 +1,35 @@
 macro_rules! newt_component {
+    ($type:tt, $($gen:tt),+) => {
+        impl<$($gen),+> NewtComponent for $type<$($gen),+> {
+            fn co(&self) -> NewtComponentPtr {
+                self.co
+            }
+
+            fn takes_focus(&self, value: bool) {
+                #[link(name="newt")]
+                extern "C" {
+                    fn newtComponentTakesFocus(co: NewtComponentPtr,
+                                               val: c_int);
+                }
+
+                unsafe { newtComponentTakesFocus(self.co, value as c_int); }
+            }
+        }
+
+        impl<Rhs: NewtComponent, $($gen),+> std::cmp::PartialEq<Rhs> for $type<$($gen),+> {
+            fn eq(&self, other: &Rhs) -> bool {
+                self.co == other.co()
+            }
+        }
+
+        impl<$($gen),+> std::ops::Deref for $type<$($gen),+> {
+            type Target = NewtComponentPtr;
+            fn deref(&self) -> &Self::Target {
+                &self.co
+            }
+        }
+    };
+
     ($type:ty) => {
         impl NewtComponent for $type {
             fn co(&self) -> NewtComponentPtr {
