@@ -1,5 +1,5 @@
 use std::os::raw::c_int;
-use NewtComponentPtr;
+use components::NewtComponentPtr;
 
 #[repr(C)]
 #[allow(dead_code)]
