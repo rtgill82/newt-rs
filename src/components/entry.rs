@@ -36,7 +36,7 @@ impl Entry  {
         }
     }
 
-    pub fn set(&self, text: &str, cursor_at_end: bool) {
+    pub fn set_text(&self, text: &str, cursor_at_end: bool) {
         #[link(name="newt")]
         extern "C" {
             fn newtEntrySet(co: NewtComponentPtr, value: *const c_char,

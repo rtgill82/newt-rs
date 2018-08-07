@@ -36,7 +36,7 @@ impl<T> Listitem<T> {
         }
     }
 
-    pub fn set(&self, text: &str) {
+    pub fn set_text(&self, text: &str) {
         extern "C" {
             fn newtListitemSet(co: NewtComponentPtr, text: *const c_char);
         }
