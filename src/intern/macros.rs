@@ -1,6 +1,21 @@
+#[macro_export]
 macro_rules! newt_component {
     ($type:tt, $($gen:tt),+) => {
-        impl<$($gen),+> NewtComponent for $type<$($gen),+> {
+        newt_component_base!($type<$($gen),+>, <$($gen),+>);
+        newt_component_partial_eq!($type<$($gen),+>, <Rhs: NewtComponent, $($gen),+>);
+        newt_component_deref!($type<$($gen),+>, <$($gen),+>);
+    };
+
+    ($type:ty) => {
+        newt_component_base!($type);
+        newt_component_partial_eq!($type, <Rhs: NewtComponent>);
+        newt_component_deref!($type);
+    };
+}
+
+macro_rules! newt_component_base {
+    ($type:ty, $($gen:tt)*) => {
+        impl $($gen)* NewtComponent for $type {
             fn co(&self) -> NewtComponentPtr {
                 self.co
             }
@@ -15,14 +30,30 @@ macro_rules! newt_component {
                 unsafe { newtComponentTakesFocus(self.co, value as c_int); }
             }
         }
+    };
 
-        impl<Rhs: NewtComponent, $($gen),+> std::cmp::PartialEq<Rhs> for $type<$($gen),+> {
+    ($type:ty) => {
+        newt_component_base!($type,);
+    };
+}
+
+macro_rules! newt_component_partial_eq {
+    ($type:ty, $($gen:tt)*) => {
+        impl $($gen)* std::cmp::PartialEq<Rhs> for $type {
             fn eq(&self, other: &Rhs) -> bool {
                 self.co == other.co()
             }
         }
+    };
 
-        impl<$($gen),+> std::ops::Deref for $type<$($gen),+> {
+    ($type:ty) => {
+        newt_component_partial_eq!($type,);
+    };
+}
+
+macro_rules! newt_component_deref {
+    ($type:ty, $($gen:tt)*) => {
+        impl $($gen)* std::ops::Deref for $type {
             type Target = NewtComponentPtr;
             fn deref(&self) -> &Self::Target {
                 &self.co
@@ -31,33 +62,6 @@ macro_rules! newt_component {
     };
 
     ($type:ty) => {
-        impl NewtComponent for $type {
-            fn co(&self) -> NewtComponentPtr {
-                self.co
-            }
-
-            fn takes_focus(&self, value: bool) {
-                #[link(name="newt")]
-                extern "C" {
-                    fn newtComponentTakesFocus(co: NewtComponentPtr,
-                                               val: c_int);
-                }
-
-                unsafe { newtComponentTakesFocus(self.co, value as c_int); }
-            }
-        }
-
-        impl<Rhs: NewtComponent> std::cmp::PartialEq<Rhs> for $type {
-            fn eq(&self, other: &Rhs) -> bool {
-                self.co == other.co()
-            }
-        }
-
-        impl std::ops::Deref for $type {
-            type Target = NewtComponentPtr;
-            fn deref(&self) -> &Self::Target {
-                &self.co
-            }
-        }
+        newt_component_deref!($type,);
     };
 }
