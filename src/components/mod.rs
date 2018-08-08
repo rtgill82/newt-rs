@@ -34,3 +34,5 @@ mod textbox;
 pub use self::textbox::Textbox;
 mod entry;
 pub use self::entry::Entry;
+mod scale;
+pub use self::scale::Scale;
