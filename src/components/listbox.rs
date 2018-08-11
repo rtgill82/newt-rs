@@ -157,7 +157,7 @@ impl<K, D> Listbox<K, D> {
         (c_str.to_str().unwrap(), c_data)
     }
 
-    pub fn get_selection(&self, numitems: i32) -> (Box<[&D]>) {
+    pub fn get_selection(&self) -> Box<[&D]> {
         #[link(name="newt")]
         extern "C" {
             fn newtListboxGetSelection(co: NewtComponentPtr,
@@ -165,20 +165,20 @@ impl<K, D> Listbox<K, D> {
                 -> *const c_void;
         }
 
-        let mut nitems: i32 = numitems;
+        let mut numitems: i32 = 0;
         let ptr: *const c_void = unsafe {
-            newtListboxGetSelection(self.co, &mut nitems)
+            newtListboxGetSelection(self.co, &mut numitems)
         };
 
         let mut vec: Vec<&D> = Vec::new();
-        if nitems > 0 {
-            let mut cnt = 0;
+        if numitems > 0 {
+            let mut count = 0;
             let mut p = ptr;
             unsafe {
-                while cnt < nitems {
+                while count < numitems {
                     vec.push(&*(p as *const D));
                     p = p.offset(1);
-                    cnt += 1;
+                    count += 1;
                 }
             }
         }
