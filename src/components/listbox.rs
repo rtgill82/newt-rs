@@ -169,20 +169,7 @@ impl<K, D> Listbox<K, D> {
         let ptr: *const c_void = unsafe {
             newtListboxGetSelection(self.co, &mut numitems)
         };
-
-        let mut vec: Vec<&D> = Vec::new();
-        if numitems > 0 {
-            let mut count = 0;
-            let mut p = ptr;
-            unsafe {
-                while count < numitems {
-                    vec.push(&*(p as *const D));
-                    p = p.offset(1);
-                    count += 1;
-                }
-            }
-        }
-        vec.into_boxed_slice()
+        c_ptr_array_to_boxed_slice!(ptr[D], numitems)
     }
 
     pub fn clear_selection(&self) {

@@ -21,6 +21,25 @@ macro_rules! newt_component {
     };
 }
 
+#[macro_export]
+macro_rules! c_ptr_array_to_boxed_slice {
+    ($ptr:tt [ $type:tt ], $numitems:tt) => {{
+        let mut vec: Vec<&$type> = Vec::new();
+        if $numitems > 0 {
+            let mut count = 0;
+            let mut p = $ptr;
+            unsafe {
+                while count < $numitems {
+                    vec.push(&*(p as *const $type));
+                    p = p.offset(1);
+                    count += 1;
+                }
+            }
+        }
+        vec.into_boxed_slice()
+    }};
+}
+
 macro_rules! newt_component_base {
     ($type:ty, $($gen:tt)*) => {
         impl $($gen)* Component for $type {
