@@ -6,10 +6,18 @@ macro_rules! newt_component {
         newt_component_deref!($type<$($gen),+>, <$($gen),+>);
     };
 
-    ($type:ty) => {
+    ($type:tt,) => {
         newt_component_base!($type);
         newt_component_partial_eq!($type, <Rhs: Component>);
         newt_component_deref!($type);
+    };
+
+    ($type:tt, < $($gen:tt),+ >) => {
+        newt_component!($type, $($gen),+);
+    };
+
+    ($type:tt $($tail:tt)*) => {
+        newt_component!($type, $($tail)*);
     };
 }
 

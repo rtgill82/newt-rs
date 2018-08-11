@@ -8,7 +8,7 @@ use std::os::raw::c_void;
 use components::Component;
 use components::NewtComponentPtr;
 
-newt_component!(Listitem, T);
+newt_component!(Listitem<T>);
 pub struct Listitem<T> {
     co: NewtComponentPtr,
     data: PhantomData<T>

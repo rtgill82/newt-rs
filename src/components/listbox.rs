@@ -8,7 +8,7 @@ use components::Component;
 use components::NewtComponentPtr;
 use FlagsSense;
 
-newt_component!(Listbox, K, D);
+newt_component!(Listbox<K, D>);
 pub struct Listbox<K, D> {
     co: NewtComponentPtr,
     key: PhantomData<K>,
