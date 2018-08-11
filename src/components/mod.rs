@@ -30,8 +30,8 @@ mod label;
 pub use self::label::Label;
 mod listbox;
 pub use self::listbox::Listbox;
-// mod checkbox_tree
-// pub use self::checkbox_tree::CheckboxTree
+mod checkbox_tree;
+pub use self::checkbox_tree::CheckboxTree;
 mod textbox;
 pub use self::textbox::Textbox;
 mod entry;
