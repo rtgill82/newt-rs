@@ -3,13 +3,11 @@ macro_rules! newt_component {
     ($type:tt, $($gen:tt),+) => {
         newt_component_base!($type<$($gen),+>, <$($gen),+>);
         newt_component_partial_eq!($type<$($gen),+>, <Rhs: Component, $($gen),+>);
-        newt_component_deref!($type<$($gen),+>, <$($gen),+>);
     };
 
     ($type:tt,) => {
         newt_component_base!($type);
         newt_component_partial_eq!($type, <Rhs: Component>);
-        newt_component_deref!($type);
     };
 
     ($type:tt, < $($gen:tt),+ >) => {
@@ -74,20 +72,5 @@ macro_rules! newt_component_partial_eq {
 
     ($type:ty) => {
         newt_component_partial_eq!($type,);
-    };
-}
-
-macro_rules! newt_component_deref {
-    ($type:ty, $($gen:tt)*) => {
-        impl $($gen)* std::ops::Deref for $type {
-            type Target = c_component;
-            fn deref(&self) -> &Self::Target {
-                &self.co
-            }
-        }
-    };
-
-    ($type:ty) => {
-        newt_component_deref!($type,);
     };
 }

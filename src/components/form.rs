@@ -49,18 +49,18 @@ impl Form {
         unsafe{ newtFormSetTimer(self.co, millisecs); }
     }
 
-    pub fn add_component(&self, component: &c_component) {
+    pub fn add_component(&self, component: &Component) {
         #[link(name="newt")]
         extern "C" {
             fn newtFormAddComponent(form: c_component, co: c_component);
         }
 
-        unsafe { newtFormAddComponent(self.co, *component); }
+        unsafe { newtFormAddComponent(self.co, component.co()); }
     }
 
-    pub fn add_components(&self, components: &[c_component]) {
-        for component in components.iter() {
-            self.add_component(&component);
+    pub fn add_components(&self, components: &[&Component]) {
+        for &component in components.iter() {
+            self.add_component(component);
         }
     }
 
