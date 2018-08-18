@@ -1,10 +1,13 @@
 extern crate newt;
+use newt::components::Component;
 use newt::components::Button;
 use newt::components::Form;
+use std::ptr;
 
 #[test]
 fn button_create() {
-    let _button = Button::new(0, 0, "Ok");
+    let button = Button::new(0, 0, "Ok");
+    assert!(button.co() != ptr::null());
 }
 
 #[test]
