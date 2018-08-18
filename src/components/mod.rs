@@ -31,8 +31,8 @@ impl Debug for Component {
     }
 }
 
-impl<Rhs: Component> PartialEq<Rhs> for Component {
-    fn eq(&self, other: &Rhs) -> bool {
+impl PartialEq for Component {
+    fn eq(&self, other: &Component) -> bool {
         self.co() == other.co()
     }
 }
