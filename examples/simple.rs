@@ -14,8 +14,7 @@ pub fn main() {
    let mut ok = CompactButton::new(7, 3, "Ok");
 
    text.set_text("Hello World!");
-   form.add_component(&mut text).unwrap();
-   form.add_component(&mut ok).unwrap();
+   form.add_components(&mut [&mut text, &mut ok]).unwrap();
 
    let reason: ExitReason = form.run().unwrap();
    newt::finished();
