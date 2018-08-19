@@ -14,8 +14,8 @@ pub struct Radiobutton {
 }
 
 impl Radiobutton {
-    pub fn new(left: i32, top: i32, text: &str, is_default: i32,
-               prev_button: Option<Radiobutton>) -> Radiobutton {
+    pub fn new(left: i32, top: i32, text: &str, is_default: bool,
+               prev_button: Option<&mut Radiobutton>) -> Radiobutton {
         #[link(name="newt")]
         extern "C" {
             fn newtRadiobutton(left: c_int, top: c_int, text: *const c_char,
@@ -32,7 +32,8 @@ impl Radiobutton {
         Radiobutton {
             attached_to_form: false,
             co: unsafe {
-                newtRadiobutton(left, top, c_text.as_ptr(), is_default, ptr)
+                newtRadiobutton(left, top, c_text.as_ptr(),
+                                is_default as i32, ptr)
             }
         }
     }
