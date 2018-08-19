@@ -8,6 +8,7 @@ use FlagsSense;
 use components::c_component;
 use components::Component;
 use components::form::ExitReason;
+use intern::funcs::char_slice_to_cstring;
 
 newt_component!(Checkbox);
 pub struct Checkbox {
@@ -25,11 +26,8 @@ impl Checkbox {
                             result: *mut c_char) -> c_component;
         }
 
-        let mut vec: Vec<u8> = Vec::new();
-        for c in seq.iter() { vec.push(*c as u8); }
         let c_text = CString::new(text).unwrap();
-        let s_seq = String::from_utf8_lossy(vec.as_slice());
-        let c_seq = CString::new(s_seq.into_owned()).unwrap();
+        let c_seq = char_slice_to_cstring(&seq);
         Checkbox {
             attached_to_form: false,
             co: unsafe {
