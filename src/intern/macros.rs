@@ -4,12 +4,14 @@ macro_rules! newt_component {
         newt_component_base!($type<$($gen),+>, <$($gen),+>);
         newt_component_partial_eq_trait!($type<$($gen),+>, <Rhs: Component, $($gen),+>);
         newt_component_partial_eq!($type<$($gen),+>, <$($gen),+>);
+        newt_component_drop!($type<$($gen),+>, <$($gen),+>);
     };
 
     ($type:tt,) => {
         newt_component_base!($type);
         newt_component_partial_eq_trait!($type, <Rhs: Component>);
         newt_component_partial_eq!($type);
+        newt_component_drop!($type);
     };
 
     ($type:tt, < $($gen:tt),+ >) => {
@@ -59,6 +61,27 @@ macro_rules! newt_component_base {
 
     ($type:ty) => {
         newt_component_base!($type,);
+    };
+}
+
+macro_rules! newt_component_drop {
+    (Form) => { };
+
+    ($type:ty, $($gen:tt)*) => {
+        impl $($gen)* std::ops::Drop for $type {
+            fn drop(&mut self) {
+                #[link(name="newt")]
+                extern "C" { fn newtComponentDestroy(co: c_component); }
+
+                if !self.attached_to_form() {
+                    unsafe { newtComponentDestroy(self.co()); }
+                }
+            }
+        }
+    };
+
+    ($type:ty) => {
+        newt_component_drop!($type,);
     };
 }
 
