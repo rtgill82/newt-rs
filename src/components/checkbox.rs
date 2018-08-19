@@ -16,7 +16,7 @@ pub struct Checkbox {
 }
 
 impl Checkbox {
-    pub fn new(left: i32, top: i32, text: &str, def_value: u8, seq: &[u8])
+    pub fn new(left: i32, top: i32, text: &str, def_value: char, seq: &[char])
             -> Checkbox {
         #[link(name="newt")]
         extern "C" {
@@ -25,8 +25,10 @@ impl Checkbox {
                             result: *mut c_char) -> c_component;
         }
 
+        let mut vec: Vec<u8> = Vec::new();
+        for c in seq.iter() { vec.push(*c as u8); }
         let c_text = CString::new(text).unwrap();
-        let s_seq = String::from_utf8_lossy(seq);
+        let s_seq = String::from_utf8_lossy(vec.as_slice());
         let c_seq = CString::new(s_seq.into_owned()).unwrap();
         Checkbox {
             attached_to_form: false,
@@ -37,14 +39,14 @@ impl Checkbox {
         }
     }
 
-    pub fn get_value(&self) -> u8 {
+    pub fn get_value(&self) -> char {
         #[link(name="newt")]
         extern "C" { fn newtCheckboxGetValue(co: c_component) -> c_char; }
 
-        unsafe { newtCheckboxGetValue(self.co) as u8 }
+        unsafe { newtCheckboxGetValue(self.co) as u8 as char }
     }
 
-    pub fn set_value(&mut self, value: u8) {
+    pub fn set_value(&mut self, value: char) {
         #[link(name="newt")]
         extern "C" {
             fn newtCheckboxSetValue(co: c_component, value: c_char);
