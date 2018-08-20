@@ -16,4 +16,7 @@ pub fn main() {
    form.add_components(&mut [&mut cb1, &mut cb2, &mut ok]).unwrap();
    form.run().unwrap();
    newt::finished();
+
+   println!("Option 1: {}", cb1.get_value());
+   println!("Option 2: {}", cb2.get_value());
 }
