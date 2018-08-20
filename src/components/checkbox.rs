@@ -32,8 +32,13 @@ impl Checkbox {
             Some(value) => value as i8,
             None => 0 as i8
         };
+
+        let cstr: CString;
         let c_seq = match seq {
-            Some(seq) => char_slice_to_cstring(&seq).as_ptr(),
+            Some(seq) => {
+                cstr = char_slice_to_cstring(&seq);
+                cstr.as_ptr()
+            },
             None => ptr::null()
         };
 
