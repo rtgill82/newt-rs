@@ -25,8 +25,12 @@ impl Entry  {
                 -> c_component;
         }
 
+        let c_str: CString;
         let ptr = match initial_value {
-            Some(text) => CString::new(text).unwrap().as_ptr(),
+            Some(text) => {
+                c_str = CString::new(text).unwrap();
+                c_str.as_ptr()
+            },
             None => ptr::null()
         };
 
@@ -36,6 +40,17 @@ impl Entry  {
                 newtEntry(left, top, ptr, width, ptr::null(), flags)
             }
         }
+    }
+
+    pub fn get_text(&self) -> String {
+        #[link(name="newt")]
+        extern "C" {
+            fn newtEntryGetValue(co: c_component) -> *mut c_char;
+        }
+
+        unsafe { CStr::from_ptr(newtEntryGetValue(self.co)) }
+            .to_string_lossy()
+            .into_owned()
     }
 
     pub fn set_text(&mut self, text: &str, cursor_at_end: bool) {
@@ -49,17 +64,6 @@ impl Entry  {
         unsafe {
             newtEntrySet(self.co, c_str.as_ptr(), cursor_at_end as c_int);
         }
-    }
-
-    pub fn get_value(&self) -> String {
-        #[link(name="newt")]
-        extern "C" {
-            fn newtEntryGetValue(co: c_component) -> *mut c_char;
-        }
-
-        unsafe { CStr::from_ptr(newtEntryGetValue(self.co)) }
-            .to_string_lossy()
-            .into_owned()
     }
 
     pub fn set_flags(&mut self, flags: i32, sense: FlagsSense) {

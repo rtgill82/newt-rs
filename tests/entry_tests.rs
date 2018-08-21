@@ -30,11 +30,11 @@ fn entry_partial_eq_false() {
 #[test]
 fn entry_set_text() {
     let mut entry = Entry::new(0, 0, None, 10, 0);
-    let text = entry.get_value();
+    let text = entry.get_text();
     assert!(text == "");
 
     entry.set_text("Hello world!", false);
-    let text = entry.get_value();
+    let text = entry.get_text();
     assert!(text == "Hello world!");
 }
 
