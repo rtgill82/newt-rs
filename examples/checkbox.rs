@@ -6,7 +6,7 @@ use newt::components::Form;
 pub fn main() {
    newt::init();
    newt::cls();
-   newt::centered_window(20, 6, "Options");
+   newt::centered_window(20, 6, Some("Options"));
 
    let mut form = Form::new(0);
    let mut cb1 = Checkbox::new(4, 1, "Option 1", None, None);

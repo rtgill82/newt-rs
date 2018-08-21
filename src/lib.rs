@@ -58,7 +58,7 @@ pub fn delay(usecs: u32) {
 }
 
 pub fn open_window(left: i32, top: i32, width: u32, height: u32,
-                   title: &str) -> i32 {
+                   title: Option<&str>) -> i32 {
     #[link(name="newt")]
     extern "C" {
         fn newtOpenWindow(left: c_int, top: c_int,
@@ -66,19 +66,35 @@ pub fn open_window(left: i32, top: i32, width: u32, height: u32,
                           title: *const c_char) -> c_int;
     }
 
-    let c_str = CString::new(title).unwrap();
-    unsafe { newtOpenWindow(left, top, width, height, c_str.as_ptr()) }
+    let c_str: CString;
+    let c_ptr = match title {
+        Some(title) => {
+            c_str = CString::new(title).unwrap();
+            c_str.as_ptr()
+        },
+        None => ptr::null()
+    };
+
+    unsafe { newtOpenWindow(left, top, width, height, c_ptr) }
 }
 
-pub fn centered_window(width: u32, height: u32, title: &str) -> i32 {
+pub fn centered_window(width: u32, height: u32, title: Option<&str>) -> i32 {
     #[link(name="newt")]
     extern "C" {
         fn newtCenteredWindow(width: c_uint, height: c_uint,
                               title: *const c_char) -> c_int;
     }
 
-    let c_str = CString::new(title).unwrap();
-    unsafe { newtCenteredWindow(width, height, c_str.as_ptr()) }
+    let c_str: CString;
+    let c_ptr = match title {
+        Some(title) => {
+            c_str = CString::new(title).unwrap();
+            c_str.as_ptr()
+        },
+        None => ptr::null()
+    };
+
+    unsafe { newtCenteredWindow(width, height, c_ptr) }
 }
 
 pub fn pop_window() {

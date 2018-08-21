@@ -7,7 +7,7 @@ use newt::components::form::ExitReason;
 pub fn main() {
    newt::init();
    newt::cls();
-   newt::centered_window(20, 5, "Greetings");
+   newt::centered_window(20, 5, Some("Greetings"));
 
    let mut form = Form::new(0);
    let mut text = Textbox::new(4, 1, 12, 1, 0);

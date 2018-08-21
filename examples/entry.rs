@@ -7,7 +7,7 @@ use newt::components::Label;
 pub fn main() {
    newt::init();
    newt::cls();
-   newt::centered_window(20, 5, "Greetings");
+   newt::centered_window(20, 5, None);
 
    let mut form = Form::new(0);
    let mut label = Label::new(1, 1, "Entry:");
