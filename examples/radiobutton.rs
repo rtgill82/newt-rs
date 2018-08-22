@@ -11,8 +11,10 @@ pub fn main() {
 
    let mut form = Form::new(0);
    let mut radio1 = Radiobutton::new(4, 1, "Option 1", true, None);
-   let mut radio2 = Radiobutton::new(4, 2, "Option 2", false, Some(&mut radio1));
-   let mut radio3 = Radiobutton::new(4, 3, "Option 3", false, Some(&mut radio2));
+   let mut radio2 = Radiobutton::new(4, 2, "Option 2", false,
+                                     Some(&mut radio1));
+   let mut radio3 = Radiobutton::new(4, 3, "Option 3", false,
+                                     Some(&mut radio2));
    let mut ok = CompactButton::new(7, 5, "Ok");
 
    form.add_components(&mut [&mut radio1, &mut radio2,
@@ -29,6 +31,8 @@ pub fn main() {
    let current = radio1.get_current();
    for val in buttons.iter() {
        let &(co, text) = val;
+
+       // FIXME: Determine how to make the following check more transparent.
        if co.co() == current.co() {
            println!("Selected Option: {}", text);
        }
