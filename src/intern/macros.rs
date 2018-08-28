@@ -32,8 +32,8 @@ macro_rules! c_ptr_array_to_boxed_slice {
             let mut p = $ptr;
             unsafe {
                 while count < $numitems {
-                    vec.push(&*(p as *const $type));
-                    p = p.offset(1);
+                    vec.push(&**(p as *const *const $type));
+                    p = p.offset(mem::size_of::<&$type>() as isize);
                     count += 1;
                 }
             }

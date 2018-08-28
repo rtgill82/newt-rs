@@ -5,6 +5,7 @@ use self::libc::free;
 use std::ffi::CString;
 use std::marker::PhantomData;
 use std::os::raw::{c_char, c_int, c_void};
+use std::mem;
 
 use components::c_component;
 use components::Component;
