@@ -37,6 +37,19 @@ pub fn COLORSET_CUSTOM(x: i32) -> i32 {
 pub const ARG_LAST: i32   = -100000;
 pub const ARG_APPEND: i32 = -1;
 
+pub const FLAG_RETURNEXIT: i32    = (1 << 0);
+pub const FLAG_HIDDEN: i32        = (1 << 1);
+pub const FLAG_SCROLL: i32        = (1 << 2);
+pub const FLAG_DISABLED: i32      = (1 << 3);
+pub const FLAG_BORDER: i32        = (1 << 5);
+pub const FLAG_WRAP: i32          = (1 << 6);
+pub const FLAG_NOF12: i32         = (1 << 7);
+pub const FLAG_MULTIPLE: i32      = (1 << 8);
+pub const FLAG_SELECTED: i32      = (1 << 9);
+pub const FLAG_CHECKBOX: i32      = (1 << 10);
+pub const FLAG_PASSWORD: i32      = (1 << 11);
+pub const FLAG_SHOWCURSOR: i32    = (1 << 12);
+
 pub const KEY_TAB: i32     = '\t' as i32;
 pub const KEY_ENTER: i32   = '\r' as i32;
 pub const KEY_SUSPEND: i32 = 0x1A;
