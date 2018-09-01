@@ -68,12 +68,39 @@ impl Form {
         unsafe { newtFormSetWidth(self.co, width); }
     }
 
+    pub fn set_size(&mut self) {
+        unsafe { newtFormSetSize(self.co); }
+    }
+
     pub fn add_hot_key(&mut self, key: i32) {
         unsafe { newtFormAddHotKey(self.co, key); }
     }
 
     pub fn set_timer(&mut self, millisecs: i32) {
-        unsafe{ newtFormSetTimer(self.co, millisecs); }
+        unsafe { newtFormSetTimer(self.co, millisecs); }
+    }
+
+    pub fn get_current(&self) -> Box<Component> {
+        Box::new(RawComponent {
+            co: unsafe { newtFormGetCurrent(self.co) },
+            attached_to_form: true
+        })
+    }
+
+    pub fn set_current(&mut self, subcomponent: &Component) {
+        unsafe { newtFormSetCurrent(self.co, subcomponent.co()); }
+    }
+
+    pub fn set_background(&mut self, color: i32) {
+        unsafe { newtFormSetBackground(self.co, color); }
+    }
+
+    pub fn get_scroll_position(&self) -> i32 {
+        unsafe { newtFormGetScrollPosition(self.co) }
+    }
+
+    pub fn set_scroll_position(&mut self, position: i32) {
+        unsafe { newtFormSetScrollPosition(self.co, position); }
     }
 
     pub fn run(&self) -> Result<ExitReason, ()> {

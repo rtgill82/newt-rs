@@ -9,8 +9,14 @@ extern "C" {
     pub fn newtFormAddComponent(form: c_component, co: c_component);
     pub fn newtFormSetHeight(co: c_component, height: c_int);
     pub fn newtFormSetWidth(co: c_component, width: c_int);
+    pub fn newtFormSetSize(co: c_component);
     pub fn newtFormAddHotKey(co: c_component, key: c_int);
     pub fn newtFormSetTimer(form: c_component, millisecs: c_int);
+    pub fn newtFormGetCurrent(form: c_component) -> c_component;
+    pub fn newtFormSetCurrent(form: c_component, co: c_component);
+    pub fn newtFormSetBackground(form: c_component, color: i32);
+    pub fn newtFormGetScrollPosition(form: c_component) -> c_int;
+    pub fn newtFormSetScrollPosition(form: c_component, position: i32);
     pub fn newtFormRun(form: c_component, es: *mut ExitStruct);
     pub fn newtDrawForm(co: c_component);
     pub fn newtFormDestroy(form: c_component);
