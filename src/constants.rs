@@ -50,6 +50,10 @@ pub const FLAG_CHECKBOX: i32      = (1 << 10);
 pub const FLAG_PASSWORD: i32      = (1 << 11);
 pub const FLAG_SHOWCURSOR: i32    = (1 << 12);
 
+pub const FD_READ: i32   = (1 << 0);
+pub const FD_WRITE: i32  = (1 << 1);
+pub const FD_EXCEPT: i32 = (1 << 2);
+
 pub const KEY_TAB: i32     = '\t' as i32;
 pub const KEY_ENTER: i32   = '\r' as i32;
 pub const KEY_SUSPEND: i32 = 0x1A;
