@@ -14,8 +14,8 @@ use intern::ffi::newt::component::newtComponentDestroy;
 mod exit_reason;
 pub use self::exit_reason::ExitReason;
 
-newt_component!(RawComponent);
-struct RawComponent {
+newt_component!(BaseComponent);
+struct BaseComponent {
     co: c_component,
     attached_to_form: bool
 }
@@ -81,7 +81,7 @@ impl Form {
     }
 
     pub fn get_current(&self) -> Box<Component> {
-        Box::new(RawComponent {
+        Box::new(BaseComponent {
             co: unsafe { newtFormGetCurrent(self.co) },
             attached_to_form: true
         })
@@ -117,7 +117,7 @@ impl Form {
 
                 ExitStructEnum::HotKey => Ok(HotKey(es.u.key)),
                 ExitStructEnum::Component => Ok(
-                    Component(Box::new(RawComponent {
+                    Component(Box::new(BaseComponent {
                                          co: es.u.co,
                                          attached_to_form: true
                     }))
