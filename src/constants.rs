@@ -54,6 +54,13 @@ pub const FD_READ: i32   = (1 << 0);
 pub const FD_WRITE: i32  = (1 << 1);
 pub const FD_EXCEPT: i32 = (1 << 2);
 
+pub const CHECKBOXTREE_UNSELECTABLE: i32 = (1 << 12);
+pub const CHECKBOXTREE_HIDE_BOX: i32     = (1 << 13);
+pub const CHECKBOXTREE_COLLAPSED: i32    = '\0' as i32;
+pub const CHECKBOXTREE_EXPANDED: i32     = 0x01 as i32;
+pub const CHECKBOXTREE_UNSELECTED: i32   = ' ' as i32;
+pub const CHECKBOXTREE_SELECTED: i32     = '*' as i32;
+
 pub const KEY_TAB: i32     = '\t' as i32;
 pub const KEY_ENTER: i32   = '\r' as i32;
 pub const KEY_SUSPEND: i32 = 0x1A;
