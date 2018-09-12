@@ -28,21 +28,21 @@ fn checkbox_tree_partial_eq_false() {
 
 #[test]
 fn checkbox_tree_set_width() {
-    let checkbox_tree: CheckboxTree<usize> =
+    let mut checkbox_tree: CheckboxTree<usize> =
         CheckboxTree::new(0, 0, 10, None, 0);
     checkbox_tree.set_width(20);
 }
 
 #[test]
 fn checkbox_tree_add_item() {
-    let checkbox_tree: CheckboxTree<usize> =
+    let mut checkbox_tree: CheckboxTree<usize> =
         CheckboxTree::new(0, 0, 10, None, 0);
     checkbox_tree.add_item("item 1", &5, 0, &[0]);
 }
 
 #[test]
 fn checkbox_tree_get_current() {
-    let checkbox_tree: CheckboxTree<usize> =
+    let mut checkbox_tree: CheckboxTree<usize> =
         CheckboxTree::new(0, 0, 10, None, 0);
     checkbox_tree.add_item("item 1", &5, 0, &[0]);
     assert!(checkbox_tree.get_current() == &5);
@@ -50,7 +50,7 @@ fn checkbox_tree_get_current() {
 
 #[test]
 fn checkbox_tree_set_current() {
-    let checkbox_tree: CheckboxTree<usize> =
+    let mut checkbox_tree: CheckboxTree<usize> =
         CheckboxTree::new(0, 0, 10, None, 0);
     checkbox_tree.add_item("item 1", &5, 0, &[0]);
     checkbox_tree.add_item("item 2", &10, 0, &[0]);
@@ -60,7 +60,7 @@ fn checkbox_tree_set_current() {
 
 #[test]
 fn checkbox_tree_find_item() {
-    let checkbox_tree: CheckboxTree<usize> =
+    let mut checkbox_tree: CheckboxTree<usize> =
         CheckboxTree::new(0, 0, 10, None, 0);
     checkbox_tree.add_item("item 1", &5, 0, &[0]);
     checkbox_tree.add_item("item 2", &10, 0, &[1]);
@@ -71,7 +71,7 @@ fn checkbox_tree_find_item() {
 
 #[test]
 fn checkbox_tree_set_entry() {
-    let checkbox_tree: CheckboxTree<usize> =
+    let mut checkbox_tree: CheckboxTree<usize> =
         CheckboxTree::new(0, 0, 10, None, 0);
     checkbox_tree.add_item("item 1", &5, 0, &[0]);
     checkbox_tree.set_entry(&5, "new item 1");
@@ -79,7 +79,7 @@ fn checkbox_tree_set_entry() {
 
 #[test]
 fn checkbox_get_entry_value() {
-    let checkbox_tree: CheckboxTree<usize> =
+    let mut checkbox_tree: CheckboxTree<usize> =
         CheckboxTree::new(0, 0, 10, None, 0);
     checkbox_tree.add_item("item 1", &5, 0, &[0]);
     assert!(checkbox_tree.get_entry_value(&5) == ' ');
@@ -87,7 +87,7 @@ fn checkbox_get_entry_value() {
 
 #[test]
 fn checkbox_set_entry_value() {
-    let checkbox_tree: CheckboxTree<usize> =
+    let mut checkbox_tree: CheckboxTree<usize> =
         CheckboxTree::new(0, 0, 10, None, 0);
     checkbox_tree.add_item("item 1", &5, 0, &[0]);
     checkbox_tree.set_entry_value(&5, '*');
@@ -96,7 +96,7 @@ fn checkbox_set_entry_value() {
 
 #[test]
 fn checkbox_get_selection() {
-    let checkbox_tree: CheckboxTree<usize> =
+    let mut checkbox_tree: CheckboxTree<usize> =
         CheckboxTree::new(0, 0, 10, None, 0);
     checkbox_tree.add_item("item 1", &5, 0, &[0]);
     checkbox_tree.add_item("item 2", &10, 0, &[0]);
@@ -106,7 +106,7 @@ fn checkbox_get_selection() {
 
 #[test]
 fn checkbox_get_multi_selection() {
-    let checkbox_tree: CheckboxTree<usize> =
+    let mut checkbox_tree: CheckboxTree<usize> =
         CheckboxTree::new(0, 0, 10, None, 0);
     checkbox_tree.add_item("item 1", &5, 0, &[0]);
     checkbox_tree.add_item("item 2", &10, 0, &[0]);

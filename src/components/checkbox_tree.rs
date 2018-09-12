@@ -44,11 +44,11 @@ impl<D> CheckboxTree<D> {
         }
     }
 
-    pub fn set_width(&self, width: i32) {
+    pub fn set_width(&mut self, width: i32) {
         unsafe { newtCheckboxTreeSetWidth(self.co, width); }
     }
 
-    pub fn add_item(&self, text: &str, data: &D, flags: i32,
+    pub fn add_item(&mut self, text: &str, data: &D, flags: i32,
                     indexes: &[i32]) -> i32 {
         let c_str = CString::new(text).unwrap();
         let c_data: *const c_void = data as *const _ as *const c_void;
@@ -72,7 +72,7 @@ impl<D> CheckboxTree<D> {
         unsafe { &*(c_data as *const D) }
     }
 
-    pub fn set_current(&self, data: &D) {
+    pub fn set_current(&mut self, data: &D) {
         let c_data: *const c_void = data as *const _ as *const c_void;
         unsafe { newtCheckboxTreeSetCurrent(self.co, c_data); }
     }
@@ -111,7 +111,7 @@ impl<D> CheckboxTree<D> {
         vec.into_boxed_slice()
     }
 
-    pub fn set_entry(&self, data: &D, text: &str) {
+    pub fn set_entry(&mut self, data: &D, text: &str) {
         let c_data: *const c_void = data as *const _ as *const c_void;
         let c_str = CString::new(text).unwrap();
         unsafe { newtCheckboxTreeSetEntry(self.co, c_data, c_str.as_ptr()); }
@@ -124,7 +124,7 @@ impl<D> CheckboxTree<D> {
         }
     }
 
-    pub fn set_entry_value(&self, data: &D, value: char) {
+    pub fn set_entry_value(&mut self, data: &D, value: char) {
         let c_data: *const c_void = data as *const _ as *const c_void;
         unsafe {
             newtCheckboxTreeSetEntryValue(self.co, c_data, value as c_char);
