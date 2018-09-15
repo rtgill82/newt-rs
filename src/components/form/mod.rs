@@ -41,7 +41,7 @@ impl Form {
         }
     }
 
-    pub fn add_component(&mut self, component: &mut Component)
+    pub fn add_component(&mut self, component: &mut dyn Component)
             -> Result<(), &'static str> {
         if component.attached_to_form() {
             return Err("Component is already attached to a Form");
@@ -52,7 +52,7 @@ impl Form {
         return Ok(());
     }
 
-    pub fn add_components(&mut self, components: &mut [&mut Component])
+    pub fn add_components(&mut self, components: &mut [&mut dyn Component])
             -> Result<(), &'static str> {
         for component in components.iter_mut() {
             let result = self.add_component(*component);
@@ -81,14 +81,14 @@ impl Form {
         unsafe { newtFormSetTimer(self.co, millisecs); }
     }
 
-    pub fn get_current(&self) -> Box<Component> {
+    pub fn get_current(&self) -> Box<dyn Component> {
         Box::new(BaseComponent {
             co: unsafe { newtFormGetCurrent(self.co) },
             attached_to_form: true
         })
     }
 
-    pub fn set_current(&mut self, subcomponent: &Component) {
+    pub fn set_current(&mut self, subcomponent: &dyn Component) {
         unsafe { newtFormSetCurrent(self.co, subcomponent.co()); }
     }
 

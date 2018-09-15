@@ -100,8 +100,8 @@ macro_rules! newt_component_partial_eq_trait {
 
 macro_rules! newt_component_partial_eq {
     ($type:ty, $($gen:tt)*) => {
-        impl $($gen)* std::cmp::PartialEq<Box<Component>> for $type {
-            fn eq(&self, other: &Box<Component>) -> bool {
+        impl $($gen)* std::cmp::PartialEq<Box<dyn Component>> for $type {
+            fn eq(&self, other: &Box<dyn Component>) -> bool {
                 self.co == other.co()
             }
         }

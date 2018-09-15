@@ -4,7 +4,7 @@ use components::Component;
 #[derive(Debug)]
 pub enum ExitReason {
     HotKey(i32),
-    Component(Box<Component>),
+    Component(Box<dyn Component>),
     FDReady(i32),
     Timer
 }

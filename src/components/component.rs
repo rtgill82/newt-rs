@@ -24,7 +24,7 @@ impl Debug for Component {
 }
 
 impl PartialEq for Component {
-    fn eq(&self, other: &Component) -> bool {
+    fn eq(&self, other: &dyn Component) -> bool {
         self.co() == other.co()
     }
 }
@@ -38,7 +38,7 @@ impl PartialEq<ExitReason> for Component {
     }
 }
 
-impl<Rhs: Component> PartialEq<Rhs> for Box<Component> {
+impl<Rhs: Component> PartialEq<Rhs> for Box<dyn Component> {
     fn eq(&self, other: &Rhs) -> bool {
         self.co() == other.co()
     }
