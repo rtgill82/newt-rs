@@ -1,11 +1,15 @@
 #[doc(hidden)]
 #[macro_export]
 macro_rules! newt_component {
-    ($type:tt, $($gen:tt),+) => {
-        newt_component_base!($type<$($gen),+>, <$($gen),+>);
-        newt_component_partial_eq_trait!($type<$($gen),+>, <Rhs: Component, $($gen),+>);
-        newt_component_partial_eq!($type<$($gen),+>, <$($gen),+>);
-        newt_component_drop!($type<$($gen),+>, <$($gen),+>);
+    ($type:tt, < $($gen:tt),+ >) => {
+        newt_component!($type, $($gen)+);
+    };
+
+    ($type:tt, $($gen:tt)+) => {
+        newt_component_base!($type<$($gen)+>, <$($gen)+>);
+        newt_component_partial_eq_trait!($type<$($gen)+>, <Rhs: Component, $($gen)+>);
+        newt_component_partial_eq!($type<$($gen)+>, <$($gen)+>);
+        newt_component_drop!($type<$($gen)+>, <$($gen)+>);
     };
 
     ($type:tt,) => {
@@ -13,10 +17,6 @@ macro_rules! newt_component {
         newt_component_partial_eq_trait!($type, <Rhs: Component>);
         newt_component_partial_eq!($type);
         newt_component_drop!($type);
-    };
-
-    ($type:tt, < $($gen:tt),+ >) => {
-        newt_component!($type, $($gen),+);
     };
 
     ($type:tt $($tail:tt)*) => {

@@ -7,7 +7,6 @@ use newt::components::Form;
 use newt::components::Label;
 use newt::components::Radiobutton;
 use newt::components::Textbox;
-use newt::components::form::ExitReason;
 use newt::constants::FLAG_PASSWORD;
 
 pub fn main() {
