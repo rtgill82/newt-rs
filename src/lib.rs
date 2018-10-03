@@ -11,16 +11,7 @@ pub mod components;
 pub mod constants;
 pub use constants::*;
 
-use components::NewtComponent;
 use components::NewtComponentPtr;
-
-pub enum Result {
-    HotKey(i32),
-    Component(Box<NewtComponent>),
-    FDReady(i32),
-    Timer,
-    Err
-}
 
 pub fn init() -> i32 {
     #[link(name="newt")]

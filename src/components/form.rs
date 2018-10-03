@@ -3,13 +3,21 @@ use std::os::raw::c_char;
 use std::os::raw::c_int;
 use ptr;
 
-use Result;
 use components::NewtComponent;
 use components::NewtComponentPtr;
 
 use intern::structs::ExitStructEnum;
 use intern::structs::ExitStructUnion;
 use intern::structs::ExitStruct;
+
+#[derive(Debug)]
+pub enum Result {
+    HotKey(i32),
+    Component(Box<NewtComponent>),
+    FDReady(i32),
+    Timer,
+    Err
+}
 
 newt_component!(RawComponent);
 struct RawComponent {
@@ -39,6 +47,7 @@ impl Form {
         extern "C" {
             fn newtFormSetTimer(form: NewtComponentPtr, millisecs: c_int);
         }
+
         unsafe{ newtFormSetTimer(self.co, millisecs); }
     }
 
@@ -48,6 +57,7 @@ impl Form {
             fn newtFormAddComponent(form: NewtComponentPtr,
                                     co: NewtComponentPtr);
         }
+
         unsafe { newtFormAddComponent(self.co, *component); }
     }
 
@@ -80,10 +90,12 @@ impl Form {
         extern "C" {
             fn newtFormRun(form: NewtComponentPtr, es: *mut ExitStruct);
         }
+
         let mut es = ExitStruct {
             reason: ExitStructEnum::HotKey,
             u: ExitStructUnion { watch: 0 }
         };
+
         unsafe {
             newtFormRun(self.co, &mut es);
             match es.reason {

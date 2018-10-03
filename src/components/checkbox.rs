@@ -15,7 +15,7 @@ pub struct Checkbox {
 
 impl Checkbox {
     pub fn new(left: i32, top: i32, text: &str, def_value: i8, seq: &[u8])
-        -> Checkbox {
+            -> Checkbox {
         #[link(name="newt")]
         extern "C" {
             fn newtCheckbox(left: c_int, top: c_int, text: *const c_char,

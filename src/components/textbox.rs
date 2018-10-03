@@ -13,12 +13,13 @@ pub struct Textbox {
 
 impl Textbox {
     pub fn new(left: i32, top: i32, width: i32, height: i32, flags: i32)
-          -> Textbox {
+            -> Textbox {
         #[link(name="newt")]
         extern "C" {
            fn  newtTextbox(left: c_int, top: c_int, width: c_int,
                            height: c_int, flags: c_int) -> NewtComponentPtr;
         }
+
         Textbox {
             co: unsafe { newtTextbox(left, top, width, height, flags) }
         }
@@ -48,6 +49,7 @@ impl Textbox {
         extern "C" {
             fn newtTextboxSetText(co: NewtComponentPtr, text: *const c_char);
         }
+
         let c_text = CString::new(text).unwrap();
         unsafe { newtTextboxSetText(self.co, c_text.as_ptr()); }
     }
@@ -57,6 +59,7 @@ impl Textbox {
         extern "C" {
             fn newtTextboxSetHeight(co: NewtComponentPtr, height: c_int);
         }
+
         unsafe { newtTextboxSetHeight(self.co, height); }
     }
 
@@ -65,6 +68,7 @@ impl Textbox {
         extern "C" {
             fn newtTextboxGetNumLines(co: NewtComponentPtr) -> c_int;
         }
+
         unsafe { newtTextboxGetNumLines(self.co) }
     }
 
@@ -74,6 +78,7 @@ impl Textbox {
             fn newtTextboxSetColors(co: NewtComponentPtr, normal: c_int,
                                     active: c_int);
         }
+
         unsafe { newtTextboxSetColors(self.co, normal, active); }
     }
 }

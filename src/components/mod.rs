@@ -1,3 +1,4 @@
+extern crate std;
 pub enum NewtComponentStruct {}
 pub type NewtComponentPtr = *const NewtComponentStruct;
 
@@ -5,6 +6,15 @@ pub trait NewtComponent {
     fn co(&self) -> NewtComponentPtr;
     fn takes_focus(&self, value: bool);
 }
+
+impl std::fmt::Debug for NewtComponent {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "NewtComponent {{ {:p} }}", self.co())
+    }
+}
+
+pub mod form;
+pub use self::form::Form;
 
 mod compact_button;
 pub use self::compact_button::CompactButton;
@@ -20,7 +30,5 @@ mod label;
 pub use self::label::Label;
 mod textbox;
 pub use self::textbox::Textbox;
-mod form;
-pub use self::form::Form;
 mod entry;
 pub use self::entry::Entry;
