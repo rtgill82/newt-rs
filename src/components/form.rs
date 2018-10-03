@@ -83,15 +83,6 @@ impl Form {
         }
     }
 
-    pub fn set_timer(&mut self, millisecs: i32) {
-        #[link(name="newt")]
-        extern "C" {
-            fn newtFormSetTimer(form: c_component, millisecs: c_int);
-        }
-
-        unsafe{ newtFormSetTimer(self.co, millisecs); }
-    }
-
     pub fn add_component(&mut self, component: &mut Component)
             -> Result<(), &'static str> {
         #[link(name="newt")]
@@ -135,6 +126,24 @@ impl Form {
         unsafe { newtFormSetWidth(self.co, width); }
     }
 
+    pub fn add_hot_key(&mut self, key: i32) {
+        #[link(name="newt")]
+        extern "C" {
+            fn newtFormAddHotKey(co: c_component, key: c_int);
+        }
+
+        unsafe { newtFormAddHotKey(self.co, key); }
+    }
+
+    pub fn set_timer(&mut self, millisecs: i32) {
+        #[link(name="newt")]
+        extern "C" {
+            fn newtFormSetTimer(form: c_component, millisecs: c_int);
+        }
+
+        unsafe{ newtFormSetTimer(self.co, millisecs); }
+    }
+
     pub fn run(&self) -> Result<ExitReason, ()> {
         use self::ExitReason::{HotKey,Component,FDReady,Timer};
 
@@ -173,14 +182,5 @@ impl Form {
         }
 
         unsafe { newtDrawForm(self.co); }
-    }
-
-    pub fn add_hot_key(&mut self, key: i32) {
-        #[link(name="newt")]
-        extern "C" {
-            fn newtFormAddHotKey(co: c_component, key: c_int);
-        }
-
-        unsafe { newtFormAddHotKey(self.co, key); }
     }
 }
