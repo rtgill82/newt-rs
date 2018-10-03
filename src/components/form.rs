@@ -1,6 +1,5 @@
 extern crate std;
-use std::os::raw::c_char;
-use std::os::raw::c_int;
+use std::os::raw::{c_char, c_int};
 use ptr;
 
 use components::NewtComponent;
@@ -11,12 +10,11 @@ use intern::structs::ExitStructUnion;
 use intern::structs::ExitStruct;
 
 #[derive(Debug)]
-pub enum Result {
+pub enum ExitReason {
     HotKey(i32),
     Component(Box<NewtComponent>),
     FDReady(i32),
-    Timer,
-    Err
+    Timer
 }
 
 newt_component!(RawComponent);
@@ -85,7 +83,9 @@ impl Form {
         unsafe { newtFormSetWidth(self.co, width); }
     }
 
-    pub fn run(&self) -> Result {
+    pub fn run(&self) -> Result<ExitReason, ()> {
+        use self::ExitReason::{HotKey,Component,FDReady,Timer};
+
         #[link(name="newt")]
         extern "C" {
             fn newtFormRun(form: NewtComponentPtr, es: *mut ExitStruct);
@@ -99,12 +99,14 @@ impl Form {
         unsafe {
             newtFormRun(self.co, &mut es);
             match es.reason {
-                ExitStructEnum::HotKey => Result::HotKey(es.u.key),
-                ExitStructEnum::Component =>
-                    Result::Component(Box::new(RawComponent { co: es.u.co })),
-                ExitStructEnum::FDReady => Result::FDReady(es.u.watch),
-                ExitStructEnum::Timer => Result::Timer,
-                ExitStructEnum::Error => Result::Err
+
+                ExitStructEnum::HotKey => Ok(HotKey(es.u.key)),
+                ExitStructEnum::Component => Ok(
+                    Component(Box::new(RawComponent { co: es.u.co }))
+                ),
+                ExitStructEnum::FDReady => Ok(FDReady(es.u.watch)),
+                ExitStructEnum::Timer => Ok(Timer),
+                ExitStructEnum::Error => Err(())
             }
         }
     }

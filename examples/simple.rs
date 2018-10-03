@@ -2,7 +2,7 @@ extern crate newt;
 use newt::components::CompactButton;
 use newt::components::Form;
 use newt::components::Textbox;
-use newt::components::form::Result;
+use newt::components::form::ExitReason;
 
 pub fn main() {
    newt::init();
@@ -15,8 +15,8 @@ pub fn main() {
    form.add_component(&text);
    form.add_component(&button);
 
-   let result: Result = form.run();
+   let reason: ExitReason = form.run().unwrap();
    newt::finished();
 
-   println!("result = {:?}", result);
+   println!("reason = {:?}", reason);
 }
