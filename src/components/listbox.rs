@@ -4,7 +4,7 @@ use std::marker::PhantomData;
 use std::os::raw::{c_char, c_int, c_void};
 use ptr;
 
-use components::NewtComponent;
+use components::Component;
 use components::NewtComponentPtr;
 use FlagsSense;
 

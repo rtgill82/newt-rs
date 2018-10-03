@@ -5,7 +5,7 @@ use std::os::raw::c_int;
 use ptr;
 
 use FlagsSense;
-use components::NewtComponent;
+use components::Component;
 use components::NewtComponentPtr;
 
 newt_component!(Checkbox);

@@ -1,7 +1,7 @@
 extern crate std;
 use std::os::raw::{c_int, c_longlong, c_ulonglong};
 
-use components::NewtComponent;
+use components::Component;
 use components::NewtComponentPtr;
 
 newt_component!(Scale);

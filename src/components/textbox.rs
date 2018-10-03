@@ -3,7 +3,7 @@ use std::ffi::CString;
 use std::os::raw::c_int;
 use std::os::raw::c_char;
 
-use components::NewtComponent;
+use components::Component;
 use components::NewtComponentPtr;
 
 newt_component!(Textbox);

@@ -2,7 +2,7 @@ extern crate std;
 use std::os::raw::{c_char, c_int};
 use ptr;
 
-use components::NewtComponent;
+use components::Component;
 use components::NewtComponentPtr;
 
 use intern::structs::ExitStructEnum;
@@ -12,7 +12,7 @@ use intern::structs::ExitStruct;
 #[derive(Debug)]
 pub enum ExitReason {
     HotKey(i32),
-    Component(Box<NewtComponent>),
+    Component(Box<Component>),
     FDReady(i32),
     Timer
 }

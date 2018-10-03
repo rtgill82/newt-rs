@@ -2,20 +2,20 @@
 macro_rules! newt_component {
     ($type:tt, $($gen:tt),+) => {
         newt_component_base!($type<$($gen),+>, <$($gen),+>);
-        newt_component_partial_eq!($type<$($gen),+>, <Rhs: NewtComponent, $($gen),+>);
+        newt_component_partial_eq!($type<$($gen),+>, <Rhs: Component, $($gen),+>);
         newt_component_deref!($type<$($gen),+>, <$($gen),+>);
     };
 
     ($type:ty) => {
         newt_component_base!($type);
-        newt_component_partial_eq!($type, <Rhs: NewtComponent>);
+        newt_component_partial_eq!($type, <Rhs: Component>);
         newt_component_deref!($type);
     };
 }
 
 macro_rules! newt_component_base {
     ($type:ty, $($gen:tt)*) => {
-        impl $($gen)* NewtComponent for $type {
+        impl $($gen)* Component for $type {
             fn co(&self) -> NewtComponentPtr {
                 self.co
             }
