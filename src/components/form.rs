@@ -1,4 +1,5 @@
 extern crate std;
+use std::ops::Drop;
 use std::os::raw::{c_char, c_int};
 use ptr;
 
@@ -25,6 +26,17 @@ struct RawComponent {
 newt_component!(Form);
 pub struct Form {
     co: c_component
+}
+
+impl Drop for Form {
+    fn drop(&mut self) {
+        #[link(name="newt")]
+        extern "C" {
+            fn newtFormDestroy(form: c_component);
+        }
+
+        unsafe { newtFormDestroy(self.co); }
+    }
 }
 
 impl Form {
