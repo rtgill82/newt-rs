@@ -4,6 +4,9 @@ use std::os::raw::c_int;
 use std::os::raw::c_uint;
 use std::ptr;
 
+#[macro_use]
+mod intern;
+
 pub enum NewtComponentStruct {}
 pub type NewtComponentPtr = *const NewtComponentStruct;
 
@@ -216,50 +219,14 @@ pub fn get_screen_size() -> (i32, i32) {
     return (cols, rows);
 }
 
+newt_component!(RawComponent);
 struct RawComponent {
     co: NewtComponentPtr
 }
 
-impl NewtComponent for RawComponent {
-    fn co(&self) -> NewtComponentPtr {
-        self.co
-    }
-}
-
-impl std::cmp::PartialEq<NewtComponent> for RawComponent {
-    fn eq(&self, other: &NewtComponent) -> bool {
-        self.co == other.co()
-    }
-}
-
-impl std::ops::Deref for RawComponent {
-    type Target = NewtComponentPtr;
-    fn deref(&self) -> &Self::Target {
-        &self.co
-    }
-}
-
+newt_component!(CompactButton);
 pub struct CompactButton {
     co: NewtComponentPtr
-}
-
-impl NewtComponent for CompactButton {
-    fn co(&self) -> NewtComponentPtr {
-        self.co
-    }
-}
-
-impl<T: NewtComponent> std::cmp::PartialEq<T> for CompactButton {
-    fn eq(&self, other: &T) -> bool {
-        self.co == other.co()
-    }
-}
-
-impl std::ops::Deref for CompactButton {
-    type Target = NewtComponentPtr;
-    fn deref(&self) -> &Self::Target {
-        &self.co
-    }
 }
 
 impl CompactButton {
@@ -277,27 +244,9 @@ impl CompactButton {
     }
 }
 
+newt_component!(Button);
 pub struct Button {
     co: NewtComponentPtr
-}
-
-impl NewtComponent for Button {
-    fn co(&self) -> NewtComponentPtr {
-        self.co
-    }
-}
-
-impl<T: NewtComponent> std::cmp::PartialEq<T> for Button {
-    fn eq(&self, other: &T) -> bool {
-        self.co == other.co()
-    }
-}
-
-impl std::ops::Deref for Button {
-    type Target = NewtComponentPtr;
-    fn deref(&self) -> &Self::Target {
-        &self.co
-    }
 }
 
 impl Button {
@@ -315,27 +264,9 @@ impl Button {
     }
 }
 
+newt_component!(Checkbox);
 pub struct Checkbox {
     co: NewtComponentPtr
-}
-
-impl NewtComponent for Checkbox {
-    fn co(&self) -> NewtComponentPtr {
-        self.co
-    }
-}
-
-impl<T: NewtComponent> std::cmp::PartialEq<T> for Checkbox {
-    fn eq(&self, other: &T) -> bool {
-        self.co == other.co()
-    }
-}
-
-impl std::ops::Deref for Checkbox {
-    type Target = NewtComponentPtr;
-    fn deref(&self) -> &Self::Target {
-        &self.co
-    }
 }
 
 impl Checkbox {
@@ -382,27 +313,9 @@ impl Checkbox {
     }
 }
 
+newt_component!(Radiobutton);
 pub struct Radiobutton {
     co: NewtComponentPtr
-}
-
-impl NewtComponent for Radiobutton {
-    fn co(&self) -> NewtComponentPtr {
-        self.co
-    }
-}
-
-impl<T: NewtComponent> std::cmp::PartialEq<T> for Radiobutton {
-    fn eq(&self, other: &T) -> bool {
-        self.co == other.co()
-    }
-}
-
-impl std::ops::Deref for Radiobutton {
-    type Target = NewtComponentPtr;
-    fn deref(&self) -> &Self::Target {
-        &self.co
-    }
 }
 
 impl Radiobutton {
@@ -454,27 +367,9 @@ impl Radiobutton {
 list_item
 */
 
+newt_component!(Label);
 pub struct Label {
     co: NewtComponentPtr
-}
-
-impl NewtComponent for Label {
-    fn co(&self) -> NewtComponentPtr {
-        self.co
-    }
-}
-
-impl<T: NewtComponent> std::cmp::PartialEq<T> for Label {
-    fn eq(&self, other: &T) -> bool {
-        self.co == other.co()
-    }
-}
-
-impl std::ops::Deref for Label {
-    type Target = NewtComponentPtr;
-    fn deref(&self) -> &Self::Target {
-        &self.co
-    }
 }
 
 impl Label  {
@@ -513,25 +408,6 @@ impl Label  {
 
 pub struct Textbox {
     co: NewtComponentPtr
-}
-
-impl NewtComponent for Textbox {
-    fn co(&self) -> NewtComponentPtr {
-        self.co
-    }
-}
-
-impl<T: NewtComponent> std::cmp::PartialEq<T> for Textbox {
-    fn eq(&self, other: &T) -> bool {
-        self.co == other.co()
-    }
-}
-
-impl std::ops::Deref for Textbox {
-    type Target = NewtComponentPtr;
-    fn deref(&self) -> &Self::Target {
-        &self.co
-    }
 }
 
 impl Textbox {
@@ -601,27 +477,9 @@ impl Textbox {
     }
 }
 
+newt_component!(Form);
 pub struct Form {
     co: NewtComponentPtr
-}
-
-impl NewtComponent for Form {
-    fn co(&self) -> NewtComponentPtr {
-        self.co
-    }
-}
-
-impl<T: NewtComponent> std::cmp::PartialEq<T> for Form {
-    fn eq(&self, other: &T) -> bool {
-        self.co == other.co()
-    }
-}
-
-impl std::ops::Deref for Form {
-    type Target = NewtComponentPtr;
-    fn deref(&self) -> &Self::Target {
-        &self.co
-    }
 }
 
 impl Form {
