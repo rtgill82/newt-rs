@@ -18,5 +18,9 @@ pub fn main() {
    let reason: ExitReason = form.run().unwrap();
    newt::finished();
 
-   println!("reason = {:?}", reason);
+   if let ExitReason::Component(component) = reason {
+       if button == component {
+           println!("button == component");
+       }
+   }
 }

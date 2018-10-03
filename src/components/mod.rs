@@ -1,4 +1,6 @@
 extern crate std;
+use std::cmp::PartialEq;
+use std::fmt::Debug;
 use std::os::raw::c_int;
 
 #[allow(non_camel_case_types)]
@@ -19,9 +21,21 @@ pub trait Component {
     }
 }
 
-impl std::fmt::Debug for Component {
+impl Debug for Component {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "Component {{ {:p} }}", self.co())
+    }
+}
+
+impl<Rhs: Component> PartialEq<Rhs> for Component {
+    fn eq(&self, other: &Rhs) -> bool {
+        self.co() == other.co()
+    }
+}
+
+impl<Rhs: Component> PartialEq<Rhs> for Box<Component> {
+    fn eq(&self, other: &Rhs) -> bool {
+        self.co() == other.co()
     }
 }
 
