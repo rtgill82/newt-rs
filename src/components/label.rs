@@ -7,7 +7,8 @@ use components::Component;
 
 newt_component!(Label);
 pub struct Label {
-    co: c_component
+    co: c_component,
+    attached_to_form: bool
 }
 
 impl Label  {
@@ -20,6 +21,7 @@ impl Label  {
 
         let c_text = CString::new(text).unwrap();
         Label {
+            attached_to_form: false,
             co: unsafe { newtLabel(left, top, c_text.as_ptr()) }
         }
     }

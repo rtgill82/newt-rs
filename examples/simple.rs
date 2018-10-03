@@ -11,14 +11,14 @@ pub fn main() {
    newt::centered_window(26, 5, "Greetings");
 
    let form = Form::new(0);
-   let text = Textbox::new(7, 1, 12, 1, 0);
-   let ok = CompactButton::new(3, 3, "Ok");
-   let cancel = CompactButton::new(13, 3, "Cancel");
+   let mut text = Textbox::new(7, 1, 12, 1, 0);
+   let mut ok = CompactButton::new(3, 3, "Ok");
+   let mut cancel = CompactButton::new(13, 3, "Cancel");
 
    text.set_text("Hello World!");
-   form.add_component(&text);
-   form.add_component(&ok);
-   form.add_component(&cancel);
+   form.add_component(&mut text).unwrap();
+   form.add_component(&mut ok).unwrap();
+   form.add_component(&mut cancel).unwrap();
 
    let reason: ExitReason = form.run().unwrap();
    newt::finished();

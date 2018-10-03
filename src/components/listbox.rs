@@ -11,6 +11,7 @@ use components::Component;
 newt_component!(Listbox<K, D>);
 pub struct Listbox<K, D> {
     co: c_component,
+    attached_to_form: bool,
     key: PhantomData<K>,
     data: PhantomData<D>
 }
@@ -24,6 +25,7 @@ impl<K, D> Listbox<K, D> {
         }
 
         Listbox {
+            attached_to_form: false,
             key: PhantomData,
             data: PhantomData,
             co: unsafe {

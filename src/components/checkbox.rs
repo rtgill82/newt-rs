@@ -10,7 +10,8 @@ use components::Component;
 
 newt_component!(Checkbox);
 pub struct Checkbox {
-    co: c_component
+    co: c_component,
+    attached_to_form: bool
 }
 
 impl Checkbox {
@@ -27,6 +28,7 @@ impl Checkbox {
         let s_seq = String::from_utf8_lossy(seq);
         let c_seq = CString::new(s_seq.into_owned()).unwrap();
         Checkbox {
+            attached_to_form: false,
             co: unsafe {
                 newtCheckbox(left, top, c_text.as_ptr(), def_value as i8,
                              c_seq.as_ptr(), ptr::null_mut())

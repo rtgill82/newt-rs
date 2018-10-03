@@ -11,6 +11,7 @@ use components::Component;
 newt_component!(Listitem<T>);
 pub struct Listitem<T> {
     co: c_component,
+    attached_to_form: bool,
     data: PhantomData<T>
 }
 
@@ -28,6 +29,7 @@ impl<T> Listitem<T> {
         let c_str = CString::new(text).unwrap();
         let c_data: *const c_void  = data as *const _ as *const c_void;
         Listitem {
+            attached_to_form: false,
             data: PhantomData,
             co: unsafe {
                 newtListItem(left, top, c_str.as_ptr(), is_default,

@@ -6,7 +6,8 @@ use components::Component;
 
 newt_component!(Scale);
 pub struct Scale {
-    co: c_component
+    co: c_component,
+    attached_to_form: bool
 }
 
 impl Scale  {
@@ -18,6 +19,7 @@ impl Scale  {
         }
 
         Scale {
+            attached_to_form: false,
             co: unsafe { newtScale(left, top, width, full_value) }
         }
     }

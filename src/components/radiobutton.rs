@@ -8,7 +8,8 @@ use components::Component;
 
 newt_component!(Radiobutton);
 pub struct Radiobutton {
-    co: c_component
+    co: c_component,
+    attached_to_form: bool
 }
 
 impl Radiobutton {
@@ -28,6 +29,7 @@ impl Radiobutton {
         };
 
         Radiobutton {
+            attached_to_form: false,
             co: unsafe {
                 newtRadiobutton(left, top, c_text.as_ptr(), is_default, ptr)
             }
@@ -41,6 +43,7 @@ impl Radiobutton {
         }
 
         Radiobutton {
+            attached_to_form: true,
             co: unsafe { newtRadioGetCurrent(self.co) }
         }
     }

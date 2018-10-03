@@ -13,6 +13,7 @@ use constants;
 newt_component!(CheckboxTree<D>);
 pub struct CheckboxTree<D> {
     co: c_component,
+    attached_to_form: bool,
     data: PhantomData<D>
 }
 
@@ -26,6 +27,7 @@ impl<D> CheckboxTree<D> {
         }
 
         CheckboxTree {
+            attached_to_form: false,
             data: PhantomData,
             co: unsafe {
                 newtCheckboxTree(left, top, height, flags)
@@ -45,6 +47,7 @@ impl<D> CheckboxTree<D> {
         let s_seq = String::from_utf8_lossy(seq);
         let c_seq = CString::new(s_seq.into_owned()).unwrap();
         CheckboxTree {
+            attached_to_form: false,
             data: PhantomData,
             co: unsafe {
                 newtCheckboxTreeMulti(left, top, height, c_seq.as_ptr(), flags)

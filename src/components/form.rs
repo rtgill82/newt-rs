@@ -20,12 +20,14 @@ pub enum ExitReason {
 
 newt_component!(RawComponent);
 struct RawComponent {
-    co: c_component
+    co: c_component,
+    attached_to_form: bool
 }
 
 newt_component!(Form);
 pub struct Form {
-    co: c_component
+    co: c_component,
+    attached_to_form: bool
 }
 
 impl Drop for Form {
@@ -48,6 +50,7 @@ impl Form {
         }
 
         Form {
+            attached_to_form: false,
             co: unsafe { newtForm(ptr::null(), ptr::null(), flags) }
         }
     }
@@ -61,19 +64,29 @@ impl Form {
         unsafe{ newtFormSetTimer(self.co, millisecs); }
     }
 
-    pub fn add_component(&self, component: &Component) {
+    pub fn add_component(&self, component: &mut Component)
+            -> Result<(), &'static str> {
         #[link(name="newt")]
         extern "C" {
             fn newtFormAddComponent(form: c_component, co: c_component);
         }
 
+        if component.attached_to_form() {
+            return Err("Component is already attached to a Form");
+        }
+
+        component.attach_to_form();
         unsafe { newtFormAddComponent(self.co, component.co()); }
+        return Ok(());
     }
 
-    pub fn add_components(&self, components: &[&Component]) {
-        for &component in components.iter() {
-            self.add_component(component);
+    pub fn add_components(&self, components: &mut [&mut Component])
+            -> Result<(), &'static str> {
+        for component in components.iter_mut() {
+            let result = self.add_component(*component);
+            if result.is_err() { return result; }
         }
+        return Ok(());
     }
 
     pub fn set_height(&self, height: i32) {
@@ -113,7 +126,10 @@ impl Form {
 
                 ExitStructEnum::HotKey => Ok(HotKey(es.u.key)),
                 ExitStructEnum::Component => Ok(
-                    Component(Box::new(RawComponent { co: es.u.co }))
+                    Component(Box::new(RawComponent {
+                                         co: es.u.co,
+                                         attached_to_form: true
+                    }))
                 ),
                 ExitStructEnum::FDReady => Ok(FDReady(es.u.watch)),
                 ExitStructEnum::Timer => Ok(Timer),

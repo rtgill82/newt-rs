@@ -46,6 +46,14 @@ macro_rules! newt_component_base {
             fn co(&self) -> c_component {
                 self.co
             }
+
+            fn attach_to_form(&mut self) {
+                self.attached_to_form = true;
+            }
+
+            fn attached_to_form(&self) -> bool {
+                self.attached_to_form
+            }
         }
     };
 

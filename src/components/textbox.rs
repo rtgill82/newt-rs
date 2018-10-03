@@ -7,7 +7,8 @@ use components::Component;
 
 newt_component!(Textbox);
 pub struct Textbox {
-    co: c_component
+    co: c_component,
+    attached_to_form: bool
 }
 
 impl Textbox {
@@ -20,6 +21,7 @@ impl Textbox {
         }
 
         Textbox {
+            attached_to_form: false,
             co: unsafe { newtTextbox(left, top, width, height, flags) }
         }
     }
@@ -36,6 +38,7 @@ impl Textbox {
 
         let c_text = CString::new(text).unwrap();
         Textbox {
+            attached_to_form: false,
             co: unsafe {
                 newtTextboxReflowed(left, top, c_text.as_ptr(), width,
                                     flex_down, flex_up, flags)

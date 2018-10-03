@@ -7,7 +7,8 @@ use components::Component;
 
 newt_component!(Button);
 pub struct Button {
-    co: c_component
+    co: c_component,
+    attached_to_form: bool
 }
 
 impl Button {
@@ -20,6 +21,7 @@ impl Button {
 
         let c_str = CString::new(text).unwrap();
         Button {
+            attached_to_form: false,
             co: unsafe { newtButton(left, top, c_str.as_ptr()) }
         }
     }

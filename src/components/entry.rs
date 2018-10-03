@@ -10,7 +10,8 @@ use components::Component;
 
 newt_component!(Entry);
 pub struct Entry {
-    co: c_component
+    co: c_component,
+    attached_to_form: bool
 }
 
 impl Entry  {
@@ -29,6 +30,7 @@ impl Entry  {
         };
 
         Entry {
+            attached_to_form: false,
             co: unsafe {
                 newtEntry(left, top, ptr, width, ptr::null(), flags)
             }

@@ -10,6 +10,8 @@ pub type c_component = *const component_enum;
 
 pub trait Component {
     fn co(&self) -> c_component;
+    fn attach_to_form(&mut self);
+    fn attached_to_form(&self) -> bool;
 
     fn takes_focus(&self, value: bool) {
         #[link(name="newt")]
