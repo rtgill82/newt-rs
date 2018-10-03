@@ -2,8 +2,8 @@ extern crate std;
 use std::os::raw::{c_char, c_int};
 use ptr;
 
+use components::c_component;
 use components::Component;
-use components::NewtComponentPtr;
 
 use intern::structs::ExitStructEnum;
 use intern::structs::ExitStructUnion;
@@ -19,20 +19,20 @@ pub enum ExitReason {
 
 newt_component!(RawComponent);
 struct RawComponent {
-    co: NewtComponentPtr
+    co: c_component
 }
 
 newt_component!(Form);
 pub struct Form {
-    co: NewtComponentPtr
+    co: c_component
 }
 
 impl Form {
     pub fn new(flags: i32) -> Form {
         #[link(name="newt")]
         extern "C" {
-            fn newtForm(vert_bar: NewtComponentPtr, help: *const c_char,
-                        flags: c_int) -> NewtComponentPtr;
+            fn newtForm(vert_bar: c_component, help: *const c_char,
+                        flags: c_int) -> c_component;
         }
 
         Form {
@@ -43,23 +43,22 @@ impl Form {
     pub fn set_timer(&self, millisecs: i32) {
         #[link(name="newt")]
         extern "C" {
-            fn newtFormSetTimer(form: NewtComponentPtr, millisecs: c_int);
+            fn newtFormSetTimer(form: c_component, millisecs: c_int);
         }
 
         unsafe{ newtFormSetTimer(self.co, millisecs); }
     }
 
-    pub fn add_component(&self, component: &NewtComponentPtr) {
+    pub fn add_component(&self, component: &c_component) {
         #[link(name="newt")]
         extern "C" {
-            fn newtFormAddComponent(form: NewtComponentPtr,
-                                    co: NewtComponentPtr);
+            fn newtFormAddComponent(form: c_component, co: c_component);
         }
 
         unsafe { newtFormAddComponent(self.co, *component); }
     }
 
-    pub fn add_components(&self, components: &[NewtComponentPtr]) {
+    pub fn add_components(&self, components: &[c_component]) {
         for component in components.iter() {
             self.add_component(&component);
         }
@@ -68,7 +67,7 @@ impl Form {
     pub fn set_height(&self, height: i32) {
         #[link(name="newt")]
         extern "C" {
-            fn newtFormSetHeight(co: NewtComponentPtr, height: c_int);
+            fn newtFormSetHeight(co: c_component, height: c_int);
         }
 
         unsafe { newtFormSetHeight(self.co, height); }
@@ -77,7 +76,7 @@ impl Form {
     pub fn set_width(&self, width: i32) {
         #[link(name="newt")]
         extern "C" {
-            fn newtFormSetWidth(co: NewtComponentPtr, width: c_int);
+            fn newtFormSetWidth(co: c_component, width: c_int);
         }
 
         unsafe { newtFormSetWidth(self.co, width); }
@@ -88,7 +87,7 @@ impl Form {
 
         #[link(name="newt")]
         extern "C" {
-            fn newtFormRun(form: NewtComponentPtr, es: *mut ExitStruct);
+            fn newtFormRun(form: c_component, es: *mut ExitStruct);
         }
 
         let mut es = ExitStruct {
@@ -114,7 +113,7 @@ impl Form {
     pub fn draw(&self) {
         #[link(name="newt")]
         extern "C" {
-            fn newtDrawForm(co: NewtComponentPtr);
+            fn newtDrawForm(co: c_component);
         }
 
         unsafe { newtDrawForm(self.co); }
@@ -123,7 +122,7 @@ impl Form {
     pub fn add_hot_key(&self, key: i32) {
         #[link(name="newt")]
         extern "C" {
-            fn newtFormAddHotKey(co: NewtComponentPtr, key: c_int);
+            fn newtFormAddHotKey(co: c_component, key: c_int);
         }
 
         unsafe { newtFormAddHotKey(self.co, key); }

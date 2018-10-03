@@ -6,13 +6,13 @@ use std::ffi::CString;
 use std::marker::PhantomData;
 use std::os::raw::{c_char, c_int, c_void};
 
+use components::c_component;
 use components::Component;
-use components::NewtComponentPtr;
 use constants;
 
 newt_component!(CheckboxTree<D>);
 pub struct CheckboxTree<D> {
-    co: NewtComponentPtr,
+    co: c_component,
     data: PhantomData<D>
 }
 
@@ -22,7 +22,7 @@ impl<D> CheckboxTree<D> {
         #[link(name="newt")]
         extern "C" {
             fn newtCheckboxTree(left: c_int, top: c_int, height: c_int,
-                                flags: c_int) -> NewtComponentPtr;
+                                flags: c_int) -> c_component;
         }
 
         CheckboxTree {
@@ -39,7 +39,7 @@ impl<D> CheckboxTree<D> {
         extern "C" {
             fn newtCheckboxTreeMulti(left: c_int, top: c_int, height: c_int,
                                      seq: *const c_char, flags: c_int)
-                -> NewtComponentPtr;
+                -> c_component;
         }
 
         let s_seq = String::from_utf8_lossy(seq);
@@ -55,7 +55,7 @@ impl<D> CheckboxTree<D> {
     pub fn get_selection(&self) -> Box<[&D]> {
         #[link(name="newt")]
         extern "C" {
-            fn newtCheckboxTreeGetSelection(co: NewtComponentPtr,
+            fn newtCheckboxTreeGetSelection(co: c_component,
                                             numitems: *mut c_int)
                 -> *const c_void;
         }
@@ -83,7 +83,7 @@ impl<D> CheckboxTree<D> {
     pub fn get_current(&self) -> &D {
         #[link(name="newt")]
         extern "C" {
-            fn newtCheckboxTreeGetCurrent(co: NewtComponentPtr)
+            fn newtCheckboxTreeGetCurrent(co: c_component)
                 -> *const c_void;
         }
 
@@ -94,7 +94,7 @@ impl<D> CheckboxTree<D> {
     pub fn set_current(&self, data: &D) {
         #[link(name="newt")]
         extern "C" {
-            fn newtCheckboxTreeSetCurrent(co: NewtComponentPtr,
+            fn newtCheckboxTreeSetCurrent(co: c_component,
                                           item: *const c_void);
         }
 
@@ -105,7 +105,7 @@ impl<D> CheckboxTree<D> {
     pub fn get_multi_selection(&self, seqval: u8) -> Box<[&D]> {
         #[link(name="newt")]
         extern "C" {
-            fn newtCheckboxTreeGetMultiSelection(co: NewtComponentPtr,
+            fn newtCheckboxTreeGetMultiSelection(co: c_component,
                                                  numitems: &mut c_int,
                                                  seqnum: c_char)
                 -> *const c_void;
@@ -122,7 +122,7 @@ impl<D> CheckboxTree<D> {
     pub fn add_item(&self, text: &str, data: &D, flags: i32, indexes: &[i32]) -> i32 {
         #[link(name="newt")]
         extern "C" {
-            fn newtCheckboxTreeAddArray(co: NewtComponentPtr,
+            fn newtCheckboxTreeAddArray(co: c_component,
                                         text: *const c_char,
                                         data: *const c_void,
                                         flags: c_int,
@@ -149,7 +149,7 @@ impl<D> CheckboxTree<D> {
     pub fn find_item(&self, data: &D) -> Box<[i32]> {
         #[link(name="newt")]
         extern "C" {
-            fn newtCheckboxTreeFindItem(co: NewtComponentPtr,
+            fn newtCheckboxTreeFindItem(co: c_component,
                                         data: *const c_void) -> *mut c_int;
         }
 
@@ -172,7 +172,7 @@ impl<D> CheckboxTree<D> {
     pub fn set_entry(&self, data: &D, text: &str) {
         #[link(name="newt")]
         extern "C" {
-            fn newtCheckboxTreeSetEntry(co: NewtComponentPtr,
+            fn newtCheckboxTreeSetEntry(co: c_component,
                                         data: *const c_void,
                                         text: *const c_char);
         }
@@ -185,7 +185,7 @@ impl<D> CheckboxTree<D> {
     pub fn set_width(&self, width: i32) {
         #[link(name="newt")]
         extern "C" {
-            fn newtCheckboxTreeSetWidth(co: NewtComponentPtr, width: c_int);
+            fn newtCheckboxTreeSetWidth(co: c_component, width: c_int);
         }
 
         unsafe { newtCheckboxTreeSetWidth(self.co, width); }
@@ -194,7 +194,7 @@ impl<D> CheckboxTree<D> {
     pub fn get_entry_value(&self, data: &D) -> u8 {
         #[link(name="newt")]
         extern "C" {
-            fn newtCheckboxTreeGetEntryValue(co: NewtComponentPtr,
+            fn newtCheckboxTreeGetEntryValue(co: c_component,
                                              data: *const c_void) -> c_char;
         }
 
@@ -205,7 +205,7 @@ impl<D> CheckboxTree<D> {
     pub fn set_entry_value(&self, data: &D, value: u8) {
         #[link(name="newt")]
         extern "C" {
-            fn newtCheckboxTreeSetEntryValue(co: NewtComponentPtr,
+            fn newtCheckboxTreeSetEntryValue(co: c_component,
                                              data: *const c_void,
                                              value: c_char);
         }

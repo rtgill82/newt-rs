@@ -1,5 +1,5 @@
 use std::os::raw::c_int;
-use components::NewtComponentPtr;
+use components::c_component;
 
 #[repr(C)]
 #[allow(dead_code)]
@@ -15,7 +15,7 @@ pub enum ExitStructEnum {
 pub union ExitStructUnion {
     pub watch: c_int,
     pub key: c_int,
-    pub co: NewtComponentPtr
+    pub co: c_component
 }
 
 #[repr(C)]

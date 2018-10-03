@@ -43,15 +43,14 @@ macro_rules! c_ptr_array_to_boxed_slice {
 macro_rules! newt_component_base {
     ($type:ty, $($gen:tt)*) => {
         impl $($gen)* Component for $type {
-            fn co(&self) -> NewtComponentPtr {
+            fn co(&self) -> c_component {
                 self.co
             }
 
             fn takes_focus(&self, value: bool) {
                 #[link(name="newt")]
                 extern "C" {
-                    fn newtComponentTakesFocus(co: NewtComponentPtr,
-                                               val: c_int);
+                    fn newtComponentTakesFocus(co: c_component, val: c_int);
                 }
 
                 unsafe { newtComponentTakesFocus(self.co, value as c_int); }
@@ -81,7 +80,7 @@ macro_rules! newt_component_partial_eq {
 macro_rules! newt_component_deref {
     ($type:ty, $($gen:tt)*) => {
         impl $($gen)* std::ops::Deref for $type {
-            type Target = NewtComponentPtr;
+            type Target = c_component;
             fn deref(&self) -> &Self::Target {
                 &self.co
             }

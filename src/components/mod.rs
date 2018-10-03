@@ -1,9 +1,12 @@
 extern crate std;
-pub enum NewtComponentStruct {}
-pub type NewtComponentPtr = *const NewtComponentStruct;
+
+#[allow(non_camel_case_types)]
+pub enum component_enum {}
+#[allow(non_camel_case_types)]
+pub type c_component = *const component_enum;
 
 pub trait Component {
-    fn co(&self) -> NewtComponentPtr;
+    fn co(&self) -> c_component;
     fn takes_focus(&self, value: bool);
 }
 

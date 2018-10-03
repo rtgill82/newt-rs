@@ -5,12 +5,12 @@ use std::os::raw::c_char;
 use std::os::raw::c_int;
 use std::os::raw::c_void;
 
+use components::c_component;
 use components::Component;
-use components::NewtComponentPtr;
 
 newt_component!(Listitem<T>);
 pub struct Listitem<T> {
-    co: NewtComponentPtr,
+    co: c_component,
     data: PhantomData<T>
 }
 
@@ -20,9 +20,9 @@ impl<T> Listitem<T> {
             -> Listitem<T> {
         extern "C" {
             fn newtListItem(left: c_int, top: c_int, text: *const c_char,
-                            isDefault: c_int, prevItem: NewtComponentPtr,
+                            isDefault: c_int, prevItem: c_component,
                             data: *const c_void, flags: c_int)
-                -> NewtComponentPtr;
+                -> c_component;
         }
 
         let c_str = CString::new(text).unwrap();
@@ -38,7 +38,7 @@ impl<T> Listitem<T> {
 
     pub fn set_text(&self, text: &str) {
         extern "C" {
-            fn newtListitemSet(co: NewtComponentPtr, text: *const c_char);
+            fn newtListitemSet(co: c_component, text: *const c_char);
         }
 
         let c_str = CString::new(text).unwrap();
@@ -47,7 +47,7 @@ impl<T> Listitem<T> {
 
     pub fn get_data(&self) -> &T {
         extern "C" {
-            fn newtListitemGetData(co: NewtComponentPtr) -> *const c_void;
+            fn newtListitemGetData(co: c_component) -> *const c_void;
         }
 
         let c_data = unsafe { newtListitemGetData(self.co) };

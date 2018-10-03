@@ -5,12 +5,13 @@ use std::os::raw::c_int;
 use ptr;
 
 use FlagsSense;
+
+use components::c_component;
 use components::Component;
-use components::NewtComponentPtr;
 
 newt_component!(Checkbox);
 pub struct Checkbox {
-    co: NewtComponentPtr
+    co: c_component
 }
 
 impl Checkbox {
@@ -20,7 +21,7 @@ impl Checkbox {
         extern "C" {
             fn newtCheckbox(left: c_int, top: c_int, text: *const c_char,
                             defValue: c_char, seq: *const c_char,
-                            result: *mut c_char) -> NewtComponentPtr;
+                            result: *mut c_char) -> c_component;
         }
         let c_text = CString::new(text).unwrap();
         let s_seq = String::from_utf8_lossy(seq);
@@ -35,14 +36,14 @@ impl Checkbox {
 
     pub fn get_value(&self) -> i8 {
         #[link(name="newt")]
-        extern "C" { fn newtCheckboxGetValue(co: NewtComponentPtr) -> c_char; }
+        extern "C" { fn newtCheckboxGetValue(co: c_component) -> c_char; }
         unsafe { newtCheckboxGetValue(self.co) }
     }
 
     pub fn set_value(&self, value: i8) {
         #[link(name="newt")]
         extern "C" {
-            fn newtCheckboxSetValue(co: NewtComponentPtr, value: c_char);
+            fn newtCheckboxSetValue(co: c_component, value: c_char);
         }
         unsafe { newtCheckboxSetValue(self.co, value); }
     }
@@ -50,7 +51,7 @@ impl Checkbox {
     pub fn set_flags(&self, flags: i32, sense: FlagsSense) {
         #[link(name="newt")]
         extern "C" {
-            fn newtCheckboxSetFlags(co: NewtComponentPtr, flags: c_int,
+            fn newtCheckboxSetFlags(co: c_component, flags: c_int,
                                     sense: FlagsSense);
         }
         unsafe { newtCheckboxSetFlags(self.co, flags, sense); }

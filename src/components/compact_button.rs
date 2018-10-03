@@ -3,12 +3,12 @@ use std::ffi::CString;
 use std::os::raw::c_char;
 use std::os::raw::c_int;
 
+use components::c_component;
 use components::Component;
-use components::NewtComponentPtr;
 
 newt_component!(CompactButton);
 pub struct CompactButton {
-    co: NewtComponentPtr
+    co: c_component
 }
 
 impl CompactButton {
@@ -16,7 +16,7 @@ impl CompactButton {
         #[link(name="newt")]
         extern "C" {
             fn newtCompactButton(left: c_int, top: c_int, text: *const c_char)
-                -> NewtComponentPtr;
+                -> c_component;
         }
 
         let c_str = CString::new(text).unwrap();

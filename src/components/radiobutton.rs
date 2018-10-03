@@ -4,12 +4,12 @@ use std::os::raw::c_char;
 use std::os::raw::c_int;
 use ptr;
 
+use components::c_component;
 use components::Component;
-use components::NewtComponentPtr;
 
 newt_component!(Radiobutton);
 pub struct Radiobutton {
-    co: NewtComponentPtr
+    co: c_component
 }
 
 impl Radiobutton {
@@ -18,8 +18,8 @@ impl Radiobutton {
         #[link(name="newt")]
         extern "C" {
             fn newtRadiobutton(left: c_int, top: c_int, text: *const c_char,
-                               isDefault: c_int, prevButton: NewtComponentPtr)
-                -> NewtComponentPtr;
+                               isDefault: c_int, prevButton: c_component)
+                -> c_component;
         }
 
         let c_text = CString::new(text).unwrap();
@@ -38,8 +38,7 @@ impl Radiobutton {
     pub fn get_current(&self) -> Radiobutton {
         #[link(name="newt")]
         extern "C" {
-            fn newtRadioGetCurrent(setMember: NewtComponentPtr)
-                -> NewtComponentPtr;
+            fn newtRadioGetCurrent(setMember: c_component) -> c_component;
         }
 
         Radiobutton {
@@ -50,7 +49,7 @@ impl Radiobutton {
     pub fn set_current(&self) {
         #[link(name="newt")]
         extern "C" {
-            fn newtRadioSetCurrent(setMember: NewtComponentPtr);
+            fn newtRadioSetCurrent(setMember: c_component);
         }
 
         unsafe { newtRadioSetCurrent(self.co) }

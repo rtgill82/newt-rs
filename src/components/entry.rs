@@ -5,13 +5,14 @@ use std::os::raw::c_char;
 use std::os::raw::c_int;
 use ptr;
 
-use components::Component;
-use components::NewtComponentPtr;
 use FlagsSense;
+
+use components::c_component;
+use components::Component;
 
 newt_component!(Entry);
 pub struct Entry {
-    co: NewtComponentPtr
+    co: c_component
 }
 
 impl Entry  {
@@ -21,7 +22,7 @@ impl Entry  {
         extern "C" {
             fn newtEntry(left: c_int, top: c_int, initialValue: *const c_char,
                          width: c_int, resultPtr: *const c_char, flags: c_int)
-                -> NewtComponentPtr;
+                -> c_component;
         }
 
         let ptr = match initial_value {
@@ -39,7 +40,7 @@ impl Entry  {
     pub fn set_text(&self, text: &str, cursor_at_end: bool) {
         #[link(name="newt")]
         extern "C" {
-            fn newtEntrySet(co: NewtComponentPtr, value: *const c_char,
+            fn newtEntrySet(co: c_component, value: *const c_char,
                             cursorAtEnd: c_int);
         }
 
@@ -52,7 +53,7 @@ impl Entry  {
     pub fn get_value(&self) -> String {
         #[link(name="newt")]
         extern "C" {
-            fn newtEntryGetValue(co: NewtComponentPtr) -> *mut c_char;
+            fn newtEntryGetValue(co: c_component) -> *mut c_char;
         }
 
         unsafe { CStr::from_ptr(newtEntryGetValue(self.co)) }
@@ -63,7 +64,7 @@ impl Entry  {
     pub fn set_flags(&self, flags: i32, sense: FlagsSense) {
         #[link(name="newt")]
         extern "C" {
-            fn newtEntrySetFlags(co: NewtComponentPtr, flags: c_int,
+            fn newtEntrySetFlags(co: c_component, flags: c_int,
                                  sense: FlagsSense);
         }
 
@@ -73,7 +74,7 @@ impl Entry  {
     pub fn set_colors(&self, normal: i32, disabled: i32) {
         #[link(name="newt")]
         extern "C" {
-            fn newtEntrySetColors(co: NewtComponentPtr, normal: c_int,
+            fn newtEntrySetColors(co: c_component, normal: c_int,
                                   disabled: c_int);
         }
 
