@@ -1,7 +1,7 @@
 extern crate std;
 use std::os::raw::{c_char, c_int};
 use components::c_component;
-use FlagsSense;
+use constants::FlagsSense;
 
 extern "C" {
     pub fn newtEntry(left: c_int, top: c_int, initialValue: *const c_char,

@@ -6,7 +6,6 @@ use std::ptr;
 mod intern;
 pub mod components;
 pub mod constants;
-pub use constants::*;
 
 use intern::ffi::newt::*;
 use intern::structs::NewtColors;

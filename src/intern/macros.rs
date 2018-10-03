@@ -1,3 +1,4 @@
+#[doc(hidden)]
 #[macro_export]
 macro_rules! newt_component {
     ($type:tt, $($gen:tt),+) => {
@@ -23,6 +24,7 @@ macro_rules! newt_component {
     };
 }
 
+#[doc(hidden)]
 #[macro_export]
 macro_rules! c_ptr_array_to_boxed_slice {
     ($ptr:tt [ $type:tt ], $numitems:tt) => {{

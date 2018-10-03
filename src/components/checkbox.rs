@@ -1,11 +1,11 @@
 extern crate std;
 use std::ffi::CString;
-use FlagsSense;
 use ptr;
 
 use components::c_component;
 use components::Component;
 use components::form::ExitReason;
+use constants::FlagsSense;
 use intern::ffi::newt::checkbox::*;
 use intern::ffi::newt::component::newtComponentDestroy;
 use intern::funcs::char_slice_to_cstring;
