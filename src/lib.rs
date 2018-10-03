@@ -186,6 +186,10 @@ pub fn suspend() {
     unsafe { newtSuspend(); }
 }
 
+pub fn resume() {
+    unsafe { newtResume(); }
+}
+
 pub fn push_help_line(text: &str) {
     let c_str = CString::new(text).unwrap();
     unsafe { newtPushHelpLine(c_str.as_ptr()); }

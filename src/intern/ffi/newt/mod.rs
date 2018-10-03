@@ -35,6 +35,7 @@ extern "C" {
     pub fn newtSetColor(colorset: c_int, fg: *const c_char, bg: *const c_char);
     pub fn newtRefresh();
     pub fn newtSuspend();
+    pub fn newtResume();
     pub fn newtPushHelpLine(text: *const c_char);
     pub fn newtRedrawHelpLine();
     pub fn newtPopHelpLine();
