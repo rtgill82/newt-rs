@@ -8,6 +8,7 @@ use std::os::raw::{c_char, c_int, c_void};
 
 use components::c_component;
 use components::Component;
+use components::form::ExitReason;
 use constants;
 
 newt_component!(CheckboxTree<D>);

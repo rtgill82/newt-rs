@@ -2,14 +2,14 @@
 macro_rules! newt_component {
     ($type:tt, $($gen:tt),+) => {
         newt_component_base!($type<$($gen),+>, <$($gen),+>);
-        newt_component_partial_eq!($type<$($gen),+>, <Rhs: Component, $($gen),+>);
-        newt_component_boxed_partial_eq!($type<$($gen),+>, <$($gen),+>);
+        newt_component_partial_eq_trait!($type<$($gen),+>, <Rhs: Component, $($gen),+>);
+        newt_component_partial_eq!($type<$($gen),+>, <$($gen),+>);
     };
 
     ($type:tt,) => {
         newt_component_base!($type);
-        newt_component_partial_eq!($type, <Rhs: Component>);
-        newt_component_boxed_partial_eq!($type);
+        newt_component_partial_eq_trait!($type, <Rhs: Component>);
+        newt_component_partial_eq!($type);
     };
 
     ($type:tt, < $($gen:tt),+ >) => {
@@ -62,7 +62,7 @@ macro_rules! newt_component_base {
     };
 }
 
-macro_rules! newt_component_partial_eq {
+macro_rules! newt_component_partial_eq_trait {
     ($type:ty, $($gen:tt)*) => {
         impl $($gen)* std::cmp::PartialEq<Rhs> for $type {
             fn eq(&self, other: &Rhs) -> bool {
@@ -72,20 +72,26 @@ macro_rules! newt_component_partial_eq {
     };
 
     ($type:ty) => {
-        newt_component_partial_eq!($type,);
+        newt_component_partial_eq_trait!($type,);
     };
 }
 
-macro_rules! newt_component_boxed_partial_eq {
+macro_rules! newt_component_partial_eq {
     ($type:ty, $($gen:tt)*) => {
         impl $($gen)* std::cmp::PartialEq<Box<Component>> for $type {
             fn eq(&self, other: &Box<Component>) -> bool {
                 self.co == other.co()
             }
         }
+
+        impl $($gen)* std::cmp::PartialEq<ExitReason> for $type {
+            fn eq(&self, other: &ExitReason) -> bool {
+                other == self
+            }
+        }
     };
 
     ($type:ty) => {
-        newt_component_boxed_partial_eq!($type,);
+        newt_component_partial_eq!($type,);
     };
 }

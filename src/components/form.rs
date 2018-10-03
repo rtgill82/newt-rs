@@ -18,6 +18,15 @@ pub enum ExitReason {
     Timer
 }
 
+impl<Rhs: Component> PartialEq<Rhs> for ExitReason {
+    fn eq(&self, other: &Rhs) -> bool {
+        if let &ExitReason::Component(ref component) = self {
+            return component.co() == other.co();
+        }
+        return false;
+    }
+}
+
 newt_component!(RawComponent);
 struct RawComponent {
     co: c_component,

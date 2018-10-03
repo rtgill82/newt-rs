@@ -7,6 +7,7 @@ use ptr;
 use FlagsSense;
 use components::c_component;
 use components::Component;
+use components::form::ExitReason;
 
 newt_component!(Listbox<K, D>);
 pub struct Listbox<K, D> {

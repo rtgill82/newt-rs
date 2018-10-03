@@ -23,7 +23,5 @@ pub fn main() {
    let reason: ExitReason = form.run().unwrap();
    newt::finished();
 
-   if let ExitReason::Component(component) = reason {
-       exit(if component == ok { 0 } else { 1 });
-   }
+   exit(if ok == reason { 0 } else { 1 });
 }

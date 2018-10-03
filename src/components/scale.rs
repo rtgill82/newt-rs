@@ -3,6 +3,7 @@ use std::os::raw::{c_int, c_longlong, c_ulonglong};
 
 use components::c_component;
 use components::Component;
+use components::form::ExitReason;
 
 newt_component!(Scale);
 pub struct Scale {

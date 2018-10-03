@@ -5,6 +5,7 @@ use ptr;
 
 use components::c_component;
 use components::Component;
+use components::form::ExitReason;
 
 newt_component!(Radiobutton);
 pub struct Radiobutton {

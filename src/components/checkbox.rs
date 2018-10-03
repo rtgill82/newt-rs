@@ -7,6 +7,7 @@ use FlagsSense;
 
 use components::c_component;
 use components::Component;
+use components::form::ExitReason;
 
 newt_component!(Checkbox);
 pub struct Checkbox {

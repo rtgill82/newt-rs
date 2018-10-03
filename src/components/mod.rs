@@ -3,6 +3,8 @@ use std::cmp::PartialEq;
 use std::fmt::Debug;
 use std::os::raw::c_int;
 
+use components::form::ExitReason;
+
 #[allow(non_camel_case_types)]
 pub enum component_enum {}
 #[allow(non_camel_case_types)]
@@ -32,6 +34,15 @@ impl Debug for Component {
 impl<Rhs: Component> PartialEq<Rhs> for Component {
     fn eq(&self, other: &Rhs) -> bool {
         self.co() == other.co()
+    }
+}
+
+impl PartialEq<ExitReason> for Component {
+    fn eq(&self, other: &ExitReason) -> bool {
+        if let &ExitReason::Component(ref component) = other {
+            return self.co() == component.co()
+        }
+        return false;
     }
 }
 

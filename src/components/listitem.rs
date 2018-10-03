@@ -7,6 +7,7 @@ use std::os::raw::c_void;
 
 use components::c_component;
 use components::Component;
+use components::form::ExitReason;
 
 newt_component!(Listitem<T>);
 pub struct Listitem<T> {
