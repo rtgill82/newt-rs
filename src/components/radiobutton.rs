@@ -49,7 +49,7 @@ impl Radiobutton {
         }
     }
 
-    pub fn set_current(&self) {
+    pub fn set_current(&mut self) {
         #[link(name="newt")]
         extern "C" {
             fn newtRadioSetCurrent(setMember: c_component);

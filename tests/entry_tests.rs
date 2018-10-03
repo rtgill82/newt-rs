@@ -29,7 +29,7 @@ fn entry_partial_eq_false() {
 
 #[test]
 fn entry_set_text() {
-    let entry = Entry::new(0, 0, None, 10, 0);
+    let mut entry = Entry::new(0, 0, None, 10, 0);
     let text = entry.get_value();
     assert!(text == "");
 
@@ -40,12 +40,12 @@ fn entry_set_text() {
 
 #[test]
 fn entry_set_flags() {
-    let entry = Entry::new(0, 0, None, 10, 0);
+    let mut entry = Entry::new(0, 0, None, 10, 0);
     entry.set_flags(0, FlagsSense::Reset);
 }
 
 #[test]
 fn entry_set_colors() {
-    let entry = Entry::new(0, 0, None, 10, 0);
+    let mut entry = Entry::new(0, 0, None, 10, 0);
     entry.set_colors(COLORSET_ENTRY, COLORSET_DISENTRY);
 }

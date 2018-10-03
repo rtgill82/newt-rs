@@ -39,7 +39,7 @@ impl<T> Listitem<T> {
         }
     }
 
-    pub fn set_text(&self, text: &str) {
+    pub fn set_text(&mut self, text: &str) {
         extern "C" {
             fn newtListitemSet(co: c_component, text: *const c_char);
         }

@@ -25,7 +25,7 @@ impl Scale  {
         }
     }
 
-    pub fn set(&self, amount: u64) {
+    pub fn set(&mut self, amount: u64) {
         #[link(name="newt")]
         extern "C" {
             fn newtScaleSet(co: c_component, amount: c_ulonglong);
@@ -34,7 +34,7 @@ impl Scale  {
         unsafe { newtScaleSet(self.co, amount); }
     }
 
-    pub fn set_colors(&self, empty: i32, full: i32) {
+    pub fn set_colors(&mut self, empty: i32, full: i32) {
         #[link(name="newt")]
         extern "C" {
             fn newtScaleSetColors(co: c_component, empty: c_int, full: c_int);

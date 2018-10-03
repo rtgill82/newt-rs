@@ -27,7 +27,7 @@ impl Label  {
         }
     }
 
-    pub fn set_text(&self, text: &str) {
+    pub fn set_text(&mut self, text: &str) {
         #[link(name="newt")]
         extern "C" {
             fn newtLabelSetText(co: c_component, text: *const c_char);
@@ -37,7 +37,7 @@ impl Label  {
         unsafe { newtLabelSetText(self.co, c_text.as_ptr()); }
     }
 
-    pub fn set_colors(&self, colorset: i32) {
+    pub fn set_colors(&mut self, colorset: i32) {
         #[link(name="newt")]
         extern "C" {
             fn newtLabelSetColors(co: c_component, colorset: c_int);

@@ -15,7 +15,7 @@ pub trait Component {
     fn attach_to_form(&mut self);
     fn attached_to_form(&self) -> bool;
 
-    fn takes_focus(&self, value: bool) {
+    fn takes_focus(&mut self, value: bool) {
         #[link(name="newt")]
         extern "C" {
             fn newtComponentTakesFocus(co: c_component, val: c_int);

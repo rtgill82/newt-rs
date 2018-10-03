@@ -45,7 +45,7 @@ impl<K, D> Listbox<K, D> {
         unsafe { &*(c_data as *const D) }
     }
 
-    pub fn set_current(&self, num: i32) {
+    pub fn set_current(&mut self, num: i32) {
         #[link(name="newt")]
         extern "C" {
             fn newtListboxSetCurrent(co: c_component, num: c_int);
@@ -54,7 +54,7 @@ impl<K, D> Listbox<K, D> {
         unsafe { newtListboxSetCurrent(self.co, num); }
     }
 
-    pub fn set_current_by_key(&self, key: &K) {
+    pub fn set_current_by_key(&mut self, key: &K) {
         #[link(name="newt")]
         extern "C" {
             fn newtListboxSetCurrentByKey(co: c_component, key: *const c_void);
@@ -64,7 +64,7 @@ impl<K, D> Listbox<K, D> {
         unsafe { newtListboxSetCurrentByKey(self.co, c_key); }
     }
 
-    pub fn set_entry(&self, num: i32, text: &str) {
+    pub fn set_entry(&mut self, num: i32, text: &str) {
         #[link(name="newt")]
         extern "C" {
             fn newtListboxSetEntry(co: c_component, num: c_int,
@@ -75,7 +75,7 @@ impl<K, D> Listbox<K, D> {
         unsafe { newtListboxSetEntry(self.co, num, c_str.as_ptr()); }
     }
 
-    pub fn set_width(&self, width: i32) {
+    pub fn set_width(&mut self, width: i32) {
         #[link(name="newt")]
         extern "C" {
             fn newtListboxSetWidth(co: c_component, width: c_int);
@@ -84,7 +84,7 @@ impl<K, D> Listbox<K, D> {
         unsafe { newtListboxSetWidth(self.co, width); }
     }
 
-    pub fn set_data(&self, num: i32, data: &D) {
+    pub fn set_data(&mut self, num: i32, data: &D) {
         #[link(name="newt")]
         extern "C" {
             fn newtListboxSetData(co: c_component, num: c_int,
@@ -95,7 +95,7 @@ impl<K, D> Listbox<K, D> {
         unsafe { newtListboxSetData(self.co, num, c_data); }
     }
 
-    pub fn append_entry(&self, text: &str, data: &D) -> i32 {
+    pub fn append_entry(&mut self, text: &str, data: &D) -> i32 {
         #[link(name="newt")]
         extern "C" {
             fn newtListboxAppendEntry(co: c_component,
@@ -108,7 +108,7 @@ impl<K, D> Listbox<K, D> {
         unsafe { newtListboxAppendEntry(self.co, c_str.as_ptr(), c_data) }
     }
 
-    pub fn insert_entry(&self, text: &str, data: &D, key: &K) -> i32 {
+    pub fn insert_entry(&mut self, text: &str, data: &D, key: &K) -> i32 {
         #[link(name="newt")]
         extern "C" {
             fn newtListboxInsertEntry(co: c_component,
@@ -125,7 +125,7 @@ impl<K, D> Listbox<K, D> {
         }
     }
 
-    pub fn delete_entry(&self, data: &D) -> i32 {
+    pub fn delete_entry(&mut self, data: &D) -> i32 {
         #[link(name="newt")]
         extern "C" {
             fn newtListboxDeleteEntry(co: c_component, data: *const c_void)
@@ -136,7 +136,7 @@ impl<K, D> Listbox<K, D> {
         unsafe { newtListboxDeleteEntry(self.co, c_data) }
     }
 
-    pub fn clear(&self) {
+    pub fn clear(&mut self) {
         #[link(name="newt")]
         extern "C" {
             fn newtListboxClear(co: c_component);
@@ -174,7 +174,7 @@ impl<K, D> Listbox<K, D> {
         c_ptr_array_to_boxed_slice!(ptr[D], numitems)
     }
 
-    pub fn clear_selection(&self) {
+    pub fn clear_selection(&mut self) {
         #[link(name="newt")]
         extern "C" {
             fn newtListboxClearSelection(co: c_component);
@@ -183,7 +183,7 @@ impl<K, D> Listbox<K, D> {
         unsafe { newtListboxClearSelection(self.co) };
     }
 
-    pub fn select_item(&self, key: &K, sense: FlagsSense) {
+    pub fn select_item(&mut self, key: &K, sense: FlagsSense) {
         #[link(name="newt")]
         extern "C" {
             fn newtListboxSelectItem(co: c_component, key: *const c_void,

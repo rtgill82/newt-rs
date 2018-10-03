@@ -47,7 +47,7 @@ impl Textbox {
         }
     }
 
-    pub fn set_text(&self, text: &str) {
+    pub fn set_text(&mut self, text: &str) {
         #[link(name="newt")]
         extern "C" {
             fn newtTextboxSetText(co: c_component, text: *const c_char);
@@ -57,7 +57,7 @@ impl Textbox {
         unsafe { newtTextboxSetText(self.co, c_text.as_ptr()); }
     }
 
-    pub fn set_height(&self, height: i32) {
+    pub fn set_height(&mut self, height: i32) {
         #[link(name="newt")]
         extern "C" {
             fn newtTextboxSetHeight(co: c_component, height: c_int);
@@ -75,7 +75,7 @@ impl Textbox {
         unsafe { newtTextboxGetNumLines(self.co) }
     }
 
-    pub fn set_colors(&self, normal: i32, active: i32) {
+    pub fn set_colors(&mut self, normal: i32, active: i32) {
         #[link(name="newt")]
         extern "C" {
             fn newtTextboxSetColors(co: c_component, normal: c_int,

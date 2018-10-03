@@ -27,12 +27,12 @@ fn label_partial_eq_false() {
 
 #[test]
 fn label_set_text() {
-    let label = Label::new(0, 0, "Ok");
+    let mut label = Label::new(0, 0, "Ok");
     label.set_text("Not Ok");
 }
 
 #[test]
 fn label_set_colors() {
-    let label = Label::new(0, 0, "Ok");
+    let mut label = Label::new(0, 0, "Ok");
     label.set_colors(COLORSET_LABEL);
 }

@@ -83,7 +83,7 @@ impl Form {
         }
     }
 
-    pub fn set_timer(&self, millisecs: i32) {
+    pub fn set_timer(&mut self, millisecs: i32) {
         #[link(name="newt")]
         extern "C" {
             fn newtFormSetTimer(form: c_component, millisecs: c_int);
@@ -92,7 +92,7 @@ impl Form {
         unsafe{ newtFormSetTimer(self.co, millisecs); }
     }
 
-    pub fn add_component(&self, component: &mut Component)
+    pub fn add_component(&mut self, component: &mut Component)
             -> Result<(), &'static str> {
         #[link(name="newt")]
         extern "C" {
@@ -108,7 +108,7 @@ impl Form {
         return Ok(());
     }
 
-    pub fn add_components(&self, components: &mut [&mut Component])
+    pub fn add_components(&mut self, components: &mut [&mut Component])
             -> Result<(), &'static str> {
         for component in components.iter_mut() {
             let result = self.add_component(*component);
@@ -117,7 +117,7 @@ impl Form {
         return Ok(());
     }
 
-    pub fn set_height(&self, height: i32) {
+    pub fn set_height(&mut self, height: i32) {
         #[link(name="newt")]
         extern "C" {
             fn newtFormSetHeight(co: c_component, height: c_int);
@@ -126,7 +126,7 @@ impl Form {
         unsafe { newtFormSetHeight(self.co, height); }
     }
 
-    pub fn set_width(&self, width: i32) {
+    pub fn set_width(&mut self, width: i32) {
         #[link(name="newt")]
         extern "C" {
             fn newtFormSetWidth(co: c_component, width: c_int);
@@ -175,7 +175,7 @@ impl Form {
         unsafe { newtDrawForm(self.co); }
     }
 
-    pub fn add_hot_key(&self, key: i32) {
+    pub fn add_hot_key(&mut self, key: i32) {
         #[link(name="newt")]
         extern "C" {
             fn newtFormAddHotKey(co: c_component, key: c_int);

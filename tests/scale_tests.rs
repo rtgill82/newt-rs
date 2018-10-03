@@ -28,12 +28,12 @@ fn scale_partial_eq_false() {
 
 #[test]
 fn scale_set() {
-    let scale = Scale::new(0, 0, 10, 100);
+    let mut scale = Scale::new(0, 0, 10, 100);
     scale.set(50);
 }
 
 #[test]
 fn scale_set_colors() {
-    let scale = Scale::new(0, 0, 10, 100);
+    let mut scale = Scale::new(0, 0, 10, 100);
     scale.set_colors(COLORSET_EMPTYSCALE, COLORSET_FULLSCALE);
 }

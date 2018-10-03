@@ -38,7 +38,7 @@ impl Entry  {
         }
     }
 
-    pub fn set_text(&self, text: &str, cursor_at_end: bool) {
+    pub fn set_text(&mut self, text: &str, cursor_at_end: bool) {
         #[link(name="newt")]
         extern "C" {
             fn newtEntrySet(co: c_component, value: *const c_char,
@@ -62,7 +62,7 @@ impl Entry  {
             .into_owned()
     }
 
-    pub fn set_flags(&self, flags: i32, sense: FlagsSense) {
+    pub fn set_flags(&mut self, flags: i32, sense: FlagsSense) {
         #[link(name="newt")]
         extern "C" {
             fn newtEntrySetFlags(co: c_component, flags: c_int,
@@ -72,7 +72,7 @@ impl Entry  {
         unsafe { newtEntrySetFlags(self.co, flags, sense); }
     }
 
-    pub fn set_colors(&self, normal: i32, disabled: i32) {
+    pub fn set_colors(&mut self, normal: i32, disabled: i32) {
         #[link(name="newt")]
         extern "C" {
             fn newtEntrySetColors(co: c_component, normal: c_int,

@@ -44,7 +44,7 @@ impl Checkbox {
         unsafe { newtCheckboxGetValue(self.co) as u8 }
     }
 
-    pub fn set_value(&self, value: u8) {
+    pub fn set_value(&mut self, value: u8) {
         #[link(name="newt")]
         extern "C" {
             fn newtCheckboxSetValue(co: c_component, value: c_char);
@@ -53,7 +53,7 @@ impl Checkbox {
         unsafe { newtCheckboxSetValue(self.co, value as i8); }
     }
 
-    pub fn set_flags(&self, flags: i32, sense: FlagsSense) {
+    pub fn set_flags(&mut self, flags: i32, sense: FlagsSense) {
         #[link(name="newt")]
         extern "C" {
             fn newtCheckboxSetFlags(co: c_component, flags: c_int,
