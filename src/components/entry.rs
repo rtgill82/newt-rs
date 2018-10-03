@@ -1,8 +1,6 @@
 extern crate std;
-use std::ffi::CStr;
-use std::ffi::CString;
-use std::os::raw::c_char;
-use std::os::raw::c_int;
+use std::ffi::{CStr, CString};
+use std::os::raw::{c_char, c_int};
 use ptr;
 
 use FlagsSense;

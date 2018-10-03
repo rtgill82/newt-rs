@@ -44,15 +44,6 @@ macro_rules! newt_component_base {
             fn co(&self) -> c_component {
                 self.co
             }
-
-            fn takes_focus(&self, value: bool) {
-                #[link(name="newt")]
-                extern "C" {
-                    fn newtComponentTakesFocus(co: c_component, val: c_int);
-                }
-
-                unsafe { newtComponentTakesFocus(self.co, value as c_int); }
-            }
         }
     };
 

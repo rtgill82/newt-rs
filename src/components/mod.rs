@@ -1,4 +1,5 @@
 extern crate std;
+use std::os::raw::c_int;
 
 #[allow(non_camel_case_types)]
 pub enum component_enum {}
@@ -7,7 +8,15 @@ pub type c_component = *const component_enum;
 
 pub trait Component {
     fn co(&self) -> c_component;
-    fn takes_focus(&self, value: bool);
+
+    fn takes_focus(&self, value: bool) {
+        #[link(name="newt")]
+        extern "C" {
+            fn newtComponentTakesFocus(co: c_component, val: c_int);
+        }
+
+        unsafe { newtComponentTakesFocus(self.co(), value as c_int); }
+    }
 }
 
 impl std::fmt::Debug for Component {
