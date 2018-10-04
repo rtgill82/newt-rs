@@ -53,7 +53,7 @@ impl<D> CheckboxTree<D> {
         }
     }
 
-    pub fn set_width(&mut self, width: i32) {
+    pub fn set_width(&self, width: i32) {
         #[link(name="newt")]
         extern "C" {
             fn newtCheckboxTreeSetWidth(co: c_component, width: c_int);
@@ -62,7 +62,7 @@ impl<D> CheckboxTree<D> {
         unsafe { newtCheckboxTreeSetWidth(self.co, width); }
     }
 
-    pub fn add_item(&mut self, text: &str, data: &D, flags: i32,
+    pub fn add_item(&self, text: &str, data: &D, flags: i32,
                     indexes: &[i32]) -> i32 {
         #[link(name="newt")]
         extern "C" {
@@ -79,15 +79,37 @@ impl<D> CheckboxTree<D> {
         let mut i = 0;
         let mut c_array: Vec<i32> = Vec::with_capacity(indexes.len() + 1);
         while i < indexes.len() {
-            c_array[i] = indexes[i];
+            c_array.push(indexes[i]);
             i = i + 1;
         }
-        c_array[i] = constants::ARG_LAST;
+        c_array.push(constants::ARG_LAST);
 
         unsafe {
             newtCheckboxTreeAddArray(self.co, c_str.as_ptr(), c_data, flags,
                                      c_array.as_ptr())
         }
+    }
+
+    pub fn get_current(&self) -> &D {
+        #[link(name="newt")]
+        extern "C" {
+            fn newtCheckboxTreeGetCurrent(co: c_component)
+                -> *const c_void;
+        }
+
+        let c_data = unsafe { newtCheckboxTreeGetCurrent(self.co) };
+        unsafe { &*(c_data as *const D) }
+    }
+
+    pub fn set_current(&self, data: &D) {
+        #[link(name="newt")]
+        extern "C" {
+            fn newtCheckboxTreeSetCurrent(co: c_component,
+                                          item: *const c_void);
+        }
+
+        let c_data: *const c_void = data as *const _ as *const c_void;
+        unsafe { newtCheckboxTreeSetCurrent(self.co, c_data); }
     }
 
     pub fn get_selection(&self) -> Box<[&D]> {
@@ -102,42 +124,7 @@ impl<D> CheckboxTree<D> {
         let ptr: *const c_void = unsafe {
             newtCheckboxTreeGetSelection(self.co, &mut numitems)
         };
-
-        let mut vec: Vec<&D> = Vec::new();
-        if numitems > 0 {
-            let mut count = 0;
-            let mut p = ptr;
-            unsafe {
-                while count < numitems {
-                    vec.push(&*(p as *const D));
-                    p = p.offset(1);
-                    count += 1;
-                }
-            }
-        }
-        vec.into_boxed_slice()
-    }
-
-    pub fn get_current(&self) -> &D {
-        #[link(name="newt")]
-        extern "C" {
-            fn newtCheckboxTreeGetCurrent(co: c_component)
-                -> *const c_void;
-        }
-
-        let c_data = unsafe { newtCheckboxTreeGetCurrent(self.co) };
-        unsafe { &*(c_data as *const D) }
-    }
-
-    pub fn set_current(&mut self, data: &D) {
-        #[link(name="newt")]
-        extern "C" {
-            fn newtCheckboxTreeSetCurrent(co: c_component,
-                                          item: *const c_void);
-        }
-
-        let c_data: *const c_void = data as *const _ as *const c_void;
-        unsafe { newtCheckboxTreeSetCurrent(self.co, c_data); }
+        c_ptr_array_to_boxed_slice!(ptr[D], numitems)
     }
 
     pub fn get_multi_selection(&self, seqval: char) -> Box<[&D]> {
@@ -180,7 +167,7 @@ impl<D> CheckboxTree<D> {
         vec.into_boxed_slice()
     }
 
-    pub fn set_entry(&mut self, data: &D, text: &str) {
+    pub fn set_entry(&self, data: &D, text: &str) {
         #[link(name="newt")]
         extern "C" {
             fn newtCheckboxTreeSetEntry(co: c_component,
@@ -206,7 +193,7 @@ impl<D> CheckboxTree<D> {
         }
     }
 
-    pub fn set_entry_value(&mut self, data: &D, value: char) {
+    pub fn set_entry_value(&self, data: &D, value: char) {
         #[link(name="newt")]
         extern "C" {
             fn newtCheckboxTreeSetEntryValue(co: c_component,
