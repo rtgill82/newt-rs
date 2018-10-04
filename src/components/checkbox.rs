@@ -17,7 +17,8 @@ pub struct Checkbox {
 }
 
 impl Checkbox {
-    pub fn new(left: i32, top: i32, text: &str, def_value: char, seq: &[char])
+    pub fn new(left: i32, top: i32, text: &str, def_value: Option<char>,
+               seq: Option<&[char]>)
             -> Checkbox {
         #[link(name="newt")]
         extern "C" {
@@ -27,12 +28,20 @@ impl Checkbox {
         }
 
         let c_text = CString::new(text).unwrap();
-        let c_seq = char_slice_to_cstring(&seq);
+        let default: i8 = match def_value {
+            Some(value) => value as i8,
+            None => 0 as i8
+        };
+        let c_seq = match seq {
+            Some(seq) => char_slice_to_cstring(&seq).as_ptr(),
+            None => ptr::null()
+        };
+
         Checkbox {
             attached_to_form: false,
             co: unsafe {
-                newtCheckbox(left, top, c_text.as_ptr(), def_value as i8,
-                             c_seq.as_ptr(), ptr::null_mut())
+                newtCheckbox(left, top, c_text.as_ptr(), default, c_seq,
+                             ptr::null_mut())
             }
         }
     }
