@@ -5,6 +5,7 @@ use std::os::raw::c_int;
 
 use components::c_component;
 use components::form::ExitReason;
+use intern::ffi::newt::component::*;
 
 pub trait Component {
     fn co(&self) -> c_component;
@@ -12,11 +13,6 @@ pub trait Component {
     fn attached_to_form(&self) -> bool;
 
     fn takes_focus(&mut self, value: bool) {
-        #[link(name="newt")]
-        extern "C" {
-            fn newtComponentTakesFocus(co: c_component, val: c_int);
-        }
-
         unsafe { newtComponentTakesFocus(self.co(), value as c_int); }
     }
 }

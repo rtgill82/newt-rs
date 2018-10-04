@@ -1,4 +1,5 @@
 #[macro_use]
 pub mod macros;
-pub mod structs;
+pub mod ffi;
 pub mod funcs;
+pub mod structs;

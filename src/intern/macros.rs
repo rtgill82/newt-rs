@@ -70,9 +70,6 @@ macro_rules! newt_component_drop {
     ($type:ty, $($gen:tt)*) => {
         impl $($gen)* std::ops::Drop for $type {
             fn drop(&mut self) {
-                #[link(name="newt")]
-                extern "C" { fn newtComponentDestroy(co: c_component); }
-
                 if !self.attached_to_form() {
                     unsafe { newtComponentDestroy(self.co()); }
                 }
