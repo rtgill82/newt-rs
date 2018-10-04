@@ -3,6 +3,7 @@ name = "newt"
 version = "0.1.0"
 authors = ["Robert Gill <locke@sdf.lonestar.org>"]
 description = "Rust bindings for the Newt console UI library"
+repository = "https://github.com/xelkarin/newt-rs"
 license = "LGPL-2.0-only"
 
 [dependencies]
