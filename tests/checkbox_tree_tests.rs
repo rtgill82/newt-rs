@@ -49,6 +49,14 @@ fn checkbox_tree_get_current() {
 }
 
 #[test]
+#[should_panic]
+fn checkbox_tree_get_current_no_entries() {
+    let checkbox_tree: CheckboxTree<()> =
+        CheckboxTree::new(0, 0, 10, None, 0);
+    assert!(*checkbox_tree.get_current() == ());
+}
+
+#[test]
 fn checkbox_tree_set_current() {
     let mut checkbox_tree: CheckboxTree<usize> =
         CheckboxTree::new(0, 0, 10, None, 0);

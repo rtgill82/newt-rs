@@ -39,6 +39,13 @@ fn listbox_append_entry() {
 }
 
 #[test]
+#[should_panic]
+fn listbox_get_current_no_entries() {
+    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
+    assert!(*listbox.get_current() == 5);
+}
+
+#[test]
 fn listbox_set_current() {
     let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", &5);

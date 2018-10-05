@@ -6,6 +6,7 @@ use std::ffi::CString;
 use std::marker::PhantomData;
 use std::os::raw::{c_char, c_void};
 use std::mem;
+use ptr;
 
 use components::c_component;
 use components::Component;
@@ -69,6 +70,9 @@ impl<D> CheckboxTree<D> {
 
     pub fn get_current(&self) -> &D {
         let c_data = unsafe { newtCheckboxTreeGetCurrent(self.co) };
+        if c_data == ptr::null() {
+            panic!("CheckboxTree contains no entries");
+        }
         unsafe { &*(c_data as *const D) }
     }
 

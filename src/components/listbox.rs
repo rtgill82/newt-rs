@@ -55,6 +55,9 @@ impl<D> Listbox<D> {
 
     pub fn get_current(&self) -> &D {
         let c_data = unsafe { newtListboxGetCurrent(self.co) };
+        if c_data == ptr::null() {
+            panic!("Listbox contains no entries");
+        }
         unsafe { &*(c_data as *const D) }
     }
 
