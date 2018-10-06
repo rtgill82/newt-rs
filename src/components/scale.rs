@@ -2,7 +2,6 @@ extern crate std;
 
 use components::c_component;
 use components::Component;
-use components::form::ExitReason;
 use intern::ffi::newt::scale::*;
 use intern::ffi::newt::component::newtComponentDestroy;
 

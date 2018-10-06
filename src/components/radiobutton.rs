@@ -4,7 +4,6 @@ use ptr;
 
 use components::c_component;
 use components::Component;
-use components::form::ExitReason;
 use intern::ffi::newt::radiobutton::*;
 use intern::ffi::newt::component::newtComponentDestroy;
 

@@ -3,7 +3,6 @@ use std::ffi::CString;
 
 use components::c_component;
 use components::Component;
-use components::form::ExitReason;
 use intern::ffi::newt::compact_button::*;
 use intern::ffi::newt::component::newtComponentDestroy;
 

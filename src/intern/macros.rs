@@ -7,14 +7,14 @@ macro_rules! newt_component {
 
     ($type:tt , $($gen:tt)+) => {
         newt_component_base!($type<$($gen)+> , <$($gen)+>);
-        newt_component_partial_eq_trait!($type<$($gen)+> , <$($gen)+, Rhs: Component>);
+        newt_component_partial_eq_trait!($type<$($gen)+> , <$($gen)+, Rhs: ::components::Component>);
         newt_component_partial_eq!($type<$($gen)+> , <$($gen)+>);
         newt_component_drop!($type<$($gen)+> , <$($gen)+>);
     };
 
     ($type:tt ,) => {
         newt_component_base!($type);
-        newt_component_partial_eq_trait!($type , <Rhs: Component>);
+        newt_component_partial_eq_trait!($type , <Rhs: ::components::Component>);
         newt_component_partial_eq!($type);
         newt_component_drop!($type);
     };
@@ -35,7 +35,7 @@ macro_rules! c_ptr_array_to_boxed_slice {
             unsafe {
                 while count < $numitems {
                     vec.push(&**(p as *const *const $type));
-                    p = p.offset(mem::size_of::<&$type>() as isize);
+                    p = p.offset(std::mem::size_of::<&$type>() as isize);
                     count += 1;
                 }
             }
@@ -46,7 +46,7 @@ macro_rules! c_ptr_array_to_boxed_slice {
 
 macro_rules! newt_component_base {
     ($type:ty, $($gen:tt)*) => {
-        impl $($gen)* Component for $type {
+        impl $($gen)* ::components::Component for $type {
             fn co(&self) -> c_component {
                 self.co
             }
@@ -100,14 +100,14 @@ macro_rules! newt_component_partial_eq_trait {
 
 macro_rules! newt_component_partial_eq {
     ($type:ty, $($gen:tt)*) => {
-        impl $($gen)* std::cmp::PartialEq<Box<dyn Component>> for $type {
-            fn eq(&self, other: &Box<dyn Component>) -> bool {
+        impl $($gen)* std::cmp::PartialEq<Box<dyn (::components::Component)>> for $type {
+            fn eq(&self, other: &Box<dyn (::components::Component)>) -> bool {
                 self.co == other.co()
             }
         }
 
-        impl $($gen)* std::cmp::PartialEq<ExitReason> for $type {
-            fn eq(&self, other: &ExitReason) -> bool {
+        impl $($gen)* std::cmp::PartialEq<::components::form::ExitReason> for $type {
+            fn eq(&self, other: &::components::form::ExitReason) -> bool {
                 other == self
             }
         }

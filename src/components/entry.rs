@@ -6,7 +6,6 @@ use ptr;
 
 use components::c_component;
 use components::Component;
-use components::form::ExitReason;
 use constants::FlagsSense;
 use intern::ffi::newt::entry::*;
 use intern::ffi::newt::component::newtComponentDestroy;

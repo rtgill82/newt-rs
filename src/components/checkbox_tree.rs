@@ -5,12 +5,10 @@ use self::libc::free;
 use std::ffi::CString;
 use std::marker::PhantomData;
 use std::os::raw::{c_char, c_void};
-use std::mem;
 use ptr;
 
 use components::c_component;
 use components::Component;
-use components::form::ExitReason;
 use intern::ffi::newt::checkbox_tree::*;
 use intern::ffi::newt::component::newtComponentDestroy;
 use intern::funcs::char_slice_to_cstring;

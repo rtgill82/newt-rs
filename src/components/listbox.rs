@@ -2,12 +2,10 @@ extern crate std;
 use std::ffi::{CStr, CString};
 use std::marker::PhantomData;
 use std::os::raw::{c_char, c_void};
-use std::mem;
 use ptr;
 
 use components::c_component;
 use components::Component;
-use components::form::ExitReason;
 use constants::FlagsSense;
 use intern::ffi::newt::listbox::*;
 use intern::ffi::newt::component::newtComponentDestroy;
