@@ -21,7 +21,6 @@ struct BaseComponent {
 }
 
 newt_component!(Form);
-#[doc(hidden)]
 pub struct Form {
     co: c_component,
     attached_to_form: bool
