@@ -14,26 +14,26 @@ struct TestStruct<'a> {
 
 #[test]
 fn listbox_create() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
     assert!(listbox.co() != ptr::null());
 }
 
 #[test]
 fn listbox_partial_eq_true() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
     assert!(listbox == listbox);
 }
 
 #[test]
 fn listbox_partial_eq_false() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
     let form = Form::new(0);
     assert!(listbox != form);
 }
 
 #[test]
 fn listbox_append_entry() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", &5);
     assert!(*listbox.get_current() == 5);
 }
@@ -41,13 +41,13 @@ fn listbox_append_entry() {
 #[test]
 #[should_panic]
 fn listbox_get_current_no_entries() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
-    assert!(*listbox.get_current() == 5);
+    let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
+    assert!(*listbox.get_current() == ());
 }
 
 #[test]
 fn listbox_set_current() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", &5);
     listbox.append_entry("entry 2", &10);
     assert!(*listbox.get_current() == 5);
@@ -57,7 +57,7 @@ fn listbox_set_current() {
 
 #[test]
 fn listbox_set_current_by_key() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", &5);
     listbox.append_entry("entry 2", &10);
     assert!(*listbox.get_current() == 5);
@@ -67,17 +67,17 @@ fn listbox_set_current_by_key() {
 
 #[test]
 fn listbox_item_count() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
-    listbox.append_entry("entry 1", &5);
-    listbox.append_entry("entry 2", &10);
+    let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
+    listbox.append_entry("entry 1", &());
+    listbox.append_entry("entry 2", &());
     assert!(listbox.item_count() == 2);
-    listbox.append_entry("entry 3", &15);
+    listbox.append_entry("entry 3", &());
     assert!(listbox.item_count() == 3);
 }
 
 #[test]
 fn listbox_delete_entry() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", &5);
     listbox.append_entry("entry 2", &10);
     listbox.append_entry("entry 3", &15);
@@ -88,9 +88,9 @@ fn listbox_delete_entry() {
 
 #[test]
 fn listbox_clear() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
-    listbox.append_entry("entry 1", &5);
-    listbox.append_entry("entry 2", &10);
+    let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
+    listbox.append_entry("entry 1", &());
+    listbox.append_entry("entry 2", &());
     assert!(listbox.item_count() == 2);
     listbox.clear();
     assert!(listbox.item_count() == 0);
@@ -98,7 +98,7 @@ fn listbox_clear() {
 
 #[test]
 fn listbox_get_entry() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", &5);
     listbox.append_entry("entry 2", &10);
     let (s, d) = listbox.get_entry(1);
@@ -108,9 +108,9 @@ fn listbox_get_entry() {
 
 #[test]
 fn listbox_set_entry() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
-    listbox.append_entry("entry 1", &5);
-    listbox.append_entry("entry 2", &10);
+    let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
+    listbox.append_entry("entry 1", &());
+    listbox.append_entry("entry 2", &());
     listbox.set_entry(1, "entry 3");
     let (s, _d) = listbox.get_entry(1);
     assert!(s == "entry 3");
@@ -118,7 +118,7 @@ fn listbox_set_entry() {
 
 #[test]
 fn listbox_set_data() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", &5);
     let (_s, d) = listbox.get_entry(0);
     assert!(*d == 5);
@@ -129,16 +129,16 @@ fn listbox_set_data() {
 
 #[test]
 fn listbox_get_selection_none() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
-    listbox.append_entry("entry 1", &5);
-    listbox.append_entry("entry 2", &10);
+    let listbox: Listbox<()> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    listbox.append_entry("entry 1", &());
+    listbox.append_entry("entry 2", &());
     let result = listbox.get_selection();
     assert!(result.len() == 0);
 }
 
 #[test]
 fn listbox_select_item() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let listbox: Listbox<isize> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry 1", &5);
     listbox.append_entry("entry 2", &10);
     listbox.select_item(&10, Set);
@@ -146,7 +146,7 @@ fn listbox_select_item() {
 
 #[test]
 fn listbox_get_selection() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let listbox: Listbox<isize> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry 1", &5);
     listbox.append_entry("entry 2", &10);
     listbox.append_entry("entry 3", &15);
@@ -160,7 +160,7 @@ fn listbox_get_selection() {
 
 #[test]
 fn listbox_clear_selection() {
-    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let listbox: Listbox<isize> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry 1", &5);
     listbox.append_entry("entry 2", &10);
     listbox.append_entry("entry 3", &15);
