@@ -6,8 +6,14 @@ description = "Rust bindings for the Newt console UI library"
 repository = "https://github.com/xelkarin/newt-rs"
 license = "LGPL-2.0-only"
 
+links = "newt"
+build = "build.rs"
+
 [dependencies]
 libc = "0.2.0"
+
+[build-dependencies]
+pkg-config = "0.3.14"
 
 [lib]
 name = "newt"

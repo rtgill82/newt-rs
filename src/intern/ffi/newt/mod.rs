@@ -14,7 +14,6 @@ pub mod radiobutton;
 pub mod scale;
 pub mod textbox;
 
-#[link(name="newt")]
 extern "C" {
     pub fn newtInit() -> c_int;
     pub fn newtFinished() -> c_int;
