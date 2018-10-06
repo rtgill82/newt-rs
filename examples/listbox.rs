@@ -2,6 +2,7 @@ extern crate newt;
 use newt::components::Listbox;
 use newt::components::CompactButton;
 use newt::components::Form;
+use newt::constants::FLAG_MULTIPLE;
 
 pub fn main() {
    newt::init();
@@ -9,18 +10,27 @@ pub fn main() {
    newt::centered_window(15, 6, Some("Options"));
 
    let mut form = Form::new(0);
-   let mut listbox: Listbox<usize> = Listbox::new(1, 1, 3, 0);
-   let mut ok = CompactButton::new(5, 5, "Ok");
+   let mut listbox: Listbox<isize> = Listbox::new(1, 1, 3, FLAG_MULTIPLE);
+   let mut ok = CompactButton::new(1, 5, "Ok");
+   let mut clear = CompactButton::new(6, 5, "Clear");
 
-   listbox.append_entry("Entry 1", &5);
-   listbox.append_entry("Entry 2", &10);
-   listbox.append_entry("Entry 3", &15);
+   let data: Vec<isize> = (1..10).collect();
+   for i in &data {
+       let text = format!("Entry {}", i);
+       listbox.append_entry(&text, i);
+   }
 
-   form.add_components(&mut [&mut listbox, &mut ok]).unwrap();
-   form.run().unwrap();
+   form.add_components(&mut [&mut listbox, &mut ok, &mut clear]).unwrap();
+
+   while form.run().unwrap() == clear {
+       listbox.clear();
+   }
 
    newt::finished();
 
-   let result = listbox.get_current();
-   println!("result = {}", result);
+   // This will panic! if entries were cleared.
+   let current = listbox.get_current();
+   let selected = listbox.get_selection();
+   println!("current = {}", current);
+   println!("selected = {:?}", selected);
 }
