@@ -1,11 +1,32 @@
 extern crate std;
 use std::cmp::PartialEq;
 use std::fmt::Debug;
-use std::os::raw::c_int;
+use std::ops::Deref;
+use std::os::raw::{c_int,c_void};
 
 use components::c_component;
 use components::form::ExitReason;
 use intern::ffi::newt::component::*;
+
+pub struct Data<'a, T: 'a>(pub &'a T);
+
+impl<'a, T: 'a> ::components::data::Data for Data<'a, T> {
+    fn newt_to_ptr(&self) -> *const c_void {
+        self.0 as *const _ as *const c_void
+    }
+
+    fn newt_from_ptr(ptr: *const c_void) -> Self {
+        let data = unsafe { &*(ptr as *const T) };
+        Data(data)
+    }
+}
+
+impl<'a, T> Deref for Data<'a, T> {
+    type Target = T;
+    fn deref(&self) -> &T {
+        &self.0
+    }
+}
 
 pub trait Component {
     fn co(&self) -> c_component;

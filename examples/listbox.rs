@@ -14,18 +14,13 @@ pub fn main() {
    let mut ok = CompactButton::new(1, 5, "Ok");
    let mut clear = CompactButton::new(6, 5, "Clear");
 
-   let data: Vec<isize> = (1..10).collect();
-   for i in &data {
+   for i in 1..10 {
        let text = format!("Entry {}", i);
        listbox.append_entry(&text, i);
    }
-
    form.add_components(&mut [&mut listbox, &mut ok, &mut clear]).unwrap();
 
-   while form.run().unwrap() == clear {
-       listbox.clear();
-   }
-
+   while form.run().unwrap() == clear { listbox.clear(); }
    newt::finished();
 
    let current = listbox.get_current();

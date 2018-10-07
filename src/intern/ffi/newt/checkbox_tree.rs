@@ -17,11 +17,11 @@ extern "C" {
     pub fn newtCheckboxTreeGetCurrent(co: c_component) -> *const c_void;
     pub fn newtCheckboxTreeSetCurrent(co: c_component, item: *const c_void);
     pub fn newtCheckboxTreeGetSelection(co: c_component, numitems: *mut c_int)
-        -> *const c_void;
+        -> *const *const c_void;
     pub fn newtCheckboxTreeGetMultiSelection(co: c_component,
                                              numitems: &mut c_int,
                                              seqnum: c_char)
-        -> *const c_void;
+        -> *const *const c_void;
     pub fn newtCheckboxTreeFindItem(co: c_component, data: *const c_void)
         -> *mut c_int;
     pub fn newtCheckboxTreeSetEntry(co: c_component,

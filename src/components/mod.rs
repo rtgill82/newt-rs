@@ -7,7 +7,7 @@ pub enum component_enum {}
 #[doc(hidden)]
 pub type c_component = *const component_enum;
 
-#[doc(hidden)]
+mod data;
 pub mod component;
 #[doc(inline)]
 pub use self::component::Component;

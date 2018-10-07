@@ -27,7 +27,7 @@ extern "C" {
         -> c_int;
     pub fn newtListboxClear(co: c_component);
     pub fn newtListboxGetSelection(co: c_component, numitems: *mut c_int)
-        -> *const c_void;
+        -> *const *const c_void;
     pub fn newtListboxSelectItem(co: c_component, key: *const c_void,
                                  sense: FlagsSense);
     pub fn newtListboxClearSelection(co: c_component);
