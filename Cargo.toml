@@ -5,7 +5,7 @@ authors = ["Robert Gill <locke@sdf.lonestar.org>"]
 description = "Rust bindings for the Newt console UI library"
 repository = "https://github.com/xelkarin/newt-rs"
 license = "LGPL-2.0-only"
-categories = ["API bindings"]
+categories = ["api-bindings"]
 keywords = ["bindings", "tui"]
 
 links = "newt"
