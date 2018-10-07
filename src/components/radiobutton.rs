@@ -15,7 +15,7 @@ pub struct Radiobutton {
 
 impl Radiobutton {
     pub fn new(left: i32, top: i32, text: &str, is_default: bool,
-               prev_button: Option<&mut Radiobutton>) -> Radiobutton {
+               prev_button: Option<&Radiobutton>) -> Radiobutton {
         let c_text = CString::new(text).unwrap();
         let ptr = match prev_button {
             Some(radio_button) => radio_button.co,
