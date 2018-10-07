@@ -28,9 +28,8 @@ pub fn main() {
 
    newt::finished();
 
-   // This will panic! if entries were cleared.
    let current = listbox.get_current();
    let selected = listbox.get_selection();
-   println!("current = {}", current);
+   println!("current = {:?}", current);
    println!("selected = {:?}", selected);
 }

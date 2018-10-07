@@ -35,14 +35,13 @@ fn listbox_partial_eq_false() {
 fn listbox_append_entry() {
     let listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", &5);
-    assert!(*listbox.get_current() == 5);
+    assert!(listbox.get_current() == Some(&5));
 }
 
 #[test]
-#[should_panic]
 fn listbox_get_current_no_entries() {
     let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
-    assert!(*listbox.get_current() == ());
+    assert!(listbox.get_current() == None);
 }
 
 #[test]
@@ -50,9 +49,9 @@ fn listbox_set_current() {
     let listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", &5);
     listbox.append_entry("entry 2", &10);
-    assert!(*listbox.get_current() == 5);
+    assert!(listbox.get_current() == Some(&5));
     listbox.set_current(1);
-    assert!(*listbox.get_current() == 10);
+    assert!(listbox.get_current() == Some(&10));
 }
 
 #[test]
@@ -60,9 +59,9 @@ fn listbox_set_current_by_key() {
     let listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", &5);
     listbox.append_entry("entry 2", &10);
-    assert!(*listbox.get_current() == 5);
+    assert!(listbox.get_current() == Some(&5));
     listbox.set_current_by_key(&10);
-    assert!(*listbox.get_current() == 10);
+    assert!(listbox.get_current() == Some(&10));
 }
 
 #[test]

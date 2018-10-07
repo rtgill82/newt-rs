@@ -66,12 +66,10 @@ impl<D> CheckboxTree<D> {
         }
     }
 
-    pub fn get_current(&self) -> &D {
+    pub fn get_current(&self) -> Option<&D> {
         let c_data = unsafe { newtCheckboxTreeGetCurrent(self.co) };
-        if c_data == ptr::null() {
-            panic!("CheckboxTree contains no entries");
-        }
-        unsafe { &*(c_data as *const D) }
+        if c_data == ptr::null() { return None; }
+        Some(unsafe { &*(c_data as *const D) })
     }
 
     pub fn set_current(&mut self, data: &D) {
