@@ -4,7 +4,6 @@ use std::ffi::CString;
 use components::c_component;
 use components::Component;
 use intern::ffi::newt::textbox::*;
-use intern::ffi::newt::component::newtComponentDestroy;
 
 newt_component!(Textbox);
 pub struct Textbox {
@@ -16,8 +15,8 @@ impl Textbox {
     pub fn new(left: i32, top: i32, width: i32, height: i32, flags: i32)
             -> Textbox {
         Textbox {
-            attached_to_form: false,
-            co: unsafe { newtTextbox(left, top, width, height, flags) }
+            co: unsafe { newtTextbox(left, top, width, height, flags) },
+            attached_to_form: false
         }
     }
 
@@ -25,11 +24,11 @@ impl Textbox {
                         flex_down: i32, flex_up: i32, flags: i32) -> Textbox {
         let c_text = CString::new(text).unwrap();
         Textbox {
-            attached_to_form: false,
             co: unsafe {
                 newtTextboxReflowed(left, top, c_text.as_ptr(), width,
                                     flex_down, flex_up, flags)
-            }
+            },
+            attached_to_form: false
         }
     }
 

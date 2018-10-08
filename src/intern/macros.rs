@@ -73,7 +73,9 @@ macro_rules! newt_component_drop {
         impl $($gen)* std::ops::Drop for $type {
             fn drop(&mut self) {
                 if !self.attached_to_form() {
-                    unsafe { newtComponentDestroy(self.co()); }
+                    unsafe {
+                        ::intern::ffi::newt::component::newtComponentDestroy(self.co());
+                    }
                 }
             }
         }

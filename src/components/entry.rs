@@ -8,7 +8,6 @@ use components::c_component;
 use components::Component;
 use constants::FlagsSense;
 use intern::ffi::newt::entry::*;
-use intern::ffi::newt::component::newtComponentDestroy;
 
 newt_component!(Entry);
 pub struct Entry {
@@ -29,10 +28,10 @@ impl Entry  {
         };
 
         Entry {
-            attached_to_form: false,
             co: unsafe {
                 newtEntry(left, top, ptr, width, ptr::null(), flags)
-            }
+            },
+            attached_to_form: false
         }
     }
 

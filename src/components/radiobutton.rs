@@ -5,7 +5,6 @@ use ptr;
 use components::c_component;
 use components::Component;
 use intern::ffi::newt::radiobutton::*;
-use intern::ffi::newt::component::newtComponentDestroy;
 
 newt_component!(Radiobutton);
 pub struct Radiobutton {
@@ -23,11 +22,11 @@ impl Radiobutton {
         };
 
         Radiobutton {
-            attached_to_form: false,
             co: unsafe {
                 newtRadiobutton(left, top, c_text.as_ptr(),
                                 is_default as i32, ptr)
-            }
+            },
+            attached_to_form: false
         }
     }
 

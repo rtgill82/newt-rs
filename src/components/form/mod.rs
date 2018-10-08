@@ -9,7 +9,6 @@ use intern::structs::ExitStructEnum;
 use intern::structs::ExitStructUnion;
 use intern::structs::ExitStruct;
 use intern::ffi::newt::form::*;
-use intern::ffi::newt::component::newtComponentDestroy;
 
 mod exit_reason;
 pub use self::exit_reason::ExitReason;
@@ -35,8 +34,8 @@ impl Drop for Form {
 impl Form {
     pub fn new(flags: i32) -> Form {
         Form {
-            attached_to_form: false,
-            co: unsafe { newtForm(ptr::null(), ptr::null(), flags) }
+            co: unsafe { newtForm(ptr::null(), ptr::null(), flags) },
+            attached_to_form: false
         }
     }
 

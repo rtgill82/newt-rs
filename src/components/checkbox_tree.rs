@@ -38,9 +38,9 @@ impl<D: Data> CheckboxTree<D> {
         };
 
         CheckboxTree {
+            co: component,
             attached_to_form: false,
-            data: PhantomData,
-            co: component
+            data: PhantomData
         }
     }
 

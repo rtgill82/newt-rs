@@ -6,7 +6,6 @@ use components::c_component;
 use components::Component;
 use constants::FlagsSense;
 use intern::ffi::newt::checkbox::*;
-use intern::ffi::newt::component::newtComponentDestroy;
 use intern::funcs::char_slice_to_cstring;
 
 newt_component!(Checkbox);
@@ -35,11 +34,11 @@ impl Checkbox {
         };
 
         Checkbox {
-            attached_to_form: false,
             co: unsafe {
                 newtCheckbox(left, top, c_text.as_ptr(), default, c_seq,
                              ptr::null_mut())
-            }
+            },
+            attached_to_form: false
         }
     }
 
