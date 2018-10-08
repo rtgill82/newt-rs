@@ -49,14 +49,21 @@ impl<D: Data> CheckboxTree<D> {
     }
 
     pub fn add_item(&mut self, text: &str, data: D, flags: i32,
-                    indexes: &[i32]) -> i32 {
+                    indexes: Option<&[i32]>) -> i32 {
         let mut i = 0;
-        let mut c_array: Vec<i32> = Vec::with_capacity(indexes.len() + 1);
-        while i < indexes.len() {
-            c_array.push(indexes[i]);
-            i = i + 1;
+        let mut c_array: Vec<i32>;
+        if let Some(indexes) = indexes {
+            c_array = Vec::with_capacity(indexes.len() + 1);
+            while i < indexes.len() {
+                c_array.push(indexes[i]);
+                i = i + 1;
+            }
+            c_array.push(constants::ARG_LAST);
+        } else {
+            c_array = Vec::with_capacity(2);
+            c_array.push(constants::ARG_APPEND);
+            c_array.push(constants::ARG_LAST);
         }
-        c_array.push(constants::ARG_LAST);
 
         let c_str = CString::new(text).unwrap();
         unsafe {
