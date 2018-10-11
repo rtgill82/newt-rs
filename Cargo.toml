@@ -5,7 +5,7 @@ authors = ["Robert Gill <locke@sdf.lonestar.org>"]
 description = "Rust bindings for the Newt console UI library"
 repository = "https://github.com/xelkarin/newt-rs"
 license = "LGPL-2.0-only"
-categories = ["api-bindings"]
+categories = ["api-bindings", "os::unix-apis"]
 keywords = ["bindings", "tui"]
 readme = "README.md"
 
@@ -17,7 +17,3 @@ libc = "0.2.0"
 
 [build-dependencies]
 pkg-config = "0.3.14"
-
-[lib]
-name = "newt"
-path = "src/lib.rs"
