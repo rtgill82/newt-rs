@@ -9,11 +9,9 @@ categories = ["api-bindings", "os::unix-apis"]
 keywords = ["bindings", "tui"]
 readme = "README.md"
 
-links = "newt"
-build = "build.rs"
-
 [dependencies]
-libc = "0.2.0"
+libc     = "0.2.0"
+newt-sys = "0.1.2"
 
 [build-dependencies]
 pkg-config = "0.3.14"

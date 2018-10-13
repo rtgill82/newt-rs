@@ -47,7 +47,7 @@ macro_rules! c_ptr_array_to_boxed_slice {
 macro_rules! newt_component_base {
     ($type:ty, $($gen:tt)*) => {
         impl $($gen)* ::components::Component for $type {
-            fn co(&self) -> c_component {
+            fn co(&self) -> newtComponent {
                 self.co
             }
 
@@ -74,7 +74,7 @@ macro_rules! newt_component_drop {
             fn drop(&mut self) {
                 if !self.attached_to_form() {
                     unsafe {
-                        ::intern::ffi::newt::component::newtComponentDestroy(self.co());
+                        ::newt_sys::newtComponentDestroy(self.co());
                     }
                 }
             }

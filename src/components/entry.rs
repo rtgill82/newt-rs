@@ -1,17 +1,16 @@
 extern crate std;
+extern crate newt_sys;
 use std::ffi::{CStr, CString};
 use std::os::raw::c_int;
 use ptr;
 
-
-use components::c_component;
+use newt_sys::*;
 use components::Component;
 use constants::FlagsSense;
-use intern::ffi::newt::entry::*;
 
 newt_component!(Entry);
 pub struct Entry {
-    co: c_component,
+    co: newtComponent,
     attached_to_form: bool
 }
 
@@ -29,7 +28,7 @@ impl Entry  {
 
         Entry {
             co: unsafe {
-                newtEntry(left, top, ptr, width, ptr::null(), flags)
+                newtEntry(left, top, ptr, width, ptr::null_mut(), flags)
             },
             attached_to_form: false
         }
@@ -49,7 +48,7 @@ impl Entry  {
     }
 
     pub fn set_flags(&mut self, flags: i32, sense: FlagsSense) {
-        unsafe { newtEntrySetFlags(self.co, flags, sense); }
+        unsafe { newtEntrySetFlags(self.co, flags, sense as u32); }
     }
 
     pub fn set_colors(&mut self, normal: i32, disabled: i32) {

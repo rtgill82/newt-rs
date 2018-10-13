@@ -10,13 +10,13 @@ use newt::constants::COLORSET_ACTTEXTBOX;
 #[test]
 fn textbox_create() {
     let textbox = Textbox::new(0, 0, 10, 10, 0);
-    assert!(textbox.co() != ptr::null());
+    assert!(textbox.co() != ptr::null_mut());
 }
 
 #[test]
 fn textbox_create_reflowed() {
     let textbox = Textbox::new_reflowed(0, 0, "Hello world!", 20, 15, 20, 0);
-    assert!(textbox.co() != ptr::null());
+    assert!(textbox.co() != ptr::null_mut());
 }
 
 #[test]

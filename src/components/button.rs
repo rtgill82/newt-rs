@@ -1,13 +1,13 @@
 extern crate std;
+extern crate newt_sys;
 use std::ffi::CString;
 
-use components::c_component;
+use newt_sys::*;
 use components::Component;
-use intern::ffi::newt::button::*;
 
 newt_component!(Button);
 pub struct Button {
-    co: c_component,
+    co: newtComponent,
     attached_to_form: bool
 }
 

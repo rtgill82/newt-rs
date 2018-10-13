@@ -9,7 +9,7 @@ use newt::constants::KEY_ENTER;
 #[test]
 fn form_create() {
     let form = Form::new(0);
-    assert!(form.co() != ptr::null());
+    assert!(form.co() != ptr::null_mut());
 }
 
 #[test]

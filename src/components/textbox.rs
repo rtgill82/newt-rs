@@ -1,13 +1,14 @@
 extern crate std;
+extern crate newt_sys;
 use std::ffi::CString;
+use std::os::raw::c_char;
 
-use components::c_component;
+use newt_sys::*;
 use components::Component;
-use intern::ffi::newt::textbox::*;
 
 newt_component!(Textbox);
 pub struct Textbox {
-    co: c_component,
+    co: newtComponent,
     attached_to_form: bool
 }
 
@@ -25,8 +26,8 @@ impl Textbox {
         let c_text = CString::new(text).unwrap();
         Textbox {
             co: unsafe {
-                newtTextboxReflowed(left, top, c_text.as_ptr(), width,
-                                    flex_down, flex_up, flags)
+                newtTextboxReflowed(left, top, c_text.as_ptr() as *mut c_char,
+                                    width, flex_down, flex_up, flags)
             },
             attached_to_form: false
         }

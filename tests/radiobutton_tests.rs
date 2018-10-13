@@ -7,7 +7,7 @@ use std::ptr;
 #[test]
 fn radiobutton_create() {
     let radio = Radiobutton::new(0, 0, "Yes", true, None);
-    assert!(radio.co() != ptr::null());
+    assert!(radio.co() != ptr::null_mut());
 }
 
 #[test]

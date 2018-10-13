@@ -9,7 +9,7 @@ use newt::constants::COLORSET_LABEL;
 #[test]
 fn label_create() {
     let label = Label::new(0, 0, "Ok");
-    assert!(label.co() != ptr::null());
+    assert!(label.co() != ptr::null_mut());
 }
 
 #[test]

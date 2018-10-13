@@ -19,7 +19,7 @@ struct TestStruct<'a> {
 fn checkbox_tree_create() {
     let checkbox_tree: CheckboxTree<()> =
         CheckboxTree::new(0, 0, 10, None, 0);
-    assert!(checkbox_tree.co() != ptr::null());
+    assert!(checkbox_tree.co() != ptr::null_mut());
 }
 
 #[test]

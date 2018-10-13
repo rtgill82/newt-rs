@@ -9,7 +9,7 @@ use newt::constants::FlagsSense;
 #[test]
 fn checkbox_create() {
     let checkbox = Checkbox::new(0, 0, "Ok", None, None);
-    assert!(checkbox.co() != ptr::null());
+    assert!(checkbox.co() != ptr::null_mut());
 }
 
 #[test]

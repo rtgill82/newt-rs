@@ -1,12 +1,5 @@
 extern crate std;
 
-#[allow(non_camel_case_types)]
-#[doc(hidden)]
-pub enum component_enum {}
-#[allow(non_camel_case_types)]
-#[doc(hidden)]
-pub type c_component = *const component_enum;
-
 mod data;
 pub mod component;
 #[doc(inline)]

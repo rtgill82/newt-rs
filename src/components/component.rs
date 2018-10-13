@@ -1,12 +1,12 @@
 extern crate std;
+extern crate newt_sys;
 use std::cmp::PartialEq;
 use std::fmt::Debug;
 use std::ops::Deref;
 use std::os::raw::{c_int,c_void};
 
-use components::c_component;
+use newt_sys::*;
 use components::form::ExitReason;
-use intern::ffi::newt::component::*;
 
 pub struct Data<'a, T: 'a>(pub &'a T);
 
@@ -29,7 +29,7 @@ impl<'a, T> Deref for Data<'a, T> {
 }
 
 pub trait Component {
-    fn co(&self) -> c_component;
+    fn co(&self) -> newtComponent;
     fn attach_to_form(&mut self);
     fn attached_to_form(&self) -> bool;
 

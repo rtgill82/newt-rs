@@ -1,16 +1,16 @@
 extern crate std;
+extern crate newt_sys;
 use std::ffi::CString;
 use ptr;
 
-use components::c_component;
+use newt_sys::*;
 use components::Component;
 use constants::FlagsSense;
-use intern::ffi::newt::checkbox::*;
 use intern::funcs::char_slice_to_cstring;
 
 newt_component!(Checkbox);
 pub struct Checkbox {
-    co: c_component,
+    co: newtComponent,
     attached_to_form: bool
 }
 
@@ -51,6 +51,6 @@ impl Checkbox {
     }
 
     pub fn set_flags(&mut self, flags: i32, sense: FlagsSense) {
-        unsafe { newtCheckboxSetFlags(self.co, flags, sense); }
+        unsafe { newtCheckboxSetFlags(self.co, flags, sense as u32); }
     }
 }

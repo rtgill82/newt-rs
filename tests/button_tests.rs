@@ -7,7 +7,7 @@ use std::ptr;
 #[test]
 fn button_create() {
     let button = Button::new(0, 0, "Ok");
-    assert!(button.co() != ptr::null());
+    assert!(button.co() != ptr::null_mut());
 }
 
 #[test]

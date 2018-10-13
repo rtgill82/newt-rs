@@ -1,4 +1,5 @@
 extern crate std;
+extern crate newt_sys;
 use std::cmp::PartialEq;
 use std::ffi::{CStr, CString};
 use std::marker::PhantomData;
@@ -6,16 +7,14 @@ use std::ops::Drop;
 use std::os::raw::{c_char, c_void};
 use ptr;
 
-use components::c_component;
+use newt_sys::*;
 use components::Component;
 use components::data::Data;
 use components::form::ExitReason;
 use constants::FlagsSense;
-use intern::ffi::newt::listbox::*;
-use intern::ffi::newt::component::newtComponentDestroy;
 
 pub struct Listbox<D: Data> {
-    co: c_component,
+    co: newtComponent,
     attached_to_form: bool,
     data: PhantomData<D>
 }
@@ -48,13 +47,13 @@ impl<D: Data> Listbox<D> {
         let c_str = CString::new(text).unwrap();
         unsafe {
             newtListboxInsertEntry(self.co, c_str.as_ptr(), data.newt_to_ptr(),
-                                   key.newt_to_ptr())
+                                   key.newt_to_ptr() as *mut c_void)
         }
     }
 
     pub fn get_current(&self) -> Option<D> {
         let c_data = unsafe { newtListboxGetCurrent(self.co) };
-        if c_data == ptr::null() { return None; }
+        if c_data == ptr::null_mut() { return None; }
         Some(D::newt_from_ptr(c_data))
     }
 
@@ -63,13 +62,15 @@ impl<D: Data> Listbox<D> {
     }
 
     pub fn set_current_by_key(&mut self, key: D) {
-        unsafe { newtListboxSetCurrentByKey(self.co, key.newt_to_ptr()); }
+        unsafe {
+            newtListboxSetCurrentByKey(self.co, key.newt_to_ptr() as *mut c_void);
+        }
     }
 
     pub fn get_entry(&self, num: i32) -> (&str, D) {
-        let c_str: *mut c_char = ptr::null_mut();
-        let c_data: *mut c_void = ptr::null_mut();
-        unsafe { newtListboxGetEntry(self.co, num, &c_str, &c_data); }
+        let mut c_str: *mut c_char = ptr::null_mut();
+        let mut c_data: *mut c_void = ptr::null_mut();
+        unsafe { newtListboxGetEntry(self.co, num, &mut c_str, &mut c_data); }
         let c_str = unsafe { CStr::from_ptr(c_str) };
         (c_str.to_str().unwrap(), D::newt_from_ptr(c_data))
     }
@@ -80,11 +81,15 @@ impl<D: Data> Listbox<D> {
     }
 
     pub fn set_data(&mut self, num: i32, data: D) {
-        unsafe { newtListboxSetData(self.co, num, data.newt_to_ptr()); }
+        unsafe {
+            newtListboxSetData(self.co, num, data.newt_to_ptr() as *mut c_void);
+        }
     }
 
     pub fn delete_entry(&mut self, data: D) -> i32 {
-        unsafe { newtListboxDeleteEntry(self.co, data.newt_to_ptr()) }
+        unsafe {
+            newtListboxDeleteEntry(self.co, data.newt_to_ptr() as *mut c_void)
+        }
     }
 
     pub fn clear(&mut self) {
@@ -98,7 +103,7 @@ impl<D: Data> Listbox<D> {
     }
 
     pub fn select_item(&mut self, key: D, sense: FlagsSense) {
-        unsafe { newtListboxSelectItem(self.co, key.newt_to_ptr(), sense) };
+        unsafe { newtListboxSelectItem(self.co, key.newt_to_ptr(), sense as u32) };
     }
 
     pub fn clear_selection(&mut self) {
@@ -107,7 +112,7 @@ impl<D: Data> Listbox<D> {
 }
 
 impl<D: Data> Component for Listbox<D> {
-    fn co(&self) -> c_component {
+    fn co(&self) -> newtComponent {
         self.co
     }
 

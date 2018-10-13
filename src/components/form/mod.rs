@@ -1,27 +1,34 @@
 extern crate std;
+extern crate newt_sys;
 use std::ops::Drop;
 use ptr;
 
-use components::c_component;
+use newt_sys::*;
 use components::Component;
-
-use intern::structs::ExitStructEnum;
-use intern::structs::ExitStructUnion;
-use intern::structs::ExitStruct;
-use intern::ffi::newt::form::*;
 
 mod exit_reason;
 pub use self::exit_reason::ExitReason;
 
+#[allow(non_camel_case_types)]
+type newtExitReason = newtExitStruct__bindgen_ty_1;
+const NEWT_EXIT_HOTKEY: newtExitReason    = newtExitStruct_NEWT_EXIT_HOTKEY;
+const NEWT_EXIT_COMPONENT: newtExitReason = newtExitStruct_NEWT_EXIT_COMPONENT;
+const NEWT_EXIT_FDREADY: newtExitReason   = newtExitStruct_NEWT_EXIT_FDREADY;
+const NEWT_EXIT_TIMER: newtExitReason     = newtExitStruct_NEWT_EXIT_TIMER;
+const NEWT_EXIT_ERROR: newtExitReason     = newtExitStruct_NEWT_EXIT_ERROR;
+
+#[allow(non_camel_case_types)]
+type newtExitStructUnion = newtExitStruct__bindgen_ty_2;
+
 newt_component!(BaseComponent);
 struct BaseComponent {
-    co: c_component,
+    co: newtComponent,
     attached_to_form: bool
 }
 
 newt_component!(Form);
 pub struct Form {
-    co: c_component,
+    co: newtComponent,
     attached_to_form: bool
 }
 
@@ -34,7 +41,7 @@ impl Drop for Form {
 impl Form {
     pub fn new(flags: i32) -> Form {
         Form {
-            co: unsafe { newtForm(ptr::null(), ptr::null(), flags) },
+            co: unsafe { newtForm(ptr::null_mut(), ptr::null_mut(), flags) },
             attached_to_form: false
         }
     }
@@ -105,25 +112,25 @@ impl Form {
     pub fn run(&self) -> Result<ExitReason, ()> {
         use self::ExitReason::{HotKey,Component,FDReady,Timer};
 
-        let mut es = ExitStruct {
-            reason: ExitStructEnum::HotKey,
-            u: ExitStructUnion { watch: 0 }
+        let mut es = newtExitStruct {
+            reason: NEWT_EXIT_HOTKEY,
+            u: newtExitStructUnion { watch: 0 }
         };
 
         unsafe {
             newtFormRun(self.co, &mut es);
             match es.reason {
-
-                ExitStructEnum::HotKey => Ok(HotKey(es.u.key)),
-                ExitStructEnum::Component => Ok(
+                NEWT_EXIT_HOTKEY => Ok(HotKey(es.u.key)),
+                NEWT_EXIT_COMPONENT => Ok(
                     Component(Box::new(BaseComponent {
-                                         co: es.u.co,
-                                         attached_to_form: true
+                                       co: es.u.co,
+                                       attached_to_form: true
                     }))
                 ),
-                ExitStructEnum::FDReady => Ok(FDReady(es.u.watch)),
-                ExitStructEnum::Timer => Ok(Timer),
-                ExitStructEnum::Error => Err(())
+                NEWT_EXIT_FDREADY => Ok(FDReady(es.u.watch)),
+                NEWT_EXIT_TIMER => Ok(Timer),
+                NEWT_EXIT_ERROR => Err(()),
+                _ => panic!("Unexpected Newt exit reason.")
             }
         }
     }

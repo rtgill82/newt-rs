@@ -11,7 +11,7 @@ use newt::constants::COLORSET_DISENTRY;
 #[test]
 fn entry_create() {
     let entry = Entry::new(0, 0, None, 10, 0);
-    assert!(entry.co() != ptr::null());
+    assert!(entry.co() != ptr::null_mut());
 }
 
 #[test]

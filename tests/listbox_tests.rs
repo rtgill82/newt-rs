@@ -19,7 +19,7 @@ struct TestStruct<'a> {
 #[test]
 fn listbox_create() {
     let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
-    assert!(listbox.co() != ptr::null());
+    assert!(listbox.co() != ptr::null_mut());
 }
 
 #[test]

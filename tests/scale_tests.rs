@@ -10,7 +10,7 @@ use newt::constants::COLORSET_FULLSCALE;
 #[test]
 fn scale_create() {
     let scale = Scale::new(0, 0, 10, 100);
-    assert!(scale.co() != ptr::null());
+    assert!(scale.co() != ptr::null_mut());
 }
 
 #[test]

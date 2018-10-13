@@ -1,14 +1,14 @@
 extern crate std;
+extern crate newt_sys;
 use std::ffi::CString;
 use ptr;
 
-use components::c_component;
+use newt_sys::*;
 use components::Component;
-use intern::ffi::newt::radiobutton::*;
 
 newt_component!(Radiobutton);
 pub struct Radiobutton {
-    co: c_component,
+    co: newtComponent,
     attached_to_form: bool
 }
 
@@ -18,7 +18,7 @@ impl Radiobutton {
         let c_text = CString::new(text).unwrap();
         let ptr = match prev_button {
             Some(radio_button) => radio_button.co,
-            None => ptr::null()
+            None => ptr::null_mut()
         };
 
         Radiobutton {

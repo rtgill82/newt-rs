@@ -1,5 +1,6 @@
+extern crate newt_sys;
 use std::ffi::{CStr, CString};
-use std::os::raw::c_int;
+use std::os::raw::{c_char,c_int};
 use std::ptr;
 
 #[macro_use]
@@ -7,8 +8,7 @@ mod intern;
 pub mod components;
 pub mod constants;
 
-use intern::ffi::newt::*;
-use intern::structs::NewtColors;
+use newt_sys::*;
 
 pub struct Colors<'a> {
     pub root_fg: &'a str,            pub root_bg: &'a str,
@@ -144,38 +144,63 @@ pub fn set_colors(colors: &Colors) {
     let sel_listbox_fg = CString::new(colors.sel_listbox_fg).unwrap();
     let sel_listbox_bg = CString::new(colors.sel_listbox_bg).unwrap();
 
-    let c_colors = NewtColors {
-        rootFg: root_fg.as_ptr(),                     rootBg: root_bg.as_ptr(),
-        borderFg: border_fg.as_ptr(),                 borderBg: border_bg.as_ptr(),
-        windowFg: window_fg.as_ptr(),                 windowBg: window_bg.as_ptr(),
-        shadowFg: shadow_fg.as_ptr(),                 shadowBg: shadow_bg.as_ptr(),
-        titleFg: title_fg.as_ptr(),                   titleBg: title_bg.as_ptr(),
-        buttonFg: button_fg.as_ptr(),                 buttonBg: button_bg.as_ptr(),
-        actButtonFg: act_button_fg.as_ptr(),          actButtonBg: act_button_bg.as_ptr(),
-        checkboxFg: checkbox_fg.as_ptr(),             checkboxBg: checkbox_bg.as_ptr(),
-        actCheckboxFg: act_checkbox_fg.as_ptr(),      actCheckboxBg: act_checkbox_bg.as_ptr(),
-        entryFg: entry_fg.as_ptr(),                   entryBg: entry_bg.as_ptr(),
-        labelFg: label_fg.as_ptr(),                   labelBg: label_bg.as_ptr(),
-        listboxFg: listbox_fg.as_ptr(),               listboxBg: listbox_bg.as_ptr(),
-        actListboxFg: act_listbox_fg.as_ptr(),        actListboxBg: act_listbox_bg.as_ptr(),
-        textboxFg: textbox_fg.as_ptr(),               textboxBg: textbox_bg.as_ptr(),
-        actTextboxFg: act_textbox_fg.as_ptr(),        actTextboxBg: act_textbox_bg.as_ptr(),
-        helpLineFg: help_line_fg.as_ptr(),            helpLineBg: help_line_bg.as_ptr(),
-        rootTextFg: root_text_fg.as_ptr(),            rootTextBg: root_text_bg.as_ptr(),
-        emptyScale: empty_scale.as_ptr(),             fullScale: full_scale.as_ptr(),
-        disabledEntryFg: disabled_entry_fg.as_ptr(),  disabledEntryBg: disabled_entry_bg.as_ptr(),
-        compactButtonFg: compact_button_fg.as_ptr(),  compactButtonBg: compact_button_bg.as_ptr(),
-        actSelListboxFg: act_sel_listbox_fg.as_ptr(), actSelListboxBg: act_sel_listbox_bg.as_ptr(),
-        selListboxFg: sel_listbox_fg.as_ptr(),        selListboxBg: sel_listbox_bg.as_ptr()
+    let c_colors = newtColors {
+        rootFg: root_fg.as_ptr() as *mut c_char,
+        rootBg: root_bg.as_ptr() as *mut c_char,
+        borderFg: border_fg.as_ptr() as *mut c_char,
+        borderBg: border_bg.as_ptr() as *mut c_char,
+        windowFg: window_fg.as_ptr() as *mut c_char,
+        windowBg: window_bg.as_ptr() as *mut c_char,
+        shadowFg: shadow_fg.as_ptr() as *mut c_char,
+        shadowBg: shadow_bg.as_ptr() as *mut c_char,
+        titleFg: title_fg.as_ptr() as *mut c_char,
+        titleBg: title_bg.as_ptr() as *mut c_char,
+        buttonFg: button_fg.as_ptr() as *mut c_char,
+        buttonBg: button_bg.as_ptr() as *mut c_char,
+        actButtonFg: act_button_fg.as_ptr() as *mut c_char,
+        actButtonBg: act_button_bg.as_ptr() as *mut c_char,
+        checkboxFg: checkbox_fg.as_ptr() as *mut c_char,
+        checkboxBg: checkbox_bg.as_ptr() as *mut c_char,
+        actCheckboxFg: act_checkbox_fg.as_ptr() as *mut c_char,
+        actCheckboxBg: act_checkbox_bg.as_ptr() as *mut c_char,
+        entryFg: entry_fg.as_ptr() as *mut c_char,
+        entryBg: entry_bg.as_ptr() as *mut c_char,
+        labelFg: label_fg.as_ptr() as *mut c_char,
+        labelBg: label_bg.as_ptr() as *mut c_char,
+        listboxFg: listbox_fg.as_ptr() as *mut c_char,
+        listboxBg: listbox_bg.as_ptr() as *mut c_char,
+        actListboxFg: act_listbox_fg.as_ptr() as *mut c_char,
+        actListboxBg: act_listbox_bg.as_ptr() as *mut c_char,
+        textboxFg: textbox_fg.as_ptr() as *mut c_char,
+        textboxBg: textbox_bg.as_ptr() as *mut c_char,
+        actTextboxFg: act_textbox_fg.as_ptr() as *mut c_char,
+        actTextboxBg: act_textbox_bg.as_ptr() as *mut c_char,
+        helpLineFg: help_line_fg.as_ptr() as *mut c_char,
+        helpLineBg: help_line_bg.as_ptr() as *mut c_char,
+        rootTextFg: root_text_fg.as_ptr() as *mut c_char,
+        rootTextBg: root_text_bg.as_ptr() as *mut c_char,
+        emptyScale: empty_scale.as_ptr() as *mut c_char,
+        fullScale: full_scale.as_ptr() as *mut c_char,
+        disabledEntryFg: disabled_entry_fg.as_ptr() as *mut c_char,
+        disabledEntryBg: disabled_entry_bg.as_ptr() as *mut c_char,
+        compactButtonFg: compact_button_fg.as_ptr() as *mut c_char,
+        compactButtonBg: compact_button_bg.as_ptr() as *mut c_char,
+        actSelListboxFg: act_sel_listbox_fg.as_ptr() as *mut c_char,
+        actSelListboxBg: act_sel_listbox_bg.as_ptr() as *mut c_char,
+        selListboxFg: sel_listbox_fg.as_ptr() as *mut c_char,
+        selListboxBg: sel_listbox_bg.as_ptr() as *mut c_char
     };
 
-    unsafe { newtSetColors(&c_colors); }
+    unsafe { newtSetColors(c_colors); }
 }
 
 pub fn set_color(colorset: i32, fg: &str, bg: &str) {
     let c_fg = CString::new(fg).unwrap();
     let c_bg = CString::new(bg).unwrap();
-    unsafe { newtSetColor(colorset, c_fg.as_ptr(), c_bg.as_ptr()); }
+    unsafe {
+        newtSetColor(colorset, c_fg.as_ptr() as *mut c_char,
+                     c_bg.as_ptr() as *mut c_char);
+    }
 }
 
 pub fn refresh() {
@@ -231,8 +256,9 @@ pub fn reflow_text(text: &str, width: i32, flex_down: i32, flex_up: i32,
                    actual_width: &mut i32, actual_height: &mut i32) -> String {
     let c_str = CString::new(text).unwrap();
     unsafe {
-        let rstr = newtReflowText(c_str.as_ptr(), width, flex_down, flex_up,
-                                  actual_width, actual_height);
+        let rstr = newtReflowText(c_str.as_ptr() as *mut c_char, width,
+                                  flex_down, flex_up, actual_width,
+                                  actual_height);
         CStr::from_ptr(rstr).to_string_lossy().into_owned()
     }
 }
