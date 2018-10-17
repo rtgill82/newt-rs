@@ -1,18 +1,16 @@
 extern crate std;
 extern crate newt_sys;
-use std::cmp::PartialEq;
 use std::ffi::{CStr, CString};
 use std::marker::PhantomData;
-use std::ops::Drop;
 use std::os::raw::{c_char, c_void};
 use ptr;
 
 use newt_sys::*;
 use components::Component;
 use components::data::Data;
-use components::form::ExitReason;
 use constants::FlagsSense;
 
+newt_component!(Listbox<D: Data>);
 pub struct Listbox<D: Data> {
     co: newtComponent,
     attached_to_form: bool,
@@ -108,45 +106,5 @@ impl<D: Data> Listbox<D> {
 
     pub fn clear_selection(&mut self) {
         unsafe { newtListboxClearSelection(self.co) };
-    }
-}
-
-impl<D: Data> Component for Listbox<D> {
-    fn co(&self) -> newtComponent {
-        self.co
-    }
-
-    fn attach_to_form(&mut self) {
-        self.attached_to_form = true;
-    }
-
-    fn attached_to_form(&self) -> bool {
-        self.attached_to_form
-    }
-}
-
-impl<D: Data> Drop for Listbox<D> {
-    fn drop(&mut self) {
-        if !self.attached_to_form() {
-            unsafe { newtComponentDestroy(self.co()); }
-        }
-    }
-}
-
-impl<D: Data, Rhs: Component> PartialEq<Rhs> for Listbox<D> {
-    fn eq(&self, other: &Rhs) -> bool {
-        self.co == other.co()
-    }
-}
-
-impl<D: Data> PartialEq<Box<dyn (Component)>> for Listbox<D> {
-    fn eq(&self, other: &Box<dyn (Component)>) -> bool {
-        self.co == other.co()
-    }
-}
-
-impl<D: Data> PartialEq<ExitReason> for Listbox<D> {
-    fn eq(&self, other: &ExitReason) -> bool {
-        other == self
     }
 }

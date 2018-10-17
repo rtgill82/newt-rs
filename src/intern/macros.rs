@@ -1,26 +1,66 @@
 #[doc(hidden)]
 #[macro_export]
 macro_rules! newt_component {
-    ($type:tt , < $($gen:tt),+ >) => {
-        newt_component!($type , $($gen),+);
+    ($type:ident, {constr: [$($constr:tt)+], params: [$($params:tt)+]}) => {
+        newt_component_base!($type<$($params)+>, <$($constr)+>);
+        newt_component_partial_eq_trait!($type<$($params)+>, <$($constr)+ Rhs: ::components::Component>);
+        newt_component_partial_eq!($type<$($params)+>, <$($constr)+>);
+        newt_component_drop!($type<$($params)+>, <$($constr)+>);
     };
 
-    ($type:tt , $($gen:tt)+) => {
-        newt_component_base!($type<$($gen)+> , <$($gen)+>);
-        newt_component_partial_eq_trait!($type<$($gen)+> , <$($gen)+, Rhs: ::components::Component>);
-        newt_component_partial_eq!($type<$($gen)+> , <$($gen)+>);
-        newt_component_drop!($type<$($gen)+> , <$($gen)+>);
+    ($type:tt, $($tail:tt)+) => {
+        parse_generics!(newt_component!($type), $($tail)+);
     };
 
-    ($type:tt ,) => {
+    ($type:tt,) => {
         newt_component_base!($type);
-        newt_component_partial_eq_trait!($type , <Rhs: ::components::Component>);
+        newt_component_partial_eq_trait!($type, <Rhs: ::components::Component>);
         newt_component_partial_eq!($type);
         newt_component_drop!($type);
     };
 
     ($type:tt $($tail:tt)*) => {
-        newt_component!($type , $($tail)*);
+        newt_component!($type, $($tail)*);
+    };
+}
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! parse_generics {
+    ($cb:ident, $type:ident, [], [], $tt:tt>) => {
+        parse_generics!($cb, $type, [$tt,], [$tt,]);
+    };
+
+    ($cb:ident, $type:ident, [], [], $t1:tt: $t2:tt>) => {
+        parse_generics!($cb, $type, [$t1: $t2,], [$t1,]);
+    };
+
+    ($cb:ident, $type:ident, [$($constr:tt)+], [$($params:tt)+], $tt:tt>) => {
+        parse_generics!($cb, $type, [$($constr)+ $tt], [$($params)+ $tt]);
+    };
+
+    ($cb:ident, $type:ident, [$($constr:tt)+], [$($params:tt)+], $t1:tt: $t2:tt>) => {
+        parse_generics!($cb, $type, [$($constr)+ $t1: $t2], [$($params)+ $t1]);
+    };
+
+    ($cb:ident, $type:ident, [$($constr:tt)+], [$($params:tt)+]) => {
+        $cb ! { $type, {constr: [$($constr)+], params: [$($params)+]} }
+    };
+
+    ($cb:ident ! ($type:ident), <$($tts:tt)+) => {
+        parse_generics!($cb, $type, [], [], $($tts)+);
+    };
+
+    ($cb:ident, $type:ident, [], [], $tt:tt, $($tail:tt)+) => {
+        parse_generics!($cb, $type, [$tt,], [$tt,], $($tail)+);
+    };
+
+    ($cb:ident, $type:ident, [$($constr:tt)+], [$($params:tt)+], $t1:tt: $t2:tt, $($tail:tt)+) => {
+        parse_generics!($cb, $type, [$($constr)+ $t1: $t2,], [$($params)+ $t1,], $($tail:tt)+);
+    };
+
+    ($cb:ident, $type:ident, [$($constr:tt)+], [$($params:tt)+], $tt:tt, $($tail:tt)+) => {
+        parse_generics!($cb, $type, [$($constr)+ $tt,], [$($params)+ $tt,], $($tail)+);
     };
 }
 

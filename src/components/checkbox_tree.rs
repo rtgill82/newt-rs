@@ -11,10 +11,10 @@ use ptr;
 use newt_sys::*;
 use components::Component;
 use components::data::Data;
-use components::form::ExitReason;
 use intern::funcs::char_slice_to_cstring;
 use constants;
 
+newt_component!(CheckboxTree<D: Data>);
 pub struct CheckboxTree<D: Data> {
     co: newtComponent,
     attached_to_form: bool,
@@ -138,45 +138,5 @@ impl<D: Data> CheckboxTree<D> {
             newtCheckboxTreeSetEntryValue(self.co, data.newt_to_ptr(),
                                           value as c_char);
         }
-    }
-}
-
-impl<D: Data> Component for CheckboxTree<D> {
-    fn co(&self) -> newtComponent {
-        self.co
-    }
-
-    fn attach_to_form(&mut self) {
-        self.attached_to_form = true;
-    }
-
-    fn attached_to_form(&self) -> bool {
-        self.attached_to_form
-    }
-}
-
-impl<D: Data> Drop for CheckboxTree<D> {
-    fn drop(&mut self) {
-        if !self.attached_to_form() {
-            unsafe { newtComponentDestroy(self.co()); }
-        }
-    }
-}
-
-impl<D: Data, Rhs: Component> PartialEq<Rhs> for CheckboxTree<D> {
-    fn eq(&self, other: &Rhs) -> bool {
-        self.co == other.co()
-    }
-}
-
-impl<D: Data> PartialEq<Box<dyn (Component)>> for CheckboxTree<D> {
-    fn eq(&self, other: &Box<dyn (Component)>) -> bool {
-        self.co == other.co()
-    }
-}
-
-impl<D: Data> PartialEq<ExitReason> for CheckboxTree<D> {
-    fn eq(&self, other: &ExitReason) -> bool {
-        other == self
     }
 }
