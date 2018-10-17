@@ -9,6 +9,10 @@ a programming language.
 
 ## Changes
 
+### 0.2.1
+
+* Depend on ``newt-sys`` crate to provide library bindings.
+
 ### 0.2.0
 
 * The ``get_current()`` function for ``Listbox`` and ``CheckboxTree`` now
