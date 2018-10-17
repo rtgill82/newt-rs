@@ -1,11 +1,15 @@
 extern crate newt_sys;
 use newt_sys::*;
 
+const NEWT_FLAGS_SET: newtFlagsSense    = newtFlagsSense_NEWT_FLAGS_SET;
+const NEWT_FLAGS_RESET: newtFlagsSense  = newtFlagsSense_NEWT_FLAGS_RESET;
+const NEWT_FLAGS_TOGGLE: newtFlagsSense = newtFlagsSense_NEWT_FLAGS_TOGGLE;
+
 #[repr(C)]
 pub enum FlagsSense {
-    Set,
-    Reset,
-    Toggle
+    Set    = NEWT_FLAGS_SET as isize,
+    Reset  = NEWT_FLAGS_RESET as isize,
+    Toggle = NEWT_FLAGS_TOGGLE as isize
 }
 
 pub const COLORSET_ROOT: i32          = NEWT_COLORSET_ROOT;
@@ -64,11 +68,23 @@ pub const CHECKBOXTREE_EXPANDED: i8      = NEWT_CHECKBOXTREE_EXPANDED;
 pub const CHECKBOXTREE_UNSELECTED: i8    = NEWT_CHECKBOXTREE_UNSELECTED;
 pub const CHECKBOXTREE_SELECTED: i8      = NEWT_CHECKBOXTREE_SELECTED;
 
-pub const KEY_TAB: i32     = NEWT_KEY_TAB;
-pub const KEY_ENTER: i32   = NEWT_KEY_ENTER;
-pub const KEY_SUSPEND: i32 = NEWT_KEY_SUSPEND;
-pub const KEY_ESCAPE: i32  = NEWT_KEY_ESCAPE;
-pub const KEY_RETURN: i32  = NEWT_KEY_ENTER;
+pub const LISTBOX_RETURNEXIT: i32 = NEWT_LISTBOX_RETURNEXIT;
+
+pub const ENTRY_SCROLL: i32       = NEWT_ENTRY_SCROLL;
+pub const ENTRY_HIDDEN: i32       = NEWT_ENTRY_HIDDEN;
+pub const ENTRY_RETURNEXIT: i32   = NEWT_ENTRY_RETURNEXIT;
+pub const ENTRY_DISABLED: i32     = NEWT_ENTRY_DISABLED;
+
+pub const TEXTBOX_WRAP: i32       = NEWT_TEXTBOX_WRAP;
+pub const TEXTBOX_SCROLL: i32     = NEWT_TEXTBOX_SCROLL;
+
+pub const FORM_NOF12: i32         = NEWT_FORM_NOF12;
+
+pub const KEY_TAB: i32         = NEWT_KEY_TAB;
+pub const KEY_ENTER: i32       = NEWT_KEY_ENTER;
+pub const KEY_SUSPEND: i32     = NEWT_KEY_SUSPEND;
+pub const KEY_ESCAPE: i32      = NEWT_KEY_ESCAPE;
+pub const KEY_RETURN: i32      = NEWT_KEY_ENTER;
 
 pub const KEY_EXTRA_BASE: i32  = NEWT_KEY_EXTRA_BASE;
 pub const KEY_UP: i32          = NEWT_KEY_UP;
@@ -84,21 +100,21 @@ pub const KEY_PGUP: i32        = NEWT_KEY_PGUP;
 pub const KEY_PGDN: i32        = NEWT_KEY_PGDN;
 pub const KEY_INSERT: i32      = NEWT_KEY_INSERT;
 
-pub const KEY_F1: i32  = NEWT_KEY_F1;
-pub const KEY_F2: i32  = NEWT_KEY_F2;
-pub const KEY_F3: i32  = NEWT_KEY_F3;
-pub const KEY_F4: i32  = NEWT_KEY_F4;
-pub const KEY_F5: i32  = NEWT_KEY_F5;
-pub const KEY_F6: i32  = NEWT_KEY_F6;
-pub const KEY_F7: i32  = NEWT_KEY_F7;
-pub const KEY_F8: i32  = NEWT_KEY_F8;
-pub const KEY_F9: i32  = NEWT_KEY_F9;
-pub const KEY_F10: i32 = NEWT_KEY_F10;
-pub const KEY_F11: i32 = NEWT_KEY_F11;
-pub const KEY_F12: i32 = NEWT_KEY_F12;
+pub const KEY_F1: i32          = NEWT_KEY_F1;
+pub const KEY_F2: i32          = NEWT_KEY_F2;
+pub const KEY_F3: i32          = NEWT_KEY_F3;
+pub const KEY_F4: i32          = NEWT_KEY_F4;
+pub const KEY_F5: i32          = NEWT_KEY_F5;
+pub const KEY_F6: i32          = NEWT_KEY_F6;
+pub const KEY_F7: i32          = NEWT_KEY_F7;
+pub const KEY_F8: i32          = NEWT_KEY_F8;
+pub const KEY_F9: i32          = NEWT_KEY_F9;
+pub const KEY_F10: i32         = NEWT_KEY_F10;
+pub const KEY_F11: i32         = NEWT_KEY_F11;
+pub const KEY_F12: i32         = NEWT_KEY_F12;
 
-pub const KEY_RESIZE: i32 = NEWT_KEY_RESIZE;
-pub const KEY_ERROR: i32  = NEWT_KEY_ERROR;
+pub const KEY_RESIZE: i32      = NEWT_KEY_RESIZE;
+pub const KEY_ERROR: i32       = NEWT_KEY_ERROR;
 
 pub const ANCHOR_LEFT: i32   = NEWT_ANCHOR_LEFT;
 pub const ANCHOR_RIGHT: i32  = NEWT_ANCHOR_RIGHT;
