@@ -49,3 +49,16 @@ fn entry_set_colors() {
     let mut entry = Entry::new(0, 0, None, 10, 0);
     entry.set_colors(COLORSET_ENTRY, COLORSET_DISENTRY);
 }
+
+#[test]
+fn entry_get_cursor_position() {
+    let entry = Entry::new(0, 0, None, 10, 0);
+    assert!(entry.get_cursor_position() == 0);
+}
+
+#[test]
+fn entry_set_cursor_position() {
+    let mut entry = Entry::new(0, 0, None, 10, 0);
+    entry.set_cursor_position(5);
+    assert!(entry.get_cursor_position() == 5);
+}

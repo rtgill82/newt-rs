@@ -54,4 +54,12 @@ impl Entry  {
     pub fn set_colors(&mut self, normal: i32, disabled: i32) {
         unsafe { newtEntrySetColors(self.co, normal, disabled); }
     }
+
+    pub fn get_cursor_position(&self) -> i32 {
+        unsafe { newtEntryGetCursorPosition(self.co) }
+    }
+
+    pub fn set_cursor_position(&mut self, position: i32) {
+        unsafe { newtEntrySetCursorPosition(self.co, position) }
+    }
 }
