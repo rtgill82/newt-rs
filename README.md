@@ -6,28 +6,6 @@ Basic components have been implemented, but API is subject to change as
 development continues further and I become more familiar with Rust as
 a programming language.
 
-
-## Changes
-
-### 0.2.1
-
-* Depend on ``newt-sys`` crate to provide library bindings.
-
-### 0.2.0
-
-* The ``get_current()`` function for ``Listbox`` and ``CheckboxTree`` now
-  returns ``Option``, rather than ``panic!``ing when there are no entries.
-
-* Implemented internal trait ``Data`` that's accepted as an argument for
-  certain ``Listbox`` and ``CheckboxTree`` functions. Added implementations of
-  the ``Data`` trait to integer primitives.
-
-* Added ``newt::components::component::Data`` tuple struct that implements the
-  ``Data`` trait. This can be used to wrap references to complex data types.
-
-* ``CheckboxTree::add_item()`` _indexes_ parameter is now an ``Option``.
-
-
 ## LICENSE
 
 Copyright (C) 2018  Robert Gill
