@@ -198,7 +198,8 @@ pub fn set_color(colorset: i32, fg: &str, bg: &str) {
     let c_fg = CString::new(fg).unwrap();
     let c_bg = CString::new(bg).unwrap();
     unsafe {
-        newtSetColor(colorset, c_fg.as_ptr() as *mut c_char,
+        newtSetColor(colorset,
+                     c_fg.as_ptr() as *mut c_char,
                      c_bg.as_ptr() as *mut c_char);
     }
 }
@@ -256,9 +257,53 @@ pub fn reflow_text(text: &str, width: i32, flex_down: i32, flex_up: i32,
                    actual_width: &mut i32, actual_height: &mut i32) -> String {
     let c_str = CString::new(text).unwrap();
     unsafe {
-        let rstr = newtReflowText(c_str.as_ptr() as *mut c_char, width,
-                                  flex_down, flex_up, actual_width,
+        let rstr = newtReflowText(c_str.as_ptr() as *mut c_char,
+                                  width, flex_down, flex_up, actual_width,
                                   actual_height);
         CStr::from_ptr(rstr).to_string_lossy().into_owned()
+    }
+}
+
+pub fn win_message(title: &str, button_text: &str, msg: &str) {
+    let c_title = CString::new(title).unwrap();
+    let c_button_text = CString::new(button_text).unwrap();
+    let escaped = str::replace(msg, "%", "%%");
+    let c_msg = CString::new(escaped).unwrap();
+    unsafe {
+        newtWinMessage(c_title.as_ptr() as *mut c_char,
+                       c_button_text.as_ptr() as *mut c_char,
+                       c_msg.as_ptr() as *mut c_char);
+    }
+}
+
+pub fn win_choice(title: &str, button1_text: &str, button2_text: &str,
+                  msg: &str) -> i32 {
+    let c_title = CString::new(title).unwrap();
+    let c_button1_text = CString::new(button1_text).unwrap();
+    let c_button2_text = CString::new(button2_text).unwrap();
+    let escaped = str::replace(msg, "%", "%%");
+    let c_msg = CString::new(escaped).unwrap();
+    unsafe {
+        newtWinChoice(c_title.as_ptr() as *mut c_char,
+                      c_button1_text.as_ptr() as *mut c_char,
+                      c_button2_text.as_ptr() as *mut c_char,
+                      c_msg.as_ptr() as *mut c_char) as i32
+    }
+}
+
+pub fn win_ternary(title: &str, button1_text: &str, button2_text: &str,
+                   button3_text: &str, msg: &str) -> i32 {
+    let c_title = CString::new(title).unwrap();
+    let c_button1_text = CString::new(button1_text).unwrap();
+    let c_button2_text = CString::new(button2_text).unwrap();
+    let c_button3_text = CString::new(button3_text).unwrap();
+    let escaped = str::replace(msg, "%", "%%");
+    let c_msg = CString::new(escaped).unwrap();
+    unsafe {
+        newtWinTernary(c_title.as_ptr() as *mut c_char,
+                       c_button1_text.as_ptr() as *mut c_char,
+                       c_button2_text.as_ptr() as *mut c_char,
+                       c_button3_text.as_ptr() as *mut c_char,
+                       c_msg.as_ptr() as *mut c_char) as i32
     }
 }
