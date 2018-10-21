@@ -9,6 +9,9 @@ pub mod form;
 #[doc(inline)]
 pub use self::form::Form;
 
+mod vertical_scrollbar;
+pub use self::vertical_scrollbar::VerticalScrollbar;
+
 mod compact_button;
 pub use self::compact_button::CompactButton;
 mod button;

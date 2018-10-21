@@ -109,6 +109,8 @@ macro_rules! newt_component_base {
 macro_rules! newt_component_drop {
     (Form) => { };
 
+    (VerticalScrollbar) => { };
+
     ($type:ty, $($gen:tt)*) => {
         impl $($gen)* std::ops::Drop for $type {
             fn drop(&mut self) {
