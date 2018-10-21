@@ -6,6 +6,8 @@ Basic components have been implemented, but API is subject to change as
 development continues further and I become more familiar with Rust as
 a programming language.
 
+* [ChangeLog](https://github.com/xelkarin/newt-rs/blob/v0.2.2/ChangeLog.md)
+
 ## LICENSE
 
 Copyright (C) 2018  Robert Gill
