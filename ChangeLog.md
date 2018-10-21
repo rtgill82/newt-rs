@@ -8,7 +8,7 @@
 * Implement ``get_cursor_position()`` and ``set_cursor_position()`` for the
   ``Entry`` component.
 
-* Add the feature 'static' allowing users to force the crate to be built
+* Add the feature _static_ allowing users to force the crate to be built
   against static versions of the bundled libraries. Usually dynamic linking
   against the system libraries will be used if they are available.
 
