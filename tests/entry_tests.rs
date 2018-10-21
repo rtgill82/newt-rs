@@ -23,7 +23,7 @@ fn entry_partial_eq_true() {
 #[test]
 fn entry_partial_eq_false() {
     let entry = Entry::new(0, 0, None, 10, 0);
-    let form = Form::new(0);
+    let form: Form<()> = Form::new(None, None, 0);
     assert!(entry != form);
 }
 

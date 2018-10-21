@@ -1,3 +1,4 @@
+#![feature(log_syntax)]
 extern crate newt_sys;
 use std::ffi::{CStr, CString};
 use std::os::raw::{c_char,c_int};

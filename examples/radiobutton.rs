@@ -8,7 +8,7 @@ pub fn main() {
     newt::cls();
     newt::centered_window(20, 6, Some("Options"));
 
-    let mut form = Form::new(0);
+    let mut form: Form<()> = Form::new(None, None, 0);
     let mut radio1 = Radiobutton::new(4, 1, "Option 1", true, None);
     let mut radio2 = Radiobutton::new(4, 2, "Option 2", false,
                                       Some(&mut radio1));

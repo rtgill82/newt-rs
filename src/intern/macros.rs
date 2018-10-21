@@ -107,7 +107,7 @@ macro_rules! newt_component_base {
 }
 
 macro_rules! newt_component_drop {
-    (Form) => { };
+    (Form $($gen:tt)*) => { };
 
     (VerticalScrollbar) => { };
 

@@ -1,10 +1,14 @@
 extern crate std;
 extern crate newt_sys;
+use std::marker::PhantomData;
 use std::ops::Drop;
+use std::os::raw::c_void;
 use ptr;
 
 use newt_sys::*;
 use components::Component;
+use components::data::Data;
+use components::VerticalScrollbar;
 
 mod exit_reason;
 pub use self::exit_reason::ExitReason;
@@ -26,23 +30,30 @@ struct BaseComponent {
     attached_to_form: bool
 }
 
-newt_component!(Form);
-pub struct Form {
+newt_component!(Form<D: Data>);
+pub struct Form<D: Data> {
     co: newtComponent,
-    attached_to_form: bool
+    attached_to_form: bool,
+    data: PhantomData<D>
 }
 
-impl Drop for Form {
+impl<D: Data> Drop for Form<D> {
     fn drop(&mut self) {
         unsafe { newtFormDestroy(self.co); }
     }
 }
 
-impl Form {
-    pub fn new(flags: i32) -> Form {
+impl<D: Data> Form<D> {
+    pub fn new(_scrollbar: Option<&VerticalScrollbar>, help_tag: Option<D>,
+               flags: i32) -> Form<D> {
+        let mut c_ptr = ptr::null_mut();
+        if let Some(tag) = help_tag {
+            c_ptr = tag.newt_to_ptr() as *mut c_void
+        };
         Form {
-            co: unsafe { newtForm(ptr::null_mut(), ptr::null_mut(), flags) },
-            attached_to_form: false
+            co: unsafe { newtForm(ptr::null_mut(), c_ptr, flags) },
+            attached_to_form: false,
+            data: PhantomData
         }
     }
 
