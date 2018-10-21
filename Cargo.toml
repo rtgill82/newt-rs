@@ -9,6 +9,9 @@ categories = ["api-bindings", "os::unix-apis"]
 keywords = ["bindings", "tui"]
 readme = "README.md"
 
+[features]
+static = ["newt-sys/static"]
+
 [dependencies]
 libc     = "0.2.0"
 newt-sys = "0.1.2"
