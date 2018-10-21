@@ -1,5 +1,17 @@
 # ChangeLog
 
+## 0.2.2
+
+* Implement the simple message windows ``win_message()``, ``win_choice()``,
+  and ``win_ternary()``.
+
+* Implement ``get_cursor_position()`` and ``set_cursor_position()`` for the
+  ``Entry`` component.
+
+* Add the feature 'static' allowing users to force the crate to be built
+  against static versions of the bundled libraries. Usually dynamic linking
+  against the system libraries will be used if they are available.
+
 ## 0.2.1
 
 * Depend on ``newt-sys`` crate to provide library bindings.
