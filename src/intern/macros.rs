@@ -130,6 +130,9 @@ macro_rules! newt_component_partial_eq_trait {
     ($type:ty, $($gen:tt)*) => {
         impl $($gen)* std::cmp::PartialEq<Rhs> for $type {
             fn eq(&self, other: &Rhs) -> bool {
+                if self.co == std::ptr::null_mut() {
+                    return false
+                }
                 self.co == other.co()
             }
         }
@@ -144,6 +147,9 @@ macro_rules! newt_component_partial_eq {
     ($type:ty, $($gen:tt)*) => {
         impl $($gen)* std::cmp::PartialEq<Box<dyn (::components::Component)>> for $type {
             fn eq(&self, other: &Box<dyn (::components::Component)>) -> bool {
+                if self.co == std::ptr::null_mut() {
+                    return false
+                }
                 self.co == other.co()
             }
         }
