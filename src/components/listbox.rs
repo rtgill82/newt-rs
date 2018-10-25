@@ -7,8 +7,8 @@ use ptr;
 
 use newt_sys::*;
 use components::Component;
-use components::data::Data;
 use constants::FlagsSense;
+use intern::data::Data;
 
 newt_component!(Listbox<D: Data>);
 pub struct Listbox<D: Data> {

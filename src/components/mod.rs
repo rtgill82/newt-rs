@@ -1,6 +1,5 @@
 extern crate std;
 
-mod data;
 pub mod component;
 #[doc(inline)]
 pub use self::component::Component;

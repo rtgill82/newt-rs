@@ -10,7 +10,7 @@ use ptr;
 
 use newt_sys::*;
 use components::Component;
-use components::data::Data;
+use intern::data::Data;
 use intern::funcs::char_slice_to_cstring;
 use constants;
 

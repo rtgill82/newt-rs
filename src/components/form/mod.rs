@@ -7,8 +7,8 @@ use ptr;
 
 use newt_sys::*;
 use components::Component;
-use components::data::Data;
 use components::VerticalScrollbar;
+use intern::data::Data;
 
 mod exit_reason;
 pub use self::exit_reason::ExitReason;

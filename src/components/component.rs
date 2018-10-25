@@ -10,7 +10,7 @@ use components::form::ExitReason;
 
 pub struct Data<'a, T: 'a>(pub &'a T);
 
-impl<'a, T: 'a> ::components::data::Data for Data<'a, T> {
+impl<'a, T: 'a> ::intern::data::Data for Data<'a, T> {
     fn newt_to_ptr(&self) -> *const c_void {
         self.0 as *const _ as *const c_void
     }
