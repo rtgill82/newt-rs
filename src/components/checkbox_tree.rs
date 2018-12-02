@@ -14,7 +14,7 @@ use intern::funcs::char_slice_to_cstring;
 use constants;
 
 #[derive(Component)]
-pub struct CheckboxTree<D: Data> {
+pub struct CheckboxTree<D: Data = isize> {
     co: newtComponent,
     attached_to_form: bool,
     data: PhantomData<D>

@@ -15,7 +15,7 @@ pub fn component_derive(input: TokenStream) -> TokenStream {
 
 fn impl_component_macro(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
-    let generics = &ast.generics;
+    let generics = generics_remove_defaults(&ast.generics);
     let mut tokens = impl_component_base(&name, &generics);
     tokens.extend(impl_component_drop(&name, &generics));
     tokens.extend(impl_component_partial_eq_trait(&name, &generics));
@@ -102,4 +102,16 @@ fn impl_component_partial_eq(name: &Ident, generics: &Generics)
         }
     };
     gen.into()
+}
+
+fn generics_remove_defaults(generics: &Generics) -> Generics {
+    use syn::GenericParam::Type;
+
+    let mut generics = generics.clone();
+    for mut param in generics.params.iter_mut() {
+        if let Type(ref mut type_) = param {
+            type_.default = None;
+        }
+    }
+    generics
 }

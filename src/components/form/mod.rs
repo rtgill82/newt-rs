@@ -31,7 +31,7 @@ struct BaseComponent {
 }
 
 #[derive(Component)]
-pub struct Form<D: Data> {
+pub struct Form<D: Data = ()> {
     co: newtComponent,
     attached_to_form: bool,
     data: PhantomData<D>

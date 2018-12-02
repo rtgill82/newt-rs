@@ -10,7 +10,7 @@ use constants::FlagsSense;
 use intern::data::Data;
 
 #[derive(Component)]
-pub struct Listbox<D: Data> {
+pub struct Listbox<D: Data = isize> {
     co: newtComponent,
     attached_to_form: bool,
     data: PhantomData<D>

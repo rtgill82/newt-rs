@@ -13,7 +13,7 @@ fn vertical_scrollbar_create() {
 #[test]
 fn vertical_scrollbar_partial_eq_false() {
     let scrollbar = VerticalScrollbar::new(0, 0, 10, 0, 0);
-    let form: Form<()> = Form::new(None, None, 0);
+    let form: Form = Form::new(None, None, 0);
     assert!(scrollbar != scrollbar);
     assert!(scrollbar != form);
 }

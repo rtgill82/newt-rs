@@ -22,7 +22,7 @@ fn scale_partial_eq_true() {
 #[test]
 fn scale_partial_eq_false() {
     let scale = Scale::new(0, 0, 10, 100);
-    let form: Form<()> = Form::new(None, None, 0);
+    let form: Form = Form::new(None, None, 0);
     assert!(scale != form);
 }
 

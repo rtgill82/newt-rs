@@ -9,7 +9,7 @@ pub fn main() {
     newt::cls();
     newt::centered_window(20, 5, Some("Greetings"));
 
-    let mut form: Form<()> = Form::new(None, None, 0);
+    let mut form: Form = Form::new(None, None, 0);
     let mut text = Textbox::new(4, 1, 12, 1, 0);
     let mut ok = CompactButton::new(7, 3, "Ok");
 

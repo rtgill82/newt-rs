@@ -18,39 +18,39 @@ struct TestStruct<'a> {
 
 #[test]
 fn listbox_create() {
-    let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox = Listbox::new(0, 0, 5, 0);
     assert!(listbox.co() != ptr::null_mut());
 }
 
 #[test]
 fn listbox_partial_eq_true() {
-    let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox = Listbox::new(0, 0, 5, 0);
     assert!(listbox == listbox);
 }
 
 #[test]
 fn listbox_partial_eq_false() {
-    let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
-    let form: Form<()> = Form::new(None, None, 0);
+    let listbox: Listbox = Listbox::new(0, 0, 5, 0);
+    let form: Form = Form::new(None, None, 0);
     assert!(listbox != form);
 }
 
 #[test]
 fn listbox_append_entry() {
-    let mut listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
+    let mut listbox: Listbox = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", 5);
     assert!(listbox.get_current() == Some(5));
 }
 
 #[test]
 fn listbox_get_current_no_entries() {
-    let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox = Listbox::new(0, 0, 5, 0);
     assert!(listbox.get_current() == None);
 }
 
 #[test]
 fn listbox_set_current() {
-    let mut listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
+    let mut listbox: Listbox = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", 5);
     listbox.append_entry("entry 2", 10);
     assert!(listbox.get_current() == Some(5));
@@ -60,7 +60,7 @@ fn listbox_set_current() {
 
 #[test]
 fn listbox_set_current_by_key() {
-    let mut listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
+    let mut listbox: Listbox = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", 5);
     listbox.append_entry("entry 2", 10);
     assert!(listbox.get_current() == Some(5));
@@ -80,7 +80,7 @@ fn listbox_item_count() {
 
 #[test]
 fn listbox_delete_entry() {
-    let mut listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
+    let mut listbox: Listbox = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", 5);
     listbox.append_entry("entry 2", 10);
     listbox.append_entry("entry 3", 15);
@@ -101,7 +101,7 @@ fn listbox_clear() {
 
 #[test]
 fn listbox_get_entry() {
-    let mut listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
+    let mut listbox: Listbox = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", 5);
     listbox.append_entry("entry 2", 10);
     let (s, d) = listbox.get_entry(1);
@@ -121,7 +121,7 @@ fn listbox_set_entry() {
 
 #[test]
 fn listbox_set_data() {
-    let mut listbox: Listbox<isize> = Listbox::new(0, 0, 5, 0);
+    let mut listbox: Listbox = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", 5);
     { let (_s, d) = listbox.get_entry(0); assert!(d == 5); }
     listbox.set_data(0, 10);
@@ -140,7 +140,7 @@ fn listbox_get_selection_none() {
 
 #[test]
 fn listbox_select_item() {
-    let mut listbox: Listbox<isize> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let mut listbox: Listbox = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry 1", 5);
     listbox.append_entry("entry 2", 10);
     listbox.select_item(10, Set);
@@ -148,7 +148,7 @@ fn listbox_select_item() {
 
 #[test]
 fn listbox_get_selection() {
-    let mut listbox: Listbox<isize> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let mut listbox: Listbox = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry 1", 5);
     listbox.append_entry("entry 2", 10);
     listbox.append_entry("entry 3", 15);
@@ -162,7 +162,7 @@ fn listbox_get_selection() {
 
 #[test]
 fn listbox_clear_selection() {
-    let mut listbox: Listbox<isize> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let mut listbox: Listbox = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry 1", 5);
     listbox.append_entry("entry 2", 10);
     listbox.append_entry("entry 3", 15);
@@ -216,7 +216,7 @@ fn listbox_get_selection_i32() {
 
 #[test]
 fn listbox_get_selection_isize() {
-    let mut listbox: Listbox<isize> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let mut listbox: Listbox = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry1", isize::MAX);
     listbox.append_entry("entry2", 0);
     listbox.append_entry("entry3", isize::MIN);

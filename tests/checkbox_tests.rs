@@ -21,7 +21,7 @@ fn checkbox_partial_eq_true() {
 #[test]
 fn checkbox_partial_eq_false() {
     let checkbox = Checkbox::new(0, 0, "Ok", None, None);
-    let form: Form<()> = Form::new(None, None, 0);
+    let form: Form = Form::new(None, None, 0);
     assert!(checkbox != form);
 }
 

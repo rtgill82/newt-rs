@@ -19,6 +19,6 @@ fn compact_button_partial_eq_true() {
 #[test]
 fn compact_button_partial_eq_false() {
     let button = CompactButton::new(0, 0, "Ok");
-    let form: Form<()> = Form::new(None, None, 0);
+    let form: Form = Form::new(None, None, 0);
     assert!(button != form);
 }

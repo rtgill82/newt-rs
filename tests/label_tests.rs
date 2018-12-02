@@ -21,7 +21,7 @@ fn label_partial_eq_true() {
 #[test]
 fn label_partial_eq_false() {
     let label = Label::new(0, 0, "Ok");
-    let form: Form<()> = Form::new(None, None, 0);
+    let form: Form = Form::new(None, None, 0);
     assert!(label != form);
 }
 

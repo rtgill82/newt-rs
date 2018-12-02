@@ -19,7 +19,7 @@ fn radiobutton_partial_eq_true() {
 #[test]
 fn radiobutton_partial_eq_false() {
     let radio = Radiobutton::new(0, 0, "Yes", true, None);
-    let form: Form<()> = Form::new(None, None, 0);
+    let form: Form = Form::new(None, None, 0);
     assert!(radio != form);
 }
 
