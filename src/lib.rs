@@ -1,5 +1,7 @@
-#![feature(log_syntax)]
+#[macro_use]
+extern crate component_derive;
 extern crate newt_sys;
+
 use std::ffi::{CStr, CString};
 use std::os::raw::{c_char,c_int};
 use std::ptr;

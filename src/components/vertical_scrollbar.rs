@@ -4,7 +4,7 @@ extern crate newt_sys;
 use newt_sys::*;
 use ptr;
 
-newt_component!(VerticalScrollbar);
+#[derive(Component)]
 pub struct VerticalScrollbar {
     co: newtComponent,
     attached_to_form: bool

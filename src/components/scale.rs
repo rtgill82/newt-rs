@@ -2,9 +2,8 @@ extern crate std;
 extern crate newt_sys;
 
 use newt_sys::*;
-use components::Component;
 
-newt_component!(Scale);
+#[derive(Component)]
 pub struct Scale {
     co: newtComponent,
     attached_to_form: bool

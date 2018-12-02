@@ -3,9 +3,8 @@ extern crate newt_sys;
 use std::ffi::CString;
 
 use newt_sys::*;
-use components::Component;
 
-newt_component!(Label);
+#[derive(Component)]
 pub struct Label {
     co: newtComponent,
     attached_to_form: bool

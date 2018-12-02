@@ -3,9 +3,8 @@ extern crate newt_sys;
 use std::ffi::CString;
 
 use newt_sys::*;
-use components::Component;
 
-newt_component!(CompactButton);
+#[derive(Component)]
 pub struct CompactButton {
     co: newtComponent,
     attached_to_form: bool

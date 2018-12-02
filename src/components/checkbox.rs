@@ -4,11 +4,10 @@ use std::ffi::CString;
 use ptr;
 
 use newt_sys::*;
-use components::Component;
 use constants::FlagsSense;
 use intern::funcs::char_slice_to_cstring;
 
-newt_component!(Checkbox);
+#[derive(Component)]
 pub struct Checkbox {
     co: newtComponent,
     attached_to_form: bool

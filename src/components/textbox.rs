@@ -4,9 +4,8 @@ use std::ffi::CString;
 use std::os::raw::c_char;
 
 use newt_sys::*;
-use components::Component;
 
-newt_component!(Textbox);
+#[derive(Component)]
 pub struct Textbox {
     co: newtComponent,
     attached_to_form: bool

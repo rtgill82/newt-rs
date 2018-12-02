@@ -5,10 +5,9 @@ use std::os::raw::c_int;
 use ptr;
 
 use newt_sys::*;
-use components::Component;
 use constants::FlagsSense;
 
-newt_component!(Entry);
+#[derive(Component)]
 pub struct Entry {
     co: newtComponent,
     attached_to_form: bool

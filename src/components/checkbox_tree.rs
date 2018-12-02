@@ -9,12 +9,11 @@ use std::os::raw::{c_char, c_void};
 use ptr;
 
 use newt_sys::*;
-use components::Component;
 use intern::data::Data;
 use intern::funcs::char_slice_to_cstring;
 use constants;
 
-newt_component!(CheckboxTree<D: Data>);
+#[derive(Component)]
 pub struct CheckboxTree<D: Data> {
     co: newtComponent,
     attached_to_form: bool,

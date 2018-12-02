@@ -24,13 +24,13 @@ const NEWT_EXIT_ERROR: newtExitReason     = newtExitStruct_NEWT_EXIT_ERROR;
 #[allow(non_camel_case_types)]
 type newtExitStructUnion = newtExitStruct__bindgen_ty_2;
 
-newt_component!(BaseComponent);
+#[derive(Component)]
 struct BaseComponent {
     co: newtComponent,
     attached_to_form: bool
 }
 
-newt_component!(Form<D: Data>);
+#[derive(Component)]
 pub struct Form<D: Data> {
     co: newtComponent,
     attached_to_form: bool,

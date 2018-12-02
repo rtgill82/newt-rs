@@ -6,11 +6,10 @@ use std::os::raw::{c_char, c_void};
 use ptr;
 
 use newt_sys::*;
-use components::Component;
 use constants::FlagsSense;
 use intern::data::Data;
 
-newt_component!(Listbox<D: Data>);
+#[derive(Component)]
 pub struct Listbox<D: Data> {
     co: newtComponent,
     attached_to_form: bool,

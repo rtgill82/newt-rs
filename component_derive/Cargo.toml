@@ -1,0 +1,11 @@
+[package]
+name = "component_derive"
+version = "0.0.0"
+authors = ["Robert Gill <locke@sdf.lonestar.org>"]
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = "0.15.22"
+quote = "0.6.10"

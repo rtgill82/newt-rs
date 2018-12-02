@@ -4,9 +4,8 @@ use std::ffi::CString;
 use ptr;
 
 use newt_sys::*;
-use components::Component;
 
-newt_component!(Radiobutton);
+#[derive(Component)]
 pub struct Radiobutton {
     co: newtComponent,
     attached_to_form: bool
