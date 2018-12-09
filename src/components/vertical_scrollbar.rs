@@ -2,7 +2,7 @@ extern crate std;
 extern crate newt_sys;
 
 use newt_sys::*;
-use ptr;
+use crate::ptr;
 
 #[derive(Component)]
 pub struct VerticalScrollbar {

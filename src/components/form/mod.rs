@@ -3,12 +3,12 @@ extern crate newt_sys;
 use std::marker::PhantomData;
 use std::ops::Drop;
 use std::os::raw::c_void;
-use ptr;
+use crate::ptr;
 
 use newt_sys::*;
-use components::Component;
-use components::VerticalScrollbar;
-use intern::data::Data;
+use crate::components::Component;
+use crate::components::VerticalScrollbar;
+use crate::intern::data::Data;
 
 mod exit_reason;
 pub use self::exit_reason::ExitReason;

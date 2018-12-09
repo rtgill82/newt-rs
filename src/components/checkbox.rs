@@ -1,11 +1,11 @@
 extern crate std;
 extern crate newt_sys;
 use std::ffi::CString;
-use ptr;
+use crate::ptr;
 
 use newt_sys::*;
-use constants::FlagsSense;
-use intern::funcs::char_slice_to_cstring;
+use crate::constants::FlagsSense;
+use crate::intern::funcs::char_slice_to_cstring;
 
 #[derive(Component)]
 pub struct Checkbox {

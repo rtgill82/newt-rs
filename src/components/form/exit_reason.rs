@@ -1,5 +1,5 @@
 use std::os::unix::io::AsRawFd;
-use components::Component;
+use crate::components::Component;
 
 #[derive(Debug)]
 pub enum ExitReason {

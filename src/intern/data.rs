@@ -1,5 +1,5 @@
 use std::os::raw::c_void;
-use ptr;
+use crate::ptr;
 
 pub trait Data {
     fn newt_to_ptr(&self) -> *const c_void;

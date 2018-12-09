@@ -1,7 +1,7 @@
 extern crate std;
 extern crate newt_sys;
 use std::ffi::CString;
-use ptr;
+use crate::ptr;
 
 use newt_sys::*;
 

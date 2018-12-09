@@ -2,10 +2,10 @@ extern crate std;
 extern crate newt_sys;
 use std::ffi::{CStr, CString};
 use std::os::raw::c_int;
-use ptr;
+use crate::ptr;
 
 use newt_sys::*;
-use constants::FlagsSense;
+use crate::constants::FlagsSense;
 
 #[derive(Component)]
 pub struct Entry {

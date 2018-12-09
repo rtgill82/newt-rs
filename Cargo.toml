@@ -8,6 +8,7 @@ license = "LGPL-2.0-only"
 categories = ["api-bindings", "os::unix-apis"]
 keywords = ["bindings", "tui"]
 readme = "README.md"
+edition = "2018"
 
 [features]
 static = ["newt-sys/static"]

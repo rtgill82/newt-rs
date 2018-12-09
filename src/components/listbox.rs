@@ -3,11 +3,11 @@ extern crate newt_sys;
 use std::ffi::{CStr, CString};
 use std::marker::PhantomData;
 use std::os::raw::{c_char, c_void};
-use ptr;
+use crate::ptr;
 
 use newt_sys::*;
-use constants::FlagsSense;
-use intern::data::Data;
+use crate::constants::FlagsSense;
+use crate::intern::data::Data;
 
 #[derive(Component)]
 pub struct Listbox<D: Data = isize> {

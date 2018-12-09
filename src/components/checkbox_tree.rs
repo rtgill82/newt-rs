@@ -6,12 +6,12 @@ use self::libc::free;
 use std::ffi::CString;
 use std::marker::PhantomData;
 use std::os::raw::{c_char, c_void};
-use ptr;
+use crate::ptr;
 
 use newt_sys::*;
-use intern::data::Data;
-use intern::funcs::char_slice_to_cstring;
-use constants;
+use crate::intern::data::Data;
+use crate::intern::funcs::char_slice_to_cstring;
+use crate::constants;
 
 #[derive(Component)]
 pub struct CheckboxTree<D: Data = isize> {
