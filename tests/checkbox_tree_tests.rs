@@ -33,7 +33,7 @@ fn checkbox_tree_partial_eq_true() {
 fn checkbox_tree_partial_eq_false() {
     let checkbox_tree: CheckboxTree =
         CheckboxTree::new(0, 0, 10, None, 0);
-    let form: Form = Form::new(None, None, 0);
+    let form = Form::new(None, 0);
     assert!(checkbox_tree != form);
 }
 

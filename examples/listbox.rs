@@ -9,7 +9,7 @@ pub fn main() {
     newt::cls();
     newt::centered_window(15, 6, Some("Options"));
 
-    let mut form: Form = Form::new(None, None, 0);
+    let mut form = Form::new(None, 0);
     let mut listbox: Listbox = Listbox::new(1, 1, 3, FLAG_MULTIPLE);
     let mut ok = CompactButton::new(1, 5, "Ok");
     let mut clear = CompactButton::new(6, 5, "Clear");

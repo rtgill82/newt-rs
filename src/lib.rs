@@ -11,6 +11,10 @@ mod intern;
 pub mod components;
 pub mod constants;
 
+pub mod callback;
+#[doc(inline)]
+pub use self::callback::Callback;
+
 use newt_sys::*;
 
 pub struct Colors<'a> {

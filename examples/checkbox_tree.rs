@@ -9,7 +9,7 @@ pub fn main() {
     newt::cls();
     newt::centered_window(20, 9, Some("Options"));
 
-    let mut form: Form = Form::new(None, None, 0);
+    let mut form = Form::new(None, 0);
     let mut tree: CheckboxTree =
         CheckboxTree::new(0, 0, 7, Some(&[' ', 'A', 'B']), 0);
     let mut ok = CompactButton::new(7, 8, "Ok");

@@ -28,7 +28,7 @@ fn textbox_partial_eq_true() {
 #[test]
 fn textbox_partial_eq_false() {
     let textbox = Textbox::new(0, 0, 10, 10, 0);
-    let form: Form = Form::new(None, None, 0);
+    let form = Form::new(None, 0);
     assert!(textbox != form);
 }
 

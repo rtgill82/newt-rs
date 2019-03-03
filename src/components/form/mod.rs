@@ -1,14 +1,12 @@
 extern crate std;
 extern crate newt_sys;
-use std::marker::PhantomData;
 use std::ops::Drop;
-use std::os::raw::c_void;
-use crate::ptr;
+use std::ptr;
 
 use newt_sys::*;
+use crate::callback::Callback;
 use crate::components::Component;
 use crate::components::VerticalScrollbar;
-use crate::intern::data::Data;
 
 mod exit_reason;
 pub use self::exit_reason::ExitReason;
@@ -31,29 +29,48 @@ struct BaseComponent {
 }
 
 #[derive(Component)]
-pub struct Form<D: Data = ()> {
+pub struct Form
+{
     co: newtComponent,
-    attached_to_form: bool,
-    data: PhantomData<D>
+    attached_to_form: bool
 }
 
-impl<D: Data> Drop for Form<D> {
+impl Drop for Form
+{
     fn drop(&mut self) {
-        unsafe { newtFormDestroy(self.co); }
+        if !self.attached_to_form {
+            unsafe { newtFormDestroy(self.co); }
+        }
     }
 }
 
-impl<D: Data> Form<D> {
-    pub fn new(_scrollbar: Option<&VerticalScrollbar>, help_tag: Option<D>,
-               flags: i32) -> Form<D> {
-        let mut c_ptr = ptr::null_mut();
-        if let Some(tag) = help_tag {
-            c_ptr = tag.newt_to_ptr() as *mut c_void
-        };
+impl Form
+{
+    pub fn new(_scrollbar: Option<&VerticalScrollbar>, flags: i32) -> Form {
         Form {
-            co: unsafe { newtForm(ptr::null_mut(), c_ptr, flags) },
-            attached_to_form: false,
-            data: PhantomData
+            co: unsafe { newtForm(ptr::null_mut(), ptr::null_mut(), flags) },
+            attached_to_form: false
+        }
+    }
+
+    ///
+    /// Creates a new `Form` with an associated help `Callback`. See
+    /// [Callback][help_cb] for additional information.
+    ///
+    /// [help_cb]: ../struct.Callback.html#method.new_help_callback
+    ///
+    pub fn new_with_help_callback<'a, FN: 'a , T: 'a>
+      (_scrollbar: Option<&VerticalScrollbar>, flags: i32, function: FN, data: Option<T>)
+        -> (Form, Box<Callback<'a, FN, T>>)
+        where FN: Fn(Option<&Component>, Option<&T>)
+    {
+        Callback::new_help_callback(_scrollbar, flags, function, data)
+    }
+
+    pub(crate) fn new_co(co: newtComponent) -> Form {
+        Form {
+            co: co,
+            attached_to_form: false
         }
     }
 

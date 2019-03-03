@@ -19,6 +19,6 @@ fn button_partial_eq_true() {
 #[test]
 fn button_partial_eq_false() {
     let button = Button::new(0, 0, "Ok");
-    let form: Form = Form::new(None, None, 0);
+    let form = Form::new(None, 0);
     assert!(button != form);
 }

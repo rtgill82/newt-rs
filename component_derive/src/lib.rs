@@ -24,9 +24,11 @@ fn impl_component_macro(ast: &DeriveInput) -> TokenStream {
 }
 
 fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
-    let (impl_, type_, _where) = generics.split_for_impl();
+    let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ ::components::Component for #name #type_ {
+        impl #impl_ ::components::Component for #name #type_
+            #where_
+        {
             fn co(&self) -> ::newt_sys::newtComponent {
                 self.co
             }
@@ -48,9 +50,11 @@ fn impl_component_drop(name: &Ident, generics: &Generics) -> TokenStream {
         return TokenStream::new();
     }
 
-    let (impl_, type_, _where) = generics.split_for_impl();
+    let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ std::ops::Drop for #name #type_ {
+        impl #impl_ std::ops::Drop for #name #type_
+            #where_
+        {
             fn drop(&mut self) {
                 if !self.attached_to_form {
                     unsafe {
@@ -65,11 +69,12 @@ fn impl_component_drop(name: &Ident, generics: &Generics) -> TokenStream {
 
 fn impl_component_partial_eq_trait(name: &Ident, generics: &Generics)
         -> TokenStream {
-    let params = &generics.params;
+    let generics_rhs = generics_add_rhs(&generics);
     let (_impl, type_, _where) = generics.split_for_impl();
+    let (impl_, _type, where_) = generics_rhs.split_for_impl();
     let gen = quote! {
-        impl <Rhs, #params> std::cmp::PartialEq<Rhs> for #name #type_
-            where Rhs: ::components::Component
+        impl #impl_ std::cmp::PartialEq<Rhs> for #name #type_
+            #where_
         {
             fn eq(&self, other: &Rhs) -> bool {
                 if self.co == std::ptr::null_mut() {
@@ -79,14 +84,17 @@ fn impl_component_partial_eq_trait(name: &Ident, generics: &Generics)
             }
         }
     };
-    gen.into()
+    let rv = gen.into();
+    return rv;
 }
 
 fn impl_component_partial_eq(name: &Ident, generics: &Generics)
         -> TokenStream {
-    let (impl_, type_, _where) = generics.split_for_impl();
+    let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ std::cmp::PartialEq<Box<dyn (::components::Component)>> for #name #type_ {
+        impl #impl_ std::cmp::PartialEq<Box<dyn (::components::Component)>> for #name #type_
+            #where_
+        {
             fn eq(&self, other: &Box<dyn (::components::Component)>) -> bool {
                 if self.co == std::ptr::null_mut() {
                     return false
@@ -95,13 +103,24 @@ fn impl_component_partial_eq(name: &Ident, generics: &Generics)
             }
         }
 
-        impl #impl_ std::cmp::PartialEq<::components::form::ExitReason> for #name #type_ {
+        impl #impl_ std::cmp::PartialEq<::components::form::ExitReason> for #name #type_
+            #where_
+        {
             fn eq(&self, other: &::components::form::ExitReason) -> bool {
                 other == self
             }
         }
     };
     gen.into()
+}
+
+fn generics_add_rhs(generics: &Generics) -> Generics {
+    use syn::{GenericParam,parse_str};
+
+    let mut generics = generics.clone();
+    let rhs: GenericParam = parse_str("Rhs: ::components::Component").unwrap();
+    generics.params.push(rhs);
+    generics
 }
 
 fn generics_remove_defaults(generics: &Generics) -> Generics {

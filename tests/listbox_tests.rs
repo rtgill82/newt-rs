@@ -31,7 +31,7 @@ fn listbox_partial_eq_true() {
 #[test]
 fn listbox_partial_eq_false() {
     let listbox: Listbox = Listbox::new(0, 0, 5, 0);
-    let form: Form = Form::new(None, None, 0);
+    let form = Form::new(None, 0);
     assert!(listbox != form);
 }
 
