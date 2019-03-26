@@ -1,6 +1,8 @@
 extern crate std;
 extern crate newt_sys;
+
 use std::ops::Drop;
+use std::os::unix::io::RawFd;
 use std::ptr;
 
 use newt_sys::*;
@@ -112,6 +114,10 @@ impl Form
 
     pub fn set_timer(&mut self, millisecs: i32) {
         unsafe { newtFormSetTimer(self.co, millisecs); }
+    }
+
+    pub fn watch_fd(&mut self, fd: RawFd, flags: i32) {
+        unsafe { newtFormWatchFd(self.co, fd, flags); }
     }
 
     pub fn get_current(&self) -> Box<dyn Component> {
