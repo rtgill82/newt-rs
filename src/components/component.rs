@@ -36,6 +36,22 @@ pub trait Component {
     fn takes_focus(&mut self, value: bool) {
         unsafe { newtComponentTakesFocus(self.co(), value as c_int); }
     }
+
+    fn get_position(&self) -> (i32, i32) {
+        let mut left: i32 = 0;
+        let mut top:  i32 = 0;
+
+        unsafe { newtComponentGetPosition(self.co(), &mut left, &mut top) };
+        return (left, top);
+    }
+
+    fn get_size(&self) -> (i32, i32) {
+        let mut width:  i32 = 0;
+        let mut height: i32 = 0;
+
+        unsafe { newtComponentGetSize(self.co(), &mut width, &mut height) };
+        return (width, height);
+    }
 }
 
 impl Debug for Component {
