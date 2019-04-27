@@ -1,5 +1,14 @@
 # ChangeLog
 
+## 0.3.0
+
+* Implement component callbacks, help callbacks, suspend callbacks, and entry
+  filters.
+
+* Implement Form.watch_fd().
+
+* Implement get_position() and get_size() for Component.
+
 ## 0.2.2
 
 * Implement the simple message windows ``win_message()``, ``win_choice()``,
