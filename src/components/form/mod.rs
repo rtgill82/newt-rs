@@ -6,7 +6,7 @@ use std::os::unix::io::RawFd;
 use std::ptr;
 
 use newt_sys::*;
-use crate::callback::Callback;
+use crate::callbacks::HelpCallback;
 use crate::components::Component;
 use crate::components::VerticalScrollbar;
 
@@ -61,12 +61,12 @@ impl Form
     ///
     /// [help_cb]: ../struct.Callback.html#method.new_help_callback
     ///
-    pub fn new_with_help_callback<'a, FN: 'a , T: 'a>
+    pub fn new_with_help_callback<FN, T>
       (_scrollbar: Option<&VerticalScrollbar>, flags: i32, function: FN, data: Option<T>)
-        -> (Form, Box<Callback<'a, FN, T>>)
-        where FN: Fn(Option<&Component>, Option<&T>)
+        -> (Form, Box<HelpCallback<FN, T>>)
+        where FN: Fn(&Form, Option<&T>)
     {
-        Callback::new_help_callback(_scrollbar, flags, function, data)
+        HelpCallback::new(_scrollbar, flags, function, data)
     }
 
     pub(crate) fn new_co(co: newtComponent) -> Form {

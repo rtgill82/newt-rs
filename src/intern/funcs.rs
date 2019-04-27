@@ -6,8 +6,10 @@ use newt_sys::*;
 use crate::components::Component;
 use crate::components::Entry;
 use crate::components::Form;
-use crate::components::entry::EntryFilter;
+use crate::callbacks::EntryFilter;
 use crate::Callback;
+use crate::callbacks::HelpCallback;
+use crate::callbacks::SuspendCallback;
 
 pub fn char_slice_to_cstring(slice: &[char]) -> CString {
     let mut vec: Vec<u8> = Vec::new();
@@ -27,27 +29,26 @@ fn callback<'a, FN: 'a, T: 'a>(co: newtComponent, data: *mut c_void)
 where FN: FnMut(Option<&Component>, Option<&T>)
 {
     let cb = &mut *(data as *mut Callback<'a, FN, T>);
-    cb.call(co, None);
+    cb.call(co);
 }
 
 unsafe extern "C"
-fn help_callback<'a, FN: 'a, T: 'a>(co: newtComponent, data: *mut c_void)
-where FN: FnMut(Option<&Component>, Option<&T>)
+fn help_callback<FN, T>(co: newtComponent, data: *mut c_void)
+where FN: FnMut(&Form, Option<&T>)
 {
     if data == ptr::null_mut() { return; };
-    let cb = &mut *(data as *mut Callback<'a, FN, T>);
-    cb.assert_help_callback();
+    let cb = &mut *(data as *mut HelpCallback<FN, T>);
     let mut form = Form::new_co(co);
     form.attach_to_form();
-    cb.call(co, Some(&form));
+    cb.call(&form);
 }
 
 unsafe extern "C"
-fn suspend_callback<'a, FN: 'a, T: 'a>(data: *mut c_void)
-where FN: FnMut(Option<&Component>, Option<&T>)
+fn suspend_callback<FN, T>(data: *mut c_void)
+where FN: FnMut(Option<&T>)
 {
-    let cb = &mut *(data as *mut Callback<'a, FN, T>);
-    cb.call(ptr::null_mut(), None);
+    let cb = &mut *(data as *mut SuspendCallback<FN, T>);
+    cb.call();
 }
 
 unsafe extern "C"
@@ -77,14 +78,14 @@ pub fn newt_unset_callback(co: &Component)
     }
 }
 
-pub fn newt_init_help_callback<'a, FN: 'a, T: 'a>(_cb: &Callback<'a, FN, T>)
-where FN: FnMut(Option<&Component>, Option<&T>)
+pub fn newt_init_help_callback<FN, T>(_cb: &HelpCallback<FN, T>)
+where FN: FnMut(&Form, Option<&T>)
 {
     unsafe { newtSetHelpCallback(Some(help_callback::<FN, T>)); }
 }
 
-pub fn newt_set_suspend_callback<'a, FN: 'a, T: 'a>(cb: &Callback<'a, FN, T>)
-where FN: FnMut(Option<&Component>, Option<&T>)
+pub fn newt_set_suspend_callback<FN, T>(cb: &SuspendCallback<FN, T>)
+where FN: FnMut(Option<&T>)
 {
     unsafe {
         let c_ptr = cb as *const _ as *mut c_void;

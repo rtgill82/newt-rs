@@ -3,7 +3,7 @@ use newt::components::CompactButton;
 use newt::components::Entry;
 use newt::components::Form;
 use newt::components::Label;
-use newt::components::entry::EntryFilter;
+use newt::callbacks::EntryFilter;
 
 pub fn main() {
     newt::init();

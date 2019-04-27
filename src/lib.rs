@@ -8,12 +8,12 @@ use std::ptr;
 
 #[macro_use]
 mod intern;
+pub mod callbacks;
 pub mod components;
 pub mod constants;
 
-pub mod callback;
 #[doc(inline)]
-pub use self::callback::Callback;
+pub use self::callbacks::Callback;
 
 use newt_sys::*;
 

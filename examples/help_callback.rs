@@ -1,6 +1,5 @@
 extern crate newt;
 use newt::components::CompactButton;
-use newt::components::Component;
 use newt::components::Form;
 use newt::components::Label;
 
@@ -9,7 +8,7 @@ pub fn main() {
     newt::cls();
     newt::centered_window(20, 6, Some("Help Test"));
 
-    let f = |_c: Option<&Component>, data: Option<&i32>| {
+    let f = |_form: &Form, data: Option<&i32>| {
         newt::centered_window(23, 4, Some("Help"));
         let mut form = Form::new(None, 0);
 

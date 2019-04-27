@@ -8,12 +8,6 @@ pub mod form;
 #[doc(inline)]
 pub use self::form::Form;
 
-pub mod entry;
-#[doc(inline)]
-pub use self::entry::Entry;
-#[doc(inline)]
-pub use self::entry::EntryFilter;
-
 mod vertical_scrollbar;
 pub use self::vertical_scrollbar::VerticalScrollbar;
 
@@ -33,5 +27,7 @@ mod checkbox_tree;
 pub use self::checkbox_tree::CheckboxTree;
 mod textbox;
 pub use self::textbox::Textbox;
+mod entry;
+pub use self::entry::Entry;
 mod scale;
 pub use self::scale::Scale;
