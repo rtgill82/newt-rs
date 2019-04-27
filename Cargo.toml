@@ -16,7 +16,7 @@ static = ["newt-sys/static"]
 [dependencies]
 libc     = "0.2.0"
 newt-sys = "0.1.3"
-component_derive = { path = "./component_derive" }
+component_derive = { path = "./component_derive", version = "0.0.0" }
 
 [dev-dependencies]
 chrono   = "0.4"
