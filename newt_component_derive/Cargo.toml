@@ -1,7 +1,10 @@
 [package]
-name = "component_derive"
+name = "newt_component_derive"
 version = "0.0.0"
 authors = ["Robert Gill <locke@sdf.lonestar.org>"]
+description = "Proc macros for newt-rs"
+repository = "https://github.com/xelkarin/newt-rs"
+license = "LGPL-2.0-only"
 
 [lib]
 proc-macro = true

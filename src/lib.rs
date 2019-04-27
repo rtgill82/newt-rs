@@ -1,5 +1,5 @@
 #[macro_use]
-extern crate component_derive;
+extern crate newt_component_derive;
 extern crate newt_sys;
 
 use std::ffi::{CStr, CString};
