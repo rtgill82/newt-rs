@@ -11,6 +11,7 @@ mod intern;
 pub mod callbacks;
 pub mod components;
 pub mod constants;
+pub mod windows;
 
 #[doc(inline)]
 pub use self::callbacks::Callback;
