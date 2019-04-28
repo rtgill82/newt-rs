@@ -56,10 +56,10 @@ impl Form
     }
 
     ///
-    /// Creates a new `Form` with an associated help `Callback`. See
-    /// [Callback][help_cb] for additional information.
+    /// Creates a new `Form` with an associated help `HelpCallback`. See
+    /// [HelpCallback][help_cb] for additional information.
     ///
-    /// [help_cb]: ../struct.Callback.html#method.new_help_callback
+    /// [help_cb]: ../callbacks/struct.HelpCallback.html#method.new
     ///
     pub fn new_with_help_callback<FN, T>
       (_scrollbar: Option<&VerticalScrollbar>, flags: i32, function: FN, data: Option<T>)
