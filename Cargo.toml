@@ -12,6 +12,7 @@ edition = "2018"
 
 [features]
 static = ["newt-sys/static"]
+asm    = []
 
 [dependencies]
 libc     = "0.2.0"

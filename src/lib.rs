@@ -1,3 +1,4 @@
+#![cfg_attr(feature = "asm", feature(asm))]
 #[macro_use]
 extern crate newt_component_derive;
 extern crate newt_sys;

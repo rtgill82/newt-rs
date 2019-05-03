@@ -2,12 +2,16 @@ use std::ffi::CString;
 use std::os::raw::{c_int,c_void};
 use std::{char,ptr};
 
+#[cfg(feature = "asm")]
+use std::os::raw::c_char;
+
 use newt_sys::*;
 use crate::components::Component;
 use crate::components::Entry;
 use crate::components::Form;
-use crate::callbacks::EntryFilter;
+
 use crate::Callback;
+use crate::callbacks::EntryFilter;
 use crate::callbacks::HelpCallback;
 use crate::callbacks::SuspendCallback;
 
@@ -22,6 +26,25 @@ pub fn char_slice_to_cstring(slice: &[char]) -> CString {
     let string = String::from_utf8_lossy(vec.as_slice());
     let cstr = CString::new(string.into_owned()).unwrap();
     return cstr;
+}
+
+#[cfg(feature = "asm")]
+pub fn str_slice_to_cstring_vec(slice: &[&str]) -> Vec<CString> {
+    let mut vec = Vec::new();
+    for s in slice.iter() {
+        vec.push(CString::new(*s).unwrap());
+    }
+    return vec;
+}
+
+#[cfg(feature = "asm")]
+pub fn cstring_vec_to_ptrs(strings: &Vec<CString>) -> Vec<*const c_char> {
+    let mut vec = Vec::new();
+    for s in strings.iter() {
+        vec.push(s.as_ptr());
+    }
+    vec.push(ptr::null());
+    return vec;
 }
 
 unsafe extern "C"
