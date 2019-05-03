@@ -53,9 +53,7 @@ pub fn win_ternary(title: &str, button1: &str, button2: &str, button3: &str,
 pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
                 flex_up: i32, max_list_height: i32, items: &[&str],
                 buttons: &[&str]) -> (i32, i32) {
-
-
-    let mut rv: i32    = 0;
+    let mut rv: i32;
     let list_item: i32 = 0;
 
     let title = CString::new(title).unwrap();
