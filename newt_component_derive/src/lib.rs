@@ -127,7 +127,7 @@ fn generics_remove_defaults(generics: &Generics) -> Generics {
     use syn::GenericParam::Type;
 
     let mut generics = generics.clone();
-    for mut param in generics.params.iter_mut() {
+    for param in generics.params.iter_mut() {
         if let Type(ref mut type_) = param {
             type_.default = None;
         }
