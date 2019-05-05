@@ -7,7 +7,7 @@ fn asm_functions() { }
 #[cfg(feature = "asm")]
 fn asm_functions() {
     let (rv, item) = win_menu("Test Menu", "Message", 50, 5, 5, 3,
-                             &["Item1", "Item2"], &["Ok", "Cancel"]);
+                              &["Item1", "Item2"], &["Ok", "Cancel"]);
 
     win_message("Selection", "Ok",
                 &format!("Button selected: {}, Item selected: {}", rv, item));
