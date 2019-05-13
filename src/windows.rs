@@ -319,3 +319,109 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
 
     return rv;
 }
+
+#[cfg(feature = "asm")]
+#[cfg(target_arch = "x86")]
+pub fn win_entries(title: &str, text: &str, suggested_width: i32,
+                   flex_down: i32, flex_up: i32, data_width: i32,
+                   entries: &mut [WinEntry], buttons: &[&str]) -> i32 {
+    let mut rv: i32;
+
+    let title = CString::new(title).unwrap();
+    let text  = CString::new(text).unwrap();
+
+    let buttons = str_slice_to_cstring_vec(buttons);
+    let mut button_ptrs = cstring_vec_to_ptrs(&buttons);
+    button_ptrs.reverse();
+
+    let entries_buf: *mut newtWinEntry;
+    let mut entries_text: Vec<CString> = Vec::new();
+
+    let values_buf: *mut *mut c_char;
+    let mut values_text: Vec<CString> = Vec::new();
+
+    unsafe {
+        let size = size_of::<newtWinEntry>() * (entries.len() + 1);
+        entries_buf = libc::malloc(size) as *mut newtWinEntry;
+        libc::memset(entries_buf as *mut c_void, 0, size);
+
+        let size = size_of::<*mut c_char>() * (entries.len());
+        values_buf = libc::malloc(size) as *mut *mut c_char;
+        libc::memset(values_buf as *mut c_void, 0, size);
+
+        for (cnt, entry) in entries.iter().enumerate() {
+            let entry_buf = entries_buf.offset(cnt as isize);
+            let value_buf = values_buf.offset(cnt as isize);
+            let text = CString::new(entry.text.as_str()).unwrap();
+            let value = CString::new(entry.value.as_str()).unwrap();
+            *value_buf = value.as_ptr() as *mut i8;
+
+            (*entry_buf).text = text.as_ptr() as *mut i8;
+            (*entry_buf).value = value_buf;
+            (*entry_buf).flags = entry.flags;
+            entries_text.push(text);
+            values_text.push(value);
+        }
+
+        asm! {
+            "mov $9,     %ecx
+             mov $8,     %esi
+             mov %ecx,   %ebx
+
+             test $$1,   %ecx
+             jnz win_entries_loop
+
+             sub $$4,    %esp
+             add $$1,    %ebx
+
+             win_entries_loop:
+             mov (%esi), %eax
+             push        %eax
+             add  $$4,   %esi
+             loop        win_entries_loop
+
+             mov $7,     %eax
+             push        %eax
+             mov $6,     %eax
+             push        %eax
+             mov $5,     %eax
+             push        %eax
+             mov $4,     %eax
+             push        %eax
+             mov $3,     %eax
+             push        %eax
+             mov $2,     %eax
+             push        %eax
+             mov $1,     %eax
+             push        %eax
+
+             mov $$0,    %eax
+             call newtWinEntries
+             mov  %eax,   $0
+
+             add $$7,    %ebx
+             mov %ebx,   %eax
+             mov $$4,    %ebx
+             mul %ebx
+             add %eax,   %esp"
+
+            : "=r"(rv)
+            : "m"(title.as_ptr()), "m"(text.as_ptr()), "m"(suggested_width),
+              "m"(flex_down), "m"(flex_up), "m"(data_width), "m"(entries_buf),
+              "m"(button_ptrs.as_ptr()),  "m"(button_ptrs.len())
+            : "esp", "eax", "ebx", "ecx", "edx", "esi"
+        }
+
+        for (cnt, entry) in entries.iter_mut().enumerate() {
+            let buf = entries_buf.offset(cnt as isize);
+            let value = CStr::from_ptr(*(*buf).value).to_str().unwrap();
+            entry.value = String::from(value);
+            libc::free(*(*buf).value as *mut c_void);
+        }
+
+        libc::free(entries_buf as *mut c_void);
+        libc::free(values_buf as *mut c_void);
+    }
+
+    return rv;
+}
