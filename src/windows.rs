@@ -11,11 +11,12 @@ pub fn win_message(title: &str, button_text: &str, text: &str) {
     unsafe {
         let c_title = CString::new(title).unwrap();
         let c_button = CString::new(button_text).unwrap();
-        let c_text = CString::new(text).unwrap();
+        let escaped = str::replace(text, "%", "%%");
+        let c_text = CString::new(escaped).unwrap();
 
-        newtWinMessage(c_title.as_ptr() as *mut i8,
-                       c_button.as_ptr() as *mut i8,
-                       c_text.as_ptr() as *mut i8);
+        newtWinMessage(c_title.as_ptr() as *mut c_char,
+                       c_button.as_ptr() as *mut c_char,
+                       c_text.as_ptr() as *mut c_char);
     }
 }
 
@@ -25,12 +26,13 @@ pub fn win_choice(title: &str, button1: &str, button2: &str, text: &str)
         let c_title = CString::new(title).unwrap();
         let c_button1 = CString::new(button1).unwrap();
         let c_button2 = CString::new(button2).unwrap();
-        let c_text = CString::new(text).unwrap();
+        let escaped = str::replace(text, "%", "%%");
+        let c_text = CString::new(escaped).unwrap();
 
-        newtWinChoice(c_title.as_ptr() as *mut i8,
-                      c_button1.as_ptr() as *mut i8,
-                      c_button2.as_ptr() as *mut i8,
-                      c_text.as_ptr() as *mut i8) as i32
+        newtWinChoice(c_title.as_ptr() as *mut c_char,
+                      c_button1.as_ptr() as *mut c_char,
+                      c_button2.as_ptr() as *mut c_char,
+                      c_text.as_ptr() as *mut c_char) as i32
     }
 }
 
@@ -41,13 +43,14 @@ pub fn win_ternary(title: &str, button1: &str, button2: &str, button3: &str,
         let c_button1 = CString::new(button1).unwrap();
         let c_button2 = CString::new(button2).unwrap();
         let c_button3 = CString::new(button3).unwrap();
-        let c_text = CString::new(text).unwrap();
+        let escaped = str::replace(text, "%", "%%");
+        let c_text = CString::new(escaped).unwrap();
 
-        newtWinTernary(c_title.as_ptr() as *mut i8,
-                       c_button1.as_ptr() as *mut i8,
-                       c_button2.as_ptr() as *mut i8,
-                       c_button3.as_ptr() as *mut i8,
-                       c_text.as_ptr() as *mut i8) as i32
+        newtWinTernary(c_title.as_ptr() as *mut c_char,
+                       c_button1.as_ptr() as *mut c_char,
+                       c_button2.as_ptr() as *mut c_char,
+                       c_button3.as_ptr() as *mut c_char,
+                       c_text.as_ptr() as *mut c_char) as i32
     }
 }
 
@@ -253,9 +256,9 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
             let value_buf = values_buf.offset(cnt as isize);
             let text = CString::new(entry.text.as_str()).unwrap();
             let value = CString::new(entry.value.as_str()).unwrap();
-            *value_buf = value.as_ptr() as *mut i8;
+            *value_buf = value.as_ptr() as *mut c_char;
 
-            (*entry_buf).text = text.as_ptr() as *mut i8;
+            (*entry_buf).text = text.as_ptr() as *mut c_char;
             (*entry_buf).value = value_buf;
             (*entry_buf).flags = entry.flags;
             entries_text.push(text);
@@ -354,9 +357,9 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
             let value_buf = values_buf.offset(cnt as isize);
             let text = CString::new(entry.text.as_str()).unwrap();
             let value = CString::new(entry.value.as_str()).unwrap();
-            *value_buf = value.as_ptr() as *mut i8;
+            *value_buf = value.as_ptr() as *mut c_char;
 
-            (*entry_buf).text = text.as_ptr() as *mut i8;
+            (*entry_buf).text = text.as_ptr() as *mut c_char;
             (*entry_buf).value = value_buf;
             (*entry_buf).flags = entry.flags;
             entries_text.push(text);

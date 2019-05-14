@@ -6,7 +6,7 @@ fn asm_functions() { }
 
 #[cfg(feature = "asm")]
 fn asm_functions() {
-    let (rv, item) = win_menu("Test Menu", "Message", 50, 5, 5, 3,
+    let (rv, item) = win_menu("Test Menu", "Select an item", 50, 5, 5, 3,
                               &["Item1", "Item2"], &["Ok", "Cancel"]);
 
     win_message("Selection", "Ok",
@@ -21,7 +21,7 @@ fn asm_functions() {
         entries.push(entry);
     }
 
-    let rv = win_entries("Test Entries", "Message", 50, 5, 5, 10,
+    let rv = win_entries("Test Entries", "Enter some text", 50, 5, 5, 10,
                          entries.as_mut_slice(), &["Ok", "Cancel"]);
 
     let mut message = String::new();
@@ -37,14 +37,18 @@ pub fn main() {
     newt::init();
     newt::cls();
 
-    win_message("Message Window", "Ok", "This is a message window.");
+    let msg = format!("This message contains a C format string: {}", "%-5d");
+    win_message("Safe formatting?", "Ok", &msg);
 
-    let rv = win_choice("Choice Window", "Ok", "Cancel",
-                        "Choose 'Ok' or 'Cancel'");
+    let msg = format!("This message also contains a C format string: {}",
+                      "%.3f");
+    let msg = format!("{}. Is it displayed correctly? Did it crash?", msg);
+    let rv = win_choice("Safe formatting?", "Yes", "No", &msg);
     win_message("Selection", "Ok", &format!("Button Selected: {}", rv));
 
-    let rv = win_ternary("Ternary Window", "Yes", "No", "Maybe",
-                         "Choose a button");
+
+    let msg = "%-5d %.3f %02x %-5s";
+    let rv = win_ternary("Ditto", "Yes", "No", "Maybe, so?", &msg);
     win_message("Selection", "Ok", &format!("Button Selected: {}", rv));
 
     asm_functions();
