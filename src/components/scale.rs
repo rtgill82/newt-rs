@@ -6,14 +6,14 @@ use newt_sys::*;
 #[derive(Component)]
 pub struct Scale {
     co: newtComponent,
-    attached_to_form: bool
+    added_to_form: bool
 }
 
 impl Scale  {
     pub fn new(left: i32, top: i32, width: i32, full_value: i64) -> Scale {
         Scale {
             co: unsafe { newtScale(left, top, width, full_value) },
-            attached_to_form: false
+            added_to_form: false
         }
     }
 

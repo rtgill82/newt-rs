@@ -27,20 +27,20 @@ type newtExitStructUnion = newtExitStruct__bindgen_ty_2;
 #[derive(Component)]
 struct BaseComponent {
     co: newtComponent,
-    attached_to_form: bool
+    added_to_form: bool
 }
 
 #[derive(Component)]
 pub struct Form
 {
     co: newtComponent,
-    attached_to_form: bool
+    added_to_form: bool
 }
 
 impl Drop for Form
 {
     fn drop(&mut self) {
-        if !self.attached_to_form {
+        if !self.added_to_form {
             unsafe { newtFormDestroy(self.co); }
         }
     }
@@ -51,7 +51,7 @@ impl Form
     pub fn new(_scrollbar: Option<&VerticalScrollbar>, flags: i32) -> Form {
         Form {
             co: unsafe { newtForm(ptr::null_mut(), ptr::null_mut(), flags) },
-            attached_to_form: false
+            added_to_form: false
         }
     }
 
@@ -72,17 +72,17 @@ impl Form
     pub(crate) fn new_co(co: newtComponent) -> Form {
         Form {
             co: co,
-            attached_to_form: false
+            added_to_form: false
         }
     }
 
     pub fn add_component(&mut self, component: &mut dyn Component)
             -> Result<(), &'static str> {
-        if component.attached_to_form() {
-            return Err("Component is already attached to a Form");
+        if component.added_to_form() {
+            return Err("Component already belongs to a Form");
         }
 
-        component.attach_to_form();
+        component.add_to_form();
         unsafe { newtFormAddComponent(self.co, component.co()); }
         return Ok(());
     }
@@ -123,7 +123,7 @@ impl Form
     pub fn get_current(&self) -> Box<dyn Component> {
         Box::new(BaseComponent {
             co: unsafe { newtFormGetCurrent(self.co) },
-            attached_to_form: true
+            added_to_form: true
         })
     }
 
@@ -158,13 +158,13 @@ impl Form
                 NEWT_EXIT_COMPONENT => Ok(
                     Component(Box::new(BaseComponent {
                                        co: es.u.co,
-                                       attached_to_form: true
+                                       added_to_form: true
                     }))
                 ),
                 NEWT_EXIT_FDREADY => Ok(FDReady(es.u.watch)),
                 NEWT_EXIT_TIMER => Ok(Timer),
                 NEWT_EXIT_ERROR => Err(()),
-                _ => panic!("Unexpected Newt exit reason.")
+                _ => panic!("Unexpected newt exit reason.")
             }
         }
     }

@@ -7,7 +7,7 @@ use crate::ptr;
 #[derive(Component)]
 pub struct VerticalScrollbar {
     co: newtComponent,
-    attached_to_form: bool
+    added_to_form: bool
 }
 
 impl VerticalScrollbar  {
@@ -15,7 +15,7 @@ impl VerticalScrollbar  {
                _thumb_colorset: i32) -> VerticalScrollbar {
         VerticalScrollbar {
             co: ptr::null_mut(),
-            attached_to_form: false
+            added_to_form: false
         }
     }
 }

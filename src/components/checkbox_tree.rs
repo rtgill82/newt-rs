@@ -16,7 +16,7 @@ use crate::constants;
 #[derive(Component)]
 pub struct CheckboxTree<D: Data = isize> {
     co: newtComponent,
-    attached_to_form: bool,
+    added_to_form: bool,
     data: PhantomData<D>
 }
 
@@ -38,7 +38,7 @@ impl<D: Data> CheckboxTree<D> {
 
         CheckboxTree {
             co: component,
-            attached_to_form: false,
+            added_to_form: false,
             data: PhantomData
         }
     }

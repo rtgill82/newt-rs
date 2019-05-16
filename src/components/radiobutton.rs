@@ -8,7 +8,7 @@ use newt_sys::*;
 #[derive(Component)]
 pub struct Radiobutton {
     co: newtComponent,
-    attached_to_form: bool
+    added_to_form: bool
 }
 
 impl Radiobutton {
@@ -25,13 +25,13 @@ impl Radiobutton {
                 newtRadiobutton(left, top, c_text.as_ptr(),
                                 is_default as i32, ptr)
             },
-            attached_to_form: false
+            added_to_form: false
         }
     }
 
     pub fn get_current(&self) -> Radiobutton {
         Radiobutton {
-            attached_to_form: true,
+            added_to_form: true,
             co: unsafe { newtRadioGetCurrent(self.co) }
         }
     }

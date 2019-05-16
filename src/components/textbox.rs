@@ -8,7 +8,7 @@ use newt_sys::*;
 #[derive(Component)]
 pub struct Textbox {
     co: newtComponent,
-    attached_to_form: bool
+    added_to_form: bool
 }
 
 impl Textbox {
@@ -16,7 +16,7 @@ impl Textbox {
             -> Textbox {
         Textbox {
             co: unsafe { newtTextbox(left, top, width, height, flags) },
-            attached_to_form: false
+            added_to_form: false
         }
     }
 
@@ -28,7 +28,7 @@ impl Textbox {
                 newtTextboxReflowed(left, top, c_text.as_ptr() as *mut c_char,
                                     width, flex_down, flex_up, flags)
             },
-            attached_to_form: false
+            added_to_form: false
         }
     }
 

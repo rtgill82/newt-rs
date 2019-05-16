@@ -1,14 +1,14 @@
 extern crate newt_sys;
 use newt_sys::*;
 
-const NEWT_FLAGS_SET: newtFlagsSense    = newtFlagsSense_NEWT_FLAGS_SET;
-const NEWT_FLAGS_RESET: newtFlagsSense  = newtFlagsSense_NEWT_FLAGS_RESET;
+const NEWT_FLAGS_SET:    newtFlagsSense = newtFlagsSense_NEWT_FLAGS_SET;
+const NEWT_FLAGS_RESET:  newtFlagsSense = newtFlagsSense_NEWT_FLAGS_RESET;
 const NEWT_FLAGS_TOGGLE: newtFlagsSense = newtFlagsSense_NEWT_FLAGS_TOGGLE;
 
 #[repr(C)]
 pub enum FlagsSense {
-    Set    = NEWT_FLAGS_SET as isize,
-    Reset  = NEWT_FLAGS_RESET as isize,
+    Set    = NEWT_FLAGS_SET    as isize,
+    Reset  = NEWT_FLAGS_RESET  as isize,
     Toggle = NEWT_FLAGS_TOGGLE as isize
 }
 

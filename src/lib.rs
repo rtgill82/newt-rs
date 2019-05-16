@@ -366,7 +366,7 @@ pub fn get_screen_size() -> (i32, i32) {
 ///
 /// Reflow text according to the provided specifications.
 ///
-/// * `text`  - the text to be reformatted
+/// * `text` - the text to be reformatted
 /// * `width` - the target width of the text
 /// * `flex_down` - minimum difference from target width
 /// * `flex_up` - maximum difference from target width

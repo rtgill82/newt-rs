@@ -30,8 +30,8 @@ impl<'a, T> Deref for Data<'a, T> {
 
 pub trait Component {
     fn co(&self) -> newtComponent;
-    fn attach_to_form(&mut self);
-    fn attached_to_form(&self) -> bool;
+    fn add_to_form(&mut self);
+    fn added_to_form(&self) -> bool;
 
     fn takes_focus(&mut self, value: bool) {
         unsafe { newtComponentTakesFocus(self.co(), value as c_int); }

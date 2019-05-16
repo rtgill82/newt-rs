@@ -7,7 +7,7 @@ use newt_sys::*;
 #[derive(Component)]
 pub struct Label {
     co: newtComponent,
-    attached_to_form: bool
+    added_to_form: bool
 }
 
 impl Label  {
@@ -15,7 +15,7 @@ impl Label  {
         let c_text = CString::new(text).unwrap();
         Label {
             co: unsafe { newtLabel(left, top, c_text.as_ptr()) },
-            attached_to_form: false
+            added_to_form: false
         }
     }
 
