@@ -370,18 +370,21 @@ pub fn get_screen_size() -> (i32, i32) {
 /// * `width` - the target width of the text
 /// * `flex_down` - minimum difference from target width
 /// * `flex_up` - maximum difference from target width
-/// * `actual_width` - return the final width in this variable
-/// * `actual_height` - return the final number of lines in this variable
 ///
-/// Returns the newly formatted `String`.
+/// Returns the tuple `(String, actual_width, actual_height)` where `String`
+/// is the newly formatted text, `actual_width` is the new width of the text,
+/// and `actual_height` is the number of lines in the text.
 ///
-pub fn reflow_text(text: &str, width: i32, flex_down: i32, flex_up: i32,
-                   actual_width: &mut i32, actual_height: &mut i32) -> String {
+pub fn reflow_text(text: &str, width: i32, flex_down: i32, flex_up: i32)
+      -> (String, i32, i32) {
     let c_str = CString::new(text).unwrap();
+    let mut actual_width: c_int = 0;
+    let mut actual_height: c_int = 0;
     unsafe {
         let rstr = newtReflowText(c_str.as_ptr() as *mut c_char,
-                                  width, flex_down, flex_up, actual_width,
-                                  actual_height);
-        CStr::from_ptr(rstr).to_string_lossy().into_owned()
+                                  width, flex_down, flex_up, &mut actual_width,
+                                  &mut actual_height);
+        let c_str = CStr::from_ptr(rstr).to_string_lossy().into_owned();
+        return (c_str, actual_width, actual_height);
     }
 }
