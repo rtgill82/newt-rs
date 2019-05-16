@@ -102,7 +102,7 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              mov  $5,     %r8
              mov  $6,     %r9
 
-             movq $$0,    %rax
+             xorq %rax,   %rax
              call newtWinMenu
              mov  %eax,   $0
 
@@ -177,7 +177,7 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              mov $1,     %eax
              push        %eax
 
-             mov $$0,    %eax
+             xorl %eax,  %eax
              call newtWinMenu
              mov %eax,   $0
 
@@ -292,7 +292,7 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              mov  $5,     %r8
              mov  $6,     %r9
 
-             movq $$0,    %rax
+             xorq %rax,   %rax
              call newtWinEntries
              mov  %eax,   $0
 
@@ -398,7 +398,7 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              mov $1,     %eax
              push        %eax
 
-             mov $$0,    %eax
+             xorl %eax,  %eax
              call newtWinEntries
              mov  %eax,   $0
 
