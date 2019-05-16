@@ -8,9 +8,9 @@ use newt::components::Label;
 use newt::components::form::ExitReason::*;
 
 pub fn main() {
-    newt::init();
+    newt::init().unwrap();
     newt::cls();
-    newt::centered_window(26, 7, Some("Timer Exit Test"));
+    newt::centered_window(26, 7, Some("Timer Exit Test")).unwrap();
 
     let mut l1 = Label::new(1,  1, "Timer: 0ms");
     let mut l2 = Label::new(1,  2, "Last Event: None");

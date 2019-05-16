@@ -34,7 +34,7 @@ fn asm_functions() {
 }
 
 pub fn main() {
-    newt::init();
+    newt::init().unwrap();
     newt::cls();
 
     let msg = format!("This message contains a C format string: {}", "%-5d");

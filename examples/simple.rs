@@ -5,9 +5,9 @@ use newt::components::Textbox;
 use newt::components::form::ExitReason;
 
 pub fn main() {
-    newt::init();
+    newt::init().unwrap();
     newt::cls();
-    newt::centered_window(20, 5, Some("Greetings"));
+    newt::centered_window(20, 5, Some("Greetings")).unwrap();
 
     let mut form = Form::new(None, 0);
     let mut text = Textbox::new(4, 1, 12, 1, 0);

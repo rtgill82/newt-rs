@@ -4,12 +4,12 @@ use newt::components::Form;
 use newt::components::Label;
 
 pub fn main() {
-    newt::init();
+    newt::init().unwrap();
     newt::cls();
-    newt::centered_window(20, 6, Some("Help Test"));
+    newt::centered_window(20, 6, Some("Help Test")).unwrap();
 
     let f = |_form: &Form, data: Option<&i32>| {
-        newt::centered_window(23, 4, Some("Help"));
+        newt::centered_window(23, 4, Some("Help")).unwrap();
         let mut form = Form::new(None, 0);
 
         let text = format!("Help Text Data: {}", data.unwrap_or(&0));

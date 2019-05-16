@@ -44,12 +44,13 @@ pub struct Colors<'a> {
     pub sel_listbox_fg: &'a str,     pub sel_listbox_bg: &'a str
 }
 
-pub fn init() -> i32 {
-    unsafe { newtInit() }
+pub fn init() -> Result<(), ()> {
+    let rv = unsafe { newtInit() };
+    if rv == 0 { Ok(()) } else { Err(()) }
 }
 
-pub fn finished() -> i32 {
-    unsafe { newtFinished() }
+pub fn finished() {
+    unsafe { newtFinished(); }
 }
 
 pub fn cls() {
@@ -73,7 +74,7 @@ pub fn delay(usecs: u32) {
 }
 
 pub fn open_window(left: i32, top: i32, width: u32, height: u32,
-                   title: Option<&str>) -> i32 {
+                   title: Option<&str>) -> Result<(), ()> {
     let c_str: CString;
     let c_ptr = match title {
         Some(title) => {
@@ -83,10 +84,12 @@ pub fn open_window(left: i32, top: i32, width: u32, height: u32,
         None => ptr::null()
     };
 
-    unsafe { newtOpenWindow(left, top, width, height, c_ptr) }
+    let rv = unsafe { newtOpenWindow(left, top, width, height, c_ptr) };
+    if rv == 0 { Ok(()) } else { Err(()) }
 }
 
-pub fn centered_window(width: u32, height: u32, title: Option<&str>) -> i32 {
+pub fn centered_window(width: u32, height: u32, title: Option<&str>)
+      -> Result<(), ()> {
     let c_str: CString;
     let c_ptr = match title {
         Some(title) => {
@@ -96,7 +99,8 @@ pub fn centered_window(width: u32, height: u32, title: Option<&str>) -> i32 {
         None => ptr::null()
     };
 
-    unsafe { newtCenteredWindow(width, height, c_ptr) }
+    let rv = unsafe { newtCenteredWindow(width, height, c_ptr) };
+    if rv == 0 { Ok(()) } else { Err(()) }
 }
 
 pub fn pop_window() {

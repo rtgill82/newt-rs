@@ -33,19 +33,22 @@ impl<D: Data> Listbox<D> {
         unsafe { newtListboxItemCount(self.co) }
     }
 
-    pub fn append_entry(&mut self, text: &str, data: D) -> i32 {
+    pub fn append_entry(&mut self, text: &str, data: D) -> Result<(), ()> {
         let c_str = CString::new(text).unwrap();
-        unsafe {
+        let rv = unsafe {
             newtListboxAppendEntry(self.co, c_str.as_ptr(), data.newt_to_ptr())
-        }
+        };
+        if rv == 0 { Ok(()) } else { Err(()) }
     }
 
-    pub fn insert_entry(&mut self, text: &str, data: D, key: D) -> i32 {
+    pub fn insert_entry(&mut self, text: &str, data: D, key: D)
+          -> Result<(), ()> {
         let c_str = CString::new(text).unwrap();
-        unsafe {
+        let rv = unsafe {
             newtListboxInsertEntry(self.co, c_str.as_ptr(), data.newt_to_ptr(),
                                    key.newt_to_ptr() as *mut c_void)
-        }
+        };
+        if rv == 0 { Ok(()) } else { Err(()) }
     }
 
     pub fn get_current(&self) -> Option<D> {

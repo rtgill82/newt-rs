@@ -6,9 +6,9 @@ use newt::components::Label;
 use newt::callbacks::EntryFilter;
 
 pub fn main() {
-    newt::init();
+    newt::init().unwrap();
     newt::cls();
-    newt::centered_window(22, 5, None);
+    newt::centered_window(22, 5, None).unwrap();
 
     let mut g_ch: char = '\0';
     let mut g_cursor: i32 = 0;

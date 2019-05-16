@@ -5,9 +5,9 @@ use newt::components::Form;
 use newt::constants::ARG_APPEND;
 
 pub fn main() {
-    newt::init();
+    newt::init().unwrap();
     newt::cls();
-    newt::centered_window(20, 9, Some("Options"));
+    newt::centered_window(20, 9, Some("Options")).unwrap();
 
     let mut form = Form::new(None, 0);
     let mut tree: CheckboxTree =

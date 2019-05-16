@@ -4,9 +4,9 @@ use newt::components::CompactButton;
 use newt::components::Form;
 
 pub fn main() {
-    newt::init();
+    newt::init().unwrap();
     newt::cls();
-    newt::centered_window(20, 6, Some("Options"));
+    newt::centered_window(20, 6, Some("Options")).unwrap();
 
     let mut form = Form::new(None, 0);
     let mut cb1 = Checkbox::new(4, 1, "Option 1", None, None);

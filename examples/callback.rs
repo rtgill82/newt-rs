@@ -6,9 +6,9 @@ use newt::components::Component;
 use newt::components::Form;
 
 pub fn main() {
-    newt::init();
+    newt::init().unwrap();
     newt::cls();
-    newt::centered_window(20, 6, Some("Callback Test"));
+    newt::centered_window(20, 6, Some("Callback Test")).unwrap();
 
     let mut value: i32 = 0;
     {

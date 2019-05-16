@@ -5,9 +5,9 @@ use newt::components::Form;
 use newt::constants::FLAG_MULTIPLE;
 
 pub fn main() {
-    newt::init();
+    newt::init().unwrap();
     newt::cls();
-    newt::centered_window(15, 6, Some("Options"));
+    newt::centered_window(15, 6, Some("Options")).unwrap();
 
     let mut form = Form::new(None, 0);
     let mut listbox: Listbox = Listbox::new(1, 1, 3, FLAG_MULTIPLE);
@@ -16,7 +16,7 @@ pub fn main() {
 
     for i in 1..10 {
         let text = format!("Entry {}", i);
-        listbox.append_entry(&text, i);
+        listbox.append_entry(&text, i).unwrap();
     }
 
     form.add_components(&mut [&mut listbox, &mut ok, &mut clear]).unwrap();

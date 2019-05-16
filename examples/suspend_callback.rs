@@ -5,9 +5,9 @@ use newt::components::Label;
 use newt::callbacks::SuspendCallback;
 
 pub fn main() {
-    newt::init();
+    newt::init().unwrap();
     newt::cls();
-    newt::centered_window(20, 5, Some("Suspend Callback Test"));
+    newt::centered_window(20, 5, Some("Suspend Callback Test")).unwrap();
 
     let mut value: i32 = 0;
     {

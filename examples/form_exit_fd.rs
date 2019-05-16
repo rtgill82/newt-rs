@@ -43,9 +43,9 @@ fn server() {
     println!("Connect to {}", socket.to_str().unwrap());
     let (stream, _) = listener.accept().unwrap();
 
-    newt::init();
+    newt::init().unwrap();
     newt::cls();
-    newt::centered_window(50, 20, Some("FD Exit Test"));
+    newt::centered_window(50, 20, Some("FD Exit Test")).unwrap();
 
     let mut t = Textbox::new(1, 3, 48, 5, 0);
     let mut b = CompactButton::new(22, 19, "Exit");
