@@ -1,7 +1,7 @@
 use std::ffi::CString;
 use std::ffi::CStr;
 use std::mem::size_of;
-use std::os::raw::{c_char,c_void};
+use libc::{c_char,c_void};
 use newt_sys::*;
 
 #[cfg(feature = "asm")]
