@@ -19,6 +19,9 @@ pub use self::callbacks::Callback;
 
 use newt_sys::*;
 
+///
+/// A struct containing the color sets for all components.
+///
 pub struct Colors<'a> {
     pub root_fg: &'a str,            pub root_bg: &'a str,
     pub border_fg: &'a str,          pub border_bg: &'a str,
@@ -44,35 +47,69 @@ pub struct Colors<'a> {
     pub sel_listbox_fg: &'a str,     pub sel_listbox_bg: &'a str
 }
 
+///
+/// Initialize the newt library.
+///
 pub fn init() -> Result<(), ()> {
     let rv = unsafe { newtInit() };
     if rv == 0 { Ok(()) } else { Err(()) }
 }
 
+///
+/// Close down the newt library and reset the terminal.
+///
 pub fn finished() {
     unsafe { newtFinished(); }
 }
 
+///
+/// Clear the screen.
+///
 pub fn cls() {
     unsafe { newtCls(); }
 }
 
+///
+/// Notify newt of a screen resize.
+///
+/// * `redraw` - redraw the screen immediately
+///
 pub fn resize_screen(redraw: i32) {
     unsafe { newtResizeScreen(redraw); }
 }
 
+///
+/// Wait until a key is pressed.
+///
 pub fn wait_for_key() {
     unsafe { newtWaitForKey(); }
 }
 
+///
+/// Clear the key buffer.
+///
 pub fn clear_key_buffer() {
     unsafe { newtClearKeyBuffer(); }
 }
 
+///
+/// Wait for a specified amount of time.
+///
+/// * `usecs` - amount of time to wait in microseconds
+///
 pub fn delay(usecs: u32) {
     unsafe { newtDelay(usecs); }
 }
 
+///
+/// Open a window at the specified location.
+///
+/// * `left` - the left position of the window
+/// * `top` - the top position of the window
+/// * `width`  - the width of the window
+/// * `height` - the height of the window
+/// * `title` - the optional window title
+///
 pub fn open_window(left: i32, top: i32, width: u32, height: u32,
                    title: Option<&str>) -> Result<(), ()> {
     let c_str: CString;
@@ -88,6 +125,13 @@ pub fn open_window(left: i32, top: i32, width: u32, height: u32,
     if rv == 0 { Ok(()) } else { Err(()) }
 }
 
+///
+/// Open a window in the center of the screen.
+///
+/// * `width` - the width of the window
+/// * `height` - the height of the window
+/// * `title` - the optional window title
+///
 pub fn centered_window(width: u32, height: u32, title: Option<&str>)
       -> Result<(), ()> {
     let c_str: CString;
@@ -103,14 +147,25 @@ pub fn centered_window(width: u32, height: u32, title: Option<&str>)
     if rv == 0 { Ok(()) } else { Err(()) }
 }
 
+///
+/// Close the most recently opened window.
+///
 pub fn pop_window() {
     unsafe { newtPopWindow(); }
 }
 
+///
+/// Close the most recently opened window without redrawing the screen.
+///
 pub fn pop_window_no_refresh() {
     unsafe { newtPopWindowNoRefresh(); }
 }
 
+///
+/// Set the colors used.
+///
+/// * `colors` - Colors struct
+///
 pub fn set_colors(colors: &Colors) {
     let root_fg = CString::new(colors.root_fg).unwrap();
     let root_bg = CString::new(colors.root_bg).unwrap();
@@ -207,6 +262,13 @@ pub fn set_colors(colors: &Colors) {
     unsafe { newtSetColors(c_colors); }
 }
 
+///
+/// Set a specific color set.
+///
+/// * `colorset` - the color set number to set
+/// * `fg` - the color set foreground color
+/// * `bg` - the color set background color
+///
 pub fn set_color(colorset: i32, fg: &str, bg: &str) {
     let c_fg = CString::new(fg).unwrap();
     let c_bg = CString::new(bg).unwrap();
@@ -217,48 +279,83 @@ pub fn set_color(colorset: i32, fg: &str, bg: &str) {
     }
 }
 
+///
+/// Redraw the screen.
+///
 pub fn refresh() {
     unsafe { newtRefresh(); }
 }
 
+///
+/// Temporarily suspend the newt library and reset the terminal.
+///
 pub fn suspend() {
     unsafe { newtSuspend(); }
 }
 
+///
+/// Resume running the newt library.
+///
 pub fn resume() {
     unsafe { newtResume(); }
 }
 
+///
+/// Display a help string on the bottom of the screen.
+///
 pub fn push_help_line(text: &str) {
     let c_str = CString::new(text).unwrap();
     unsafe { newtPushHelpLine(c_str.as_ptr()); }
 }
 
+///
+/// Redraw the help line.
+///
 pub fn redraw_help_line() {
     unsafe { newtRedrawHelpLine(); }
 }
 
+///
+/// Remove the help line.
+///
 pub fn pop_help_line() {
     unsafe { newtPopHelpLine(); }
 }
 
+///
+/// Draw text directly to the root window.
+///
 pub fn draw_root_text(col: i32, row: i32, text: &str) {
     let c_str = CString::new(text).unwrap();
     unsafe { newtDrawRootText(col, row, c_str.as_ptr()); }
 }
 
+///
+/// Issue a terminal beep.
+///
 pub fn bell() {
     unsafe { newtBell(); }
 }
 
+///
+/// Turn the cursor visibility off.
+///
 pub fn cursor_off() {
     unsafe { newtCursorOff(); }
 }
 
+///
+/// Turn the cursor visibility on.
+///
 pub fn cursor_on() {
     unsafe { newtCursorOn(); }
 }
 
+///
+/// Get the terminal screen size.
+///
+/// Returns a tuple pair in the order of (columns, rows).
+///
 pub fn get_screen_size() -> (i32, i32) {
     let mut cols: c_int = 0;
     let mut rows: c_int = 0;
@@ -266,6 +363,18 @@ pub fn get_screen_size() -> (i32, i32) {
     return (cols, rows);
 }
 
+///
+/// Reflow text according to the provided specifications.
+///
+/// * `text`  - the text to be reformatted
+/// * `width` - the target width of the text
+/// * `flex_down` - minimum difference from target width
+/// * `flex_up` - maximum difference from target width
+/// * `actual_width` - return the final width in this variable
+/// * `actual_height` - return the final number of lines in this variable
+///
+/// Returns the newly formatted `String`.
+///
 pub fn reflow_text(text: &str, width: i32, flex_down: i32, flex_up: i32,
                    actual_width: &mut i32, actual_height: &mut i32) -> String {
     let c_str = CString::new(text).unwrap();

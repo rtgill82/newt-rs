@@ -2,6 +2,9 @@ use crate::components::Component;
 use crate::intern::funcs::*;
 use newt_sys::*;
 
+///
+/// A callback called when a newt `Component` is activated.
+///
 pub struct Callback<'a, FN: 'a, T: 'a>
 where FN: FnMut(Option<&Component>, Option<&T>)
 {
@@ -16,9 +19,10 @@ where FN: FnMut(Option<&Component>, Option<&T>)
     /// Create a new `Callback` using the function or closure `function` and
     /// associate it with `component`.
     ///
-    /// * `component` - the `Component` to which the callback will be attached
-    /// * `function`  - the function or closure to attach to the `Component`
-    /// * `data`      - optional data to pass to the function
+    /// * `component` - the `Component` associated with the callback
+    /// * `function` - the function or closure to call when the `Component`
+    ///                is activated
+    /// * `data` - optional user data to pass to the function
     ///
     pub fn new(component: &'a Component, function: FN, data: Option<T>)
       -> Box<Callback<'a, FN, T>> {
@@ -31,6 +35,12 @@ where FN: FnMut(Option<&Component>, Option<&T>)
         return cb;
     }
 
+    ///
+    /// Associate another component with the `Callback`.
+    ///
+    /// * `component` - another component to associate with the callback
+    /// * `data` - optional data to pass to the function
+    ///
     pub fn add_component(&mut self, component: &'a Component, data: Option<T>)
     {
         self.components.push((component, data));

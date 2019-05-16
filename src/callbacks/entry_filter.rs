@@ -3,6 +3,22 @@ use crate::components::Component;
 use crate::components::Entry;
 use crate::intern::funcs::newt_entry_set_filter;
 
+///
+/// A callback used to filter text entered into an `Entry` component.
+///
+/// The function or closure associated with the callback should be
+/// defined as follows:
+///
+/// `fn(entry: &Entry, data: Option<&T>, ch: char, cursor_pos: i32) -> char`
+///
+/// * `entry` - the `Entry` being filtered
+/// * `data` - the optional user data provided
+/// * `ch` - the character entered into the `Entry`
+/// * `cursor_pos` - the current cursor position in the entry
+///
+/// The function should return the character to be entered into the
+/// `Entry` field or '\u{0000}' to ignore the entered character.
+///
 pub struct EntryFilter<'a, FN: 'a, T: 'a>
 where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
 {
@@ -13,6 +29,17 @@ where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
 impl<'a, FN: 'a, T: 'a> EntryFilter<'a, FN, T>
 where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
 {
+    ///
+    /// Create a new `EntryFilter`.
+    ///
+    /// Creates a new `EntryFilter` associated with the `Entry` `entry`.
+    /// The function `function` will be called for each character entered.
+    ///
+    /// * `entry` - the `Entry` to associate with the callback
+    /// * `function` - the function or closure to be called when a character
+    ///                is entered
+    /// * `data` - optonal user data to pass to the function
+    ///
     pub fn new(entry: &'a Entry, function: FN, data: Option<T>)
       -> Box<EntryFilter<'a, FN, T>> {
         let co: newtComponent = entry.co();
@@ -24,6 +51,12 @@ where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
         return filter;
     }
 
+    ///
+    /// Associate another `Entry` with the `EntryFilter`.
+    ///
+    /// * `entry` - the `Entry` to associate with the callback
+    /// * `data` - optonal user data to pass to the function
+    ///
     pub fn add_entry(&mut self, entry: &'a Entry, data: Option<T>) {
         let co: newtComponent = entry.co();
         self.entries.push((entry, data));

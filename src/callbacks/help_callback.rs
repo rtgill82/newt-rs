@@ -6,6 +6,9 @@ use crate::components::VerticalScrollbar;
 use crate::intern::funcs::*;
 use newt_sys::*;
 
+///
+/// A callback called when F1 is pressed while a `Form` is running.
+///
 pub struct HelpCallback<FN, T>
 where FN: FnMut(&Form, Option<&T>)
 {
@@ -25,8 +28,8 @@ where FN: FnMut(&Form, Option<&T>)
     /// * `_scrollbar` - a `VerticalScrollbar` to be attached to the created
     ///                  form _unused_
     /// * `form_flags` - the flags the form is to be initialized with
-    /// * `function`   - the function or closure to attach to the `Form`
-    /// * `data`       - optional data to pass to the function
+    /// * `function` - the function or closure to attach to the `Form`
+    /// * `data` - optional user data to pass to the function
     ///
     pub fn new(_scrollbar: Option<&VerticalScrollbar>,
                form_flags: i32, function: FN, data: Option<T>)
