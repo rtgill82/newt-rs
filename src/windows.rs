@@ -1,11 +1,15 @@
 use std::ffi::CString;
-use std::ffi::CStr;
-use std::mem::size_of;
-use libc::{c_char,c_void};
+use libc::c_char;
 use newt_sys::*;
 
 #[cfg(feature = "asm")]
 use crate::intern::funcs::*;
+#[cfg(feature = "asm")]
+use libc::c_void;
+#[cfg(feature = "asm")]
+use std::ffi::CStr;
+#[cfg(feature = "asm")]
+use std::mem::size_of;
 
 pub fn win_message(title: &str, button_text: &str, text: &str) {
     unsafe {
