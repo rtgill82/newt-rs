@@ -12,18 +12,18 @@ pub enum ExitReason {
 
 impl PartialEq<i32> for ExitReason {
     fn eq(&self, other: &i32) -> bool {
-        if let &ExitReason::HotKey(ref hotkey) = self {
+        if let ExitReason::HotKey(ref hotkey) = self {
             return hotkey == other
         }
-        return false;
+        false
     }
 }
 
 impl<Rhs: Component> PartialEq<Rhs> for ExitReason {
     fn eq(&self, other: &Rhs) -> bool {
-        if let &ExitReason::Component(ref component) = self {
+        if let ExitReason::Component(ref component) = self {
             return component.co() == other.co();
         }
-        return false;
+        false
     }
 }

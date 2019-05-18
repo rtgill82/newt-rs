@@ -53,7 +53,7 @@ impl<D: Data> Listbox<D> {
 
     pub fn get_current(&self) -> Option<D> {
         let c_data = unsafe { newtListboxGetCurrent(self.co) };
-        if c_data == ptr::null_mut() { return None; }
+        if c_data.is_null() { return None; }
         Some(D::newt_from_ptr(c_data))
     }
 

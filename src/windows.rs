@@ -60,6 +60,7 @@ pub fn win_ternary(title: &str, button1: &str, button2: &str, button3: &str,
 
 #[cfg(feature = "asm")]
 #[cfg(target_arch = "x86_64")]
+#[allow(clippy::too_many_arguments)]
 pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
                 flex_up: i32, max_list_height: i32, items: &[&str],
                 buttons: &[&str]) -> (i32, i32) {
@@ -125,11 +126,12 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
         }
     }
 
-    return (rv, list_item);
+    (rv, list_item)
 }
 
 #[cfg(feature = "asm")]
 #[cfg(target_arch = "x86")]
+#[allow(clippy::too_many_arguments)]
 pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
                 flex_up: i32, max_list_height: i32, items: &[&str],
                 buttons: &[&str]) -> (i32, i32) {
@@ -200,7 +202,7 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
         }
     }
 
-    return (rv, list_item);
+    (rv, list_item)
 }
 
 #[cfg(feature = "asm")]
@@ -217,7 +219,7 @@ impl WinEntry {
         WinEntry {
             text: String::from(text),
             value: String::from(value),
-            flags: flags
+            flags
         }
     }
 
@@ -228,6 +230,7 @@ impl WinEntry {
 
 #[cfg(feature = "asm")]
 #[cfg(target_arch = "x86_64")]
+#[allow(clippy::too_many_arguments)]
 pub fn win_entries(title: &str, text: &str, suggested_width: i32,
                    flex_down: i32, flex_up: i32, data_width: i32,
                    entries: &mut [WinEntry], buttons: &[&str]) -> i32 {
@@ -256,8 +259,8 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
         libc::memset(values_buf as *mut c_void, 0, size);
 
         for (cnt, entry) in entries.iter().enumerate() {
-            let entry_buf = entries_buf.offset(cnt as isize);
-            let value_buf = values_buf.offset(cnt as isize);
+            let entry_buf = entries_buf.add(cnt);
+            let value_buf = values_buf.add(cnt);
             let text = CString::new(entry.text.as_str()).unwrap();
             let value = CString::new(entry.value.as_str()).unwrap();
             *value_buf = value.as_ptr() as *mut c_char;
@@ -314,7 +317,7 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
         }
 
         for (cnt, entry) in entries.iter_mut().enumerate() {
-            let buf = entries_buf.offset(cnt as isize);
+            let buf = entries_buf.add(cnt);
             let value = CStr::from_ptr(*(*buf).value).to_str().unwrap();
             entry.value = String::from(value);
             libc::free(*(*buf).value as *mut c_void);
@@ -324,11 +327,12 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
         libc::free(values_buf as *mut c_void);
     }
 
-    return rv;
+    rv
 }
 
 #[cfg(feature = "asm")]
 #[cfg(target_arch = "x86")]
+#[allow(clippy::too_many_arguments)]
 pub fn win_entries(title: &str, text: &str, suggested_width: i32,
                    flex_down: i32, flex_up: i32, data_width: i32,
                    entries: &mut [WinEntry], buttons: &[&str]) -> i32 {
@@ -357,8 +361,8 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
         libc::memset(values_buf as *mut c_void, 0, size);
 
         for (cnt, entry) in entries.iter().enumerate() {
-            let entry_buf = entries_buf.offset(cnt as isize);
-            let value_buf = values_buf.offset(cnt as isize);
+            let entry_buf = entries_buf.add(cnt);
+            let value_buf = values_buf.add(cnt);
             let text = CString::new(entry.text.as_str()).unwrap();
             let value = CString::new(entry.value.as_str()).unwrap();
             *value_buf = value.as_ptr() as *mut c_char;
@@ -420,7 +424,7 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
         }
 
         for (cnt, entry) in entries.iter_mut().enumerate() {
-            let buf = entries_buf.offset(cnt as isize);
+            let buf = entries_buf.add(cnt);
             let value = CStr::from_ptr(*(*buf).value).to_str().unwrap();
             entry.value = String::from(value);
             libc::free(*(*buf).value as *mut c_void);
@@ -430,5 +434,5 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
         libc::free(values_buf as *mut c_void);
     }
 
-    return rv;
+    rv
 }

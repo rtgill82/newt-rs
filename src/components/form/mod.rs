@@ -70,10 +70,7 @@ impl Form
     }
 
     pub(crate) fn new_co(co: newtComponent) -> Form {
-        Form {
-            co: co,
-            added_to_form: false
-        }
+        Form { co, added_to_form: false }
     }
 
     pub fn add_component(&mut self, component: &mut dyn Component)
@@ -84,7 +81,7 @@ impl Form
 
         component.add_to_form();
         unsafe { newtFormAddComponent(self.co, component.co()); }
-        return Ok(());
+        Ok(())
     }
 
     pub fn add_components(&mut self, components: &mut [&mut dyn Component])
@@ -93,7 +90,7 @@ impl Form
             let result = self.add_component(*component);
             if result.is_err() { return result; }
         }
-        return Ok(());
+        Ok(())
     }
 
     pub fn set_height(&mut self, height: i32) {

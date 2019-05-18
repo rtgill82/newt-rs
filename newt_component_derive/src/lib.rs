@@ -77,7 +77,7 @@ fn impl_component_partial_eq_trait(name: &Ident, generics: &Generics)
             #where_
         {
             fn eq(&self, other: &Rhs) -> bool {
-                if self.co == std::ptr::null_mut() {
+                if self.co.is_null() {
                     return false
                 }
                 self.co == other.co()
@@ -96,7 +96,7 @@ fn impl_component_partial_eq(name: &Ident, generics: &Generics)
             #where_
         {
             fn eq(&self, other: &Box<dyn (::components::Component)>) -> bool {
-                if self.co == std::ptr::null_mut() {
+                if self.co.is_null() {
                     return false
                 }
                 self.co == other.co()

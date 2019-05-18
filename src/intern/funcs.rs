@@ -24,8 +24,7 @@ pub fn char_slice_to_cstring(slice: &[char]) -> CString {
     }
 
     let string = String::from_utf8_lossy(vec.as_slice());
-    let cstr = CString::new(string.into_owned()).unwrap();
-    return cstr;
+    CString::new(string.into_owned()).unwrap()
 }
 
 #[cfg(feature = "asm")]
@@ -34,17 +33,17 @@ pub fn str_slice_to_cstring_vec(slice: &[&str]) -> Vec<CString> {
     for s in slice.iter() {
         vec.push(CString::new(*s).unwrap());
     }
-    return vec;
+    vec
 }
 
 #[cfg(feature = "asm")]
-pub fn cstring_vec_to_ptrs(strings: &Vec<CString>) -> Vec<*const c_char> {
+pub fn cstring_vec_to_ptrs(strings: &[CString]) -> Vec<*const c_char> {
     let mut vec = Vec::new();
     for s in strings.iter() {
         vec.push(s.as_ptr());
     }
     vec.push(ptr::null());
-    return vec;
+    vec
 }
 
 unsafe extern "C"
@@ -59,7 +58,7 @@ unsafe extern "C"
 fn help_callback<FN, T>(co: newtComponent, data: *mut c_void)
 where FN: FnMut(&Form, Option<&T>)
 {
-    if data == ptr::null_mut() { return; };
+    if data.is_null() { return; };
     let cb = &mut *(data as *mut HelpCallback<FN, T>);
     let mut form = Form::new_co(co);
     form.add_to_form();

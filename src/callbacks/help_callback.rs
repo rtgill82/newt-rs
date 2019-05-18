@@ -12,7 +12,7 @@ use newt_sys::*;
 pub struct HelpCallback<FN, T>
 where FN: FnMut(&Form, Option<&T>)
 {
-    func: FN,
+    function: FN,
     data: Option<T>
 }
 
@@ -35,16 +35,16 @@ where FN: FnMut(&Form, Option<&T>)
                form_flags: i32, function: FN, data: Option<T>)
       -> (Form, Box<HelpCallback<FN, T>>) {
 
-        let cb = Box::new(HelpCallback { func: function, data: data });
+        let cb = Box::new(HelpCallback { function, data });
         newt_init_help_callback(cb.as_ref());
 
         let c_ptr = cb.as_ref() as *const _ as *mut c_void;
         let co = unsafe { newtForm(ptr::null_mut(), c_ptr, form_flags) };
         let form = Form::new_co(co);
-        return (form, cb);
+        (form, cb)
     }
 
     pub(crate) fn call(&mut self, form: &Form) {
-        (self.func)(form, self.data.as_ref())
+        (self.function)(form, self.data.as_ref())
     }
 }

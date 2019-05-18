@@ -360,7 +360,7 @@ pub fn get_screen_size() -> (i32, i32) {
     let mut cols: c_int = 0;
     let mut rows: c_int = 0;
     unsafe { newtGetScreenSize(&mut cols, &mut rows); }
-    return (cols, rows);
+    (cols, rows)
 }
 
 ///
@@ -385,6 +385,6 @@ pub fn reflow_text(text: &str, width: i32, flex_down: i32, flex_up: i32)
                                   width, flex_down, flex_up, &mut actual_width,
                                   &mut actual_height);
         let c_str = CStr::from_ptr(rstr).to_string_lossy().into_owned();
-        return (c_str, actual_width, actual_height);
+        (c_str, actual_width, actual_height)
     }
 }

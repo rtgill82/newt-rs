@@ -42,7 +42,7 @@ pub trait Component {
         let mut top:  i32 = 0;
 
         unsafe { newtComponentGetPosition(self.co(), &mut left, &mut top) };
-        return (left, top);
+        (left, top)
     }
 
     fn get_size(&self) -> (i32, i32) {
@@ -50,7 +50,7 @@ pub trait Component {
         let mut height: i32 = 0;
 
         unsafe { newtComponentGetSize(self.co(), &mut width, &mut height) };
-        return (width, height);
+        (width, height)
     }
 }
 
@@ -68,10 +68,10 @@ impl PartialEq for Component {
 
 impl PartialEq<ExitReason> for Component {
     fn eq(&self, other: &ExitReason) -> bool {
-        if let &ExitReason::Component(ref component) = other {
+        if let ExitReason::Component(ref component) = other {
             return self.co() == component.co()
         }
-        return false;
+        false
     }
 }
 

@@ -17,12 +17,12 @@ use crate::intern::funcs::newt_entry_set_filter;
 /// * `cursor_pos` - the current cursor position in the entry
 ///
 /// The function should return the character to be entered into the
-/// `Entry` field or '\u{0000}' to ignore the entered character.
+/// `Entry` field or '\0' to ignore the entered character.
 ///
 pub struct EntryFilter<'a, FN: 'a, T: 'a>
 where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
 {
-    func: FN,
+    function: FN,
     entries: Vec<(&'a Entry, Option<T>)>
 }
 
@@ -44,11 +44,11 @@ where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
       -> Box<EntryFilter<'a, FN, T>> {
         let co: newtComponent = entry.co();
         let filter = Box::new(EntryFilter {
-            func: function,
+            function,
             entries: vec![(entry, data)]
         });
         newt_entry_set_filter(co, filter.as_ref());
-        return filter;
+        filter
     }
 
     ///
@@ -67,9 +67,9 @@ where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
       -> char {
         for (entry, data) in self.entries.iter() {
             if entry.co() == co {
-                return (self.func)(*entry, data.as_ref(), ch, cursor);
+                return (self.function)(*entry, data.as_ref(), ch, cursor);
             }
         }
-        return '\0';
+        '\0'
     }
 }

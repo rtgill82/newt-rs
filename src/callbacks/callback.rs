@@ -8,7 +8,7 @@ use newt_sys::*;
 pub struct Callback<'a, FN: 'a, T: 'a>
 where FN: FnMut(Option<&Component>, Option<&T>)
 {
-    func: FN,
+    function: FN,
     components: Vec<(&'a Component, Option<T>)>
 }
 
@@ -28,11 +28,11 @@ where FN: FnMut(Option<&Component>, Option<&T>)
       -> Box<Callback<'a, FN, T>> {
 
         let cb = Box::new(Callback {
-            func: function,
+            function,
             components: vec![(component, data)]
         });
         newt_set_callback(component.co(), cb.as_ref());
-        return cb;
+        cb
     }
 
     ///
@@ -50,7 +50,7 @@ where FN: FnMut(Option<&Component>, Option<&T>)
     pub(crate) fn call(&mut self, co: newtComponent) {
         for (component, data) in self.components.iter() {
             if component.co() == co {
-                (self.func)(Some(*component), data.as_ref());
+                (self.function)(Some(*component), data.as_ref());
             }
         }
     }

@@ -11,9 +11,7 @@ impl Data for () {
         ptr::null()
     }
 
-    fn newt_from_ptr(_ptr: *const c_void) -> Self {
-        ()
-    }
+    fn newt_from_ptr(_ptr: *const c_void) -> Self { }
 }
 
 impl Data for char {

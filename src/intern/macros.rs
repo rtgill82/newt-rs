@@ -9,7 +9,7 @@ macro_rules! c_ptr_array_to_boxed_slice {
             unsafe {
                 while count < $numitems {
                     vec.push($type::newt_from_ptr(*p));
-                    p = p.offset(std::mem::size_of::<c_void>() as isize);
+                    p = p.add(std::mem::size_of::<c_void>());
                     count += 1;
                 }
             }

@@ -6,7 +6,7 @@ use crate::intern::funcs::*;
 pub struct SuspendCallback<FN, T>
 where FN: FnMut(Option<&T>)
 {
-    func: FN,
+    function: FN,
     data: Option<T>
 }
 
@@ -23,13 +23,13 @@ where FN: FnMut(Option<&T>)
     ///
     pub fn new(function: FN, data: Option<T>)
       -> Box<SuspendCallback<FN, T>> {
-        let cb = Box::new(SuspendCallback { func: function, data: data });
+        let cb = Box::new(SuspendCallback { function, data });
         newt_set_suspend_callback(cb.as_ref());
-        return cb;
+        cb
     }
 
     pub(crate) fn call(&mut self) {
-        (self.func)(self.data.as_ref())
+        (self.function)(self.data.as_ref())
     }
 }
 

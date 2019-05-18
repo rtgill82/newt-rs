@@ -6,7 +6,6 @@ use self::libc::free;
 use std::ffi::CString;
 use std::marker::PhantomData;
 use std::os::raw::{c_char, c_void};
-use crate::ptr;
 
 use newt_sys::*;
 use crate::intern::data::Data;
@@ -55,7 +54,7 @@ impl<D: Data> CheckboxTree<D> {
             c_array = Vec::with_capacity(indexes.len() + 1);
             while i < indexes.len() {
                 c_array.push(indexes[i]);
-                i = i + 1;
+                i += 1;
             }
             c_array.push(constants::ARG_LAST);
         } else {
@@ -74,7 +73,7 @@ impl<D: Data> CheckboxTree<D> {
 
     pub fn get_current(&self) -> Option<D> {
         let c_data = unsafe { newtCheckboxTreeGetCurrent(self.co) };
-        if c_data == ptr::null() { return None; }
+        if c_data.is_null() { return None; }
         Some(D::newt_from_ptr(c_data))
     }
 
