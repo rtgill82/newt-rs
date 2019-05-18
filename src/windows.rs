@@ -112,10 +112,8 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              mov  %eax,   $0
 
              addq $$2,    %rbx
-             movq %rbx,   %rax
-             movq $$8,    %rbx
-             mulq %rbx
-             addq %rax,   %rsp"
+             shl  $$3,    %rbx
+             addq %rbx,   %rsp"
 
             : "=r"(rv)
             : "m"(title.as_ptr()), "m"(text.as_ptr()), "m"(suggested_width),
@@ -188,17 +186,15 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              mov %eax,   $0
 
              add $$8,    %ebx
-             mov %ebx,   %eax
-             mov $$4,    %ebx
-             mul %ebx
-             add %eax,   %esp"
+             shl $$2,    %ebx
+             add %ebx,   %esp"
 
             : "=r"(rv)
             : "m"(title.as_ptr()), "m"(text.as_ptr()), "m"(suggested_width),
               "m"(flex_down), "m"(flex_up), "m"(max_list_height),
               "m"(item_ptrs.as_ptr()), "m"(&list_item),
               "m"(button_ptrs.as_ptr()), "m"(button_ptrs.len())
-            : "esp", "eax", "ebx", "ecx", "edx", "esi"
+            : "esp", "eax", "ebx", "ecx", "esi"
         }
     }
 
@@ -304,10 +300,8 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              mov  %eax,   $0
 
              addq $$1,    %rbx
-             movq %rbx,   %rax
-             movq $$8,    %rbx
-             mulq %rbx
-             addq %rax,   %rsp"
+             shl  $$3,    %rbx
+             addq %rbx,   %rsp"
 
             : "=r"(rv)
             : "m"(title.as_ptr()), "m"(text.as_ptr()), "m"(suggested_width),
@@ -411,16 +405,14 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              mov  %eax,   $0
 
              add $$7,    %ebx
-             mov %ebx,   %eax
-             mov $$4,    %ebx
-             mul %ebx
-             add %eax,   %esp"
+             shl $$2,    %ebx
+             add %ebx,   %esp"
 
             : "=r"(rv)
             : "m"(title.as_ptr()), "m"(text.as_ptr()), "m"(suggested_width),
               "m"(flex_down), "m"(flex_up), "m"(data_width), "m"(entries_buf),
               "m"(button_ptrs.as_ptr()),  "m"(button_ptrs.len())
-            : "esp", "eax", "ebx", "ecx", "edx", "esi"
+            : "esp", "eax", "ebx", "ecx", "esi"
         }
 
         for (cnt, entry) in entries.iter_mut().enumerate() {
