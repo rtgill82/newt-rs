@@ -17,6 +17,17 @@ pub mod windows;
 #[doc(inline)]
 pub use self::callbacks::Callback;
 
+#[doc(inline)]
+pub use self::windows::win_message;
+#[doc(inline)]
+pub use self::windows::win_choice;
+#[doc(inline)]
+pub use self::windows::win_ternary;
+#[doc(inline)]
+pub use self::windows::win_menu;
+#[doc(inline)]
+pub use self::windows::win_entries;
+
 use newt_sys::*;
 
 ///
