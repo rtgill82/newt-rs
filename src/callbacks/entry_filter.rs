@@ -11,10 +11,10 @@ use crate::intern::funcs::newt_entry_set_filter;
 ///
 /// `fn(entry: &Entry, data: Option<&T>, ch: char, cursor_pos: i32) -> char`
 ///
-/// * `entry` - the `Entry` being filtered
-/// * `data` - the optional user data provided
-/// * `ch` - the character entered into the `Entry`
-/// * `cursor_pos` - the current cursor position in the entry
+/// * `entry` - The `Entry` being filtered.
+/// * `data` - The optional user data provided.
+/// * `ch` - The character entered into the `Entry`.
+/// * `cursor_pos` - The current cursor position in the `Entry`.
 ///
 /// The function should return the character to be entered into the
 /// `Entry` field or '\0' to ignore the entered character.
@@ -35,10 +35,10 @@ where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
     /// Creates a new `EntryFilter` associated with the `Entry` `entry`.
     /// The function `function` will be called for each character entered.
     ///
-    /// * `entry` - the `Entry` to associate with the callback
-    /// * `function` - the function or closure to be called when a character
-    ///                is entered
-    /// * `data` - optonal user data to pass to the function
+    /// * `entry` - The `Entry` to associate with the callback.
+    /// * `function` - The function or closure to be called when a character
+    ///                is entered.
+    /// * `data` - The optonal user data to pass to the function.
     ///
     pub fn new(entry: &'a Entry, function: FN, data: Option<T>)
       -> Box<EntryFilter<'a, FN, T>> {
@@ -54,8 +54,8 @@ where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
     ///
     /// Associate another `Entry` with the `EntryFilter`.
     ///
-    /// * `entry` - the `Entry` to associate with the callback
-    /// * `data` - optonal user data to pass to the function
+    /// * `entry` - The `Entry` to associate with the callback.
+    /// * `data` - The optonal user data to pass to the function.
     ///
     pub fn add_entry(&mut self, entry: &'a Entry, data: Option<T>) {
         let co: newtComponent = entry.co();

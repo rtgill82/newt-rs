@@ -19,10 +19,10 @@ where FN: FnMut(Option<&Component>, Option<&T>)
     /// Create a new `Callback` using the function or closure `function` and
     /// associate it with `component`.
     ///
-    /// * `component` - the `Component` associated with the callback
-    /// * `function` - the function or closure to call when the `Component`
-    ///                is activated
-    /// * `data` - optional user data to pass to the function
+    /// * `component` - The `Component` associated with the callback.
+    /// * `function` - The function or closure to call when the
+    ///                `Component` is activated.
+    /// * `data` - Optional user data to pass to the function.
     ///
     pub fn new(component: &'a Component, function: FN, data: Option<T>)
       -> Box<Callback<'a, FN, T>> {
@@ -38,8 +38,8 @@ where FN: FnMut(Option<&Component>, Option<&T>)
     ///
     /// Associate another component with the `Callback`.
     ///
-    /// * `component` - another component to associate with the callback
-    /// * `data` - optional data to pass to the function
+    /// * `component` - Another `Component` to associate with the callback.
+    /// * `data` - Optional user data to pass to the function.
     ///
     pub fn add_component(&mut self, component: &'a Component, data: Option<T>)
     {

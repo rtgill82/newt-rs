@@ -1,3 +1,6 @@
+//!
+//! Callbacks and filters.
+//!
 mod callback;
 pub use self::callback::Callback;
 mod entry_filter;

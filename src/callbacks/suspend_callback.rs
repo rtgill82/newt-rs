@@ -1,7 +1,7 @@
 use crate::intern::funcs::*;
 
 ///
-/// A callback called when Ctrl-Z is pressed.
+/// A callback called when `Ctrl-Z` is pressed.
 ///
 pub struct SuspendCallback<FN, T>
 where FN: FnMut(Option<&T>)
@@ -14,12 +14,12 @@ impl<FN, T> SuspendCallback<FN, T>
 where FN: FnMut(Option<&T>)
 {
     ///
-    /// Create a new `SuspendCallback` to be called when a suspend (Ctrl-Z)
+    /// Create a new `SuspendCallback` to be called when a suspend (`Ctrl-Z`)
     /// event occurs.
     ///
-    /// * `function` - function or closure to be called when a suspend
-    ///                event occurs
-    /// * `data` - optional user data to pass to the function
+    /// * `function` - The function or closure to be called when a suspend
+    ///                event occurs.
+    /// * `data` - The optional user data to pass to the function.
     ///
     pub fn new(function: FN, data: Option<T>)
       -> Box<SuspendCallback<FN, T>> {

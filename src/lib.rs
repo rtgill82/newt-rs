@@ -1,3 +1,8 @@
+//!
+//! # newt-rs
+//!
+//! _Rust bindings for the Newt console UI library._
+//!
 #![cfg_attr(feature = "asm", feature(asm))]
 #[macro_use]
 extern crate newt_component_derive;
@@ -83,7 +88,7 @@ pub fn cls() {
 ///
 /// Notify newt of a screen resize.
 ///
-/// * `redraw` - redraw the screen immediately
+/// * `redraw` - Redraw the screen immediately.
 ///
 pub fn resize_screen(redraw: i32) {
     unsafe { newtResizeScreen(redraw); }
@@ -106,7 +111,7 @@ pub fn clear_key_buffer() {
 ///
 /// Wait for a specified amount of time.
 ///
-/// * `usecs` - amount of time to wait in microseconds
+/// * `usecs` - The amount of time to wait in microseconds.
 ///
 pub fn delay(usecs: u32) {
     unsafe { newtDelay(usecs); }
@@ -114,12 +119,6 @@ pub fn delay(usecs: u32) {
 
 ///
 /// Open a window at the specified location.
-///
-/// * `left` - the left position of the window
-/// * `top` - the top position of the window
-/// * `width`  - the width of the window
-/// * `height` - the height of the window
-/// * `title` - the optional window title
 ///
 pub fn open_window(left: i32, top: i32, width: u32, height: u32,
                    title: Option<&str>) -> Result<(), ()> {
@@ -138,10 +137,6 @@ pub fn open_window(left: i32, top: i32, width: u32, height: u32,
 
 ///
 /// Open a window in the center of the screen.
-///
-/// * `width` - the width of the window
-/// * `height` - the height of the window
-/// * `title` - the optional window title
 ///
 pub fn centered_window(width: u32, height: u32, title: Option<&str>)
       -> Result<(), ()> {
@@ -173,9 +168,7 @@ pub fn pop_window_no_refresh() {
 }
 
 ///
-/// Set the colors used.
-///
-/// * `colors` - Colors struct
+/// Set the colors used by the newt library.
 ///
 pub fn set_colors(colors: &Colors) {
     let root_fg = CString::new(colors.root_fg).unwrap();
@@ -276,9 +269,9 @@ pub fn set_colors(colors: &Colors) {
 ///
 /// Set a specific color set.
 ///
-/// * `colorset` - the color set number to set
-/// * `fg` - the color set foreground color
-/// * `bg` - the color set background color
+/// * `colorset` - The color set number to set.
+/// * `fg` - The color set foreground color.
+/// * `bg` - The color set background color.
 ///
 pub fn set_color(colorset: i32, fg: &str, bg: &str) {
     let c_fg = CString::new(fg).unwrap();
@@ -377,14 +370,14 @@ pub fn get_screen_size() -> (i32, i32) {
 ///
 /// Reflow text according to the provided specifications.
 ///
-/// * `text` - the text to be reformatted
-/// * `width` - the target width of the text
-/// * `flex_down` - minimum difference from target width
-/// * `flex_up` - maximum difference from target width
+/// * `text` - The text to be reformatted.
+/// * `width` - The target width of the text.
+/// * `flex_down` - The minimum difference from target width.
+/// * `flex_up` - The maximum difference from target width.
 ///
-/// Returns the tuple `(String, actual_width, actual_height)` where `String`
-/// is the newly formatted text, `actual_width` is the new width of the text,
-/// and `actual_height` is the number of lines in the text.
+/// Returns the tuple ``(text, width, height)`` where ``text`` is the newly
+/// formatted text, ``width`` is the new width of the text, and ``height``
+/// is the number of lines in the text.
 ///
 pub fn reflow_text(text: &str, width: i32, flex_down: i32, flex_up: i32)
       -> (String, i32, i32) {

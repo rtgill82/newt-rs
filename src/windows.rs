@@ -1,3 +1,6 @@
+//!
+//! Convenient windowing functions.
+//!
 use std::ffi::CString;
 use libc::c_char;
 use newt_sys::*;
@@ -11,6 +14,9 @@ use std::ffi::CStr;
 #[cfg(feature = "asm")]
 use std::mem::size_of;
 
+///
+/// Open a simple message window.
+///
 pub fn win_message(title: &str, button_text: &str, text: &str) {
     unsafe {
         let c_title = CString::new(title).unwrap();
@@ -24,6 +30,11 @@ pub fn win_message(title: &str, button_text: &str, text: &str) {
     }
 }
 
+///
+/// Open a window providing a choice of buttons.
+///
+/// Returns the number of the button pressed.
+///
 pub fn win_choice(title: &str, button1: &str, button2: &str, text: &str)
   -> i32 {
     unsafe {
@@ -40,6 +51,11 @@ pub fn win_choice(title: &str, button1: &str, button2: &str, text: &str)
     }
 }
 
+///
+/// Open a window with three buttons.
+///
+/// Returns the number of the button pressed.
+///
 pub fn win_ternary(title: &str, button1: &str, button2: &str, button3: &str,
                    text: &str) -> i32 {
     unsafe {
@@ -58,6 +74,27 @@ pub fn win_ternary(title: &str, button1: &str, button2: &str, button3: &str,
     }
 }
 
+///
+/// Open a window containing a `Listbox` menu.
+///
+/// _Requires that the `asm` feature be enabled._
+///
+/// * `title` - The window title.
+/// * `text` - The message to display in the window.
+/// * `suggested_width` - The preferred width for the window.
+/// * `flex_down` - The minimum allowed difference between `suggested_width`
+///                 and actual width.
+/// * `flex_up` - The maximum allowed difference between `suggested_width`
+///               and actual width.
+/// * `max_list_height` - The maximum height to display the list of items.
+/// * `items` - A slice containing the text for each item in the list.
+/// * `buttons` - A slice containing the text for a number of buttons to display
+///               in the window.
+///
+/// Returns a tuple pair as `(button, item)` where `button` is the button
+/// number pressed to close the window and `item` is the item number in the
+/// list that was selected.
+///
 #[cfg(feature = "asm")]
 #[cfg(target_arch = "x86_64")]
 #[allow(clippy::too_many_arguments)]
@@ -201,6 +238,12 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
     (rv, list_item)
 }
 
+///
+/// A struct used to pass initial [`Entry`][entry] information to the
+/// `win_entries()` function.
+///
+/// [entry]: ../components/struct.Entry.html
+///
 #[cfg(feature = "asm")]
 #[derive(Default)]
 pub struct WinEntry {
@@ -211,6 +254,13 @@ pub struct WinEntry {
 
 #[cfg(feature = "asm")]
 impl WinEntry {
+    ///
+    /// Create a new `WinEntry`.
+    ///
+    /// * `text` - The text to display as the entry field label.
+    /// * `value` - The initial value of the `Entry` field.
+    /// * `flags` - The settings flags for the `Entry`.
+    ///
     pub fn new(text: &str, value: &str, flags: i32) -> WinEntry {
         WinEntry {
             text: String::from(text),
@@ -219,11 +269,45 @@ impl WinEntry {
         }
     }
 
+    ///
+    /// Returns the value of the corresponding `Entry`. This is either
+    /// the inital `value` set when the `WinEntry` is created, or the user
+    /// entered data provided by the [`win_entries()`][win_entries] function
+    /// if that has been run.
+    ///
+    /// [win_entries]: ../windows/fn.win_entries.html
+    ///
     pub fn value(&self) -> &str {
         self.value.as_str()
     }
 }
 
+///
+/// Open a window containing a number of text `Entry`s.
+///
+/// _Requires that the `asm` feature be enabled._
+///
+/// * `title` - The window title.
+/// * `text` - The message to display in the window.
+/// * `suggested_width` - The preferred width for the window.
+/// * `flex_down` - The minimum allowed difference between `suggested_width`
+///                 and actual width.
+/// * `flex_up` - The maximum allowed difference between `suggested_width`
+///               and actual width.
+/// * `data_width` - The field width for all `Entry`s.
+/// * `entries` - A slice containing of `WinEntry`s providing
+///               initial settings for each `Entry` field.
+/// * `buttons` - A slice containing the text for a number of buttons to
+///               display in the window.
+///
+/// Returns the number of the button pressed to close the window.
+///
+/// Each `WinEntry` in the `entries` array will be modified to contain the
+/// data entered by the user. This can be accessed via the
+/// [`WinEntry.value()`][win_entry_value] function.
+///
+/// [win_entry_value]: ../windows/struct.WinEntry.html#method.value
+///
 #[cfg(feature = "asm")]
 #[cfg(target_arch = "x86_64")]
 #[allow(clippy::too_many_arguments)]
