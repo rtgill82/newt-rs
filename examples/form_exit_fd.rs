@@ -12,7 +12,7 @@ use newt::components::CompactButton;
 use newt::components::Form;
 use newt::components::Textbox;
 use newt::components::form::ExitReason::*;
-use newt::constants::FD_READ;
+use newt::components::form::FDFlags;
 
 fn help() {
     println!("USAGE: form_exit_fd [-client SOCKET]\n");
@@ -52,7 +52,7 @@ fn server() {
 
     let mut form = Form::new(None, 0);
     form.add_components(&mut [&mut t, &mut b]).unwrap();
-    form.watch_fd(stream.as_raw_fd(), FD_READ);
+    form.watch_fd(stream.as_raw_fd(), FDFlags::Read);
 
     loop {
         let r = form.run().unwrap();

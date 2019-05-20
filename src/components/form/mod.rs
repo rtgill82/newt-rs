@@ -24,6 +24,13 @@ const NEWT_EXIT_ERROR: newtExitReason     = newtExitStruct_NEWT_EXIT_ERROR;
 #[allow(non_camel_case_types)]
 type newtExitStructUnion = newtExitStruct__bindgen_ty_2;
 
+#[repr(C)]
+pub enum FDFlags {
+    Read   = NEWT_FD_READ as isize,
+    Write  = NEWT_FD_WRITE as isize,
+    Except = NEWT_FD_EXCEPT as isize
+}
+
 #[derive(Component)]
 struct BaseComponent {
     co: newtComponent,
@@ -113,8 +120,8 @@ impl Form
         unsafe { newtFormSetTimer(self.co, millisecs); }
     }
 
-    pub fn watch_fd(&mut self, fd: RawFd, flags: i32) {
-        unsafe { newtFormWatchFd(self.co, fd, flags); }
+    pub fn watch_fd(&mut self, fd: RawFd, flags: FDFlags) {
+        unsafe { newtFormWatchFd(self.co, fd, flags as i32); }
     }
 
     pub fn get_current(&self) -> Box<dyn Component> {
