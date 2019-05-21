@@ -29,8 +29,10 @@ pub use self::windows::win_choice;
 #[doc(inline)]
 pub use self::windows::win_ternary;
 #[doc(inline)]
+#[cfg(feature = "asm")]
 pub use self::windows::win_menu;
 #[doc(inline)]
+#[cfg(feature = "asm")]
 pub use self::windows::win_entries;
 
 use newt_sys::*;
