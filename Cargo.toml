@@ -22,3 +22,6 @@ newt_component_derive = { path = "./newt_component_derive", version = "0.0.1" }
 [dev-dependencies]
 chrono   = "0.4"
 tempfile = "3.0"
+
+[package.metadata.docs.rs]
+features = ["asm"]
