@@ -2,15 +2,37 @@
 
 _Rust bindings for the Newt console UI library._
 
-Basic components have been implemented, but API is subject to change as
-development continues further and I become more familiar with Rust as
-a programming language.
+* [ChangeLog](https://github.com/xelkarin/newt-rs/blob/v0.4.0/ChangeLog.md)
 
-* [ChangeLog](https://github.com/xelkarin/newt-rs/blob/v0.3.0/ChangeLog.md)
+## Usage
+
+Include _newt_ as a dependency of in your `Cargo.toml` file as follows.
+
+```
+[dependencies]
+newt = "0.4"
+```
+
+The library API is currently subject to change and there are likely to be
+breaking changes between minor versions.
+
+### _asm_ feature
+
+Some library functions such as ``windows::win_menu()`` and
+``windows::win_entries()`` require the nightly build of the Rust compiler and
+the _newt_ _asm_ feature to be enabled. These are currently only available on
+the _x86_ and <i>x86_64</i> architectures.
+
+Enable the feature as follows in your `Cargo.toml` file.
+
+```
+[features]
+default = ["newt/asm"]
+```
 
 ## LICENSE
 
-Copyright (C) 2018  Robert Gill
+Copyright (C) 2018,2019  Robert Gill
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Library General Public

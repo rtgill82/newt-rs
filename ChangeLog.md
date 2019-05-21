@@ -1,13 +1,27 @@
 # ChangeLog
 
+## 0.4.0
+
+* Implement ``win_menu()`` and ``win_entries()`` functions. These require the
+  _asm_ feature to be enabled.
+
+* ``Form.watch_fd()`` accepts an ``FDFlags`` ``enum`` instead of raw integers.
+
+* ``reflow_text()`` returns it's results as a tuple.
+
+* Some functions now return ``Result`` instead of ``i32`` allowing for Rust
+  style error handling.
+
+* Convenience windows were moved to the ``windows`` module.
+
 ## 0.3.0
 
 * Implement component callbacks, help callbacks, suspend callbacks, and entry
   filters.
 
-* Implement Form.watch_fd().
+* Implement ``Form.watch_fd()``.
 
-* Implement get_position() and get_size() for Component.
+* Implement ``get_position()`` and ``get_size()`` for ``Component``.
 
 ## 0.2.2
 
