@@ -10,7 +10,7 @@ use crate::intern::funcs::char_slice_to_cstring;
 #[derive(Component)]
 pub struct Checkbox {
     co: newtComponent,
-    added_to_form: bool
+    added_to_parent: bool
 }
 
 impl Checkbox {
@@ -37,7 +37,7 @@ impl Checkbox {
                 newtCheckbox(left, top, c_text.as_ptr(), default, c_seq,
                              ptr::null_mut())
             },
-            added_to_form: false
+            added_to_parent: false
         }
     }
 

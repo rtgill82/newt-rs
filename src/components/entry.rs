@@ -10,7 +10,7 @@ use crate::constants::FlagsSense;
 #[derive(Component)]
 pub struct Entry {
     co: newtComponent,
-    added_to_form: bool
+    added_to_parent: bool
 }
 
 impl Entry  {
@@ -29,7 +29,7 @@ impl Entry  {
             co: unsafe {
                 newtEntry(left, top, ptr, width, ptr::null_mut(), flags)
             },
-            added_to_form: false
+            added_to_parent: false
         }
     }
 

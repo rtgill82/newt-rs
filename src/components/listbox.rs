@@ -12,7 +12,7 @@ use crate::intern::data::Data;
 #[derive(Component)]
 pub struct Listbox<D: Data = isize> {
     co: newtComponent,
-    added_to_form: bool,
+    added_to_parent: bool,
     data: PhantomData<D>
 }
 
@@ -20,7 +20,7 @@ impl<D: Data> Listbox<D> {
     pub fn new(left: i32, top: i32, height: i32, flags: i32) -> Listbox<D> {
         Listbox {
             co: unsafe { newtListbox(left, top, height, flags) },
-            added_to_form: false,
+            added_to_parent: false,
             data: PhantomData
         }
     }

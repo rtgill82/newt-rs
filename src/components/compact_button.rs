@@ -7,7 +7,7 @@ use newt_sys::*;
 #[derive(Component)]
 pub struct CompactButton {
     co: newtComponent,
-    added_to_form: bool
+    added_to_parent: bool
 }
 
 impl CompactButton {
@@ -15,7 +15,7 @@ impl CompactButton {
         let c_str = CString::new(text).unwrap();
         CompactButton {
             co: unsafe { newtCompactButton(left, top, c_str.as_ptr()) },
-            added_to_form: false
+            added_to_parent: false
         }
     }
 }

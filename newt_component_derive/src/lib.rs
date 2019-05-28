@@ -33,12 +33,12 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
                 self.co
             }
 
-            fn add_to_form(&mut self) {
-                self.added_to_form = true;
+            fn add_to_parent(&mut self) {
+                self.added_to_parent = true;
             }
 
-            fn added_to_form(&self) -> bool {
-                self.added_to_form
+            fn added_to_parent(&self) -> bool {
+                self.added_to_parent
             }
         }
     };
@@ -56,7 +56,7 @@ fn impl_component_drop(name: &Ident, generics: &Generics) -> TokenStream {
             #where_
         {
             fn drop(&mut self) {
-                if !self.added_to_form {
+                if !self.added_to_parent {
                     unsafe {
                         ::newt_sys::newtComponentDestroy(self.co);
                     }

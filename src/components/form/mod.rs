@@ -34,20 +34,20 @@ pub enum FDFlags {
 #[derive(Component)]
 struct BaseComponent {
     co: newtComponent,
-    added_to_form: bool
+    added_to_parent: bool
 }
 
 #[derive(Component)]
 pub struct Form
 {
     co: newtComponent,
-    added_to_form: bool
+    added_to_parent: bool
 }
 
 impl Drop for Form
 {
     fn drop(&mut self) {
-        if !self.added_to_form {
+        if !self.added_to_parent {
             unsafe { newtFormDestroy(self.co); }
         }
     }
@@ -58,7 +58,7 @@ impl Form
     pub fn new(_scrollbar: Option<&VerticalScrollbar>, flags: i32) -> Form {
         Form {
             co: unsafe { newtForm(ptr::null_mut(), ptr::null_mut(), flags) },
-            added_to_form: false
+            added_to_parent: false
         }
     }
 
@@ -77,16 +77,16 @@ impl Form
     }
 
     pub(crate) fn new_co(co: newtComponent) -> Form {
-        Form { co, added_to_form: false }
+        Form { co, added_to_parent: false }
     }
 
     pub fn add_component(&mut self, component: &mut dyn Component)
             -> Result<(), &'static str> {
-        if component.added_to_form() {
+        if component.added_to_parent() {
             return Err("Component already belongs to a Form");
         }
 
-        component.add_to_form();
+        component.add_to_parent();
         unsafe { newtFormAddComponent(self.co, component.co()); }
         Ok(())
     }
@@ -127,7 +127,7 @@ impl Form
     pub fn get_current(&self) -> Box<dyn Component> {
         Box::new(BaseComponent {
             co: unsafe { newtFormGetCurrent(self.co) },
-            added_to_form: true
+            added_to_parent: true
         })
     }
 
@@ -162,7 +162,7 @@ impl Form
                 NEWT_EXIT_COMPONENT => Ok(
                     Component(Box::new(BaseComponent {
                                        co: es.u.co,
-                                       added_to_form: true
+                                       added_to_parent: true
                     }))
                 ),
                 NEWT_EXIT_FDREADY => Ok(FDReady(es.u.watch)),
