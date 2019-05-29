@@ -4,7 +4,7 @@ extern crate newt_sys;
 use newt_sys::*;
 use crate::ptr;
 
-#[derive(Component)]
+#[derive(Component, ComponentFuncs)]
 pub struct VerticalScrollbar {
     co: newtComponent,
     added_to_parent: bool

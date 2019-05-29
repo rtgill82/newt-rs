@@ -13,6 +13,17 @@ pub fn component_derive(input: TokenStream) -> TokenStream {
     impl_component_macro(&ast)
 }
 
+#[proc_macro_derive(ComponentFuncs)]
+pub fn component_funcs_derive(input: TokenStream) -> TokenStream {
+    let ast: DeriveInput = syn::parse(input).unwrap();
+    let name = &ast.ident;
+
+    let gen = quote! {
+        impl ::components::component::ComponentFuncs for #name { }
+    };
+    gen.into()
+}
+
 fn impl_component_macro(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let generics = generics_remove_defaults(&ast.generics);

@@ -9,7 +9,7 @@ use newt_sys::*;
 use crate::constants::FlagsSense;
 use crate::intern::data::Data;
 
-#[derive(Component)]
+#[derive(Component, ComponentFuncs)]
 pub struct Listbox<D: Data = isize> {
     co: newtComponent,
     added_to_parent: bool,

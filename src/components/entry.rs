@@ -7,7 +7,7 @@ use crate::ptr;
 use newt_sys::*;
 use crate::constants::FlagsSense;
 
-#[derive(Component)]
+#[derive(Component, ComponentFuncs)]
 pub struct Entry {
     co: newtComponent,
     added_to_parent: bool

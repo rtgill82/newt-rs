@@ -3,7 +3,7 @@ extern crate newt_sys;
 
 use newt_sys::*;
 
-#[derive(Component)]
+#[derive(Component, ComponentFuncs)]
 pub struct Scale {
     co: newtComponent,
     added_to_parent: bool

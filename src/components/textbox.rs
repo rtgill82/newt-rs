@@ -5,7 +5,7 @@ use std::os::raw::c_char;
 
 use newt_sys::*;
 
-#[derive(Component)]
+#[derive(Component, ComponentFuncs)]
 pub struct Textbox {
     co: newtComponent,
     added_to_parent: bool

@@ -3,6 +3,8 @@ extern crate std;
 pub mod component;
 #[doc(inline)]
 pub use self::component::Component;
+#[doc(inline)]
+pub use self::component::ComponentFuncs;
 
 pub mod form;
 #[doc(inline)]

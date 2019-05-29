@@ -4,7 +4,7 @@ use std::ffi::CString;
 
 use newt_sys::*;
 
-#[derive(Component)]
+#[derive(Component, ComponentFuncs)]
 pub struct Button {
     co: newtComponent,
     added_to_parent: bool

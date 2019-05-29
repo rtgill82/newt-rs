@@ -7,7 +7,7 @@ use newt_sys::*;
 use crate::constants::FlagsSense;
 use crate::intern::funcs::char_slice_to_cstring;
 
-#[derive(Component)]
+#[derive(Component, ComponentFuncs)]
 pub struct Checkbox {
     co: newtComponent,
     added_to_parent: bool

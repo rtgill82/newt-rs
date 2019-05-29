@@ -32,11 +32,26 @@ pub trait Component {
     fn co(&self) -> newtComponent;
     fn add_to_parent(&mut self);
     fn added_to_parent(&self) -> bool;
+}
 
+///
+/// Implement shared functions for newt components.
+///
+pub trait ComponentFuncs: Component {
+    ///
+    /// Allow the `Component` to be focused when it's [`Form`][form] is run.
+    ///
+    /// [form]: ../components/form/struct.Form.html
+    ///
     fn takes_focus(&mut self, value: bool) {
         unsafe { newtComponentTakesFocus(self.co(), value as c_int); }
     }
 
+    ///
+    /// Get the position of the `Component`'s top left corner.
+    ///
+    /// Returns a tuple in the form of (left, top).
+    ///
     fn get_position(&self) -> (i32, i32) {
         let mut left: i32 = 0;
         let mut top:  i32 = 0;
@@ -45,6 +60,11 @@ pub trait Component {
         (left, top)
     }
 
+    ///
+    /// Get the `Component`'s width and height.
+    ///
+    /// Returns a tuple in the form of (width, height).
+    ///
     fn get_size(&self) -> (i32, i32) {
         let mut width:  i32 = 0;
         let mut height: i32 = 0;

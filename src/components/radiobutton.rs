@@ -5,7 +5,7 @@ use crate::ptr;
 
 use newt_sys::*;
 
-#[derive(Component)]
+#[derive(Component, ComponentFuncs)]
 pub struct Radiobutton {
     co: newtComponent,
     added_to_parent: bool
