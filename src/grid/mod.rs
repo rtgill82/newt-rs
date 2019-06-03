@@ -2,8 +2,7 @@
 //! Methods for arranging component placement.
 //!
 extern crate newt_sys;
-use libc::c_void;
-use std::ffi::CString;
+use std::ffi::{CString,c_void};
 use newt_sys::*;
 
 use crate::components::Component;
