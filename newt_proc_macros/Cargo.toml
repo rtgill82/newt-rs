@@ -1,5 +1,5 @@
 [package]
-name = "newt_component_derive"
+name = "newt_proc_macros"
 version = "0.0.1"
 authors = ["Robert Gill <locke@sdf.lonestar.org>"]
 description = "Proc macros for newt-rs"

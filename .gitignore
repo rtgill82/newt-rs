@@ -1,4 +1,4 @@
 /target
-/newt_component_derive/target/
+/newt_proc_macros/target/
 **/*.rs.bk
 Cargo.lock
