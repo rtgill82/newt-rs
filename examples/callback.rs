@@ -12,7 +12,7 @@ pub fn main() {
 
     let mut value: i32 = 0;
     {
-        let mut f = |_c: Option<&Component>, data: Option<&i32>| {
+        let mut f = |_c: Option<&dyn Component>, data: Option<&i32>| {
             value = *data.unwrap();
         };
 

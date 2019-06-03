@@ -6,14 +6,14 @@ use newt_sys::*;
 /// A callback called when a newt `Component` is activated.
 ///
 pub struct Callback<'a, FN: 'a, T: 'a>
-where FN: FnMut(Option<&Component>, Option<&T>)
+where FN: FnMut(Option<&dyn Component>, Option<&T>)
 {
     function: FN,
-    components: Vec<(&'a Component, Option<T>)>
+    components: Vec<(&'a dyn Component, Option<T>)>
 }
 
 impl<'a, FN: 'a, T: 'a> Callback<'a, FN, T>
-where FN: FnMut(Option<&Component>, Option<&T>)
+where FN: FnMut(Option<&dyn Component>, Option<&T>)
 {
     ///
     /// Create a new `Callback` using the function or closure `function` and
@@ -24,7 +24,7 @@ where FN: FnMut(Option<&Component>, Option<&T>)
     ///                `Component` is activated.
     /// * `data` - Optional user data to pass to the function.
     ///
-    pub fn new(component: &'a Component, function: FN, data: Option<T>)
+    pub fn new(component: &'a dyn Component, function: FN, data: Option<T>)
       -> Box<Callback<'a, FN, T>> {
 
         let cb = Box::new(Callback {
@@ -41,7 +41,7 @@ where FN: FnMut(Option<&Component>, Option<&T>)
     /// * `component` - Another `Component` to associate with the callback.
     /// * `data` - Optional user data to pass to the function.
     ///
-    pub fn add_component(&mut self, component: &'a Component, data: Option<T>)
+    pub fn add_component(&mut self, component: &'a dyn Component, data: Option<T>)
     {
         self.components.push((component, data));
         newt_set_callback(component.co(), &self);
@@ -57,7 +57,7 @@ where FN: FnMut(Option<&Component>, Option<&T>)
 }
 
 impl<'a, FN: 'a, T: 'a> Drop for Callback<'a, FN, T>
-where FN: FnMut(Option<&Component>, Option<&T>)
+where FN: FnMut(Option<&dyn Component>, Option<&T>)
 {
     fn drop(&mut self) {
         for (component, _data) in self.components.iter() {

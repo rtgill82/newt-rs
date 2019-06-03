@@ -9,7 +9,7 @@ use newt_sys::*;
 pub struct HorizontalStackedGrid<'a> {
     grid: newtGrid,
     added_to_parent: bool,
-    children: Option<&'a mut [&'a mut Component]>
+    children: Option<&'a mut [&'a mut dyn Component]>
 }
 
 impl<'a> HorizontalStackedGrid<'a> {
@@ -18,7 +18,7 @@ impl<'a> HorizontalStackedGrid<'a> {
     /// Create a new Grid in which the added components are stacked in a
     /// single row.
     ///
-    pub fn new(components: &'a mut [&'a mut Component])
+    pub fn new(components: &'a mut [&'a mut dyn Component])
       -> HorizontalStackedGrid<'a> {
         let mut types: Vec<newtGridElement> = Vec::new();
         let mut values: Vec<newtComponent> = Vec::new();
@@ -46,7 +46,7 @@ impl<'a> HorizontalStackedGrid<'a> {
     /// Create a new Grid in which the added components are closely
     /// stacked in a single row.
     ///
-    pub fn new_close_stacked(components: &'a mut [&'a mut Component])
+    pub fn new_close_stacked(components: &'a mut [&'a mut dyn Component])
       -> HorizontalStackedGrid<'a> {
         let mut types: Vec<newtGridElement> = Vec::new();
         let mut values: Vec<newtComponent> = Vec::new();

@@ -49,7 +49,7 @@ pub fn cstring_vec_to_ptrs(strings: &[CString]) -> Vec<*const c_char> {
 
 unsafe extern "C"
 fn callback<'a, FN: 'a, T: 'a>(co: newtComponent, data: *mut c_void)
-where FN: FnMut(Option<&Component>, Option<&T>)
+where FN: FnMut(Option<&dyn Component>, Option<&T>)
 {
     let cb = &mut *(data as *mut Callback<'a, FN, T>);
     cb.call(co);
@@ -86,7 +86,7 @@ where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
 
 pub fn newt_set_callback<'a, FN: 'a, T: 'a>(co: newtComponent,
                                             cb: &Callback<'a, FN, T>)
-where FN: FnMut(Option<&Component>, Option<&T>)
+where FN: FnMut(Option<&dyn Component>, Option<&T>)
 {
     unsafe {
         let c_ptr = cb as *const _ as *mut c_void;
@@ -94,7 +94,7 @@ where FN: FnMut(Option<&Component>, Option<&T>)
     }
 }
 
-pub fn newt_unset_callback(co: &Component)
+pub fn newt_unset_callback(co: &dyn Component)
 {
     unsafe {
         newtComponentAddCallback(co.co(), None, ptr::null_mut());

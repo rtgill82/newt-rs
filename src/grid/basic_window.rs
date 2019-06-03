@@ -9,7 +9,7 @@ use newt_sys::*;
 pub struct BasicWindow<'a> {
     grid: newtGrid,
     added_to_parent: bool,
-    children: Option<Vec<&'a mut Component>>
+    children: Option<Vec<&'a mut dyn Component>>
 }
 
 impl<'a> BasicWindow<'a> {
@@ -21,8 +21,8 @@ impl<'a> BasicWindow<'a> {
     /// * `buttons` - A sub-grid to display at the bottom of the window,
     ///               hopefully containing buttons.
     ///
-    pub fn new(text: &'a mut Component, middle: &'a mut Component,
-               buttons: &'a mut Component)
+    pub fn new(text: &'a mut dyn Component, middle: &'a mut dyn Component,
+               buttons: &'a mut dyn Component)
       -> BasicWindow<'a> {
 
         assert_eq!(text.grid_element_type(), NEWT_GRID_COMPONENT);
@@ -33,9 +33,9 @@ impl<'a> BasicWindow<'a> {
             newtGridBasicWindow(text.co(), middle.grid(), buttons.grid())
         };
 
-        let mut children: Vec<&'a mut Component> = Vec::new();
-        let middle: &mut Component = middle as &mut Component;
-        let buttons: &mut Component = buttons as &mut Component;
+        let mut children: Vec<&'a mut dyn Component> = Vec::new();
+        let middle: &mut dyn Component = middle as &mut dyn Component;
+        let buttons: &mut dyn Component = buttons as &mut dyn Component;
         children.push(text);
         children.push(middle);
         children.push(buttons);

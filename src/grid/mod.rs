@@ -49,7 +49,7 @@ pub struct Grid<'a> {
     cols: i32,
     rows: i32,
     added_to_parent: bool,
-    children: Option<Vec<&'a mut Component>>
+    children: Option<Vec<&'a mut dyn Component>>
 }
 
 impl<'a> Grid<'a> {
@@ -71,7 +71,7 @@ impl<'a> Grid<'a> {
     ///
     /// Add a component or sub-grid to the positon (`col`, `row`) in the grid.
     ///
-    pub fn set_field(&mut self, col: i32, row: i32, val: &'a mut Component,
+    pub fn set_field(&mut self, col: i32, row: i32, val: &'a mut dyn Component,
                      pad_left: i32, pad_top: i32, pad_right: i32,
                      pad_bottom: i32, anchor: i32, flags: i32) {
 
@@ -101,7 +101,7 @@ impl<'a> Grid<'a> {
 ///
 /// Wrap a grid in a centered window.
 ///
-pub fn wrapped_window(grid: &self::r#trait::Grid, title: &str) {
+pub fn wrapped_window(grid: &dyn self::r#trait::Grid, title: &str) {
     let c_str = CString::new(title).unwrap();
     unsafe { newtGridWrappedWindow(grid.grid(), c_str.as_ptr() as *mut i8); }
 }
@@ -109,7 +109,7 @@ pub fn wrapped_window(grid: &self::r#trait::Grid, title: &str) {
 ///
 /// Wrap a grid in a window at a specified location.
 ///
-pub fn wrapped_window_at(grid: &self::r#trait::Grid, title: &str,
+pub fn wrapped_window_at(grid: &dyn self::r#trait::Grid, title: &str,
                          left: i32, top: i32) {
     let c_str = CString::new(title).unwrap();
     unsafe {

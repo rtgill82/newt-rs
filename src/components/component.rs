@@ -74,19 +74,19 @@ pub trait ComponentFuncs: Component {
     }
 }
 
-impl Debug for Component {
+impl Debug for dyn Component {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "Component {{ {:p} }}", self.co())
     }
 }
 
-impl PartialEq for Component {
+impl PartialEq for dyn Component {
     fn eq(&self, other: &dyn Component) -> bool {
         self.co() == other.co()
     }
 }
 
-impl PartialEq<ExitReason> for Component {
+impl PartialEq<ExitReason> for dyn Component {
     fn eq(&self, other: &ExitReason) -> bool {
         if let ExitReason::Component(ref component) = other {
             return self.co() == component.co()
