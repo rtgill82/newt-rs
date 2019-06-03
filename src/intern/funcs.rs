@@ -14,6 +14,7 @@ use crate::Callback;
 use crate::callbacks::EntryFilter;
 use crate::callbacks::HelpCallback;
 use crate::callbacks::SuspendCallback;
+use crate::intern::Child;
 
 pub fn char_slice_to_cstring(slice: &[char]) -> CString {
     let mut vec: Vec<u8> = Vec::new();
@@ -61,7 +62,7 @@ where FN: FnMut(&Form, Option<&T>)
     if data.is_null() { return; };
     let cb = &mut *(data as *mut HelpCallback<FN, T>);
     let mut form = Form::new_co(co);
-    form.add_to_parent();
+    form.add_to_parent(false);
     cb.call(&form);
 }
 

@@ -4,6 +4,7 @@
 //! _Rust bindings for the Newt console UI library._
 //!
 #![cfg_attr(feature = "asm", feature(asm))]
+#![cfg_attr(feature = "asm", feature(proc_macro_hygiene))]
 #[macro_use]
 extern crate newt_component_derive;
 extern crate newt_sys;
@@ -18,6 +19,9 @@ pub mod callbacks;
 pub mod components;
 pub mod constants;
 pub mod windows;
+
+#[cfg(feature = "asm")]
+pub mod grid;
 
 #[doc(inline)]
 pub use self::callbacks::Callback;

@@ -7,6 +7,7 @@ use std::os::raw::{c_int,c_void};
 
 use newt_sys::*;
 use crate::components::form::ExitReason;
+use crate::intern::{Child,GridElementType};
 
 pub struct Data<'a, T: 'a>(pub &'a T);
 
@@ -28,10 +29,9 @@ impl<'a, T> Deref for Data<'a, T> {
     }
 }
 
-pub trait Component {
+pub trait Component: Child + GridElementType {
     fn co(&self) -> newtComponent;
-    fn add_to_parent(&mut self);
-    fn added_to_parent(&self) -> bool;
+    fn grid(&self) -> newtGrid;
 }
 
 ///

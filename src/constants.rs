@@ -71,6 +71,10 @@ pub const ENTRY_HIDDEN: i32       = NEWT_ENTRY_HIDDEN;
 pub const ENTRY_RETURNEXIT: i32   = NEWT_ENTRY_RETURNEXIT;
 pub const ENTRY_DISABLED: i32     = NEWT_ENTRY_DISABLED;
 
+pub const NEWT_GRID_EMPTY: newtGridElement     = newtGridElement_NEWT_GRID_EMPTY;
+pub const NEWT_GRID_COMPONENT: newtGridElement = newtGridElement_NEWT_GRID_COMPONENT;
+pub const NEWT_GRID_SUBGRID: newtGridElement   = newtGridElement_NEWT_GRID_SUBGRID;
+
 pub const TEXTBOX_WRAP: i32       = NEWT_TEXTBOX_WRAP;
 pub const TEXTBOX_SCROLL: i32     = NEWT_TEXTBOX_SCROLL;
 

@@ -86,7 +86,7 @@ impl Form
             return Err("Component already belongs to a Form");
         }
 
-        component.add_to_parent();
+        component.add_to_parent(false);
         unsafe { newtFormAddComponent(self.co, component.co()); }
         Ok(())
     }

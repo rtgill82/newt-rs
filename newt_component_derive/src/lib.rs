@@ -1,16 +1,25 @@
+#![recursion_limit="128"]
 extern crate proc_macro;
 extern crate syn;
+
+use syn::parse::Parser;
+use syn::punctuated::Punctuated;
+use syn::Expr;
+use syn::token::Comma;
 
 #[macro_use]
 extern crate quote;
 
+mod component;
+mod grid;
+
 use proc_macro::TokenStream;
-use syn::{DeriveInput,Generics,Ident};
+use syn::DeriveInput;
 
 #[proc_macro_derive(Component)]
 pub fn component_derive(input: TokenStream) -> TokenStream {
     let ast = syn::parse(input).unwrap();
-    impl_component_macro(&ast)
+    component::impl_component_macro(&ast)
 }
 
 #[proc_macro_derive(ComponentFuncs)]
@@ -24,124 +33,113 @@ pub fn component_funcs_derive(input: TokenStream) -> TokenStream {
     gen.into()
 }
 
-fn impl_component_macro(ast: &DeriveInput) -> TokenStream {
-    let name = &ast.ident;
-    let generics = generics_remove_defaults(&ast.generics);
-    let mut tokens = impl_component_base(&name, &generics);
-    tokens.extend(impl_component_drop(&name, &generics));
-    tokens.extend(impl_component_partial_eq_trait(&name, &generics));
-    tokens.extend(impl_component_partial_eq(&name, &generics));
-    tokens
+#[proc_macro_derive(Grid)]
+pub fn grid_derive(input: TokenStream) -> TokenStream {
+    let ast = syn::parse(input).unwrap();
+    grid::impl_grid_macro(&ast)
 }
 
-fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
-    let (impl_, type_, where_) = generics.split_for_impl();
-    let gen = quote! {
-        impl #impl_ ::components::Component for #name #type_
-            #where_
-        {
-            fn co(&self) -> ::newt_sys::newtComponent {
-                self.co
-            }
+#[proc_macro]
+pub fn grid_asm_x86_64(input: TokenStream) -> TokenStream {
+    let parser = Punctuated::<Expr, Comma>::parse_separated_nonempty;
+    let args = parser.parse(input).unwrap();
 
-            fn add_to_parent(&mut self) {
-                self.added_to_parent = true;
-            }
-
-            fn added_to_parent(&self) -> bool {
-                self.added_to_parent
-            }
-        }
-    };
-    gen.into()
-}
-
-fn impl_component_drop(name: &Ident, generics: &Generics) -> TokenStream {
-    if name == "Form" || name == "VerticalScrollbar" {
-        return TokenStream::new();
+    if args.len() != 5 {
+        panic!("Invalid number of arguments.");
     }
 
-    let (impl_, type_, where_) = generics.split_for_impl();
-    let gen = quote! {
-        impl #impl_ std::ops::Drop for #name #type_
-            #where_
-        {
-            fn drop(&mut self) {
-                if !self.added_to_parent {
-                    unsafe {
-                        ::newt_sys::newtComponentDestroy(self.co);
-                    }
-                }
-            }
-        }
-    };
-    gen.into()
-}
+    let mut args_iter = args.iter();
 
-fn impl_component_partial_eq_trait(name: &Ident, generics: &Generics)
-        -> TokenStream {
-    let generics_rhs = generics_add_rhs(&generics);
-    let (_impl, type_, _where) = generics.split_for_impl();
-    let (impl_, _type, where_) = generics_rhs.split_for_impl();
-    let gen = quote! {
-        impl #impl_ std::cmp::PartialEq<Rhs> for #name #type_
-            #where_
-        {
-            fn eq(&self, other: &Rhs) -> bool {
-                if self.co.is_null() {
-                    return false
-                }
-                self.co == other.co()
-            }
-        }
-    };
-    let rv = gen.into();
-    return rv;
-}
-
-fn impl_component_partial_eq(name: &Ident, generics: &Generics)
-        -> TokenStream {
-    let (impl_, type_, where_) = generics.split_for_impl();
-    let gen = quote! {
-        impl #impl_ std::cmp::PartialEq<Box<dyn (::components::Component)>> for #name #type_
-            #where_
-        {
-            fn eq(&self, other: &Box<dyn (::components::Component)>) -> bool {
-                if self.co.is_null() {
-                    return false
-                }
-                self.co == other.co()
-            }
-        }
-
-        impl #impl_ std::cmp::PartialEq<::components::form::ExitReason> for #name #type_
-            #where_
-        {
-            fn eq(&self, other: &::components::form::ExitReason) -> bool {
-                other == self
-            }
-        }
-    };
-    gen.into()
-}
-
-fn generics_add_rhs(generics: &Generics) -> Generics {
-    use syn::{GenericParam,parse_str};
-
-    let mut generics = generics.clone();
-    let rhs: GenericParam = parse_str("Rhs: ::components::Component").unwrap();
-    generics.params.push(rhs);
-    generics
-}
-
-fn generics_remove_defaults(generics: &Generics) -> Generics {
-    use syn::GenericParam::Type;
-
-    let mut generics = generics.clone();
-    for param in generics.params.iter_mut() {
-        if let Type(ref mut type_) = param {
-            type_.default = None;
-        }
+    let func;
+    if let Expr::Path(expr) = args_iter.next().unwrap() {
+        func = expr.path.segments.last().unwrap()
+                   .value().ident.to_string();
+    } else {
+        panic!();
     }
-    generics
+
+    let types = args_iter.next().unwrap();
+    let values = args_iter.next().unwrap();
+    let length = args_iter.next().unwrap();
+    let rv = args_iter.next().unwrap();
+
+    let asm = format!(
+        "movq $3,     %rcx
+         movq $2,     %rsi
+         movq $1,     %rdi
+
+         subq $$8,    %rsp
+         movq $4,     %rax
+         pushq        %rax
+         xorq %rbx,   %rbx
+         addq $$2,    %rbx
+
+         sub $$3,     %rcx
+         jz {f}_reg0
+         cmp $$-1,    %rcx
+         je {f}_null_r8
+         cmp $$-2,    %rcx
+         je {f}_null_rdx
+         movq %rcx,   %rax
+         shl $$1,     %rax
+         addq %rax,   %rbx
+
+         {f}_loop:
+         movq (%rsi), %rax
+         pushq        %rax
+         addq $$8,    %rsi
+         movl (%rdi), %eax
+         pushq        %rax
+         addq $$4,    %rdi
+         loop {f}_loop
+
+         {f}_reg0:
+         movq (%rsi), %r9
+         addq $$8,    %rsi
+         movl (%rdi), %eax
+         movq %rax,   %r8
+         addq $$4,    %rdi
+
+         {f}_reg1:
+         movq (%rsi), %rcx
+         addq $$8,    %rsi
+         movl (%rdi), %edx
+         addq $$4,    %rdi
+
+         {f}_reg2:
+         movq (%rsi), %rsi
+         movl (%rdi), %eax
+         movq %rax,   %rdi
+
+         xorq %rax,   %rax
+         call {f}
+         movq %rax,   $0
+
+         shl $$3,     %rbx
+         addq %rbx,   %rsp
+         jmp {f}_exit
+
+         {f}_null_r8:
+         movq $$0,    %r8
+         jmp {f}_reg1
+
+         {f}_null_rdx:
+         movq $$0,    %rdx
+         jmp {f}_reg2
+
+         {f}_exit:", f = func);
+
+    let gen = quote! {
+        unsafe {
+            asm! {
+                #asm
+
+                : "=r"(#rv)
+                : "m"(#types.as_ptr()), "m"(#values.as_ptr()),
+                  "m"(#length), "i"(NEWT_GRID_EMPTY)
+                : "rsp", "rax", "rbx", "rcx", "rdi", "rsi", "r8", "r9"
+            }
+        }
+    };
+    gen.into()
 }

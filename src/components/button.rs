@@ -18,4 +18,9 @@ impl Button {
             added_to_parent: false
         }
     }
+
+    #[cfg(feature = "asm")]
+    pub(crate) fn new_co(co: newtComponent) -> Button {
+        Button { co, added_to_parent: false }
+    }
 }
