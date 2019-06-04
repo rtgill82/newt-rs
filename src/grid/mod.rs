@@ -14,22 +14,22 @@ pub mod basic_window;
 #[doc(hidden)]
 pub mod button_bar;
 #[doc(hidden)]
-pub mod horizontal_stacked_grid;
+pub mod horizontal_grid;
 #[doc(hidden)]
 pub mod simple_window;
 #[doc(hidden)]
-pub mod vertical_stacked_grid;
+pub mod vertical_grid;
 
 #[doc(inline)]
 pub use self::basic_window::BasicWindow;
 #[doc(inline)]
 pub use self::button_bar::ButtonBar;
 #[doc(inline)]
-pub use self::horizontal_stacked_grid::HorizontalStackedGrid;
+pub use self::horizontal_grid::HorizontalGrid;
 #[doc(inline)]
 pub use self::simple_window::SimpleWindow;
 #[doc(inline)]
-pub use self::vertical_stacked_grid::VerticalStackedGrid;
+pub use self::vertical_grid::VerticalGrid;
 
 ///
 /// Trait implemented by Grid types.

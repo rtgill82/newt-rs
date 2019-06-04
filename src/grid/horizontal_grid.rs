@@ -3,23 +3,23 @@ use crate::constants::NEWT_GRID_EMPTY;
 use newt_sys::*;
 
 ///
-/// Place components vertically.
+/// Place components horizontally.
 ///
 #[derive(Grid)]
-pub struct VerticalStackedGrid<'a> {
+pub struct HorizontalGrid<'a> {
     grid: newtGrid,
     added_to_parent: bool,
     children: Option<&'a mut [&'a mut dyn Component]>
 }
 
-impl<'a> VerticalStackedGrid<'a> {
+impl<'a> HorizontalGrid<'a> {
     #[cfg(target_arch = "x86_64")]
     ///
     /// Create a new Grid in which the added components are stacked in a
-    /// single column.
+    /// single row.
     ///
     pub fn new(components: &'a mut [&'a mut dyn Component])
-      -> VerticalStackedGrid<'a> {
+      -> HorizontalGrid<'a> {
         let mut types: Vec<newtGridElement> = Vec::new();
         let mut values: Vec<newtComponent> = Vec::new();
         let mut grid: newtGrid;
@@ -33,8 +33,8 @@ impl<'a> VerticalStackedGrid<'a> {
         values.reverse();
 
         let len = components.len();
-        grid_asm_x86_64!(newtGridVStacked, types, values, len, grid);
-        VerticalStackedGrid {
+        grid_asm_x86_64!(newtGridHStacked, types, values, len, grid);
+        HorizontalGrid {
             grid: grid,
             added_to_parent: false,
             children: Some(components)
@@ -44,10 +44,10 @@ impl<'a> VerticalStackedGrid<'a> {
     #[cfg(target_arch = "x86")]
     ///
     /// Create a new Grid in which the added components are stacked in a
-    /// single column.
+    /// single row.
     ///
     pub fn new(components: &'a mut [&'a mut dyn Component])
-      -> VerticalStackedGrid<'a> {
+      -> HorizontalGrid<'a> {
         let mut types: Vec<newtGridElement> = Vec::new();
         let mut values: Vec<newtComponent> = Vec::new();
         let mut grid: newtGrid;
@@ -61,8 +61,8 @@ impl<'a> VerticalStackedGrid<'a> {
         values.reverse();
 
         let len = components.len();
-        grid_asm_x86!(newtGridVStacked, types, values, len, grid);
-        VerticalStackedGrid {
+        grid_asm_x86!(newtGridHStacked, types, values, len, grid);
+        HorizontalGrid {
             grid: grid,
             added_to_parent: false,
             children: Some(components)
@@ -72,10 +72,10 @@ impl<'a> VerticalStackedGrid<'a> {
     #[cfg(target_arch = "x86_64")]
     ///
     /// Create a new Grid in which the added components are closely
-    /// stacked in a single column.
+    /// stacked in a single row.
     ///
     pub fn new_close_stacked(components: &'a mut [&'a mut dyn Component])
-      -> VerticalStackedGrid<'a> {
+      -> HorizontalGrid<'a> {
         let mut types: Vec<newtGridElement> = Vec::new();
         let mut values: Vec<newtComponent> = Vec::new();
         let mut grid: newtGrid;
@@ -89,8 +89,8 @@ impl<'a> VerticalStackedGrid<'a> {
         values.reverse();
 
         let len = components.len();
-        grid_asm_x86_64!(newtGridVCloseStacked, types, values, len, grid);
-        VerticalStackedGrid {
+        grid_asm_x86_64!(newtGridHCloseStacked, types, values, len, grid);
+        HorizontalGrid {
             grid: grid,
             added_to_parent: false,
             children: Some(components)
@@ -100,10 +100,10 @@ impl<'a> VerticalStackedGrid<'a> {
     #[cfg(target_arch = "x86")]
     ///
     /// Create a new Grid in which the added components are closely
-    /// stacked in a single column.
+    /// stacked in a single row.
     ///
     pub fn new_close_stacked(components: &'a mut [&'a mut dyn Component])
-      -> VerticalStackedGrid<'a> {
+      -> HorizontalGrid<'a> {
         let mut types: Vec<newtGridElement> = Vec::new();
         let mut values: Vec<newtComponent> = Vec::new();
         let mut grid: newtGrid;
@@ -117,8 +117,8 @@ impl<'a> VerticalStackedGrid<'a> {
         values.reverse();
 
         let len = components.len();
-        grid_asm_x86!(newtGridVCloseStacked, types, values, len, grid);
-        VerticalStackedGrid {
+        grid_asm_x86!(newtGridHCloseStacked, types, values, len, grid);
+        HorizontalGrid {
             grid: grid,
             added_to_parent: false,
             children: Some(components)

@@ -16,7 +16,7 @@ pub fn main() {
     let mut l2 = Label::new(0, 0, "World");
     let components: &mut [&mut dyn Component] = &mut [&mut l1, &mut l2];
 
-    let mut stacked = HorizontalStackedGrid::new(components);
+    let mut stacked = HorizontalGrid::new(components);
     let mut button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
 
     {
