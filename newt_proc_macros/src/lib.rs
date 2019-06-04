@@ -143,3 +143,69 @@ pub fn grid_asm_x86_64(input: TokenStream) -> TokenStream {
     };
     gen.into()
 }
+
+#[proc_macro]
+pub fn grid_asm_x86(input: TokenStream) -> TokenStream {
+    let parser = Punctuated::<Expr, Comma>::parse_separated_nonempty;
+    let args = parser.parse(input).unwrap();
+
+    if args.len() != 5 {
+        panic!("Invalid number of arguments.");
+    }
+
+    let mut args_iter = args.iter();
+
+    let func;
+    if let Expr::Path(expr) = args_iter.next().unwrap() {
+        func = expr.path.segments.last().unwrap()
+                   .value().ident.to_string();
+    } else {
+        panic!();
+    }
+
+    let types = args_iter.next().unwrap();
+    let values = args_iter.next().unwrap();
+    let length = args_iter.next().unwrap();
+    let rv = args_iter.next().unwrap();
+
+    let asm = format!(
+        "mov $3,      %ecx
+         mov $2,      %esi
+         mov $1,      %edi
+
+         sub $$4,     %esp
+         mov $4,      %eax
+         push         %eax
+         mov %ecx,    %ebx
+         add $$1,     %ebx
+
+         {f}_loop:
+         mov  (%esi), %eax
+         push         %eax
+         add $$4,     %esi
+         mov  (%edi), %eax
+         push         %eax
+         add $$4,     %edi
+         loop {f}_loop
+
+         xor %eax,    %eax
+         call {f}
+         mov %eax,    $0
+
+         shl $$3,     %ebx
+         add %ebx,    %esp", f = func);
+
+    let gen = quote! {
+        unsafe {
+            asm! {
+                #asm
+
+                : "=r"(#rv)
+                : "m"(#types.as_ptr()), "m"(#values.as_ptr()),
+                  "m"(#length), "i"(NEWT_GRID_EMPTY)
+                : "esp", "eax", "ebx", "ecx", "edi", "esi"
+            }
+        }
+    };
+    gen.into()
+}
