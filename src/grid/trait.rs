@@ -3,11 +3,12 @@ use crate::intern::Child;
 use newt_sys::*;
 
 pub trait Grid: Child + Component {
-    fn add_to_form(&mut self, form: &mut Form) {
+    fn add_to_form(&mut self, form: &mut Form) -> Result<(), &'static str> {
         unsafe {
             newtGridAddComponentsToForm(self.grid(), form.co(), 1);
         }
-        self.add_to_parent(true);
+        self.add_to_parent(true)?;
+        Ok(())
     }
 
     fn get_size(&self) -> (i32, i32) {

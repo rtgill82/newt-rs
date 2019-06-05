@@ -25,7 +25,7 @@ pub fn main() {
         grid.set_field(0, 1, &mut button_bar, 1, 1, 1, 1, 0, 0);
 
         wrapped_window(&grid, "Grids");
-        grid.add_to_form(&mut form);
+        grid.add_to_form(&mut form).unwrap();
         rv = form.run().unwrap();
     }
     newt::finished();

@@ -57,16 +57,22 @@ fn impl_grid_child(name: &Ident, generics: &Generics) -> TokenStream {
         impl #impl_ crate::intern::Child for #name #type_
             #where_
         {
-            fn add_to_parent(&mut self, grid: bool) {
+            fn add_to_parent(&mut self, grid: bool)
+              -> Result<(), &'static str> {
+                if self.added_to_parent {
+                    return Err("Grid already belongs to a parent.");
+                }
+
                 if let Some(children) = &mut self.children {
                     for child in children.iter_mut() {
-                        child.add_to_parent(false);
+                        child.add_to_parent(false)?;
                     }
                 }
 
                 if !grid {
                     self.added_to_parent = true;
                 }
+                Ok(())
             }
 
             fn added_to_parent(&self) -> bool {

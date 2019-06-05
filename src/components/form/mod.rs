@@ -81,12 +81,8 @@ impl Form
     }
 
     pub fn add_component(&mut self, component: &mut dyn Component)
-            -> Result<(), &'static str> {
-        if component.added_to_parent() {
-            return Err("Component already belongs to a Form");
-        }
-
-        component.add_to_parent(false);
+      -> Result<(), &'static str> {
+        component.add_to_parent(false)?;
         unsafe { newtFormAddComponent(self.co, component.co()); }
         Ok(())
     }
@@ -94,8 +90,7 @@ impl Form
     pub fn add_components(&mut self, components: &mut [&mut dyn Component])
             -> Result<(), &'static str> {
         for component in components.iter_mut() {
-            let result = self.add_component(*component);
-            if result.is_err() { return result; }
+            self.add_component(*component)?;
         }
         Ok(())
     }
