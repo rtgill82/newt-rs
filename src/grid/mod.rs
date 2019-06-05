@@ -31,9 +31,7 @@ pub use self::simple_window::SimpleWindow;
 #[doc(inline)]
 pub use self::vertical_grid::VerticalGrid;
 
-///
-/// Trait implemented by Grid types.
-///
+#[doc(inline)]
 pub use self::r#trait::Grid as GridTrait;
 
 ///

@@ -2,6 +2,9 @@ use crate::components::{Component,Form};
 use crate::intern::Child;
 use newt_sys::*;
 
+///
+/// Trait implemented by Grid types.
+///
 pub trait Grid: Child + Component {
     fn add_to_form(&mut self, form: &mut Form) -> Result<(), &'static str> {
         unsafe {

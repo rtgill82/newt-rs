@@ -1,3 +1,6 @@
+//!
+//! newt UI objects.
+//!
 extern crate std;
 
 pub mod component;

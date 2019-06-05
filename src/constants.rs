@@ -1,3 +1,6 @@
+//!
+//! Constants used by the newt library.
+//!
 extern crate newt_sys;
 use newt_sys::*;
 

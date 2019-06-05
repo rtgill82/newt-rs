@@ -24,10 +24,18 @@ const NEWT_EXIT_ERROR: newtExitReason     = newtExitStruct_NEWT_EXIT_ERROR;
 #[allow(non_camel_case_types)]
 type newtExitStructUnion = newtExitStruct__bindgen_ty_2;
 
+///
+/// File descriptor flags for the [`Form.watch_fd()`][watch_fd] function.
+///
+/// [watch_fd]: ../form/struct.Form.html#method.watch_fd
+///
 #[repr(C)]
 pub enum FDFlags {
+    /// Exit when the file descriptor is ready for reading.
     Read   = NEWT_FD_READ as isize,
+    /// Exit when the file descriptor is ready for writing.
     Write  = NEWT_FD_WRITE as isize,
+    /// Exit when an exception has occurred on the file descriptor.
     Except = NEWT_FD_EXCEPT as isize
 }
 
@@ -37,6 +45,9 @@ struct BaseComponent {
     added_to_parent: bool
 }
 
+///
+/// Displays `Component`s and accepts user input.
+///
 #[derive(Component, ComponentFuncs)]
 pub struct Form
 {
@@ -55,6 +66,9 @@ impl Drop for Form
 
 impl Form
 {
+    ///
+    /// Creates a new `Form`.
+    ///
     pub fn new(_scrollbar: Option<&VerticalScrollbar>, flags: i32) -> Form {
         Form {
             co: unsafe { newtForm(ptr::null_mut(), ptr::null_mut(), flags) },
@@ -80,6 +94,9 @@ impl Form
         Form { co, added_to_parent: false }
     }
 
+    ///
+    /// Add a `Component` to the `Form` to be displayed when the `Form` is run.
+    ///
     pub fn add_component(&mut self, component: &mut dyn Component)
       -> Result<(), &'static str> {
         component.add_to_parent(false)?;
@@ -87,6 +104,9 @@ impl Form
         Ok(())
     }
 
+    ///
+    /// Add multiple `Component`s to the `Form`.
+    ///
     pub fn add_components(&mut self, components: &mut [&mut dyn Component])
             -> Result<(), &'static str> {
         for component in components.iter_mut() {
@@ -95,30 +115,59 @@ impl Form
         Ok(())
     }
 
+    ///
+    /// Set the height of the `Form`.
+    ///
     pub fn set_height(&mut self, height: i32) {
         unsafe { newtFormSetHeight(self.co, height); }
     }
 
+    ///
+    /// Set the width of the `Form`.
+    ///
     pub fn set_width(&mut self, width: i32) {
         unsafe { newtFormSetWidth(self.co, width); }
     }
 
+    ///
+    /// Tell the `Form` to resize itself.
+    ///
     pub fn set_size(&mut self) {
         unsafe { newtFormSetSize(self.co); }
     }
 
+    ///
+    /// Add an exit hot key to the `Form`. The `Form` will stop running
+    /// when the key is pressed.
+    ///
     pub fn add_hot_key(&mut self, key: i32) {
         unsafe { newtFormAddHotKey(self.co, key); }
     }
 
+    ///
+    /// Add an exit timer to the `Form`. The `Form` will stop running
+    /// when the timer times out.
+    ///
+    /// * `millisecs` - The timer countdown in milliseconds.
+    ///
     pub fn set_timer(&mut self, millisecs: i32) {
         unsafe { newtFormSetTimer(self.co, millisecs); }
     }
 
+    ///
+    /// Add a file descriptor for the `Form` to watch. The `Form` will stop
+    /// running when the specified activity occurs on the file descriptor.
+    ///
+    /// * `fd` - The file descriptor to watch.
+    /// * `flags` - Flags specifying the activity to watch for.
+    ///
     pub fn watch_fd(&mut self, fd: RawFd, flags: FDFlags) {
         unsafe { newtFormWatchFd(self.co, fd, flags as i32); }
     }
 
+    ///
+    /// Get the `Form`'s currently focused `Component`.
+    ///
     pub fn get_current(&self) -> Box<dyn Component> {
         Box::new(BaseComponent {
             co: unsafe { newtFormGetCurrent(self.co) },
@@ -126,10 +175,16 @@ impl Form
         })
     }
 
+    ///
+    /// Set the `Form`'s currently focused `Component`.
+    ///
     pub fn set_current(&mut self, subcomponent: &dyn Component) {
         unsafe { newtFormSetCurrent(self.co, subcomponent.co()); }
     }
 
+    ///
+    /// Set the `Form`'s background color.
+    ///
     pub fn set_background(&mut self, color: i32) {
         unsafe { newtFormSetBackground(self.co, color); }
     }
@@ -142,6 +197,10 @@ impl Form
         unsafe { newtFormSetScrollPosition(self.co, position); }
     }
 
+    ///
+    /// Run the form displaying all added components and accepting
+    /// input from the user.
+    ///
     pub fn run(&self) -> Result<ExitReason, ()> {
         use self::ExitReason::{HotKey,Component,FDReady,Timer};
 
@@ -168,6 +227,9 @@ impl Form
         }
     }
 
+    ///
+    /// Redraw the `Form`.
+    ///
     pub fn draw(&self) {
         unsafe { newtDrawForm(self.co); }
     }

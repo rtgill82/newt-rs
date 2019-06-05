@@ -29,8 +29,13 @@ impl<'a, T> Deref for Data<'a, T> {
     }
 }
 
+///
+/// Trait implemented by Component types and Grid types.
+///
 pub trait Component: Child + GridElementType {
+    /// Return object pointer cast as `newtComponent`.
     fn co(&self) -> newtComponent;
+    /// Return object pointer cast as `newtGrid`.
     fn grid(&self) -> newtGrid;
 }
 
