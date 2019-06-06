@@ -1,3 +1,4 @@
+#![cfg(feature = "asm")]
 extern crate newt;
 use newt::components::{Component,Button};
 use newt::grid::*;
