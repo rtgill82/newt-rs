@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.5.0
+
+* Implement Grids.
+
 ## 0.4.0
 
 * Implement ``win_menu()`` and ``win_entries()`` functions. These require the
