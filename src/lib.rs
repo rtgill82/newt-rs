@@ -15,6 +15,7 @@ use std::ptr;
 
 #[macro_use]
 mod intern;
+pub mod prelude;
 pub mod callbacks;
 pub mod components;
 pub mod constants;
