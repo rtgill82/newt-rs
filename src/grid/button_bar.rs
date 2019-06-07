@@ -92,11 +92,11 @@ impl ButtonBar {
                  jmp button_bar_exit
 
                  button_bar_null_r8:
-                 movq $$0,    %r8
+                 xorq %r8,    %r8
                  jmp button_bar_reg1
 
                  button_bar_null_rdx:
-                 movq $$0,    %rdx
+                 xorq %rdx,   %rdx
                  jmp button_bar_reg2
 
                  button_bar_exit:"

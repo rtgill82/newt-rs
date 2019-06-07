@@ -120,11 +120,11 @@ pub fn grid_asm_x86_64(input: TokenStream) -> TokenStream {
          jmp {f}_exit
 
          {f}_null_r8:
-         movq $$0,    %r8
+         xorq %r8,    %r8
          jmp {f}_reg1
 
          {f}_null_rdx:
-         movq $$0,    %rdx
+         xorq %rdx,   %rdx
          jmp {f}_reg2
 
          {f}_exit:", f = func);
