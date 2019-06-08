@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.5.1
+
+* Add ``prelude`` module containing the  ``Component`` trait.
+
 ## 0.5.0
 
 * Implement Grids.
