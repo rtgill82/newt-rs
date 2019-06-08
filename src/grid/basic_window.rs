@@ -34,8 +34,8 @@ impl<'a> BasicWindow<'a> {
         };
 
         let mut children: Vec<&'a mut dyn Component> = Vec::new();
-        let middle: &mut dyn Component = middle as &mut dyn Component;
-        let buttons: &mut dyn Component = buttons as &mut dyn Component;
+        let middle  = middle as &mut dyn Component;
+        let buttons = buttons as &mut dyn Component;
         children.push(text);
         children.push(middle);
         children.push(buttons);

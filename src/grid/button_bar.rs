@@ -13,6 +13,9 @@ use crate::intern::funcs::*;
 pub struct ButtonBar {
     grid: newtGrid,
     added_to_parent: bool,
+
+    // Define children as Option for compatibility
+    // with macros defined in newt_proc_macros.
     children: Option<Vec<Button>>
 }
 

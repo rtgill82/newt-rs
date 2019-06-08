@@ -8,10 +8,11 @@ use std::os::raw::c_void;
 use newt_sys::*;
 use crate::components::form::ExitReason;
 use crate::intern::{Child,GridElementType};
+use crate::intern;
 
 pub struct Data<'a, T: 'a>(pub &'a T);
 
-impl<'a, T: 'a> crate::intern::data::Data for Data<'a, T> {
+impl<'a, T: 'a> intern::data::Data for Data<'a, T> {
     fn newt_to_ptr(&self) -> *const c_void {
         self.0 as *const _ as *const c_void
     }
