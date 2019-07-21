@@ -1,8 +1,8 @@
 #![allow(unused_imports)]
 extern crate newt;
 #[cfg(feature = "asm")]
-use crate::newt::grid::*;
-use crate::newt::components::{Component,Form,Label};
+use newt::grid::*;
+use newt::prelude::*;
 
 #[cfg(feature = "asm")]
 pub fn main() {

@@ -1,8 +1,6 @@
 extern crate newt;
-use newt::components::CompactButton;
-use newt::components::Form;
-use newt::components::Label;
 use newt::callbacks::SuspendCallback;
+use newt::prelude::*;
 
 pub fn main() {
     newt::init().unwrap();

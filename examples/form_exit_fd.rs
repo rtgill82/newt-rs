@@ -8,11 +8,8 @@ use std::os::unix::net::{UnixListener,UnixStream};
 use std::process::exit;
 use tempfile::tempdir;
 
-use newt::components::CompactButton;
-use newt::components::Form;
-use newt::components::Textbox;
-use newt::components::form::ExitReason::*;
 use newt::components::form::FDFlags;
+use newt::prelude::*;
 
 fn help() {
     println!("USAGE: form_exit_fd [-client SOCKET]\n");
@@ -57,8 +54,8 @@ fn server() {
     loop {
         let r = form.run().unwrap();
         match r {
-            Component(_co) => break,
-            FDReady(fd) => {
+            ExitReason::Component(_co) => break,
+            ExitReason::FDReady(fd) => {
                 if fd == stream.as_raw_fd() {
                     let mut buf = BufReader::new(&stream);
                     let mut msg = String::new();

@@ -1,9 +1,6 @@
 extern crate newt;
 use newt::Callback;
-use newt::components::Checkbox;
-use newt::components::CompactButton;
-use newt::components::Component;
-use newt::components::Form;
+use newt::prelude::*;
 
 pub fn main() {
     newt::init().unwrap();

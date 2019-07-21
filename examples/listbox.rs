@@ -1,8 +1,5 @@
 extern crate newt;
-use newt::components::Listbox;
-use newt::components::CompactButton;
-use newt::components::Form;
-use newt::constants::FLAG_MULTIPLE;
+use newt::prelude::*;
 
 pub fn main() {
     newt::init().unwrap();

@@ -1,9 +1,6 @@
 extern crate newt;
-use newt::components::CompactButton;
-use newt::components::Entry;
-use newt::components::Form;
-use newt::components::Label;
 use newt::callbacks::EntryFilter;
+use newt::prelude::*;
 
 pub fn main() {
     newt::init().unwrap();

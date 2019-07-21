@@ -1,8 +1,5 @@
 extern crate newt;
-use newt::components::CompactButton;
-use newt::components::Form;
-use newt::components::Textbox;
-use newt::components::form::ExitReason;
+use newt::prelude::*;
 
 pub fn main() {
     newt::init().unwrap();
@@ -15,7 +12,7 @@ pub fn main() {
 
     text.set_text("Hello World!");
     form.add_components(&mut [&mut text, &mut ok]).unwrap();
-    let reason: ExitReason = form.run().unwrap();
+    let reason = form.run().unwrap();
     newt::finished();
 
     assert!(ok == reason);

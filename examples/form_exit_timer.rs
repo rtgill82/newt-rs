@@ -1,11 +1,6 @@
 extern crate chrono;
-
 use chrono::prelude::*;
-use newt::components::CompactButton;
-use newt::components::Entry;
-use newt::components::Form;
-use newt::components::Label;
-use newt::components::form::ExitReason::*;
+use newt::prelude::*;
 
 pub fn main() {
     newt::init().unwrap();
@@ -29,7 +24,7 @@ pub fn main() {
     loop {
         let r = form.run().unwrap();
         match r {
-            Component(co) => {
+            ExitReason::Component(co) => {
                 if co == b1 {
                     let t: i32 = e.get_text().parse().unwrap();
                     l1.set_text(&format!("Timer: {}ms", t));
@@ -44,7 +39,7 @@ pub fn main() {
                 if co == b3 { break; };
             },
 
-            Timer => {
+            ExitReason::Timer => {
                 let now = Local::now();
                 let timestr = now.format("%H:%M:%S%.3f").to_string();
                 let msg = format!("Last Event: {}", timestr);
