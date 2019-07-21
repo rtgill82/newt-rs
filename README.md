@@ -2,7 +2,20 @@
 
 _Rust bindings for the Newt console UI library._
 
-* [ChangeLog](https://github.com/xelkarin/newt-rs/blob/v0.5.0/ChangeLog.md)
+[ChangeLog](https://github.com/xelkarin/newt-rs/blob/v0.5.1/ChangeLog.md) |
+[API Docs](https://docs.rs/newt/0.5.1/newt/) |
+[crates.io](https://crates.io/crates/newt)
+
+This crate provides bindings to Red Hat, Inc.'s [Newt][newt] console UI
+library. Newt is a small and simple to use UI library providing widgets and
+basic stacked window management for console applications.
+
+The majority, if not all of Newt's functionality has been implemented.
+Although some [features][asm_feature] currently require the nightly build of the
+Rust compiler.
+
+[newt]: https://pagure.io/newt
+[asm_feature]: #asm_feature
 
 ## Usage
 
@@ -16,7 +29,7 @@ newt = "0.5"
 The library API is currently subject to change and there are likely to be
 breaking changes between minor versions.
 
-### _asm_ feature
+### <a name="asm_feature"></a> _asm_ feature
 
 Some library functions such as ``windows::win_menu()``,
 ``windows::win_entries()``, and ``Grid`` related functions require the nightly
@@ -26,8 +39,8 @@ are currently only available on the _x86_ and <i>x86_64</i> architectures.
 Enable the feature as follows in your `Cargo.toml` file.
 
 ```
-[features]
-default = ["newt/asm"]
+[dependencies]
+newt = { version = "0.5", features = ["asm"] }
 ```
 
 ## LICENSE

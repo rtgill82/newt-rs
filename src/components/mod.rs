@@ -1,5 +1,5 @@
 //!
-//! newt UI objects.
+//! newt UI widgets.
 //!
 extern crate std;
 

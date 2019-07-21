@@ -2,7 +2,9 @@
 
 ## 0.5.1
 
-* Add ``prelude`` module containing the  ``Component`` trait.
+* Documentation updates.
+
+* Add ``prelude`` module containing ``Component``s and constants.
 
 ## 0.5.0
 

@@ -5,6 +5,9 @@ use std::os::raw::c_char;
 
 use newt_sys::*;
 
+///
+/// A multi-line Textbox widget.
+///
 #[derive(Component, ComponentFuncs)]
 pub struct Textbox {
     co: newtComponent,

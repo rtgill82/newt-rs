@@ -7,6 +7,9 @@ use newt_sys::*;
 use crate::constants::FlagsSense;
 use crate::intern::funcs::char_slice_to_cstring;
 
+///
+/// A Checkbox widget.
+///
 #[derive(Component, ComponentFuncs)]
 pub struct Checkbox {
     co: newtComponent,

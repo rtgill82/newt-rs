@@ -10,6 +10,13 @@ use crate::components::form::ExitReason;
 use crate::intern::{Child,GridElementType};
 use crate::intern;
 
+///
+/// A wrapper for passing complex data to [CheckboxTree][checkbox_tree] and
+/// [Listbox][listbox] widgets.
+///
+/// [checkbox_tree]: ../struct.CheckboxTree.html
+/// [listbox]: ../struct.Listbox.html
+///
 pub struct Data<'a, T: 'a>(pub &'a T);
 
 impl<'a, T: 'a> intern::data::Data for Data<'a, T> {
@@ -70,6 +77,7 @@ impl<Rhs: Component> PartialEq<Rhs> for Box<dyn Component> {
 #[doc(hidden)]
 pub use self::funcs::Component as ComponentFuncs;
 
+#[doc(hidden)]
 pub mod funcs {
     use newt_sys::*;
     use crate::components::Component as ComponentTrait;

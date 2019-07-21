@@ -7,6 +7,9 @@ use crate::ptr;
 use newt_sys::*;
 use crate::constants::FlagsSense;
 
+///
+/// A field for reading text input from the user.
+///
 #[derive(Component, ComponentFuncs)]
 pub struct Entry {
     co: newtComponent,

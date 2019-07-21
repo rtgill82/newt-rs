@@ -4,6 +4,9 @@ use std::ffi::CString;
 
 use newt_sys::*;
 
+///
+/// A small button with no padding around its label.
+///
 #[derive(Component, ComponentFuncs)]
 pub struct CompactButton {
     co: newtComponent,

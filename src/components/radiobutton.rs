@@ -5,6 +5,9 @@ use crate::ptr;
 
 use newt_sys::*;
 
+///
+/// A Radiobutton widget.
+///
 #[derive(Component, ComponentFuncs)]
 pub struct Radiobutton {
     co: newtComponent,

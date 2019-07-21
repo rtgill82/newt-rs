@@ -3,6 +3,9 @@ extern crate newt_sys;
 
 use newt_sys::*;
 
+///
+/// A progress bar widget.
+///
 #[derive(Component, ComponentFuncs)]
 pub struct Scale {
     co: newtComponent,

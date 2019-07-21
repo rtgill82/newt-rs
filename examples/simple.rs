@@ -15,6 +15,12 @@ pub fn main() {
     let reason = form.run().unwrap();
     newt::finished();
 
-    assert!(ok == reason);
-    assert!(reason == ok);
+    match reason {
+        ExitReason::HotKey(key) => // F12 is the default HotKey
+            println!("Execution stopped due to HotKey: {}", key),
+        ExitReason::Component(co) =>
+            println!("Execution stopped due to Component: {:p}", co.co()),
+        _ =>
+            println!("Execution stopped due to other reason...")
+    }
 }

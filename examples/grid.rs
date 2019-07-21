@@ -19,9 +19,11 @@ pub fn main() {
     let mut stacked = HorizontalGrid::new(components);
     let mut button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
 
+    // Create subscope so that button_bar can be mutably borrowed by
+    // grid and iterated over immutably later.
     {
-        let mut grid = Grid::new(2, 2);
-        grid.set_field(1, 0, &mut stacked, 1, 1, 1, 1, 0, 0);
+        let mut grid = Grid::new(1, 2);
+        grid.set_field(0, 0, &mut stacked, 1, 1, 1, 1, 0, 0);
         grid.set_field(0, 1, &mut button_bar, 1, 1, 1, 1, 0, 0);
 
         wrapped_window(&grid, "Grids");

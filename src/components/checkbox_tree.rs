@@ -12,6 +12,9 @@ use crate::intern::data::Data;
 use crate::intern::funcs::char_slice_to_cstring;
 use crate::constants;
 
+///
+/// Checkboxes arranged in a collapsible tree.
+///
 #[derive(Component, ComponentFuncs)]
 pub struct CheckboxTree<D: Data = isize> {
     co: newtComponent,

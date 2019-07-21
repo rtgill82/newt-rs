@@ -4,6 +4,9 @@ use std::ffi::CString;
 
 use newt_sys::*;
 
+///
+/// A Button widget.
+///
 #[derive(Component, ComponentFuncs)]
 pub struct Button {
     co: newtComponent,

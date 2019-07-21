@@ -1,5 +1,126 @@
 //!
-//! Methods for arranging component placement.
+//! Methods for easily arranging component placement.
+//!
+//! Grids can be used to automatically arrange widgets in a window without
+//! having to manually specify their positions. The standard [`Grid`][grid]
+//! can be used to place components in specific arrangements. There are also
+//! [horizontal][horizontal] and [vertical][vertical] flavors to easily build
+//! rows or columns of components. The [`ButtonBar`][button_bar] will build
+//! a horizontal Grid full of Buttons when provided with a list of strings to
+//! use as Button text.
+//!
+//! Simple window management involving grids is also provided.
+//! [`grid::wrapped_window`][wrapped] and [`grid::wrapped_window_at`][wrapped_at]
+//! will create a titled window wrapping a `Grid` for quick information
+//! display. [`SimpleWindow`][simple] and [`BasicWindow`][basic] include
+//! `ButtonBar`s as well for simple user interaction.
+//!
+//! [grid]: struct.Grid.html
+//! [horizontal]: struct.HorizontalGrid.html
+//! [vertical]: struct.VerticalGrid.html
+//! [button_bar]: struct.ButtonBar.html
+//! [wrapped]: fn.wrapped_window.html
+//! [wrapped_at]: fn.wrapped_window_at.html
+//! [simple]: struct.SimpleWindow.html
+//! [basic]: struct.BasicWindow.html
+//!
+//! ## Example
+//!
+//! ```rust no_run
+//! extern crate newt;
+//! use newt::grid::*;
+//! use newt::prelude::*;
+//!
+//! pub fn main() {
+//!     newt::init().unwrap();
+//!     newt::cls();
+//!
+//!     let rv;
+//!
+//!     let mut form = Form::new(None, 0);
+//!     let mut l1 = Label::new(0, 0, "Hello");
+//!     let mut l2 = Label::new(0, 0, "World");
+//!     let components: &mut [&mut dyn Component] = &mut [&mut l1, &mut l2];
+//!
+//!     let mut stacked = HorizontalGrid::new(components);
+//!     let mut button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
+//!
+//!     // Create subscope so that button_bar can be mutably borrowed by
+//!     // grid and iterated over immutably later.
+//!     {
+//!         let mut grid = Grid::new(2, 2);
+//!         grid.set_field(1, 0, &mut stacked, 1, 1, 1, 1, 0, 0);
+//!         grid.set_field(0, 1, &mut button_bar, 1, 1, 1, 1, 0, 0);
+//!
+//!         wrapped_window(&grid, "Grids");
+//!         grid.add_to_form(&mut form).unwrap();
+//!         rv = form.run().unwrap();
+//!     }
+//!     newt::finished();
+//!
+//!     // This requires that no mutable references to button_bar are held.
+//!     for (i, button) in button_bar.buttons().iter().enumerate() {
+//!         if rv == *button {
+//!             println!("Button {} pressed.", i);
+//!         }
+//!     }
+//! }
+//! ```
+//!
+//! ## Warning
+//!
+//! It's possible for use after free errors to occur when calling `Component`
+//! functions in situations where a `Form` is allocated within a more limited
+//! scope before adding components to it. This is especially tricky when
+//! working with `Grid`s and `ButtonBar`s as a subscope allows mutably adding
+//! a `ButtonBar` to other `Grid`s while allowing it's buttons to be accessed
+//! immutably outside the scope. Allocating the `Form` within the subscope
+//! will destroy it, leaving the `Component`s it contains invalid.
+//!
+//! The following illustrates what **NOT** to do:
+//!
+//! ```rust no_run
+//! extern crate newt;
+//! use newt::grid::*;
+//! use newt::prelude::*;
+//!
+//! pub fn main() {
+//!     newt::init().unwrap();
+//!     newt::cls();
+//!
+//!     let rv;
+//!
+//!     let mut l1 = Label::new(0, 0, "Hello");
+//!     let mut l2 = Label::new(0, 0, "World");
+//!     let components: &mut [&mut dyn Component] = &mut [&mut l1, &mut l2];
+//!
+//!     let mut stacked = HorizontalGrid::new(components);
+//!     let mut button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
+//!
+//!     let pos1 = button_bar.buttons().first()
+//!                          .unwrap().get_position();
+//!
+//!     // Create subscope so that button_bar can be mutably borrowed by
+//!     // grid and iterated over immutably later.
+//!     {
+//!         // Allocate form within subscope
+//!         let mut form = Form::new(None, 0);
+//!         let mut grid = Grid::new(2, 2);
+//!         grid.set_field(1, 0, &mut stacked, 1, 1, 1, 1, 0, 0);
+//!         grid.set_field(0, 1, &mut button_bar, 1, 1, 1, 1, 0, 0);
+//!
+//!         wrapped_window(&grid, "Grids");
+//!         grid.add_to_form(&mut form).unwrap();
+//!         rv = form.run().unwrap();
+//!         // Form is destroyed when scope exits
+//!     }
+//!     newt::finished();
+//!
+//!     let pos2 = button_bar.buttons().first()
+//!                          .unwrap().get_position();
+//!     assert_eq!(pos1, pos2);
+//! }
+//! ```
 //!
 extern crate newt_sys;
 use std::ffi::{CString,c_void};

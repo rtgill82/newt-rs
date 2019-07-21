@@ -4,6 +4,9 @@ extern crate newt_sys;
 use newt_sys::*;
 use crate::ptr;
 
+///
+/// A VerticalScrollbar widget (unimplemented).
+///
 #[derive(Component, ComponentFuncs)]
 pub struct VerticalScrollbar {
     co: newtComponent,

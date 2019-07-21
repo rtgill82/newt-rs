@@ -1,7 +1,70 @@
-//!
 //! # newt-rs
 //!
 //! _Rust bindings for the Newt console UI library._
+//!
+//! This crate provides bindings to Red Hat, Inc.'s [Newt][newt] console
+//! UI library. Newt is a small and simple to use UI library providing
+//! widgets and basic stacked window management for console applications.
+//!
+//! The majority, if not all of Newt's functionality has been implemented.
+//! Although some [features][features] currently require the nightly build of the
+//! Rust compiler.
+//!
+//! [newt]: https://pagure.io/newt
+//! [features]: #features
+//!
+//! ## Example
+//!
+//! ```rust no_run
+//! extern crate newt;
+//! use newt::prelude::*;
+//!
+//! pub fn main() {
+//!     newt::init().unwrap();
+//!     newt::cls();
+//!     newt::centered_window(20, 5, Some("Greetings")).unwrap();
+//!
+//!     let mut form = Form::new(None, 0);
+//!     let mut text = Textbox::new(4, 1, 12, 1, 0);
+//!     let mut ok = CompactButton::new(7, 3, "Ok");
+//!
+//!     text.set_text("Hello World!");
+//!     form.add_components(&mut [&mut text, &mut ok]).unwrap();
+//!     let reason = form.run().unwrap();
+//!     newt::finished();
+//!
+//!     match reason {
+//!         ExitReason::HotKey(key) => // F12 is the default HotKey
+//!             println!("Execution stopped due to HotKey: {}", key),
+//!         ExitReason::Component(co) =>
+//!             println!("Execution stopped due to Component: {:p}", co.co()),
+//!         _ =>
+//!             println!("Execution stopped due to other reason...")
+//!     }
+//! }
+//! ```
+//!
+//! ## Features
+//!
+//! - `asm` - Allows building of the [Grid][grid] module and the
+//!           [windows::win_entries][win_entries] function. These require the
+//!           inline assembly feature of Rust which is only available in nightly
+//!           builds. This feature is also only available on x86/x86_64
+//!           architectures.
+//!
+//! [grid]: grid/index.html
+//! [win_entries]: windows/fn.win_entries.html
+//!
+//! ## Bugs
+//!
+//! A `Form` can be destroyed before the `Component`s they contain are
+//! dropped, causing the `newtComponent` pointers they reference to become
+//! invalid. Any functions called on these `Component`s may return invalid
+//! values or even cause segmentation faults. Do **NOT** allocate `Form`s
+//! within a more limited scope than the `Component`s they contain. An example
+//! of this issue can be found [here][use_after_free].
+//!
+//! [use_after_free]: grid/index.html#warning
 //!
 #![cfg_attr(feature = "asm", feature(asm))]
 #![cfg_attr(feature = "asm", feature(proc_macro_hygiene))]
@@ -9,7 +72,7 @@
 extern crate newt_proc_macros;
 extern crate newt_sys;
 
-use std::ffi::{CStr, CString};
+use std::ffi::{CStr,CString};
 use std::os::raw::{c_char,c_int};
 use std::ptr;
 

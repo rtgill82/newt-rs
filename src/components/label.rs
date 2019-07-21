@@ -4,6 +4,9 @@ use std::ffi::CString;
 
 use newt_sys::*;
 
+///
+/// A simple widget for displaying static text.
+///
 #[derive(Component, ComponentFuncs)]
 pub struct Label {
     co: newtComponent,

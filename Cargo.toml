@@ -1,6 +1,6 @@
 [package]
 name = "newt"
-version = "0.5.0"
+version = "0.5.1"
 authors = ["Robert Gill <locke@sdf.lonestar.org>"]
 description = "Rust bindings for the Newt console UI library"
 repository = "https://github.com/xelkarin/newt-rs"
