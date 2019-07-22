@@ -7,7 +7,7 @@ use crate::ptr;
 ///
 /// A VerticalScrollbar widget (unimplemented).
 ///
-#[derive(Component, ComponentFuncs)]
+#[derive(Component)]
 pub struct VerticalScrollbar {
     co: newtComponent,
     added_to_parent: bool

@@ -29,6 +29,8 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
             }
         }
 
+        impl #impl_ ::components::ComponentFuncs for #name #type_ { }
+
         impl #impl_ ::intern::Child for #name #type_
             #where_
         {

@@ -10,7 +10,7 @@ use crate::constants::FlagsSense;
 ///
 /// A field for reading text input from the user.
 ///
-#[derive(Component, ComponentFuncs)]
+#[derive(Component)]
 pub struct Entry {
     co: newtComponent,
     added_to_parent: bool

@@ -10,7 +10,7 @@ use crate::intern::funcs::char_slice_to_cstring;
 ///
 /// A Checkbox widget.
 ///
-#[derive(Component, ComponentFuncs)]
+#[derive(Component)]
 pub struct Checkbox {
     co: newtComponent,
     added_to_parent: bool

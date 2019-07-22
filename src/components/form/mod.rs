@@ -39,7 +39,7 @@ pub enum FDFlags {
     Except = NEWT_FD_EXCEPT as isize
 }
 
-#[derive(Component, ComponentFuncs)]
+#[derive(Component)]
 struct BaseComponent {
     co: newtComponent,
     added_to_parent: bool
@@ -48,7 +48,7 @@ struct BaseComponent {
 ///
 /// Displays `Component`s and accepts user input.
 ///
-#[derive(Component, ComponentFuncs)]
+#[derive(Component)]
 pub struct Form
 {
     co: newtComponent,

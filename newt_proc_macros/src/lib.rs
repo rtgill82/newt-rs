@@ -14,23 +14,11 @@ mod component;
 mod grid;
 
 use proc_macro::TokenStream;
-use syn::DeriveInput;
 
 #[proc_macro_derive(Component)]
 pub fn component_derive(input: TokenStream) -> TokenStream {
     let ast = syn::parse(input).unwrap();
     component::impl_component_macro(&ast)
-}
-
-#[proc_macro_derive(ComponentFuncs)]
-pub fn component_funcs_derive(input: TokenStream) -> TokenStream {
-    let ast: DeriveInput = syn::parse(input).unwrap();
-    let name = &ast.ident;
-
-    let gen = quote! {
-        impl ::components::component::ComponentFuncs for #name { }
-    };
-    gen.into()
 }
 
 #[proc_macro_derive(Grid)]

@@ -8,7 +8,7 @@ use newt_sys::*;
 ///
 /// A multi-line Textbox widget.
 ///
-#[derive(Component, ComponentFuncs)]
+#[derive(Component)]
 pub struct Textbox {
     co: newtComponent,
     added_to_parent: bool

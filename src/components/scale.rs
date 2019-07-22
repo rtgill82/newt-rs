@@ -6,7 +6,7 @@ use newt_sys::*;
 ///
 /// A progress bar widget.
 ///
-#[derive(Component, ComponentFuncs)]
+#[derive(Component)]
 pub struct Scale {
     co: newtComponent,
     added_to_parent: bool

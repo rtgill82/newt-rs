@@ -7,7 +7,7 @@ use newt_sys::*;
 ///
 /// A small button with no padding around its label.
 ///
-#[derive(Component, ComponentFuncs)]
+#[derive(Component)]
 pub struct CompactButton {
     co: newtComponent,
     added_to_parent: bool

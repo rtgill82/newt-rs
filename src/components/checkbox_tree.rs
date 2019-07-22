@@ -15,7 +15,7 @@ use crate::constants;
 ///
 /// Checkboxes arranged in a collapsible tree.
 ///
-#[derive(Component, ComponentFuncs)]
+#[derive(Component)]
 pub struct CheckboxTree<D: Data = isize> {
     co: newtComponent,
     added_to_parent: bool,

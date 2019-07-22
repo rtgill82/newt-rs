@@ -7,7 +7,7 @@ use newt_sys::*;
 ///
 /// A simple widget for displaying static text.
 ///
-#[derive(Component, ComponentFuncs)]
+#[derive(Component)]
 pub struct Label {
     co: newtComponent,
     added_to_parent: bool

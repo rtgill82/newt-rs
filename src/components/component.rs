@@ -3,7 +3,7 @@ extern crate newt_sys;
 use std::cmp::PartialEq;
 use std::fmt::Debug;
 use std::ops::Deref;
-use std::os::raw::c_void;
+use std::os::raw::{c_int,c_void};
 
 use newt_sys::*;
 use crate::components::form::ExitReason;
@@ -74,58 +74,47 @@ impl<Rhs: Component> PartialEq<Rhs> for Box<dyn Component> {
     }
 }
 
-#[doc(hidden)]
-pub use self::funcs::Component as ComponentFuncs;
-
-#[doc(hidden)]
-pub mod funcs {
-    use newt_sys::*;
-    use crate::components::Component as ComponentTrait;
-    use std::os::raw::c_int;
-
-    #[doc(inline)]
+///
+/// Implement shared functions for newt components.
+///
+pub trait ComponentFuncs: Component {
     ///
-    /// Implement shared functions for newt components.
+    /// Allow the `Component` to be focused when it's [`Form`][form] is
+    /// run.
     ///
-    pub trait Component: ComponentTrait {
-        ///
-        /// Allow the `Component` to be focused when it's [`Form`][form] is
-        /// run.
-        ///
-        /// [form]: ../components/form/struct.Form.html
-        ///
-        fn takes_focus(&mut self, value: bool) {
-            unsafe { newtComponentTakesFocus(self.co(), value as c_int); }
-        }
+    /// [form]: ../components/form/struct.Form.html
+    ///
+    fn takes_focus(&mut self, value: bool) {
+        unsafe { newtComponentTakesFocus(self.co(), value as c_int); }
+    }
 
-        ///
-        /// Get the position of the `Component`'s top left corner.
-        ///
-        /// Returns a tuple in the form of (left, top).
-        ///
-        fn get_position(&self) -> (i32, i32) {
-            let mut left: i32 = 0;
-            let mut top:  i32 = 0;
+    ///
+    /// Get the position of the `Component`'s top left corner.
+    ///
+    /// Returns a tuple in the form of (left, top).
+    ///
+    fn get_position(&self) -> (i32, i32) {
+        let mut left: i32 = 0;
+        let mut top:  i32 = 0;
 
-            unsafe {
-                newtComponentGetPosition(self.co(), &mut left, &mut top)
-            };
-            (left, top)
-        }
+        unsafe {
+            newtComponentGetPosition(self.co(), &mut left, &mut top)
+        };
+        (left, top)
+    }
 
-        ///
-        /// Get the `Component`'s width and height.
-        ///
-        /// Returns a tuple in the form of (width, height).
-        ///
-        fn get_size(&self) -> (i32, i32) {
-            let mut width:  i32 = 0;
-            let mut height: i32 = 0;
+    ///
+    /// Get the `Component`'s width and height.
+    ///
+    /// Returns a tuple in the form of (width, height).
+    ///
+    fn get_size(&self) -> (i32, i32) {
+        let mut width:  i32 = 0;
+        let mut height: i32 = 0;
 
-            unsafe {
-                newtComponentGetSize(self.co(), &mut width, &mut height)
-            };
-            (width, height)
-        }
+        unsafe {
+            newtComponentGetSize(self.co(), &mut width, &mut height)
+        };
+        (width, height)
     }
 }

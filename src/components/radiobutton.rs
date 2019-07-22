@@ -8,7 +8,7 @@ use newt_sys::*;
 ///
 /// A Radiobutton widget.
 ///
-#[derive(Component, ComponentFuncs)]
+#[derive(Component)]
 pub struct Radiobutton {
     co: newtComponent,
     added_to_parent: bool

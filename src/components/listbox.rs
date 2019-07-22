@@ -12,7 +12,7 @@ use crate::intern::data::Data;
 ///
 /// A widget for displaying a list of selectable items.
 ///
-#[derive(Component, ComponentFuncs)]
+#[derive(Component)]
 pub struct Listbox<D: Data = isize> {
     co: newtComponent,
     added_to_parent: bool,

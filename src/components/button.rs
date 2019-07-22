@@ -7,7 +7,7 @@ use newt_sys::*;
 ///
 /// A Button widget.
 ///
-#[derive(Component, ComponentFuncs)]
+#[derive(Component)]
 pub struct Button {
     co: newtComponent,
     added_to_parent: bool
