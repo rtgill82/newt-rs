@@ -53,37 +53,37 @@ impl ButtonBar {
                  addq $$2,    %rbx
 
                  sub $$3,     %rcx
-                 jz button_bar_reg0
+                 jz           reg0${:uid}
                  cmp $$-1,    %rcx
-                 je button_bar_null_r8
+                 je           null_r8${:uid}
                  cmp $$-2,    %rcx
-                 je button_bar_null_rdx
+                 je           null_rdx${:uid}
                  movq %rcx,   %rax
                  shl $$1,     %rax
                  addq %rax,   %rbx
 
-                 button_bar_loop:
+                 loop${:uid}:
                  movq %rsi,   %rax
                  pushq        %rax
                  addq $$8,    %rsi
                  movq (%rdi), %rax
                  pushq        %rax
                  addq $$8,    %rdi
-                 loop button_bar_loop
+                 loop         loop${:uid}
 
-                 button_bar_reg0:
+                 reg0${:uid}:
                  movq %rsi,   %r9
                  addq $$8,    %rsi
                  movq (%rdi), %r8
                  addq $$8,    %rdi
 
-                 button_bar_reg1:
+                 reg1${:uid}:
                  movq %rsi,   %rcx
                  addq $$8,    %rsi
                  movq (%rdi), %rdx
                  addq $$8,    %rdi
 
-                 button_bar_reg2:
+                 reg2${:uid}:
                  movq (%rdi), %rdi
 
                  xorq %rax,   %rax
@@ -92,17 +92,17 @@ impl ButtonBar {
 
                  shl $$3,     %rbx
                  addq %rbx,   %rsp
-                 jmp button_bar_exit
+                 jmp          exit${:uid}
 
-                 button_bar_null_r8:
+                 null_r8${:uid}:
                  xorq %r8,    %r8
-                 jmp button_bar_reg1
+                 jmp          reg1${:uid}
 
-                 button_bar_null_rdx:
+                 null_rdx${:uid}:
                  xorq %rdx,   %rdx
-                 jmp button_bar_reg2
+                 jmp          reg2${:uid}
 
-                 button_bar_exit:"
+                 exit${:uid}:"
 
                 : "=r"(grid)
                 : "m"(button_ptrs.as_ptr()), "m"(buttons_buf),
@@ -160,14 +160,14 @@ impl ButtonBar {
                  mov %ecx,    %ebx
                  add $$1,     %ebx
 
-                 button_bar_loop:
+                 loop${:uid}:
                  mov %esi,    %eax
                  push         %eax
                  add $$4,     %esi
                  mov (%edi),  %eax
                  push         %eax
                  add $$4,     %edi
-                 loop button_bar_loop
+                 loop         loop${:uid}
 
                  xor %eax,    %eax
                  call newtButtonBar

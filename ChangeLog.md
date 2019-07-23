@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 0.5.2
+
+* Fix inline assembly _invalid symbol redefinition_ error when making
+  release builds.
+
 ## 0.5.1
 
 * Documentation updates.

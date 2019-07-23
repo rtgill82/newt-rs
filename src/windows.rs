@@ -121,16 +121,16 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              movq %rcx,   %rbx
 
              test $$1,    %rcx
-             jz win_menu_loop
+             jz           loop${:uid}
 
              subq $$8,    %rsp
              addq $$1,    %rbx
 
-             win_menu_loop:
+             loop${:uid}:
              movq (%rsi), %rax
              pushq        %rax
              addq $$8,    %rsi
-             loop         win_menu_loop
+             loop         loop${:uid}
 
              movq $8,     %rax
              pushq        %rax
@@ -190,16 +190,16 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              mov %ecx,   %ebx
 
              test $$1,   %ecx
-             jz win_menu_loop
+             jz          loop${:uid}
 
              sub $$4,    %esp
              add $$1,    %ebx
 
-             win_menu_loop:
+             loop${:uid}:
              mov (%esi), %eax
              push        %eax
              add $$4,    %esi
-             loop        win_menu_loop
+             loop        loop${:uid}
 
              mov $8,     %eax
              push        %eax
@@ -358,16 +358,16 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              movq %rcx,   %rbx
 
              test $$1,    %rcx
-             jnz win_entries_loop
+             jnz          loop${:uid}
 
              subq $$8,    %rsp
              addq $$1,    %rbx
 
-             win_entries_loop:
+             loop${:uid}:
              movq (%rsi), %rax
              pushq        %rax
              addq $$8,    %rsi
-             loop         win_entries_loop
+             loop         loop${:uid}
 
              movq $7,     %rax
              pushq        %rax
@@ -458,16 +458,16 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              mov %ecx,   %ebx
 
              test $$1,   %ecx
-             jnz win_entries_loop
+             jnz         loop${:uid}
 
              sub $$4,    %esp
              add $$1,    %ebx
 
-             win_entries_loop:
+             loop${:uid}:
              mov (%esi), %eax
              push        %eax
              add  $$4,   %esi
-             loop        win_entries_loop
+             loop        loop${:uid}
 
              mov $7,     %eax
              push        %eax

@@ -63,38 +63,38 @@ pub fn grid_asm_x86_64(input: TokenStream) -> TokenStream {
          addq $$2,    %rbx
 
          sub $$3,     %rcx
-         jz {f}_reg0
+         jz           reg0${{:uid}}
          cmp $$-1,    %rcx
-         je {f}_null_r8
+         je           null_r8${{:uid}}
          cmp $$-2,    %rcx
-         je {f}_null_rdx
+         je           null_rdx${{:uid}}
          movq %rcx,   %rax
          shl $$1,     %rax
          addq %rax,   %rbx
 
-         {f}_loop:
+         loop${{:uid}}:
          movq (%rsi), %rax
          pushq        %rax
          addq $$8,    %rsi
          movl (%rdi), %eax
          pushq        %rax
          addq $$4,    %rdi
-         loop {f}_loop
+         loop         loop${{:uid}}
 
-         {f}_reg0:
+         reg0${{:uid}}:
          movq (%rsi), %r9
          addq $$8,    %rsi
          movl (%rdi), %eax
          movq %rax,   %r8
          addq $$4,    %rdi
 
-         {f}_reg1:
+         reg1${{:uid}}:
          movq (%rsi), %rcx
          addq $$8,    %rsi
          movl (%rdi), %edx
          addq $$4,    %rdi
 
-         {f}_reg2:
+         reg2${{:uid}}:
          movq (%rsi), %rsi
          movl (%rdi), %eax
          movq %rax,   %rdi
@@ -105,17 +105,17 @@ pub fn grid_asm_x86_64(input: TokenStream) -> TokenStream {
 
          shl $$3,     %rbx
          addq %rbx,   %rsp
-         jmp {f}_exit
+         jmp          exit${{:uid}}
 
-         {f}_null_r8:
+         null_r8${{:uid}}:
          xorq %r8,    %r8
-         jmp {f}_reg1
+         jmp          reg1${{:uid}}
 
-         {f}_null_rdx:
+         null_rdx${{:uid}}:
          xorq %rdx,   %rdx
-         jmp {f}_reg2
+         jmp          reg2${{:uid}}
 
-         {f}_exit:", f = func);
+         exit${{:uid}}:", f = func);
 
     let gen = quote! {
         unsafe {
@@ -167,14 +167,14 @@ pub fn grid_asm_x86(input: TokenStream) -> TokenStream {
          mov %ecx,    %ebx
          add $$1,     %ebx
 
-         {f}_loop:
+         loop${{:uid}}:
          mov  (%esi), %eax
          push         %eax
          add $$4,     %esi
          mov  (%edi), %eax
          push         %eax
          add $$4,     %edi
-         loop {f}_loop
+         loop         loop${{:uid}}
 
          xor %eax,    %eax
          call {f}
