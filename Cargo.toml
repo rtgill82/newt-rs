@@ -23,5 +23,8 @@ newt_proc_macros = { path = "./newt_proc_macros", version = "0.0.2" }
 chrono   = "0.4"
 tempfile = "3.0"
 
+[profile.release]
+opt-level = 1
+
 [package.metadata.docs.rs]
 features = ["asm"]
