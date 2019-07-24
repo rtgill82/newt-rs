@@ -2,8 +2,14 @@
 
 ## 0.5.2
 
-* Fix inline assembly _invalid symbol redefinition_ error when making
-  release builds.
+* Fix inline assembly _invalid symbol redefinition_ error when making release
+  builds.
+
+* Build releases with _'opt-level = 1'_. Higher optimizations cause segfaults
+  in functions making use of inline assembly. This doesn't rule out that there
+  might be a problem with my code, but I can't find anything.
+
+* Reorganize assembly code.
 
 ## 0.5.1
 
