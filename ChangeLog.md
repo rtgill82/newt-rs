@@ -11,6 +11,8 @@
 
 * Reorganize assembly code.
 
+* Documentation updates.
+
 ## 0.5.1
 
 * Documentation updates.

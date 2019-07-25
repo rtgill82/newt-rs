@@ -6,8 +6,8 @@
 //! can be used to place components in specific arrangements. There are also
 //! [horizontal][horizontal] and [vertical][vertical] flavors to easily build
 //! rows or columns of components. The [`ButtonBar`][button_bar] will build
-//! a horizontal Grid full of Buttons when provided with a list of strings to
-//! use as Button text.
+//! a horizontal `Grid` full of `Button`s when provided with a list of strings to
+//! use as `Button` labels.
 //!
 //! Simple window management involving grids is also provided.
 //! [`grid::wrapped_window`][wrapped] and [`grid::wrapped_window_at`][wrapped_at]
@@ -37,16 +37,17 @@
 //!
 //!     let rv;
 //!
-//!     let mut form = Form::new(None, 0);
 //!     let mut l1 = Label::new(0, 0, "Hello");
 //!     let mut l2 = Label::new(0, 0, "World");
 //!     let components: &mut [&mut dyn Component] = &mut [&mut l1, &mut l2];
 //!
+//!     // Be sure to allocate the `Form` outside of the `Grid` subscope.
+//!     let mut form = Form::new(None, 0);
 //!     let mut stacked = HorizontalGrid::new(components);
 //!     let mut button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
 //!
-//!     // Create subscope so that button_bar can be mutably borrowed by
-//!     // grid and iterated over immutably later.
+//!     // Create a subscope so that `button_bar` can be mutably borrowed by
+//!     // `grid` and iterated over immutably later.
 //!     {
 //!         let mut grid = Grid::new(2, 2);
 //!         grid.set_field(1, 0, &mut stacked, 1, 1, 1, 1, 0, 0);
@@ -58,7 +59,8 @@
 //!     }
 //!     newt::finished();
 //!
-//!     // This requires that no mutable references to button_bar are held.
+//!     // This requires that no mutable references to `button_bar` are
+//!     // currently held.
 //!     for (i, button) in button_bar.buttons().iter().enumerate() {
 //!         if rv == *button {
 //!             println!("Button {} pressed.", i);
@@ -69,13 +71,14 @@
 //!
 //! ## Warning
 //!
-//! It's possible for use after free errors to occur when calling `Component`
-//! functions in situations where a `Form` is allocated within a more limited
-//! scope before adding components to it. This is especially tricky when
-//! working with `Grid`s and `ButtonBar`s as a subscope allows mutably adding
-//! a `ButtonBar` to other `Grid`s while allowing it's buttons to be accessed
-//! immutably outside the scope. Allocating the `Form` within the subscope
-//! will destroy it, leaving the `Component`s it contains invalid.
+//! It's possible for _use after free_ errors to occur when calling
+//! `Component` functions in situations where a `Form` is allocated within
+//! a more limited scope than the components being added to it. This is
+//! especially tricky when working with `Grid`s and `ButtonBar`s as a subscope
+//! allows mutably adding a `ButtonBar` to other `Grid`s while allowing it's
+//! buttons to be accessed immutably outside of the scope. Allocating the
+//! `Form` within the subscope will destroy it, leaving the `Component`s it
+//! contains invalid.
 //!
 //! The following illustrates what **NOT** to do:
 //!
@@ -97,13 +100,14 @@
 //!     let mut stacked = HorizontalGrid::new(components);
 //!     let mut button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
 //!
+//!     // Save the position of the first button on the `ButtonBar`.
 //!     let pos1 = button_bar.buttons().first()
 //!                          .unwrap().get_position();
 //!
-//!     // Create subscope so that button_bar can be mutably borrowed by
-//!     // grid and iterated over immutably later.
+//!     // Create a subscope so that `button_bar` can be mutably borrowed by
+//!     // `grid` and iterated over immutably later.
 //!     {
-//!         // Allocate form within subscope
+//!         // Allocate `form` within subscope.
 //!         let mut form = Form::new(None, 0);
 //!         let mut grid = Grid::new(2, 2);
 //!         grid.set_field(1, 0, &mut stacked, 1, 1, 1, 1, 0, 0);
@@ -112,12 +116,16 @@
 //!         wrapped_window(&grid, "Grids");
 //!         grid.add_to_form(&mut form).unwrap();
 //!         rv = form.run().unwrap();
-//!         // Form is destroyed when scope exits
+//!         // `form` is destroyed when this scope exits.
 //!     }
 //!     newt::finished();
 //!
+//!     // Try accessing the `ButtonBar` buttons after the `Form` they've been
+//!     // added to has been destroyed.
 //!     let pos2 = button_bar.buttons().first()
 //!                          .unwrap().get_position();
+//!
+//!     // This assertion will most likely fail.
 //!     assert_eq!(pos1, pos2);
 //! }
 //! ```
@@ -156,7 +164,7 @@ pub use self::vertical_grid::VerticalGrid;
 pub use self::r#trait::Grid as GridTrait;
 
 ///
-/// A grid for arranging components and sub-grids.
+/// Arrange `Component`s and sub-grids within a two-dimensional grid.
 ///
 /// Component screen positions will automatically be calculated based
 /// on their position in the grid.
@@ -217,7 +225,7 @@ impl<'a> Grid<'a> {
 }
 
 ///
-/// Wrap a grid in a centered window.
+/// Wrap a `Grid` in a centered window.
 ///
 pub fn wrapped_window(grid: &dyn self::r#trait::Grid, title: &str) {
     let c_str = CString::new(title).unwrap();
@@ -225,7 +233,7 @@ pub fn wrapped_window(grid: &dyn self::r#trait::Grid, title: &str) {
 }
 
 ///
-/// Wrap a grid in a window at a specified location.
+/// Wrap a `Grid` in a window at a specified location.
 ///
 pub fn wrapped_window_at(grid: &dyn self::r#trait::Grid, title: &str,
                          left: i32, top: i32) {

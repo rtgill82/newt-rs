@@ -3,7 +3,7 @@ use crate::constants::{NEWT_GRID_COMPONENT,NEWT_GRID_SUBGRID};
 use newt_sys::*;
 
 ///
-/// Create a simple window for a single component.
+/// Create a simple window for a single `Component`.
 ///
 #[derive(Grid)]
 pub struct SimpleWindow<'a> {

@@ -5,7 +5,7 @@ use newt_sys::*;
 use crate::ptr;
 
 ///
-/// A VerticalScrollbar widget (unimplemented).
+/// A VerticalScrollbar widget (_unimplemented_).
 ///
 #[derive(Component)]
 pub struct VerticalScrollbar {

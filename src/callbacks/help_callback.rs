@@ -9,6 +9,54 @@ use newt_sys::*;
 ///
 /// A callback called when `F1` is pressed while a `Form` is running.
 ///
+/// A new `Form` is initalized along with the callback associating the two
+/// together. The [`Form::new_with_help_callback()`][form] could also be used
+/// in lieu of `HelpCallback::new()`.
+///
+/// [form]: ../components/form/struct.Form.html#method.new_with_help_callback
+///
+/// ## Example
+/// ```rust no_run
+/// extern crate newt;
+/// use newt::prelude::*;
+///
+/// pub fn main() {
+///     newt::init().unwrap();
+///     newt::cls();
+///     newt::centered_window(20, 6, Some("Help Test")).unwrap();
+///
+///     // Closure that will display a new window when `F1` is pressed.
+///     let f = |_form: &Form, data: Option<&&str>| {
+///         let string = data.unwrap_or(&"None");
+///         let len = string.len();
+///
+///         let width = (len + 18) as u32;
+///         newt::centered_window(width, 5, Some("Help")).unwrap();
+///         let mut form = Form::new(None, 0);
+///
+///         let text = format!("Help Text Data: {}", string);
+///         let mut label = Label::new(1, 1, &text);
+///
+///         let pos = (width / 2 - 3) as i32;
+///         let mut ok = CompactButton::new(pos, 3, "Ok");
+///         form.add_component(&mut label).unwrap();
+///         form.add_component(&mut ok).unwrap();
+///         form.run().unwrap();
+///         newt::pop_window();
+///     };
+///
+///     // `Form` is allocated with the callback and both are associated.
+///     let (mut form, _cb) =
+///         Form::new_with_help_callback(None, 0, f, Some("This is help text."));
+///     let mut label = Label::new(1, 1, "Press F1 for help!");
+///     let mut ok = CompactButton::new(7, 4, "Ok");
+///
+///     form.add_components(&mut [&mut label, &mut ok]).unwrap();
+///
+///     form.run().unwrap();
+///     newt::finished();
+/// }
+/// ```
 pub struct HelpCallback<FN, T>
 where FN: FnMut(&Form, Option<&T>)
 {
@@ -25,8 +73,8 @@ where FN: FnMut(&Form, Option<&T>)
     /// when `F1` is pressed while the `Form` is running.  The new `Form`
     /// and `HelpCallback` are returned as a tuple pair.
     ///
-    /// * `_scrollbar` - A `VerticalScrollbar` to be attached to the created
-    ///                  form _unused_.
+    /// * `_scrollbar` (_unused_) - A `VerticalScrollbar` to be attached to the
+    ///                             created form.
     /// * `form_flags` - The flags the form is to be initialized with.
     /// * `function` - The function or closure to associate with the `Form`.
     /// * `data` - The optional user data to pass to the function.

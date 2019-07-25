@@ -47,23 +47,25 @@
 //! ## Features
 //!
 //! - `asm` - Allows building of the [Grid][grid] module and the
-//!           [windows::win_entries][win_entries] function. These require the
-//!           inline assembly feature of Rust which is only available in nightly
-//!           builds. This feature is also only available on x86/x86_64
-//!           architectures.
+//!           [windows::win_entries][win_entries] and [windows::win_menu][win_menu]
+//!           functions. These require the inline assembly feature of Rust
+//!           which is only available in nightly builds. This feature is also
+//!           only available on _x86/x86_64_ architectures.
 //!
 //! [grid]: grid/index.html
 //! [win_entries]: windows/fn.win_entries.html
+//! [win_menu]: windows/fn.win_menu.html
 //!
 //! ## Bugs
 //!
-//! A `Form` can be destroyed before the `Component`s they contain are
+//! A [`Form`][form] can be destroyed before the `Component`s they contain are
 //! dropped, causing the `newtComponent` pointers they reference to become
 //! invalid. Any functions called on these `Component`s may return invalid
 //! values or even cause segmentation faults. Do **NOT** allocate `Form`s
 //! within a more limited scope than the `Component`s they contain. An example
 //! of this issue can be found [here][use_after_free].
 //!
+//! [form]: components/form/struct.Form.html
 //! [use_after_free]: grid/index.html#warning
 //!
 #![cfg_attr(feature = "asm", feature(asm))]

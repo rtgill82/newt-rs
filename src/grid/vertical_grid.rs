@@ -4,7 +4,7 @@ use crate::intern::asm;
 use newt_sys::*;
 
 ///
-/// Place components vertically.
+/// Arrange components vertically.
 ///
 #[derive(Grid)]
 pub struct VerticalGrid<'a> {

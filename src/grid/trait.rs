@@ -3,7 +3,7 @@ use crate::intern::Child;
 use newt_sys::*;
 
 ///
-/// Trait implemented by Grid types.
+/// Implements functions shared by `Grid`s.
 ///
 pub trait Grid: Child + Component {
     fn add_to_form(&mut self, form: &mut Form) -> Result<(), &'static str> {
