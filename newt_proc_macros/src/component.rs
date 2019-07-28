@@ -61,7 +61,7 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
 }
 
 fn impl_component_drop(name: &Ident, generics: &Generics) -> TokenStream {
-    if name == "Form" || name == "VerticalScrollbar" {
+    if name == "Form" {
         return TokenStream::new();
     }
 

@@ -69,9 +69,15 @@ impl Form
     ///
     /// Creates a new `Form`.
     ///
-    pub fn new(_scrollbar: Option<&VerticalScrollbar>, flags: i32) -> Form {
+    pub fn new(scrollbar: Option<&VerticalScrollbar>, flags: i32) -> Form {
+        let scrollbar = if let Some(scrollbar) = scrollbar {
+            scrollbar.co()
+        } else {
+            ptr::null_mut()
+        };
+
         Form {
-            co: unsafe { newtForm(ptr::null_mut(), ptr::null_mut(), flags) },
+            co: unsafe { newtForm(scrollbar, ptr::null_mut(), flags) },
             added_to_parent: false
         }
     }
@@ -83,11 +89,11 @@ impl Form
     /// [help_cb]: ../callbacks/struct.HelpCallback.html#method.new
     ///
     pub fn new_with_help_callback<FN, T>
-      (_scrollbar: Option<&VerticalScrollbar>, flags: i32, function: FN, data: Option<T>)
+      (scrollbar: Option<&VerticalScrollbar>, flags: i32, function: FN, data: Option<T>)
         -> (Form, Box<HelpCallback<FN, T>>)
         where FN: Fn(&Form, Option<&T>)
     {
-        HelpCallback::new(_scrollbar, flags, function, data)
+        HelpCallback::new(scrollbar, flags, function, data)
     }
 
     pub(crate) fn new_co(co: newtComponent) -> Form {

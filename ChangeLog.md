@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 0.5.3
+
+* Implement `VerticalScrollbar` initialization, although I've yet to figure out
+  how they are used...
+
 ## 0.5.2
 
 * Fix inline assembly _invalid symbol redefinition_ error when making release

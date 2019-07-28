@@ -2,10 +2,9 @@ extern crate std;
 extern crate newt_sys;
 
 use newt_sys::*;
-use crate::ptr;
 
 ///
-/// A VerticalScrollbar widget (_unimplemented_).
+/// A VerticalScrollbar widget.
 ///
 #[derive(Component)]
 pub struct VerticalScrollbar {
@@ -14,10 +13,13 @@ pub struct VerticalScrollbar {
 }
 
 impl VerticalScrollbar  {
-    pub fn new(_left: i32, _top: i32, _height: i32, _normal_colorset: i32,
-               _thumb_colorset: i32) -> VerticalScrollbar {
+    pub fn new(left: i32, top: i32, height: i32, normal_colorset: i32,
+               thumb_colorset: i32) -> VerticalScrollbar {
         VerticalScrollbar {
-            co: ptr::null_mut(),
+            co: unsafe {
+                newtVerticalScrollbar (left, top, height,
+                                       normal_colorset, thumb_colorset)
+            },
             added_to_parent: false
         }
     }
