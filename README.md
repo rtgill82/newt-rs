@@ -29,7 +29,22 @@ newt = "0.5"
 The library API is currently subject to change and there are likely to be
 breaking changes between minor versions.
 
-### <a name="asm_feature"></a> _asm_ feature
+### `static` feature
+
+Enabling the `static` feature will force the [`newt-sys`][newt_sys] dependency
+to be built against its included libraries statically rather than dynamically
+against available system libraries if they're available.
+
+It can be enabled in your `Cargo.toml` file as follows.
+
+```
+[dependencies]
+newt = { version = "0.5", features = ["static"] }
+```
+
+[newt_sys]: https://crates.io/crates/newt-sys
+
+### <a name="asm_feature"></a> `asm` feature
 
 Some library functions such as ``windows::win_menu()``,
 ``windows::win_entries()``, and ``Grid`` related functions require the nightly

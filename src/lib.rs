@@ -52,9 +52,16 @@
 //!           which is only available in nightly builds. This feature is also
 //!           only available on _x86/x86_64_ architectures.
 //!
+//! - `static` - Builds and links [`newt-sys`][newt_sys] statically against
+//!              its included libraries rather than linking dynamically
+//!              against available system libraries. This is done
+//!              automatically if the required system libraries are
+//!              unavailable.
+//!
 //! [grid]: grid/index.html
 //! [win_entries]: windows/fn.win_entries.html
 //! [win_menu]: windows/fn.win_menu.html
+//! [newt_sys]: https://crates.io/crates/newt-sys
 //!
 //! ## Bugs
 //!
