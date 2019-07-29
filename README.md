@@ -2,8 +2,8 @@
 
 _Rust bindings for the Newt console UI library._
 
-[ChangeLog](https://github.com/xelkarin/newt-rs/blob/v0.5.2/ChangeLog.md) |
-[API Docs](https://docs.rs/newt/0.5.2/newt/) |
+[ChangeLog](https://github.com/xelkarin/newt-rs/blob/v0.5.3/ChangeLog.md) |
+[API Docs](https://docs.rs/newt/0.5.3/newt/) |
 [crates.io](https://crates.io/crates/newt)
 
 This crate provides bindings to Red Hat, Inc.'s [Newt][newt] console UI
