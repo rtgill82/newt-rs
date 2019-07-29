@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.5.4
+
+* Renamed `ComponentFuncs` trait to `Widget`. Usage of `ComponentFuncs` is deprecated.
+
 ## 0.5.3
 
 * Implement `VerticalScrollbar` initialization, although I've yet to figure out

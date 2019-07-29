@@ -7,7 +7,10 @@ pub mod component;
 #[doc(inline)]
 pub use self::component::Component;
 #[doc(inline)]
-pub use self::component::ComponentFuncs;
+pub use self::component::Widget;
+
+#[deprecated(since = "0.5.4", note = "Please use `newt::component::Widget` instead")]
+pub use self::component::Widget as ComponentFuncs;
 
 pub mod form;
 #[doc(inline)]

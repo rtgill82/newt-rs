@@ -77,7 +77,7 @@ impl<Rhs: Component> PartialEq<Rhs> for Box<dyn Component> {
 ///
 /// Implement shared functions for newt components.
 ///
-pub trait ComponentFuncs: Component {
+pub trait Widget: Component {
     ///
     /// Allow the `Component` to be focused when it's [`Form`][form] is
     /// run.
