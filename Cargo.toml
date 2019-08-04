@@ -16,7 +16,7 @@ asm    = []
 
 [dependencies]
 libc     = "0.2"
-newt-sys = "0.1"
+newt-sys = "~0.1.6"
 newt_proc_macros = { path = "./newt_proc_macros", version = "0.0.4" }
 
 [dev-dependencies]
