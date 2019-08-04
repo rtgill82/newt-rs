@@ -1,7 +1,6 @@
 extern crate newt;
-use newt::components::Component;
-use newt::components::Radiobutton;
-use newt::components::Form;
+use newt::Component;
+use newt::widgets::{Form,Radiobutton};
 use std::ptr;
 
 #[test]

@@ -17,19 +17,32 @@ pub fn impl_component_macro(ast: &DeriveInput) -> TokenStream {
 fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ ::components::Component for #name #type_
+        impl #impl_ ::intern::ComponentPtr for #name #type_
             #where_
         {
-            fn co(&self) -> ::newt_sys::newtComponent {
-                self.co
+            fn ptr(&self) -> *mut ::libc::c_void {
+                self.co as *mut ::libc::c_void
             }
 
-            fn grid(&self) -> ::newt_sys::newtGrid {
-                self.co as ::newt_sys::newtGrid
+            fn as_co(&self) -> ::newt_sys::newtComponent {
+                self.co as newt_sys::newtComponent
+            }
+
+            fn as_grid(&self) -> ::newt_sys::newtGrid {
+                self.co as newt_sys::newtGrid
             }
         }
 
-        impl #impl_ ::components::Widget for #name #type_ { }
+        impl #impl_ ::Component for #name #type_
+            #where_
+        {
+            fn co(&self) -> ::newt_sys::newtComponent {
+                use ::intern::ComponentPtr;
+                self.as_co()
+            }
+        }
+
+        impl #impl_ ::widgets::WidgetFns for #name #type_ { }
 
         impl #impl_ ::intern::Child for #name #type_
             #where_
@@ -107,10 +120,10 @@ fn impl_component_partial_eq(name: &Ident, generics: &Generics)
         -> TokenStream {
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ std::cmp::PartialEq<Box<dyn (::components::Component)>> for #name #type_
+        impl #impl_ std::cmp::PartialEq<Box<dyn (::Component)>> for #name #type_
             #where_
         {
-            fn eq(&self, other: &Box<dyn (::components::Component)>) -> bool {
+            fn eq(&self, other: &Box<dyn (::Component)>) -> bool {
                 if self.co.is_null() {
                     return false
                 }
@@ -118,10 +131,10 @@ fn impl_component_partial_eq(name: &Ident, generics: &Generics)
             }
         }
 
-        impl #impl_ std::cmp::PartialEq<::components::form::ExitReason> for #name #type_
+        impl #impl_ std::cmp::PartialEq<::widgets::form::ExitReason> for #name #type_
             #where_
         {
-            fn eq(&self, other: &::components::form::ExitReason) -> bool {
+            fn eq(&self, other: &::widgets::form::ExitReason) -> bool {
                 other == self
             }
         }
@@ -133,7 +146,7 @@ fn generics_add_rhs(generics: &Generics) -> Generics {
     use syn::{GenericParam,parse_str};
 
     let mut generics = generics.clone();
-    let rhs: GenericParam = parse_str("Rhs: ::components::Component").unwrap();
+    let rhs: GenericParam = parse_str("Rhs: ::Component").unwrap();
     generics.params.push(rhs);
     generics
 }

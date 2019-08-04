@@ -1,7 +1,6 @@
 extern crate newt;
-use newt::components::Component;
-use newt::components::Textbox;
-use newt::components::Form;
+use newt::Component;
+use newt::widgets::{Form,Textbox};
 use std::ptr;
 
 use newt::constants::COLORSET_TEXTBOX;

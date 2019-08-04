@@ -72,7 +72,7 @@
 //! within a more limited scope than the `Component`s they contain. An example
 //! of this issue can be found [here][use_after_free].
 //!
-//! [form]: components/form/struct.Form.html
+//! [form]: widgets/form/struct.Form.html
 //! [use_after_free]: grid/index.html#warning
 //!
 #![cfg_attr(feature = "asm", feature(asm))]
@@ -87,28 +87,36 @@ use std::ptr;
 
 #[macro_use]
 mod intern;
-pub mod prelude;
 pub mod callbacks;
+pub mod component;
 pub mod components;
 pub mod constants;
+pub mod prelude;
+pub mod widgets;
 pub mod windows;
+
+#[doc(no_inline)]
+pub use self::component::Component;
+#[doc(no_inline)]
+pub use self::widgets::WidgetFns;
 
 #[cfg(feature = "asm")]
 pub mod grid;
 
-#[doc(inline)]
+#[doc(no_inline)]
 pub use self::callbacks::Callback;
 
-#[doc(inline)]
+#[doc(no_inline)]
 pub use self::windows::win_message;
-#[doc(inline)]
+#[doc(no_inline)]
 pub use self::windows::win_choice;
-#[doc(inline)]
+#[doc(no_inline)]
 pub use self::windows::win_ternary;
-#[doc(inline)]
+
+#[doc(no_inline)]
 #[cfg(feature = "asm")]
 pub use self::windows::win_menu;
-#[doc(inline)]
+#[doc(no_inline)]
 #[cfg(feature = "asm")]
 pub use self::windows::win_entries;
 

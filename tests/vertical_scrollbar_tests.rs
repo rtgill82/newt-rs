@@ -1,7 +1,6 @@
 extern crate newt;
-use newt::components::Component;
-use newt::components::VerticalScrollbar;
-use newt::components::Form;
+use newt::Component;
+use newt::widgets::{Form,VerticalScrollbar};
 use std::ptr;
 
 #[test]

@@ -134,7 +134,7 @@ extern crate newt_sys;
 use std::ffi::{CString,c_void};
 use newt_sys::*;
 
-use crate::components::Component;
+use crate::Component;
 
 #[doc(hidden)]
 pub mod r#trait;
@@ -161,7 +161,11 @@ pub use self::simple_window::SimpleWindow;
 pub use self::vertical_grid::VerticalGrid;
 
 #[doc(inline)]
-pub use self::r#trait::Grid as GridTrait;
+pub use self::r#trait::Grid as GridFns;
+
+#[doc(hidden)]
+#[deprecated(since = "0.5.4", note = "Please use `newt::grid::GridFns` instead")]
+pub use self::GridFns as GridTrait;
 
 ///
 /// Arrange `Component`s and sub-grids within a two-dimensional grid.
@@ -229,7 +233,7 @@ impl<'a> Grid<'a> {
 ///
 pub fn wrapped_window(grid: &dyn self::r#trait::Grid, title: &str) {
     let c_str = CString::new(title).unwrap();
-    unsafe { newtGridWrappedWindow(grid.grid(), c_str.as_ptr() as *mut i8); }
+    unsafe { newtGridWrappedWindow(grid.as_grid(), c_str.as_ptr() as *mut i8); }
 }
 
 ///
@@ -239,7 +243,7 @@ pub fn wrapped_window_at(grid: &dyn self::r#trait::Grid, title: &str,
                          left: i32, top: i32) {
     let c_str = CString::new(title).unwrap();
     unsafe {
-        newtGridWrappedWindowAt(grid.grid(), c_str.as_ptr() as *mut i8,
+        newtGridWrappedWindowAt(grid.as_grid(), c_str.as_ptr() as *mut i8,
                                 left, top);
     }
 }

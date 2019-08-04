@@ -3,10 +3,9 @@ use std::{i8,i32,isize};
 use std::{u8,u32,usize};
 use std::ptr;
 
-use newt::components::Component;
-use newt::components::component::Data;
-use newt::components::CheckboxTree;
-use newt::components::Form;
+use newt::Component;
+use newt::component::Data;
+use newt::widgets::{CheckboxTree,Form};
 use newt::constants::ARG_APPEND;
 
 struct TestStruct<'a> {

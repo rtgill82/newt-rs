@@ -1,4 +1,4 @@
-use crate::components::Component;
+use crate::Component;
 use crate::constants::{NEWT_GRID_COMPONENT,NEWT_GRID_SUBGRID};
 use newt_sys::*;
 
@@ -30,7 +30,7 @@ impl<'a> BasicWindow<'a> {
         assert_eq!(buttons.grid_element_type(), NEWT_GRID_SUBGRID);
 
         let grid = unsafe {
-            newtGridBasicWindow(text.co(), middle.grid(), buttons.grid())
+            newtGridBasicWindow(text.co(), middle.as_grid(), buttons.as_grid())
         };
 
         let mut children: Vec<&'a mut dyn Component> = Vec::new();

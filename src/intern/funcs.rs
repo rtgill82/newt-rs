@@ -6,9 +6,8 @@ use std::{char,ptr};
 use std::os::raw::c_char;
 
 use newt_sys::*;
-use crate::components::Component;
-use crate::components::Entry;
-use crate::components::Form;
+use crate::Component;
+use crate::widgets::{Entry,Form};
 
 use crate::Callback;
 use crate::callbacks::EntryFilter;

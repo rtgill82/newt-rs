@@ -1,12 +1,12 @@
 use std::os::unix::io::RawFd;
 
-use crate::components::Component;
+use crate::Component;
 
 ///
 /// The `Form` exit reason.
 /// Returned by [`Form.run()`][form_run].
 ///
-/// [form_run]: ../components/form/struct.Form.html#method.run
+/// [form_run]: ../form/struct.Form.html#method.run
 ///
 #[derive(Debug)]
 pub enum ExitReason {

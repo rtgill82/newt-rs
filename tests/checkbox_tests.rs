@@ -1,7 +1,6 @@
 extern crate newt;
-use newt::components::Component;
-use newt::components::Checkbox;
-use newt::components::Form;
+use newt::Component;
+use newt::widgets::{Checkbox,Form};
 use std::ptr;
 
 use newt::constants::FlagsSense;

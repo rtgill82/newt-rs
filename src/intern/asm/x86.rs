@@ -91,7 +91,7 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
 }
 
 ///
-/// Open a window containing a `Listbox` menu.
+/// Open a window containing a [`Listbox`][listbox] menu.
 ///
 /// _Requires that the `asm` feature be enabled._
 ///
@@ -110,6 +110,8 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
 /// Returns a tuple pair as `(button, item)` where `button` is the button
 /// number pressed to close the window and `item` is the item number in the
 /// list that was selected.
+///
+/// [listbox]: ../widgets/struct.Listbox.html
 ///
 #[allow(clippy::too_many_arguments)]
 pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
@@ -183,7 +185,7 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
 }
 
 ///
-/// Open a window containing a number of text `Entry`s.
+/// Open a window containing a number of text [`Entry`s][entry].
 ///
 /// _Requires that the `asm` feature be enabled._
 ///
@@ -195,8 +197,8 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
 /// * `flex_up` - The maximum allowed difference between `suggested_width`
 ///               and actual width.
 /// * `data_width` - The field width for all `Entry`s.
-/// * `entries` - A slice containing of `WinEntry`s providing
-///               initial settings for each `Entry` field.
+/// * `entries` - A slice containing a list of [`WinEntry`s][win_entry]
+///               providing initial settings for each `Entry` field.
 /// * `buttons` - A slice containing the text for a number of buttons to
 ///               display in the window.
 ///
@@ -206,6 +208,8 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
 /// data entered by the user. This can be accessed via the
 /// [`WinEntry.value()`][win_entry_value] function.
 ///
+/// [entry]: ../widgets/struct.Entry.html
+/// [win_entry]: ../windows/struct.WinEntry.html
 /// [win_entry_value]: ../windows/struct.WinEntry.html#method.value
 ///
 #[allow(clippy::too_many_arguments)]

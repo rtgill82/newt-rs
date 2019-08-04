@@ -77,7 +77,7 @@ pub fn win_ternary(title: &str, button1: &str, button2: &str, button3: &str,
 /// A struct used to pass initial [`Entry`][entry] information to the
 /// `win_entries()` function.
 ///
-/// [entry]: ../components/struct.Entry.html
+/// [entry]: ../widgets/struct.Entry.html
 ///
 #[cfg(feature = "asm")]
 #[derive(Default)]

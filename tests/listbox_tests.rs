@@ -3,10 +3,9 @@ use std::{i8,i32,isize};
 use std::{u8,u32,usize};
 use std::ptr;
 
-use newt::components::Component;
-use newt::components::component::Data;
-use newt::components::Form;
-use newt::components::Listbox;
+use newt::Component;
+use newt::component::Data;
+use newt::widgets::{Form,Listbox};
 use newt::constants::FLAG_MULTIPLE;
 use newt::constants::FlagsSense::Set;
 

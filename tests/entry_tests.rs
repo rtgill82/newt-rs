@@ -1,8 +1,7 @@
 extern crate newt;
 use newt::constants::FlagsSense;
-use newt::components::Component;
-use newt::components::Entry;
-use newt::components::Form;
+use newt::Component;
+use newt::widgets::{Entry,Form};
 use std::ptr;
 
 use newt::constants::COLORSET_ENTRY;

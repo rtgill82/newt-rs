@@ -1,7 +1,6 @@
 extern crate newt;
-use newt::components::Component;
-use newt::components::Label;
-use newt::components::Form;
+use newt::Component;
+use newt::widgets::{Form,Label};
 use std::ptr;
 
 use newt::constants::COLORSET_LABEL;

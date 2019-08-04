@@ -1,7 +1,6 @@
 extern crate newt;
-use newt::components::Component;
-use newt::components::Button;
-use newt::components::Form;
+use newt::Component;
+use newt::widgets::{Button,Form};
 use std::ptr;
 
 #[test]

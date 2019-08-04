@@ -2,7 +2,16 @@
 
 ## 0.5.4
 
-* Renamed `ComponentFuncs` trait to `Widget`. Usage of `ComponentFuncs` is deprecated.
+* Moved components to the `newt::widget` namespace.
+  Usage of `newt::components::*` is deprecated.
+
+* Renamed `newt::components::ComponentFuncs` trait to `newt::widgets::WidgetFns`.
+  Usage of `ComponentFuncs` is deprecated.
+
+* Renamed `newt::grid::GridTrait` to `newt::grid::GridFns`.
+  Usage of `GridTrait` is deprectated.
+
+* Documentation updates.
 
 ## 0.5.3
 

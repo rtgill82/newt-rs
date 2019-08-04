@@ -1,6 +1,6 @@
 use newt_sys::newtComponent;
-use crate::components::Component;
-use crate::components::Entry;
+use crate::Component;
+use crate::widgets::Entry;
 use crate::intern::funcs::newt_entry_set_filter;
 
 ///
@@ -21,7 +21,7 @@ use crate::intern::funcs::newt_entry_set_filter;
 ///
 /// See the example under [Entry][entry_example].
 ///
-/// [entry_example]: ../components/struct.Entry.html#example
+/// [entry_example]: ../widgets/struct.Entry.html#example
 ///
 pub struct EntryFilter<'a, FN: 'a, T: 'a>
 where FN: FnMut(&Entry, Option<&T>, char, i32) -> char

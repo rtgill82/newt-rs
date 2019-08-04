@@ -8,7 +8,7 @@ use std::os::unix::net::{UnixListener,UnixStream};
 use std::process::exit;
 use tempfile::tempdir;
 
-use newt::components::form::FDFlags;
+use newt::widgets::form::FDFlags;
 use newt::prelude::*;
 
 fn help() {

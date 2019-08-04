@@ -27,15 +27,28 @@ fn impl_grid_base(name: &Ident, generics: &Generics) -> TokenStream {
 fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ ::components::Component for #name #type_
+        impl #impl_ ::intern::ComponentPtr for #name #type_
             #where_
         {
-            fn co(&self) -> ::newt_sys::newtComponent {
+            fn ptr(&self) -> *mut ::libc::c_void {
+                self.grid as *mut ::libc::c_void
+            }
+
+            fn as_co(&self) -> ::newt_sys::newtComponent {
                 self.grid as ::newt_sys::newtComponent
             }
 
-            fn grid(&self) -> ::newt_sys::newtGrid {
-                self.grid
+            fn as_grid(&self) -> ::newt_sys::newtGrid {
+                self.grid as ::newt_sys::newtGrid
+            }
+        }
+
+        impl #impl_ ::Component for #name #type_
+            #where_
+        {
+            fn co(&self) -> ::newt_sys::newtComponent {
+                use crate::intern::ComponentPtr;
+                self.as_co()
             }
         }
 

@@ -33,7 +33,7 @@ breaking changes between minor versions.
 
 Enabling the `static` feature will force the [`newt-sys`][newt_sys] dependency
 to be built against its included libraries statically rather than dynamically
-against available system libraries if they're available.
+against local system libraries if they're available.
 
 It can be enabled in your `Cargo.toml` file as follows.
 

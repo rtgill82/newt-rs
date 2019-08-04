@@ -1,7 +1,6 @@
 extern crate newt;
-use newt::components::Component;
-use newt::components::Scale;
-use newt::components::Form;
+use newt::Component;
+use newt::widgets::{Form,Scale};
 use std::ptr;
 
 use newt::constants::COLORSET_EMPTYSCALE;

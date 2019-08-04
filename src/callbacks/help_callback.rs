@@ -1,7 +1,8 @@
 use std::os::raw::c_void;
 use std::ptr;
 
-use crate::components::{Component,Form,VerticalScrollbar};
+use crate::Component;
+use crate::widgets::{Form,VerticalScrollbar};
 use crate::intern::funcs::*;
 use newt_sys::*;
 
@@ -12,7 +13,7 @@ use newt_sys::*;
 /// together. The [`Form::new_with_help_callback()`][form] could also be used
 /// in lieu of `HelpCallback::new()`.
 ///
-/// [form]: ../components/form/struct.Form.html#method.new_with_help_callback
+/// [form]: ../widgets/form/struct.Form.html#method.new_with_help_callback
 ///
 /// ## Example
 /// ```rust no_run

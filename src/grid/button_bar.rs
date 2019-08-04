@@ -3,7 +3,7 @@ use libc::c_void;
 use std::mem::size_of;
 use newt_sys::*;
 
-use crate::components::Button;
+use crate::widgets::Button;
 use crate::intern::asm;
 
 ///

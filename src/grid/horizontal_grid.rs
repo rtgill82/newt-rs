@@ -1,5 +1,5 @@
 use libc::c_void;
-use crate::components::Component;
+use crate::Component;
 use crate::intern::asm;
 use newt_sys::*;
 
