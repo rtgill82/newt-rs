@@ -39,7 +39,7 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
             }
 
             fn as_grid(&self) -> ::newt_sys::newtGrid {
-                self.grid as ::newt_sys::newtGrid
+                self.grid
             }
         }
 
