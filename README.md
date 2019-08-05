@@ -29,6 +29,26 @@ newt = "0.5"
 The library API is currently subject to change and there are likely to be
 breaking changes between minor versions.
 
+## Deprecation Warning
+
+As of `newt-rs 0.5.4` module organization has been refactored. Items have
+been re-exported under their previous names and modules for compatability,
+but these re-exports are likely to be removed in the future. The following
+changes have been made:
+
+* The `newt::components` module has been renamed to `newt::widgets`.
+
+* The `newt::components::Component` trait has been renamed to
+  `newt::component::Component`.
+
+* The `newt::components::ComponentFuncs` trait has been renamed to
+  `newt::widgets::WidgetFns`.
+
+* The `newt::grid::GridTrait` trait has been renamed to
+  `newt::grid::GridFns`.
+
+## Features
+
 ### `static` feature
 
 Enabling the `static` feature will force the [`newt-sys`][newt_sys] dependency
