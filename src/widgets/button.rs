@@ -1,7 +1,5 @@
-extern crate std;
-extern crate newt_sys;
+use std::cell::Cell;
 use std::ffi::CString;
-
 use newt_sys::*;
 
 ///
@@ -10,7 +8,7 @@ use newt_sys::*;
 #[derive(Component)]
 pub struct Button {
     co: newtComponent,
-    added_to_parent: bool
+    added_to_parent: Cell<bool>
 }
 
 impl Button {
@@ -18,12 +16,12 @@ impl Button {
         let c_str = CString::new(text).unwrap();
         Button {
             co: unsafe { newtButton(left, top, c_str.as_ptr()) },
-            added_to_parent: false
+            added_to_parent: Cell::new(false)
         }
     }
 
     #[cfg(feature = "asm")]
     pub(crate) fn new_co(co: newtComponent) -> Button {
-        Button { co, added_to_parent: false }
+        Button { co, added_to_parent: Cell::new(false) }
     }
 }

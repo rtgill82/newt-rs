@@ -1,7 +1,6 @@
 //!
 //! Constants used by the newt library.
 //!
-extern crate newt_sys;
 use newt_sys::*;
 
 const NEWT_FLAGS_SET:    newtFlagsSense = newtFlagsSense_NEWT_FLAGS_SET;

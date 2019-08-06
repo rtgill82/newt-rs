@@ -6,10 +6,9 @@ pub fn main() {
     newt::cls();
     newt::centered_window(20, 9, Some("Options")).unwrap();
 
-    let mut form = Form::new(None, 0);
     let mut tree: CheckboxTree =
         CheckboxTree::new(0, 0, 7, Some(&[' ', 'A', 'B']), 0);
-    let mut ok = CompactButton::new(7, 8, "Ok");
+    let ok = CompactButton::new(7, 8, "Ok");
 
     tree.add_item("Tree 1", 1, 0, Some(&[0]));
     tree.add_item("Option 1", 2, 0, Some(&[0, ARG_APPEND]));
@@ -19,7 +18,8 @@ pub fn main() {
     tree.add_item("Option 4", 6, 0, Some(&[1, ARG_APPEND]));
     tree.add_item("Option 5", 7, 0, Some(&[1, ARG_APPEND]));
 
-    form.add_components(&mut [&mut tree, &mut ok]).unwrap();
+    let mut form = Form::new(None, 0);
+    form.add_components(&[&tree, &ok]).unwrap();
     form.run().unwrap();
     newt::finished();
 

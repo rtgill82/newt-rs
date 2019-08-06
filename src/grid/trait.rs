@@ -1,7 +1,7 @@
+use newt_sys::*;
 use crate::Component;
 use crate::widgets::{Form,WidgetFns};
 use crate::intern::{Child,ComponentPtr};
-use newt_sys::*;
 
 ///
 /// Implements functions shared by `Grid`s.

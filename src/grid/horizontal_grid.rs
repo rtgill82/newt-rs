@@ -1,7 +1,9 @@
 use libc::c_void;
+use std::cell::Cell;
+
+use newt_sys::*;
 use crate::Component;
 use crate::intern::asm;
-use newt_sys::*;
 
 ///
 /// Arrange components horizontally.
@@ -9,8 +11,8 @@ use newt_sys::*;
 #[derive(Grid)]
 pub struct HorizontalGrid<'a> {
     grid: newtGrid,
-    added_to_parent: bool,
-    children: Option<&'a mut [&'a mut dyn Component]>
+    added_to_parent: Cell<bool>,
+    children: Option<&'a [&'a dyn Component]>
 }
 
 impl<'a> HorizontalGrid<'a> {
@@ -18,7 +20,7 @@ impl<'a> HorizontalGrid<'a> {
     /// Create a new Grid in which the added components are stacked in a
     /// single row.
     ///
-    pub fn new(components: &'a mut [&'a mut dyn Component])
+    pub fn new(components: &'a [&'a dyn Component])
       -> HorizontalGrid<'a> {
         let mut types: Vec<newtGridElement> = Vec::new();
         let mut values: Vec<newtComponent> = Vec::new();
@@ -36,7 +38,7 @@ impl<'a> HorizontalGrid<'a> {
         let grid = asm::grid_new(func, types, values, len);
         HorizontalGrid {
             grid: grid,
-            added_to_parent: false,
+            added_to_parent: Cell::new(false),
             children: Some(components)
         }
     }
@@ -45,7 +47,7 @@ impl<'a> HorizontalGrid<'a> {
     /// Create a new Grid in which the added components are closely
     /// stacked in a single row.
     ///
-    pub fn new_close_stacked(components: &'a mut [&'a mut dyn Component])
+    pub fn new_close_stacked(components: &'a [&'a dyn Component])
       -> HorizontalGrid<'a> {
         let mut types: Vec<newtGridElement> = Vec::new();
         let mut values: Vec<newtComponent> = Vec::new();
@@ -63,7 +65,7 @@ impl<'a> HorizontalGrid<'a> {
         let grid = asm::grid_new(func, types, values, len);
         HorizontalGrid {
             grid: grid,
-            added_to_parent: false,
+            added_to_parent: Cell::new(false),
             children: Some(components)
         }
     }

@@ -13,11 +13,11 @@ pub fn main() {
             value = *data.unwrap();
         };
 
-        let mut form = Form::new(None, 0);
-        let mut label = Label::new(4, 1, "Press Ctrl-Z");
-        let mut ok = CompactButton::new(7, 4, "Ok");
+        let label = Label::new(4, 1, "Press Ctrl-Z");
+        let ok = CompactButton::new(7, 4, "Ok");
 
-        form.add_components(&mut [&mut label, &mut ok]).unwrap();
+        let mut form = Form::new(None, 0);
+        form.add_components(&[&label, &ok]).unwrap();
 
         let _callback = SuspendCallback::new(&mut f, Some(10));
 

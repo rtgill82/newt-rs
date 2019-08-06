@@ -1,6 +1,8 @@
+use std::cell::Cell;
+
+use newt_sys::*;
 use crate::Component;
 use crate::constants::{NEWT_GRID_COMPONENT,NEWT_GRID_SUBGRID};
-use newt_sys::*;
 
 ///
 /// Create a simple window using sub-grids.
@@ -8,8 +10,8 @@ use newt_sys::*;
 #[derive(Grid)]
 pub struct BasicWindow<'a> {
     grid: newtGrid,
-    added_to_parent: bool,
-    children: Option<Vec<&'a mut dyn Component>>
+    added_to_parent: Cell<bool>,
+    children: Option<Vec<&'a dyn Component>>
 }
 
 impl<'a> BasicWindow<'a> {
@@ -21,8 +23,8 @@ impl<'a> BasicWindow<'a> {
     /// * `buttons` - A sub-grid to display at the bottom of the window,
     ///               hopefully containing buttons.
     ///
-    pub fn new(text: &'a mut dyn Component, middle: &'a mut dyn Component,
-               buttons: &'a mut dyn Component)
+    pub fn new(text: &'a dyn Component, middle: &'a dyn Component,
+               buttons: &'a dyn Component)
       -> BasicWindow<'a> {
 
         assert_eq!(text.grid_element_type(), NEWT_GRID_COMPONENT);
@@ -33,16 +35,16 @@ impl<'a> BasicWindow<'a> {
             newtGridBasicWindow(text.co(), middle.as_grid(), buttons.as_grid())
         };
 
-        let mut children: Vec<&'a mut dyn Component> = Vec::new();
-        let middle  = middle as &mut dyn Component;
-        let buttons = buttons as &mut dyn Component;
+        let mut children: Vec<&'a dyn Component> = Vec::new();
+        let middle  = middle as &dyn Component;
+        let buttons = buttons as &dyn Component;
         children.push(text);
         children.push(middle);
         children.push(buttons);
 
         BasicWindow {
             grid,
-            added_to_parent: false,
+            added_to_parent: Cell::new(false),
             children: Some(children)
         }
     }

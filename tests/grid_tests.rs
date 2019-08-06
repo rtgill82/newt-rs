@@ -33,73 +33,73 @@ fn grid_invalid_column() {
 #[test]
 #[should_panic]
 fn grid_invalid_column_position() {
-    let mut b1 = Button::new(0, 0, "Ok");
+    let b1 = Button::new(0, 0, "Ok");
     let mut grid = Grid::new(2, 2);
-    grid.set_field(2, 1, &mut b1, 1, 1, 1, 1, 0, 0);
+    grid.set_field(2, 1, &b1, 1, 1, 1, 1, 0, 0);
 }
 
 #[test]
 #[should_panic]
 fn grid_invalid_row_position() {
-    let mut b1 = Button::new(0, 0, "Ok");
+    let b1 = Button::new(0, 0, "Ok");
     let mut grid = Grid::new(2, 2);
-    grid.set_field(1, 2, &mut b1, 1, 1, 1, 1, 0, 0);
+    grid.set_field(1, 2, &b1, 1, 1, 1, 1, 0, 0);
 }
 
 #[test]
 fn vertical_grid_create() {
-    let mut b1 = Button::new(0, 0, "Yes");
-    let mut b2 = Button::new(0, 0, "No");
-    let buttons: &mut [&mut dyn Component] = &mut [&mut b1, &mut b2];
+    let b1 = Button::new(0, 0, "Yes");
+    let b2 = Button::new(0, 0, "No");
+    let buttons: &[&dyn Component] = &[&b1, &b2];
     let grid = VerticalGrid::new(buttons);
     assert!(grid.co() != ptr::null_mut());
 
-    let mut b1 = Button::new(0, 0, "Yes");
-    let mut b2 = Button::new(0, 0, "No");
-    let mut b3 = Button::new(0, 0, "Maybe");
-    let buttons: &mut [&mut dyn Component] = &mut [&mut b1, &mut b2, &mut b3];
+    let b1 = Button::new(0, 0, "Yes");
+    let b2 = Button::new(0, 0, "No");
+    let b3 = Button::new(0, 0, "Maybe");
+    let buttons: &[&dyn Component] = &[&b1, &b2, &b3];
     let grid = VerticalGrid::new(buttons);
     assert!(grid.co() != ptr::null_mut());
 
-    let mut b1 = Button::new(0, 0, "Yes");
-    let mut b2 = Button::new(0, 0, "No");
-    let buttons: &mut [&mut dyn Component] = &mut [&mut b1, &mut b2];
+    let b1 = Button::new(0, 0, "Yes");
+    let b2 = Button::new(0, 0, "No");
+    let buttons: &[&dyn Component] = &[&b1, &b2];
     let grid = VerticalGrid::new_close_stacked(buttons);
     assert!(grid.co() != ptr::null_mut());
 
-    let mut b1 = Button::new(0, 0, "Yes");
-    let mut b2 = Button::new(0, 0, "No");
-    let mut b3 = Button::new(0, 0, "Maybe");
-    let buttons: &mut [&mut dyn Component] = &mut [&mut b1, &mut b2, &mut b3];
+    let b1 = Button::new(0, 0, "Yes");
+    let b2 = Button::new(0, 0, "No");
+    let b3 = Button::new(0, 0, "Maybe");
+    let buttons: &[&dyn Component] = &[&b1, &b2, &b3];
     let grid = VerticalGrid::new_close_stacked(buttons);
     assert!(grid.co() != ptr::null_mut());
 }
 
 #[test]
 fn horizontal_grid_create() {
-    let mut b1 = Button::new(0, 0, "Yes");
-    let mut b2 = Button::new(0, 0, "No");
-    let buttons: &mut [&mut dyn Component] = &mut [&mut b1, &mut b2];
+    let b1 = Button::new(0, 0, "Yes");
+    let b2 = Button::new(0, 0, "No");
+    let buttons: &[&dyn Component] = &[&b1, &b2];
     let grid = HorizontalGrid::new(buttons);
     assert!(grid.co() != ptr::null_mut());
 
-    let mut b1 = Button::new(0, 0, "Yes");
-    let mut b2 = Button::new(0, 0, "No");
-    let mut b3 = Button::new(0, 0, "Maybe");
-    let buttons: &mut [&mut dyn Component] = &mut [&mut b1, &mut b2, &mut b3];
+    let b1 = Button::new(0, 0, "Yes");
+    let b2 = Button::new(0, 0, "No");
+    let b3 = Button::new(0, 0, "Maybe");
+    let buttons: &[&dyn Component] = &[&b1, &b2, &b3];
     let grid = HorizontalGrid::new(buttons);
     assert!(grid.co() != ptr::null_mut());
 
-    let mut b1 = Button::new(0, 0, "Yes");
-    let mut b2 = Button::new(0, 0, "No");
-    let buttons: &mut [&mut dyn Component] = &mut [&mut b1, &mut b2];
+    let b1 = Button::new(0, 0, "Yes");
+    let b2 = Button::new(0, 0, "No");
+    let buttons: &[&dyn Component] = &[&b1, &b2];
     let grid = HorizontalGrid::new_close_stacked(buttons);
     assert!(grid.co() != ptr::null_mut());
 
-    let mut b1 = Button::new(0, 0, "Yes");
-    let mut b2 = Button::new(0, 0, "No");
-    let mut b3 = Button::new(0, 0, "Maybe");
-    let buttons: &mut [&mut dyn Component] = &mut [&mut b1, &mut b2, &mut b3];
+    let b1 = Button::new(0, 0, "Yes");
+    let b2 = Button::new(0, 0, "No");
+    let b3 = Button::new(0, 0, "Maybe");
+    let buttons: &[&dyn Component] = &[&b1, &b2, &b3];
     let grid = HorizontalGrid::new_close_stacked(buttons);
     assert!(grid.co() != ptr::null_mut());
 }

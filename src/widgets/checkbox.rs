@@ -1,7 +1,6 @@
-extern crate std;
-extern crate newt_sys;
+use std::cell::Cell;
 use std::ffi::CString;
-use crate::ptr;
+use std::ptr;
 
 use newt_sys::*;
 use crate::constants::FlagsSense;
@@ -13,7 +12,7 @@ use crate::intern::funcs::char_slice_to_cstring;
 #[derive(Component)]
 pub struct Checkbox {
     co: newtComponent,
-    added_to_parent: bool
+    added_to_parent: Cell<bool>
 }
 
 impl Checkbox {
@@ -40,7 +39,7 @@ impl Checkbox {
                 newtCheckbox(left, top, c_text.as_ptr(), default, c_seq,
                              ptr::null_mut())
             },
-            added_to_parent: false
+            added_to_parent: Cell::new(false)
         }
     }
 

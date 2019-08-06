@@ -1,7 +1,6 @@
 //!
 //! newt UI widgets.
 //!
-extern crate std;
 use libc::c_int;
 
 use crate::intern::ComponentPtr;

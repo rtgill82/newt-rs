@@ -45,10 +45,10 @@ fn server() {
     newt::centered_window(50, 20, Some("FD Exit Test")).unwrap();
 
     let mut t = Textbox::new(1, 3, 48, 5, 0);
-    let mut b = CompactButton::new(22, 19, "Exit");
+    let b = CompactButton::new(22, 19, "Exit");
 
     let mut form = Form::new(None, 0);
-    form.add_components(&mut [&mut t, &mut b]).unwrap();
+    form.add_components(&[&t, &b]).unwrap();
     form.watch_fd(stream.as_raw_fd(), FDFlags::Read);
 
     loop {

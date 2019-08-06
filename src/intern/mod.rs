@@ -9,7 +9,7 @@ use libc::c_void;
 use newt_sys::*;
 
 pub trait Child {
-    fn add_to_parent(&mut self) -> Result<(), &'static str>;
+    fn add_to_parent(&self) -> Result<(), &'static str>;
     fn added_to_parent(&self) -> bool;
 }
 

@@ -1,8 +1,7 @@
-extern crate std;
-extern crate newt_sys;
+use std::cell::Cell;
 use std::ffi::{CStr, CString};
 use std::os::raw::c_int;
-use crate::ptr;
+use std::ptr;
 
 use newt_sys::*;
 use crate::constants::FlagsSense;
@@ -77,7 +76,7 @@ use crate::constants::FlagsSense;
 #[derive(Component)]
 pub struct Entry {
     co: newtComponent,
-    added_to_parent: bool
+    added_to_parent: Cell<bool>
 }
 
 impl Entry  {
@@ -96,7 +95,7 @@ impl Entry  {
             co: unsafe {
                 newtEntry(left, top, ptr, width, ptr::null_mut(), flags)
             },
-            added_to_parent: false
+            added_to_parent: Cell::new(false)
         }
     }
 

@@ -37,30 +37,23 @@
 //!
 //!     let rv;
 //!
-//!     let mut l1 = Label::new(0, 0, "Hello");
-//!     let mut l2 = Label::new(0, 0, "World");
-//!     let components: &mut [&mut dyn Component] = &mut [&mut l1, &mut l2];
+//!     let l1 = Label::new(0, 0, "Hello");
+//!     let l2 = Label::new(0, 0, "World");
+//!     let components: &[&dyn Component] = &[&l1, &l2];
 //!
-//!     // Be sure to allocate the `Form` outside of the `Grid` subscope.
 //!     let mut form = Form::new(None, 0);
-//!     let mut stacked = HorizontalGrid::new(components);
-//!     let mut button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
+//!     let stacked = HorizontalGrid::new(components);
+//!     let button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
 //!
-//!     // Create a subscope so that `button_bar` can be mutably borrowed by
-//!     // `grid` and iterated over immutably later.
-//!     {
-//!         let mut grid = Grid::new(2, 2);
-//!         grid.set_field(1, 0, &mut stacked, 1, 1, 1, 1, 0, 0);
-//!         grid.set_field(0, 1, &mut button_bar, 1, 1, 1, 1, 0, 0);
+//!     let mut grid = Grid::new(2, 2);
+//!     grid.set_field(1, 0, &stacked, 1, 1, 1, 1, 0, 0);
+//!     grid.set_field(0, 1, &button_bar, 1, 1, 1, 1, 0, 0);
 //!
-//!         wrapped_window(&grid, "Grids");
-//!         grid.add_to_form(&mut form).unwrap();
-//!         rv = form.run().unwrap();
-//!     }
+//!     wrapped_window(&grid, "Grids");
+//!     grid.add_to_form(&mut form).unwrap();
+//!     rv = form.run().unwrap();
 //!     newt::finished();
 //!
-//!     // This requires that no mutable references to `button_bar` are
-//!     // currently held.
 //!     for (i, button) in button_bar.buttons().iter().enumerate() {
 //!         if rv == *button {
 //!             println!("Button {} pressed.", i);
@@ -93,12 +86,12 @@
 //!
 //!     let rv;
 //!
-//!     let mut l1 = Label::new(0, 0, "Hello");
-//!     let mut l2 = Label::new(0, 0, "World");
-//!     let components: &mut [&mut dyn Component] = &mut [&mut l1, &mut l2];
+//!     let l1 = Label::new(0, 0, "Hello");
+//!     let l2 = Label::new(0, 0, "World");
+//!     let components: &[&dyn Component] = &[&l1, &l2];
 //!
-//!     let mut stacked = HorizontalGrid::new(components);
-//!     let mut button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
+//!     let stacked = HorizontalGrid::new(components);
+//!     let button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
 //!
 //!     // Save the position of the first button on the `ButtonBar`.
 //!     let pos1 = button_bar.buttons().first()
@@ -110,8 +103,8 @@
 //!         // Allocate `form` within subscope.
 //!         let mut form = Form::new(None, 0);
 //!         let mut grid = Grid::new(2, 2);
-//!         grid.set_field(1, 0, &mut stacked, 1, 1, 1, 1, 0, 0);
-//!         grid.set_field(0, 1, &mut button_bar, 1, 1, 1, 1, 0, 0);
+//!         grid.set_field(1, 0, &stacked, 1, 1, 1, 1, 0, 0);
+//!         grid.set_field(0, 1, &button_bar, 1, 1, 1, 1, 0, 0);
 //!
 //!         wrapped_window(&grid, "Grids");
 //!         grid.add_to_form(&mut form).unwrap();
@@ -130,7 +123,7 @@
 //! }
 //! ```
 //!
-extern crate newt_sys;
+use std::cell::Cell;
 use std::ffi::{CString,c_void};
 use newt_sys::*;
 
@@ -178,8 +171,8 @@ pub struct Grid<'a> {
     grid: newtGrid,
     cols: i32,
     rows: i32,
-    added_to_parent: bool,
-    children: Option<Vec<&'a mut dyn Component>>
+    added_to_parent: Cell<bool>,
+    children: Option<Vec<&'a dyn Component>>
 }
 
 impl<'a> Grid<'a> {
@@ -192,7 +185,7 @@ impl<'a> Grid<'a> {
 
         Grid {
             grid: unsafe { newtCreateGrid(cols, rows) },
-            added_to_parent: false,
+            added_to_parent: Cell::new(false),
             cols, rows,
             children: None
         }
@@ -201,7 +194,7 @@ impl<'a> Grid<'a> {
     ///
     /// Add a component or sub-grid to the positon (`col`, `row`) in the grid.
     ///
-    pub fn set_field(&mut self, col: i32, row: i32, val: &'a mut dyn Component,
+    pub fn set_field(&mut self, col: i32, row: i32, val: &'a dyn Component,
                      pad_left: i32, pad_top: i32, pad_right: i32,
                      pad_bottom: i32, anchor: i32, flags: i32) {
 

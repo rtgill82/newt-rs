@@ -1,6 +1,4 @@
-extern crate std;
-extern crate newt_sys;
-
+use std::cell::Cell;
 use std::ops::Drop;
 use std::os::unix::io::RawFd;
 use std::ptr;
@@ -42,7 +40,7 @@ pub enum FDFlags {
 #[derive(Component)]
 struct BaseComponent {
     co: newtComponent,
-    added_to_parent: bool
+    added_to_parent: Cell<bool>
 }
 
 ///
@@ -52,13 +50,13 @@ struct BaseComponent {
 pub struct Form
 {
     co: newtComponent,
-    added_to_parent: bool
+    added_to_parent: Cell<bool>
 }
 
 impl Drop for Form
 {
     fn drop(&mut self) {
-        if !self.added_to_parent {
+        if !self.added_to_parent.get() {
             unsafe { newtFormDestroy(self.co); }
         }
     }
@@ -78,7 +76,7 @@ impl Form
 
         Form {
             co: unsafe { newtForm(scrollbar, ptr::null_mut(), flags) },
-            added_to_parent: false
+            added_to_parent: Cell::new(false)
         }
     }
 
@@ -97,13 +95,13 @@ impl Form
     }
 
     pub(crate) fn new_co(co: newtComponent) -> Form {
-        Form { co, added_to_parent: false }
+        Form { co, added_to_parent: Cell::new(false) }
     }
 
     ///
     /// Add a `Component` to the `Form` to be displayed when the `Form` is run.
     ///
-    pub fn add_component(&mut self, component: &mut dyn Component)
+    pub fn add_component(&mut self, component: &dyn Component)
       -> Result<(), &'static str> {
         component.add_to_parent()?;
         unsafe { newtFormAddComponent(self.co, component.co()); }
@@ -113,9 +111,9 @@ impl Form
     ///
     /// Add multiple `Component`s to the `Form`.
     ///
-    pub fn add_components(&mut self, components: &mut [&mut dyn Component])
+    pub fn add_components(&mut self, components: &[&dyn Component])
             -> Result<(), &'static str> {
-        for component in components.iter_mut() {
+        for component in components.iter() {
             self.add_component(*component)?;
         }
         Ok(())
@@ -177,7 +175,7 @@ impl Form
     pub fn get_current(&self) -> Box<dyn Component> {
         Box::new(BaseComponent {
             co: unsafe { newtFormGetCurrent(self.co) },
-            added_to_parent: true
+            added_to_parent: Cell::new(true)
         })
     }
 
@@ -222,7 +220,7 @@ impl Form
                 NEWT_EXIT_COMPONENT => Ok(
                     Component(Box::new(BaseComponent {
                                        co: es.u.co,
-                                       added_to_parent: true
+                                       added_to_parent: Cell::new(true)
                     }))
                 ),
                 NEWT_EXIT_FDREADY => Ok(FDReady(es.u.watch)),

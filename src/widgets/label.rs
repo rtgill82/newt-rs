@@ -1,5 +1,4 @@
-extern crate std;
-extern crate newt_sys;
+use std::cell::Cell;
 use std::ffi::CString;
 
 use newt_sys::*;
@@ -10,7 +9,7 @@ use newt_sys::*;
 #[derive(Component)]
 pub struct Label {
     co: newtComponent,
-    added_to_parent: bool
+    added_to_parent: Cell<bool>
 }
 
 impl Label  {
@@ -18,7 +17,7 @@ impl Label  {
         let c_text = CString::new(text).unwrap();
         Label {
             co: unsafe { newtLabel(left, top, c_text.as_ptr()) },
-            added_to_parent: false
+            added_to_parent: Cell::new(false)
         }
     }
 

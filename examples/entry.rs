@@ -18,14 +18,14 @@ pub fn main() {
         return ch;
     };
 
-    let mut form = Form::new(None, 0);
-    let mut l1 = Label::new(1, 1, "Entry 1:");
-    let mut l2 = Label::new(1, 2, "Entry 2:");
-    let mut e1 = Entry::new(10, 1, None, 10, 0);
-    let mut e2 = Entry::new(10, 2, None, 10, 0);
-    let mut ok = CompactButton::new(7, 4, "Ok");
+    let l1 = Label::new(1, 1, "Entry 1:");
+    let l2 = Label::new(1, 2, "Entry 2:");
+    let e1 = Entry::new(10, 1, None, 10, 0);
+    let e2 = Entry::new(10, 2, None, 10, 0);
+    let ok = CompactButton::new(7, 4, "Ok");
 
-    form.add_components(&mut [&mut l1, &mut l2, &mut e1, &mut e2, &mut ok])
+    let mut form = Form::new(None, 0);
+    form.add_components(&[&l1, &l2, &e1, &e2, &ok])
         .unwrap();
 
     let mut filter = EntryFilter::new(&e1, &mut f, Some(5));

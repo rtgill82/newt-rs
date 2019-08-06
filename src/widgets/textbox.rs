@@ -1,5 +1,4 @@
-extern crate std;
-extern crate newt_sys;
+use std::cell::Cell;
 use std::ffi::CString;
 use std::os::raw::c_char;
 
@@ -11,7 +10,7 @@ use newt_sys::*;
 #[derive(Component)]
 pub struct Textbox {
     co: newtComponent,
-    added_to_parent: bool
+    added_to_parent: Cell<bool>
 }
 
 impl Textbox {
@@ -19,7 +18,7 @@ impl Textbox {
             -> Textbox {
         Textbox {
             co: unsafe { newtTextbox(left, top, width, height, flags) },
-            added_to_parent: false
+            added_to_parent: Cell::new(false)
         }
     }
 
@@ -31,7 +30,7 @@ impl Textbox {
                 newtTextboxReflowed(left, top, c_text.as_ptr() as *mut c_char,
                                     width, flex_down, flex_up, flags)
             },
-            added_to_parent: false
+            added_to_parent: Cell::new(false)
         }
     }
 

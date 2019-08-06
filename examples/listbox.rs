@@ -7,8 +7,8 @@ pub fn main() {
     newt::centered_window(15, 6, Some("Options")).unwrap();
 
     let mut listbox: Listbox = Listbox::new(1, 1, 3, FLAG_MULTIPLE);
-    let mut ok = CompactButton::new(1, 5, "Ok");
-    let mut clear = CompactButton::new(6, 5, "Clear");
+    let ok = CompactButton::new(1, 5, "Ok");
+    let clear = CompactButton::new(6, 5, "Clear");
 
     for i in 1..10 {
         let text = format!("Entry {}", i);
@@ -16,7 +16,7 @@ pub fn main() {
     }
 
     let mut form = Form::new(None, 0);
-    form.add_components(&mut [&mut listbox, &mut ok, &mut clear]).unwrap();
+    form.add_components(&[&listbox, &ok, &clear]).unwrap();
 
     while form.run().unwrap() == clear { listbox.clear(); }
     newt::finished();

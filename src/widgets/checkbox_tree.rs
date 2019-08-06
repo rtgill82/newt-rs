@@ -1,8 +1,5 @@
-extern crate std;
-extern crate libc;
-extern crate newt_sys;
-
-use self::libc::free;
+use libc::free;
+use std::cell::Cell;
 use std::ffi::CString;
 use std::marker::PhantomData;
 use std::os::raw::{c_char, c_void};
@@ -18,7 +15,7 @@ use crate::constants;
 #[derive(Component)]
 pub struct CheckboxTree<D: Data = isize> {
     co: newtComponent,
-    added_to_parent: bool,
+    added_to_parent: Cell<bool>,
     data: PhantomData<D>
 }
 
@@ -40,7 +37,7 @@ impl<D: Data> CheckboxTree<D> {
 
         CheckboxTree {
             co: component,
-            added_to_parent: false,
+            added_to_parent: Cell::new(false),
             data: PhantomData
         }
     }

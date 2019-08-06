@@ -6,16 +6,15 @@ pub fn main() {
     newt::cls();
     newt::centered_window(20, 6, Some("Options")).unwrap();
 
-    let mut form = Form::new(None, 0);
-    let mut radio1 = Radiobutton::new(4, 1, "Option 1", true, None);
-    let mut radio2 = Radiobutton::new(4, 2, "Option 2", false,
-                                      Some(&mut radio1));
-    let mut radio3 = Radiobutton::new(4, 3, "Option 3", false,
-                                      Some(&mut radio2));
-    let mut ok = CompactButton::new(7, 5, "Ok");
+    let radio1 = Radiobutton::new(4, 1, "Option 1", true, None);
+    let radio2 = Radiobutton::new(4, 2, "Option 2", false,
+                                      Some(&radio1));
+    let radio3 = Radiobutton::new(4, 3, "Option 3", false,
+                                      Some(&radio2));
+    let ok = CompactButton::new(7, 5, "Ok");
 
-    form.add_components(&mut [&mut radio1, &mut radio2, &mut radio3,
-                              &mut ok])
+    let mut form = Form::new(None, 0);
+    form.add_components(&[&radio1, &radio2, &radio3, &ok])
         .unwrap();
     form.run().unwrap();
     newt::finished();

@@ -47,17 +47,17 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
         impl #impl_ ::intern::Child for #name #type_
             #where_
         {
-            fn add_to_parent(&mut self)
+            fn add_to_parent(&self)
               -> Result<(), &'static str> {
-                if self.added_to_parent {
+                if self.added_to_parent.get() {
                     return Err("Component already belongs to a Form.");
                 }
-                self.added_to_parent = true;
+                self.added_to_parent.set(true);
                 Ok(())
             }
 
             fn added_to_parent(&self) -> bool {
-                self.added_to_parent
+                self.added_to_parent.get()
             }
         }
 
@@ -84,7 +84,7 @@ fn impl_component_drop(name: &Ident, generics: &Generics) -> TokenStream {
             #where_
         {
             fn drop(&mut self) {
-                if !self.added_to_parent {
+                if !self.added_to_parent.get() {
                     unsafe {
                         ::newt_sys::newtComponentDestroy(self.co);
                     }

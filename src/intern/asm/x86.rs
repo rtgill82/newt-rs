@@ -1,8 +1,8 @@
 use std::ffi::{CStr,CString};
 use std::mem::size_of;
 use libc::{c_char,c_void};
-use newt_sys::{newtComponent,newtGrid,newtGridElement,newtWinEntry};
 
+use newt_sys::{newtComponent,newtGrid,newtGridElement,newtWinEntry};
 use crate::constants::NEWT_GRID_EMPTY;
 use crate::intern::funcs::*;
 use crate::windows::WinEntry;

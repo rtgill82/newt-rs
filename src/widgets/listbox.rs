@@ -1,9 +1,8 @@
-extern crate std;
-extern crate newt_sys;
+use std::cell::Cell;
 use std::ffi::{CStr, CString};
 use std::marker::PhantomData;
 use std::os::raw::{c_char, c_void};
-use crate::ptr;
+use std::ptr;
 
 use newt_sys::*;
 use crate::constants::FlagsSense;
@@ -15,7 +14,7 @@ use crate::intern::data::Data;
 #[derive(Component)]
 pub struct Listbox<D: Data = isize> {
     co: newtComponent,
-    added_to_parent: bool,
+    added_to_parent: Cell<bool>,
     data: PhantomData<D>
 }
 
@@ -23,7 +22,7 @@ impl<D: Data> Listbox<D> {
     pub fn new(left: i32, top: i32, height: i32, flags: i32) -> Listbox<D> {
         Listbox {
             co: unsafe { newtListbox(left, top, height, flags) },
-            added_to_parent: false,
+            added_to_parent: Cell::new(false),
             data: PhantomData
         }
     }

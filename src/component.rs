@@ -1,8 +1,6 @@
 //!
 //! Trait implemented by `Widget` and `Grid` types.
 //!
-extern crate std;
-extern crate newt_sys;
 use std::cmp::PartialEq;
 use std::fmt::Debug;
 use std::ops::Deref;

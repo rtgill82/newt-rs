@@ -1,6 +1,4 @@
-extern crate std;
-extern crate newt_sys;
-
+use std::cell::Cell;
 use newt_sys::*;
 
 ///
@@ -9,14 +7,14 @@ use newt_sys::*;
 #[derive(Component)]
 pub struct Scale {
     co: newtComponent,
-    added_to_parent: bool
+    added_to_parent: Cell<bool>
 }
 
 impl Scale  {
     pub fn new(left: i32, top: i32, width: i32, full_value: i64) -> Scale {
         Scale {
             co: unsafe { newtScale(left, top, width, full_value) },
-            added_to_parent: false
+            added_to_parent: Cell::new(false)
         }
     }
 

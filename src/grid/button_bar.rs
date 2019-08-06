@@ -1,8 +1,8 @@
-extern crate newt_sys;
 use libc::c_void;
+use std::cell::Cell;
 use std::mem::size_of;
-use newt_sys::*;
 
+use newt_sys::*;
 use crate::widgets::Button;
 use crate::intern::asm;
 
@@ -12,7 +12,7 @@ use crate::intern::asm;
 #[derive(Grid)]
 pub struct ButtonBar {
     grid: newtGrid,
-    added_to_parent: bool,
+    added_to_parent: Cell<bool>,
 
     // Define children as Option for compatibility
     // with macros defined in newt_proc_macros.
@@ -45,7 +45,7 @@ impl ButtonBar {
 
             ButtonBar {
                 grid,
-                added_to_parent: false,
+                added_to_parent: Cell::new(false),
                 children: Some(buttons)
             }
         }

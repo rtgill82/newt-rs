@@ -1,7 +1,6 @@
-extern crate std;
-extern crate newt_sys;
+use std::cell::Cell;
 use std::ffi::CString;
-use crate::ptr;
+use std::ptr;
 
 use newt_sys::*;
 
@@ -11,7 +10,7 @@ use newt_sys::*;
 #[derive(Component)]
 pub struct Radiobutton {
     co: newtComponent,
-    added_to_parent: bool
+    added_to_parent: Cell<bool>
 }
 
 impl Radiobutton {
@@ -28,13 +27,13 @@ impl Radiobutton {
                 newtRadiobutton(left, top, c_text.as_ptr(),
                                 is_default as i32, ptr)
             },
-            added_to_parent: false
+            added_to_parent: Cell::new(false)
         }
     }
 
     pub fn get_current(&self) -> Radiobutton {
         Radiobutton {
-            added_to_parent: true,
+            added_to_parent: Cell::new(true),
             co: unsafe { newtRadioGetCurrent(self.co) }
         }
     }

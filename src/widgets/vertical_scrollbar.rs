@@ -1,6 +1,4 @@
-extern crate std;
-extern crate newt_sys;
-
+use std::cell::Cell;
 use newt_sys::*;
 
 ///
@@ -9,7 +7,7 @@ use newt_sys::*;
 #[derive(Component)]
 pub struct VerticalScrollbar {
     co: newtComponent,
-    added_to_parent: bool
+    added_to_parent: Cell<bool>
 }
 
 impl VerticalScrollbar  {
@@ -20,7 +18,7 @@ impl VerticalScrollbar  {
                 newtVerticalScrollbar (left, top, height,
                                        normal_colorset, thumb_colorset)
             },
-            added_to_parent: false
+            added_to_parent: Cell::new(false)
         }
     }
 }
