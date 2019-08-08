@@ -1,5 +1,5 @@
 use newt_sys::newtComponent;
-use crate::Component;
+use crate::component::Component;
 use crate::widgets::Entry;
 use crate::intern::funcs::newt_entry_set_filter;
 

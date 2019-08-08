@@ -1,4 +1,4 @@
-use crate::Component;
+use crate::component::Component;
 use crate::intern::funcs::*;
 use newt_sys::*;
 

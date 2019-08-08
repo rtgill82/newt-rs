@@ -127,7 +127,7 @@ use std::cell::Cell;
 use std::ffi::{CString,c_void};
 use newt_sys::*;
 
-use crate::Component;
+use crate::component::Component;
 
 #[doc(hidden)]
 pub mod r#trait;
@@ -155,10 +155,6 @@ pub use self::vertical_grid::VerticalGrid;
 
 #[doc(inline)]
 pub use self::r#trait::Grid as GridFns;
-
-#[doc(hidden)]
-#[deprecated(since = "0.5.4", note = "Please use `newt::grid::GridFns` instead")]
-pub use self::GridFns as GridTrait;
 
 ///
 /// Arrange `Component`s and sub-grids within a two-dimensional grid.

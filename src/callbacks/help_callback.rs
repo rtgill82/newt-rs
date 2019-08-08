@@ -1,7 +1,7 @@
 use std::os::raw::c_void;
 use std::ptr;
 
-use crate::Component;
+use crate::component::Component;
 use crate::widgets::{Form,VerticalScrollbar};
 use crate::intern::funcs::*;
 use newt_sys::*;

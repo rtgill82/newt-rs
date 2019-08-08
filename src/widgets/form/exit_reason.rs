@@ -1,5 +1,5 @@
 use std::os::unix::io::RawFd;
-use crate::Component;
+use crate::component::Component;
 
 ///
 /// The `Form` exit reason.

@@ -4,7 +4,7 @@ use std::os::unix::io::RawFd;
 use std::ptr;
 
 use newt_sys::*;
-use crate::Component;
+use crate::component::Component;
 use crate::callbacks::HelpCallback;
 use crate::widgets::VerticalScrollbar;
 

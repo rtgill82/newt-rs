@@ -1,7 +1,7 @@
 use std::cell::Cell;
 
 use newt_sys::*;
-use crate::Component;
+use crate::component::Component;
 use crate::constants::{NEWT_GRID_COMPONENT,NEWT_GRID_SUBGRID};
 
 ///

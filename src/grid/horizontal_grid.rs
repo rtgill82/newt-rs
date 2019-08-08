@@ -2,7 +2,7 @@ use libc::c_void;
 use std::cell::Cell;
 
 use newt_sys::*;
-use crate::Component;
+use crate::component::Component;
 use crate::intern::asm;
 
 ///

@@ -63,24 +63,6 @@
 //! [win_menu]: windows/fn.win_menu.html
 //! [newt_sys]: https://crates.io/crates/newt-sys
 //!
-//! ## Deprecation Warning
-//!
-//! As of `newt-rs 0.5.4` module organization has been refactored. Items have
-//! been re-exported under their previous names and modules for compatability,
-//! but these re-exports are likely to be removed in the future. The following
-//! changes have been made:
-//!
-//! * The `newt::components` module has been renamed to `newt::widgets`.
-//!
-//! * The `newt::components::Component` trait has been renamed to
-//!   `newt::component::Component`.
-//!
-//! * The `newt::components::ComponentFuncs` trait has been renamed to
-//!   `newt::widgets::WidgetFns`.
-//!
-//! * The `newt::grid::GridTrait` trait has been renamed to
-//!   `newt::grid::GridFns`.
-//!
 //! ## Bugs
 //!
 //! A [`Form`][form] can be destroyed before the `Component`s they contain are
@@ -106,7 +88,6 @@ use std::ptr;
 mod intern;
 pub mod callbacks;
 pub mod component;
-pub mod components;
 pub mod constants;
 pub mod prelude;
 pub mod widgets;

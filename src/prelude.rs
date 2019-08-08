@@ -2,8 +2,7 @@
 //! Convenient imports.
 //!
 
-pub use crate::Component;
-pub use crate::WidgetFns;
+pub use crate::component::Component;
 pub use crate::constants::*;
 pub use crate::widgets::*;
 
