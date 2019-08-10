@@ -143,6 +143,7 @@ use newt_sys::*;
 ///
 /// A struct containing the color sets for all components.
 ///
+#[derive(Clone,Debug)]
 pub struct Colors<'a> {
     pub root_fg: &'a str,            pub root_bg: &'a str,
     pub border_fg: &'a str,          pub border_bg: &'a str,
@@ -166,6 +167,42 @@ pub struct Colors<'a> {
     pub compact_button_fg: &'a str,  pub compact_button_bg: &'a str,
     pub act_sel_listbox_fg: &'a str, pub act_sel_listbox_bg: &'a str,
     pub sel_listbox_fg: &'a str,     pub sel_listbox_bg: &'a str
+}
+
+macro_rules! cstr {
+    ( $c_str:expr ) => { CStr::from_ptr($c_str).to_str().unwrap() }
+}
+
+impl<'a> Default for Colors<'a> {
+    fn default() -> Self {
+        unsafe {
+            let c = &newtDefaultColorPalette;
+            Colors {
+                root_fg: cstr!(c.rootFg),                     root_bg: cstr!(c.rootBg),
+                border_fg: cstr!(c.borderFg),                 border_bg: cstr!(c.borderBg),
+                window_fg: cstr!(c.windowFg),                 window_bg: cstr!(c.windowBg),
+                shadow_fg: cstr!(c.shadowFg),                 shadow_bg: cstr!(c.shadowBg),
+                title_fg: cstr!(c.titleFg),                   title_bg: cstr!(c.titleBg),
+                button_fg: cstr!(c.buttonFg),                 button_bg: cstr!(c.buttonBg),
+                act_button_fg: cstr!(c.actButtonFg),          act_button_bg: cstr!(c.actButtonBg),
+                checkbox_fg: cstr!(c.checkboxFg),             checkbox_bg: cstr!(c.checkboxBg),
+                act_checkbox_fg: cstr!(c.actCheckboxFg),      act_checkbox_bg: cstr!(c.actCheckboxBg),
+                entry_fg: cstr!(c.entryFg),                   entry_bg: cstr!(c.entryBg),
+                label_fg: cstr!(c.labelFg),                   label_bg: cstr!(c.labelBg),
+                listbox_fg: cstr!(c.listboxFg),               listbox_bg: cstr!(c.listboxBg),
+                act_listbox_fg: cstr!(c.actListboxFg),        act_listbox_bg: cstr!(c.actListboxBg),
+                textbox_fg: cstr!(c.textboxFg),               textbox_bg: cstr!(c.textboxBg),
+                act_textbox_fg: cstr!(c.actTextboxFg),        act_textbox_bg: cstr!(c.actTextboxBg),
+                help_line_fg: cstr!(c.helpLineFg),            help_line_bg: cstr!(c.helpLineBg),
+                root_text_fg: cstr!(c.rootTextFg),            root_text_bg: cstr!(c.rootTextBg),
+                empty_scale: cstr!(c.emptyScale),             full_scale: cstr!(c.fullScale),
+                disabled_entry_fg: cstr!(c.disabledEntryFg),  disabled_entry_bg: cstr!(c.disabledEntryBg),
+                compact_button_fg: cstr!(c.compactButtonFg),  compact_button_bg: cstr!(c.compactButtonBg),
+                act_sel_listbox_fg: cstr!(c.actSelListboxFg), act_sel_listbox_bg: cstr!(c.actSelListboxBg),
+                sel_listbox_fg: cstr!(c.selListboxFg),        sel_listbox_bg: cstr!(c.selListboxBg)
+            }
+        }
+    }
 }
 
 ///

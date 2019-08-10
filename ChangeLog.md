@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.5.5
+
+* Implement Clone, Debug, and Default traits for the Colors struct.
+
 ## 0.5.4
 
 * Moved components to the `newt::widget` namespace.
