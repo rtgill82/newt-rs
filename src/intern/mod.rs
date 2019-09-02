@@ -15,8 +15,8 @@ pub trait Child {
 
 pub trait ComponentPtr {
     fn ptr(&self) -> *mut c_void;
-    fn as_co(&self) -> newtComponent;
-    fn as_grid(&self) -> newtGrid;
+    fn co_ptr(&self) -> newtComponent;
+    fn grid_ptr(&self) -> newtGrid;
 }
 
 pub trait GridElementType {

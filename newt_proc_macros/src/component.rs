@@ -24,11 +24,11 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
                 self.co as *mut ::libc::c_void
             }
 
-            fn as_co(&self) -> ::newt_sys::newtComponent {
+            fn co_ptr(&self) -> ::newt_sys::newtComponent {
                 self.co
             }
 
-            fn as_grid(&self) -> ::newt_sys::newtGrid {
+            fn grid_ptr(&self) -> ::newt_sys::newtGrid {
                 self.co as newt_sys::newtGrid
             }
         }
@@ -38,7 +38,7 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
         {
             fn co(&self) -> ::newt_sys::newtComponent {
                 use ::intern::ComponentPtr;
-                self.as_co()
+                self.co_ptr()
             }
         }
 

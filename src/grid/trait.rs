@@ -9,7 +9,7 @@ use crate::intern::{Child,ComponentPtr};
 pub trait Grid: Child + Component + ComponentPtr {
     fn add_to_form(&mut self, form: &mut Form) -> Result<(), &'static str> {
         unsafe {
-            newtGridAddComponentsToForm(self.as_grid(), form.co(), 1);
+            newtGridAddComponentsToForm(self.grid_ptr(), form.co(), 1);
         }
         self.add_to_parent()?;
         Ok(())
@@ -19,14 +19,14 @@ pub trait Grid: Child + Component + ComponentPtr {
         let mut width: i32 = 0;
         let mut height: i32 = 0;
         unsafe {
-            newtGridGetSize(self.as_grid(), &mut width, &mut height);
+            newtGridGetSize(self.grid_ptr(), &mut width, &mut height);
         }
         (width, height)
     }
 
     fn place(&mut self, left: i32, top: i32) {
         unsafe {
-            newtGridPlace(self.as_grid(), left, top);
+            newtGridPlace(self.grid_ptr(), left, top);
         }
     }
 }

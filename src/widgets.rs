@@ -45,7 +45,7 @@ pub trait WidgetFns: ComponentPtr {
     /// [form]: form/struct.Form.html
     ///
     fn takes_focus(&mut self, value: bool) {
-        unsafe { newtComponentTakesFocus(self.as_co(), value as c_int); }
+        unsafe { newtComponentTakesFocus(self.co_ptr(), value as c_int); }
     }
 
     ///
@@ -58,7 +58,7 @@ pub trait WidgetFns: ComponentPtr {
         let mut top:  i32 = 0;
 
         unsafe {
-            newtComponentGetPosition(self.as_co(), &mut left, &mut top)
+            newtComponentGetPosition(self.co_ptr(), &mut left, &mut top)
         };
         (left, top)
     }
@@ -73,7 +73,7 @@ pub trait WidgetFns: ComponentPtr {
         let mut height: i32 = 0;
 
         unsafe {
-            newtComponentGetSize(self.as_co(), &mut width, &mut height)
+            newtComponentGetSize(self.co_ptr(), &mut width, &mut height)
         };
         (width, height)
     }

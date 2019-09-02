@@ -32,7 +32,7 @@ impl<'a> BasicWindow<'a> {
         assert_eq!(buttons.grid_element_type(), NEWT_GRID_SUBGRID);
 
         let grid = unsafe {
-            newtGridBasicWindow(text.co(), middle.as_grid(), buttons.as_grid())
+            newtGridBasicWindow(text.co(), middle.grid_ptr(), buttons.grid_ptr())
         };
 
         let mut children: Vec<&'a dyn Component> = Vec::new();

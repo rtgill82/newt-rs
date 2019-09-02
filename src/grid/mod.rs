@@ -222,7 +222,7 @@ impl<'a> Grid<'a> {
 ///
 pub fn wrapped_window(grid: &dyn self::r#trait::Grid, title: &str) {
     let c_str = CString::new(title).unwrap();
-    unsafe { newtGridWrappedWindow(grid.as_grid(), c_str.as_ptr() as *mut i8); }
+    unsafe { newtGridWrappedWindow(grid.grid_ptr(), c_str.as_ptr() as *mut i8); }
 }
 
 ///
@@ -232,7 +232,7 @@ pub fn wrapped_window_at(grid: &dyn self::r#trait::Grid, title: &str,
                          left: i32, top: i32) {
     let c_str = CString::new(title).unwrap();
     unsafe {
-        newtGridWrappedWindowAt(grid.as_grid(), c_str.as_ptr() as *mut i8,
+        newtGridWrappedWindowAt(grid.grid_ptr(), c_str.as_ptr() as *mut i8,
                                 left, top);
     }
 }
