@@ -24,7 +24,7 @@ pub trait Grid: Child + Component + ComponentPtr {
         (width, height)
     }
 
-    fn place(&mut self, left: i32, top: i32) {
+    fn place(&self, left: i32, top: i32) {
         unsafe {
             newtGridPlace(self.grid_ptr(), left, top);
         }
@@ -32,7 +32,7 @@ pub trait Grid: Child + Component + ComponentPtr {
 }
 
 impl <T: Grid> WidgetFns for T {
-    fn takes_focus(&mut self, _value: bool) {
+    fn takes_focus(&self, _value: bool) {
         panic!("`Grid` is not a `Widget`");
     }
 

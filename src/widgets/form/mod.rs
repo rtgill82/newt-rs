@@ -122,21 +122,21 @@ impl Form
     ///
     /// Set the height of the `Form`.
     ///
-    pub fn set_height(&mut self, height: i32) {
+    pub fn set_height(&self, height: i32) {
         unsafe { newtFormSetHeight(self.co, height); }
     }
 
     ///
     /// Set the width of the `Form`.
     ///
-    pub fn set_width(&mut self, width: i32) {
+    pub fn set_width(&self, width: i32) {
         unsafe { newtFormSetWidth(self.co, width); }
     }
 
     ///
     /// Tell the `Form` to resize itself.
     ///
-    pub fn set_size(&mut self) {
+    pub fn set_size(&self) {
         unsafe { newtFormSetSize(self.co); }
     }
 
@@ -144,7 +144,7 @@ impl Form
     /// Add an exit hot key to the `Form`. The `Form` will stop running
     /// when the key is pressed.
     ///
-    pub fn add_hot_key(&mut self, key: i32) {
+    pub fn add_hot_key(&self, key: i32) {
         unsafe { newtFormAddHotKey(self.co, key); }
     }
 
@@ -154,7 +154,7 @@ impl Form
     ///
     /// * `millisecs` - The timer countdown in milliseconds.
     ///
-    pub fn set_timer(&mut self, millisecs: i32) {
+    pub fn set_timer(&self, millisecs: i32) {
         unsafe { newtFormSetTimer(self.co, millisecs); }
     }
 
@@ -165,7 +165,7 @@ impl Form
     /// * `fd` - The file descriptor to watch.
     /// * `flags` - Flags specifying the activity to watch for.
     ///
-    pub fn watch_fd(&mut self, fd: RawFd, flags: FDFlags) {
+    pub fn watch_fd(&self, fd: RawFd, flags: FDFlags) {
         unsafe { newtFormWatchFd(self.co, fd, flags as i32); }
     }
 
@@ -182,14 +182,14 @@ impl Form
     ///
     /// Set the `Form`'s currently focused `Component`.
     ///
-    pub fn set_current(&mut self, subcomponent: &dyn Component) {
+    pub fn set_current(&self, subcomponent: &dyn Component) {
         unsafe { newtFormSetCurrent(self.co, subcomponent.co()); }
     }
 
     ///
     /// Set the `Form`'s background color.
     ///
-    pub fn set_background(&mut self, color: i32) {
+    pub fn set_background(&self, color: i32) {
         unsafe { newtFormSetBackground(self.co, color); }
     }
 
@@ -197,7 +197,7 @@ impl Form
         unsafe { newtFormGetScrollPosition(self.co) }
     }
 
-    pub fn set_scroll_position(&mut self, position: i32) {
+    pub fn set_scroll_position(&self, position: i32) {
         unsafe { newtFormSetScrollPosition(self.co, position); }
     }
 

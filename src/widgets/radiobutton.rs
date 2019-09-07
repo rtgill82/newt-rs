@@ -38,7 +38,7 @@ impl Radiobutton {
         }
     }
 
-    pub fn set_current(&mut self) {
+    pub fn set_current(&self) {
         unsafe { newtRadioSetCurrent(self.co) }
     }
 }

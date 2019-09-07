@@ -44,7 +44,7 @@ fn server() {
     newt::cls();
     newt::centered_window(50, 20, Some("FD Exit Test")).unwrap();
 
-    let mut t = Textbox::new(1, 3, 48, 5, 0);
+    let t = Textbox::new(1, 3, 48, 5, 0);
     let b = CompactButton::new(22, 19, "Exit");
 
     let mut form = Form::new(None, 0);

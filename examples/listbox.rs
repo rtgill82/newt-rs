@@ -6,7 +6,7 @@ pub fn main() {
     newt::cls();
     newt::centered_window(15, 6, Some("Options")).unwrap();
 
-    let mut listbox: Listbox = Listbox::new(1, 1, 3, FLAG_MULTIPLE);
+    let listbox: Listbox = Listbox::new(1, 1, 3, FLAG_MULTIPLE);
     let ok = CompactButton::new(1, 5, "Ok");
     let clear = CompactButton::new(6, 5, "Clear");
 

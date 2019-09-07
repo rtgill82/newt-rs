@@ -42,11 +42,11 @@ impl<D: Data> CheckboxTree<D> {
         }
     }
 
-    pub fn set_width(&mut self, width: i32) {
+    pub fn set_width(&self, width: i32) {
         unsafe { newtCheckboxTreeSetWidth(self.co, width); }
     }
 
-    pub fn add_item(&mut self, text: &str, data: D, flags: i32,
+    pub fn add_item(&self, text: &str, data: D, flags: i32,
                     indexes: Option<&[i32]>) -> i32 {
         let mut i = 0;
         let mut c_array: Vec<i32>;
@@ -77,7 +77,7 @@ impl<D: Data> CheckboxTree<D> {
         Some(D::newt_from_ptr(c_data))
     }
 
-    pub fn set_current(&mut self, data: D) {
+    pub fn set_current(&self, data: D) {
         unsafe {
             newtCheckboxTreeSetCurrent(self.co, data.newt_to_ptr() as *mut c_void);
         }
@@ -116,7 +116,7 @@ impl<D: Data> CheckboxTree<D> {
         vec.into_boxed_slice()
     }
 
-    pub fn set_entry(&mut self, data: D, text: &str) {
+    pub fn set_entry(&self, data: D, text: &str) {
         let c_str = CString::new(text).unwrap();
         unsafe {
             newtCheckboxTreeSetEntry(self.co, data.newt_to_ptr(),
@@ -131,7 +131,7 @@ impl<D: Data> CheckboxTree<D> {
         }
     }
 
-    pub fn set_entry_value(&mut self, data: D, value: char) {
+    pub fn set_entry_value(&self, data: D, value: char) {
         unsafe {
             newtCheckboxTreeSetEntryValue(self.co, data.newt_to_ptr(),
                                           value as c_char);

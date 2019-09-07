@@ -21,12 +21,12 @@ impl Label  {
         }
     }
 
-    pub fn set_text(&mut self, text: &str) {
+    pub fn set_text(&self, text: &str) {
         let c_text = CString::new(text).unwrap();
         unsafe { newtLabelSetText(self.co, c_text.as_ptr()); }
     }
 
-    pub fn set_colors(&mut self, colorset: i32) {
+    pub fn set_colors(&self, colorset: i32) {
         unsafe { newtLabelSetColors(self.co, colorset); }
     }
 }

@@ -30,8 +30,8 @@ fn radiobutton_get_current() {
 
 #[test]
 fn radiobutton_set_current() {
-    let mut radio1 = Radiobutton::new(0, 0, "Yes", true, None);
-    let mut radio2 = Radiobutton::new(0, 0, "No", false, Some(&mut radio1));
+    let radio1 = Radiobutton::new(0, 0, "Yes", true, None);
+    let radio2 = Radiobutton::new(0, 0, "No", false, Some(&radio1));
     radio2.set_current();
     assert!(radio1.get_current() == radio2);
     assert!(radio2.get_current() == radio2);

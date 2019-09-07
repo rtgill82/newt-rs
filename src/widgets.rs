@@ -44,7 +44,7 @@ pub trait WidgetFns: ComponentPtr {
     ///
     /// [form]: form/struct.Form.html
     ///
-    fn takes_focus(&mut self, value: bool) {
+    fn takes_focus(&self, value: bool) {
         unsafe { newtComponentTakesFocus(self.co_ptr(), value as c_int); }
     }
 

@@ -36,7 +36,7 @@ fn listbox_partial_eq_false() {
 
 #[test]
 fn listbox_append_entry() {
-    let mut listbox: Listbox = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", 5).unwrap();
     assert!(listbox.get_current() == Some(5));
 }
@@ -49,7 +49,7 @@ fn listbox_get_current_no_entries() {
 
 #[test]
 fn listbox_set_current() {
-    let mut listbox: Listbox = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", 5).unwrap();
     listbox.append_entry("entry 2", 10).unwrap();
     assert!(listbox.get_current() == Some(5));
@@ -59,7 +59,7 @@ fn listbox_set_current() {
 
 #[test]
 fn listbox_set_current_by_key() {
-    let mut listbox: Listbox = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", 5).unwrap();
     listbox.append_entry("entry 2", 10).unwrap();
     assert!(listbox.get_current() == Some(5));
@@ -69,7 +69,7 @@ fn listbox_set_current_by_key() {
 
 #[test]
 fn listbox_item_count() {
-    let mut listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", ()).unwrap();
     listbox.append_entry("entry 2", ()).unwrap();
     assert!(listbox.item_count() == 2);
@@ -79,7 +79,7 @@ fn listbox_item_count() {
 
 #[test]
 fn listbox_delete_entry() {
-    let mut listbox: Listbox = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", 5).unwrap();
     listbox.append_entry("entry 2", 10).unwrap();
     listbox.append_entry("entry 3", 15).unwrap();
@@ -90,7 +90,7 @@ fn listbox_delete_entry() {
 
 #[test]
 fn listbox_clear() {
-    let mut listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", ()).unwrap();
     listbox.append_entry("entry 2", ()).unwrap();
     assert!(listbox.item_count() == 2);
@@ -100,7 +100,7 @@ fn listbox_clear() {
 
 #[test]
 fn listbox_get_entry() {
-    let mut listbox: Listbox = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", 5).unwrap();
     listbox.append_entry("entry 2", 10).unwrap();
     let (s, d) = listbox.get_entry(1);
@@ -110,7 +110,7 @@ fn listbox_get_entry() {
 
 #[test]
 fn listbox_set_entry() {
-    let mut listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox<()> = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", ()).unwrap();
     listbox.append_entry("entry 2", ()).unwrap();
     listbox.set_entry(1, "entry 3");
@@ -120,7 +120,7 @@ fn listbox_set_entry() {
 
 #[test]
 fn listbox_set_data() {
-    let mut listbox: Listbox = Listbox::new(0, 0, 5, 0);
+    let listbox: Listbox = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", 5).unwrap();
     { let (_s, d) = listbox.get_entry(0); assert!(d == 5); }
     listbox.set_data(0, 10);
@@ -130,7 +130,7 @@ fn listbox_set_data() {
 
 #[test]
 fn listbox_get_selection_none() {
-    let mut listbox: Listbox<()> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let listbox: Listbox<()> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry 1", ()).unwrap();
     listbox.append_entry("entry 2", ()).unwrap();
     let result = listbox.get_selection();
@@ -139,7 +139,7 @@ fn listbox_get_selection_none() {
 
 #[test]
 fn listbox_select_item() {
-    let mut listbox: Listbox = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let listbox: Listbox = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry 1", 5).unwrap();
     listbox.append_entry("entry 2", 10).unwrap();
     listbox.select_item(10, Set);
@@ -147,7 +147,7 @@ fn listbox_select_item() {
 
 #[test]
 fn listbox_get_selection() {
-    let mut listbox: Listbox = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let listbox: Listbox = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry 1", 5).unwrap();
     listbox.append_entry("entry 2", 10).unwrap();
     listbox.append_entry("entry 3", 15).unwrap();
@@ -161,7 +161,7 @@ fn listbox_get_selection() {
 
 #[test]
 fn listbox_clear_selection() {
-    let mut listbox: Listbox = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let listbox: Listbox = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry 1", 5).unwrap();
     listbox.append_entry("entry 2", 10).unwrap();
     listbox.append_entry("entry 3", 15).unwrap();
@@ -176,7 +176,7 @@ fn listbox_clear_selection() {
 
 #[test]
 fn listbox_get_selection_char() {
-    let mut listbox: Listbox<char> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let listbox: Listbox<char> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry1", 'a').unwrap();
     listbox.append_entry("entry2", 'b').unwrap();
     listbox.append_entry("entry3", 'c').unwrap();
@@ -189,7 +189,7 @@ fn listbox_get_selection_char() {
 
 #[test]
 fn listbox_get_selection_i8() {
-    let mut listbox: Listbox<i8> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let listbox: Listbox<i8> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry1", i8::MAX).unwrap();
     listbox.append_entry("entry2", 0).unwrap();
     listbox.append_entry("entry3", i8::MIN).unwrap();
@@ -202,7 +202,7 @@ fn listbox_get_selection_i8() {
 
 #[test]
 fn listbox_get_selection_i32() {
-    let mut listbox: Listbox<i32> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let listbox: Listbox<i32> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry1", i32::MAX).unwrap();
     listbox.append_entry("entry2", 0).unwrap();
     listbox.append_entry("entry3", i32::MIN).unwrap();
@@ -215,7 +215,7 @@ fn listbox_get_selection_i32() {
 
 #[test]
 fn listbox_get_selection_isize() {
-    let mut listbox: Listbox = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let listbox: Listbox = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry1", isize::MAX).unwrap();
     listbox.append_entry("entry2", 0).unwrap();
     listbox.append_entry("entry3", isize::MIN).unwrap();
@@ -228,7 +228,7 @@ fn listbox_get_selection_isize() {
 
 #[test]
 fn listbox_get_selection_u8() {
-    let mut listbox: Listbox<u8> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let listbox: Listbox<u8> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry1", u8::MAX).unwrap();
     listbox.append_entry("entry2", 0).unwrap();
     listbox.append_entry("entry3", u8::MIN).unwrap();
@@ -241,7 +241,7 @@ fn listbox_get_selection_u8() {
 
 #[test]
 fn listbox_get_selection_u32() {
-    let mut listbox: Listbox<u32> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let listbox: Listbox<u32> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry1", u32::MAX).unwrap();
     listbox.append_entry("entry2", 0).unwrap();
     listbox.append_entry("entry3", u32::MIN).unwrap();
@@ -254,7 +254,7 @@ fn listbox_get_selection_u32() {
 
 #[test]
 fn listbox_get_selection_usize() {
-    let mut listbox: Listbox<usize> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    let listbox: Listbox<usize> = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry1", usize::MAX).unwrap();
     listbox.append_entry("entry2", 0).unwrap();
     listbox.append_entry("entry3", usize::MIN).unwrap();
@@ -269,7 +269,7 @@ fn listbox_get_selection_usize() {
 fn listbox_get_selection_struct() {
     let st1 = TestStruct { v1: 10, v2: 25, v3: "Foo" };
     let st2 = TestStruct { v1: 11, v2: 26, v3: "Bar" };
-    let mut listbox: Listbox<Data<TestStruct>> =
+    let listbox: Listbox<Data<TestStruct>> =
         Listbox::new(0, 0, 5, FLAG_MULTIPLE);
 
     listbox.append_entry("entry1", Data(&st1)).unwrap();

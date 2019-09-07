@@ -18,11 +18,11 @@ impl Scale  {
         }
     }
 
-    pub fn set(&mut self, amount: u64) {
+    pub fn set(&self, amount: u64) {
         unsafe { newtScaleSet(self.co, amount); }
     }
 
-    pub fn set_colors(&mut self, empty: i32, full: i32) {
+    pub fn set_colors(&self, empty: i32, full: i32) {
         unsafe { newtScaleSetColors(self.co, empty, full); }
     }
 }

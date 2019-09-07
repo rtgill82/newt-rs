@@ -35,12 +35,12 @@ use newt_sys::*;
 ///         let mut form = Form::new(None, 0);
 ///
 ///         let text = format!("Help Text Data: {}", string);
-///         let mut label = Label::new(1, 1, &text);
+///         let label = Label::new(1, 1, &text);
 ///
 ///         let pos = (width / 2 - 3) as i32;
-///         let mut ok = CompactButton::new(pos, 3, "Ok");
-///         form.add_component(&mut label).unwrap();
-///         form.add_component(&mut ok).unwrap();
+///         let ok = CompactButton::new(pos, 3, "Ok");
+///         form.add_component(&label).unwrap();
+///         form.add_component(&ok).unwrap();
 ///         form.run().unwrap();
 ///         newt::pop_window();
 ///     };
@@ -48,10 +48,10 @@ use newt_sys::*;
 ///     // `Form` is allocated with the callback and both are associated.
 ///     let (mut form, _cb) =
 ///         Form::new_with_help_callback(None, 0, f, Some("This is help text."));
-///     let mut label = Label::new(1, 1, "Press F1 for help!");
-///     let mut ok = CompactButton::new(7, 4, "Ok");
+///     let label = Label::new(1, 1, "Press F1 for help!");
+///     let ok = CompactButton::new(7, 4, "Ok");
 ///
-///     form.add_components(&mut [&mut label, &mut ok]).unwrap();
+///     form.add_components(&[&label, &ok]).unwrap();
 ///
 ///     form.run().unwrap();
 ///     newt::finished();

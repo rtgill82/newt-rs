@@ -32,7 +32,7 @@ fn checkbox_get_value() {
 
 #[test]
 fn checkbox_set_value() {
-    let mut checkbox = Checkbox::new(0, 0, "Ok", None, None);
+    let checkbox = Checkbox::new(0, 0, "Ok", None, None);
     assert!(checkbox.get_value() == ' ');
     checkbox.set_value('X');
     assert!(checkbox.get_value() == 'X');
@@ -40,6 +40,6 @@ fn checkbox_set_value() {
 
 #[test]
 fn checkbox_set_flags() {
-    let mut checkbox = Checkbox::new(0, 0, "Ok", None, None);
+    let checkbox = Checkbox::new(0, 0, "Ok", None, None);
     checkbox.set_flags(0, FlagsSense::Reset);
 }

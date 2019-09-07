@@ -46,14 +46,13 @@ use crate::constants::FlagsSense;
 ///     };
 ///
 ///     let mut form = Form::new(None, 0);
-///     let mut l1 = Label::new(1, 1, "Entry 1:");
-///     let mut l2 = Label::new(1, 2, "Entry 2:");
-///     let mut e1 = Entry::new(10, 1, None, 10, 0);
-///     let mut e2 = Entry::new(10, 2, None, 10, 0);
-///     let mut ok = CompactButton::new(7, 4, "Ok");
+///     let l1 = Label::new(1, 1, "Entry 1:");
+///     let l2 = Label::new(1, 2, "Entry 2:");
+///     let e1 = Entry::new(10, 1, None, 10, 0);
+///     let e2 = Entry::new(10, 2, None, 10, 0);
+///     let ok = CompactButton::new(7, 4, "Ok");
 ///
-///     form.add_components(&mut [&mut l1, &mut l2, &mut e1, &mut e2, &mut ok])
-///         .unwrap();
+///     form.add_components(&[&l1, &l2, &e1, &e2, &ok]).unwrap();
 ///
 ///     // Filter the first Entry, passing user data `5`.
 ///     let mut filter = EntryFilter::new(&e1, &mut f, Some(5));
@@ -105,18 +104,18 @@ impl Entry  {
             .into_owned()
     }
 
-    pub fn set_text(&mut self, text: &str, cursor_at_end: bool) {
+    pub fn set_text(&self, text: &str, cursor_at_end: bool) {
         let c_str = CString::new(text).unwrap();
         unsafe {
             newtEntrySet(self.co, c_str.as_ptr(), cursor_at_end as c_int);
         }
     }
 
-    pub fn set_flags(&mut self, flags: i32, sense: FlagsSense) {
+    pub fn set_flags(&self, flags: i32, sense: FlagsSense) {
         unsafe { newtEntrySetFlags(self.co, flags, sense as u32); }
     }
 
-    pub fn set_colors(&mut self, normal: i32, disabled: i32) {
+    pub fn set_colors(&self, normal: i32, disabled: i32) {
         unsafe { newtEntrySetColors(self.co, normal, disabled); }
     }
 
@@ -124,7 +123,7 @@ impl Entry  {
         unsafe { newtEntryGetCursorPosition(self.co) }
     }
 
-    pub fn set_cursor_position(&mut self, position: i32) {
+    pub fn set_cursor_position(&self, position: i32) {
         unsafe { newtEntrySetCursorPosition(self.co, position) }
     }
 }

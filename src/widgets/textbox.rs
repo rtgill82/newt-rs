@@ -34,12 +34,12 @@ impl Textbox {
         }
     }
 
-    pub fn set_text(&mut self, text: &str) {
+    pub fn set_text(&self, text: &str) {
         let c_text = CString::new(text).unwrap();
         unsafe { newtTextboxSetText(self.co, c_text.as_ptr()); }
     }
 
-    pub fn set_height(&mut self, height: i32) {
+    pub fn set_height(&self, height: i32) {
         unsafe { newtTextboxSetHeight(self.co, height); }
     }
 
@@ -47,7 +47,7 @@ impl Textbox {
         unsafe { newtTextboxGetNumLines(self.co) }
     }
 
-    pub fn set_colors(&mut self, normal: i32, active: i32) {
+    pub fn set_colors(&self, normal: i32, active: i32) {
         unsafe { newtTextboxSetColors(self.co, normal, active); }
     }
 }

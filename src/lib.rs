@@ -24,7 +24,7 @@
 //!     newt::cls();
 //!     newt::centered_window(20, 5, Some("Greetings")).unwrap();
 //!
-//!     let mut text = Textbox::new(4, 1, 12, 1, 0);
+//!     let text = Textbox::new(4, 1, 12, 1, 0);
 //!     text.set_text("Hello World!");
 //!     let ok = CompactButton::new(7, 3, "Ok");
 //!

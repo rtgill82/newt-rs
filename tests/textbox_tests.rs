@@ -33,25 +33,25 @@ fn textbox_partial_eq_false() {
 
 #[test]
 fn textbox_set_text() {
-    let mut textbox = Textbox::new(0, 0, 10, 10, 0);
+    let textbox = Textbox::new(0, 0, 10, 10, 0);
     textbox.set_text("Hello world!");
 }
 
 #[test]
 fn textbox_set_height() {
-    let mut textbox = Textbox::new(0, 0, 10, 10, 0);
+    let textbox = Textbox::new(0, 0, 10, 10, 0);
     textbox.set_height(20);
 }
 
 #[test]
 fn textbox_get_num_lines() {
-    let mut textbox = Textbox::new(0, 0, 10, 10, 0);
+    let textbox = Textbox::new(0, 0, 10, 10, 0);
     textbox.set_text("Hello\nworld!");
     assert!(textbox.get_num_lines() == 2);
 }
 
 #[test]
 fn textbox_set_colors() {
-    let mut textbox = Textbox::new(0, 0, 10, 10, 0);
+    let textbox = Textbox::new(0, 0, 10, 10, 0);
     textbox.set_colors(COLORSET_TEXTBOX, COLORSET_ACTTEXTBOX);
 }

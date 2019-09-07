@@ -47,11 +47,11 @@ impl Checkbox {
         unsafe { newtCheckboxGetValue(self.co) as u8 as char }
     }
 
-    pub fn set_value(&mut self, value: char) {
+    pub fn set_value(&self, value: char) {
         unsafe { newtCheckboxSetValue(self.co, value as i8); }
     }
 
-    pub fn set_flags(&mut self, flags: i32, sense: FlagsSense) {
+    pub fn set_flags(&self, flags: i32, sense: FlagsSense) {
         unsafe { newtCheckboxSetFlags(self.co, flags, sense as u32); }
     }
 }

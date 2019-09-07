@@ -7,8 +7,8 @@ pub fn main() {
     newt::cls();
     newt::centered_window(26, 7, Some("Timer Exit Test")).unwrap();
 
-    let mut l1 = Label::new(1,  1, "Timer: 0ms");
-    let mut l2 = Label::new(1,  2, "Last Event: None");
+    let l1 = Label::new(1,  1, "Timer: 0ms");
+    let l2 = Label::new(1,  2, "Last Event: None");
     let l3 = Label::new(1,  3, "Timer Value:");
     let e  = Entry::new(14, 3, Some("0"), 8, 0);
 

@@ -28,7 +28,7 @@ fn entry_partial_eq_false() {
 
 #[test]
 fn entry_set_text() {
-    let mut entry = Entry::new(0, 0, None, 10, 0);
+    let entry = Entry::new(0, 0, None, 10, 0);
     let text = entry.get_text();
     assert!(text == "");
 
@@ -39,13 +39,13 @@ fn entry_set_text() {
 
 #[test]
 fn entry_set_flags() {
-    let mut entry = Entry::new(0, 0, None, 10, 0);
+    let entry = Entry::new(0, 0, None, 10, 0);
     entry.set_flags(0, FlagsSense::Reset);
 }
 
 #[test]
 fn entry_set_colors() {
-    let mut entry = Entry::new(0, 0, None, 10, 0);
+    let entry = Entry::new(0, 0, None, 10, 0);
     entry.set_colors(COLORSET_ENTRY, COLORSET_DISENTRY);
 }
 
@@ -57,7 +57,7 @@ fn entry_get_cursor_position() {
 
 #[test]
 fn entry_set_cursor_position() {
-    let mut entry = Entry::new(0, 0, None, 10, 0);
+    let entry = Entry::new(0, 0, None, 10, 0);
     entry.set_cursor_position(5);
     assert!(entry.get_cursor_position() == 5);
 }

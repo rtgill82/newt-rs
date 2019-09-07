@@ -6,7 +6,7 @@ pub fn main() {
     newt::cls();
     newt::centered_window(20, 9, Some("Options")).unwrap();
 
-    let mut tree: CheckboxTree =
+    let tree: CheckboxTree =
         CheckboxTree::new(0, 0, 7, Some(&[' ', 'A', 'B']), 0);
     let ok = CompactButton::new(7, 8, "Ok");
 
