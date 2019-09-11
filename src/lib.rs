@@ -94,7 +94,6 @@
 //! [use_after_free]: grid/index.html#warning
 //!
 #![cfg_attr(feature = "asm", feature(asm))]
-#![cfg_attr(feature = "asm", feature(proc_macro_hygiene))]
 #[macro_use]
 extern crate newt_proc_macros;
 extern crate newt_sys;
