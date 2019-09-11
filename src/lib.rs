@@ -37,7 +37,7 @@
 //!         ExitReason::HotKey(key) => // F12 is the default HotKey
 //!             println!("Execution stopped due to HotKey: {}", key),
 //!         ExitReason::Component(co) =>
-//!             println!("Execution stopped due to Component: {:p}", co.co()),
+//!             println!("Execution stopped due to Component: {:?}", co),
 //!         _ =>
 //!             println!("Execution stopped due to other reason...")
 //!     }
