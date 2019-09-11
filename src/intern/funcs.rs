@@ -61,7 +61,7 @@ where FN: FnMut(&Form, Option<&T>)
     if data.is_null() { return; };
     let cb = &mut *(data as *mut HelpCallback<FN, T>);
     let mut form = Form::new_co(co);
-    form.add_to_parent(false).unwrap();
+    form.add_to_parent().unwrap();
     cb.call(&form);
 }
 

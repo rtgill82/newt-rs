@@ -105,7 +105,7 @@ impl Form
     ///
     pub fn add_component(&mut self, component: &mut dyn Component)
       -> Result<(), &'static str> {
-        component.add_to_parent(false)?;
+        component.add_to_parent()?;
         unsafe { newtFormAddComponent(self.co, component.co()); }
         Ok(())
     }

@@ -70,7 +70,7 @@ fn impl_grid_child(name: &Ident, generics: &Generics) -> TokenStream {
         impl #impl_ crate::intern::Child for #name #type_
             #where_
         {
-            fn add_to_parent(&mut self, grid: bool)
+            fn add_to_parent(&mut self)
               -> Result<(), &'static str> {
                 if self.added_to_parent {
                     return Err("Grid already belongs to a parent.");
@@ -78,13 +78,10 @@ fn impl_grid_child(name: &Ident, generics: &Generics) -> TokenStream {
 
                 if let Some(children) = &mut self.children {
                     for child in children.iter_mut() {
-                        child.add_to_parent(false)?;
+                        child.add_to_parent()?;
                     }
                 }
-
-                if !grid {
-                    self.added_to_parent = true;
-                }
+                self.added_to_parent = true;
                 Ok(())
             }
 
@@ -103,11 +100,7 @@ fn impl_grid_drop(name: &Ident, generics: &Generics) -> TokenStream {
             #where_
         {
             fn drop(&mut self) {
-                if !self.added_to_parent {
-                    unsafe {
-                        ::newt_sys::newtGridFree(self.grid, 1);
-                    }
-                }
+                unsafe { ::newt_sys::newtGridFree(self.grid, 0); }
             }
         }
     };

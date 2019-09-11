@@ -11,7 +11,7 @@ pub trait Grid: Child + Component + ComponentPtr {
         unsafe {
             newtGridAddComponentsToForm(self.as_grid(), form.co(), 1);
         }
-        self.add_to_parent(true)?;
+        self.add_to_parent()?;
         Ok(())
     }
 

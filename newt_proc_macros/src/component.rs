@@ -47,7 +47,7 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
         impl #impl_ ::intern::Child for #name #type_
             #where_
         {
-            fn add_to_parent(&mut self, _grid: bool)
+            fn add_to_parent(&mut self)
               -> Result<(), &'static str> {
                 if self.added_to_parent {
                     return Err("Component already belongs to a Form.");

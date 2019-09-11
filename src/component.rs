@@ -9,7 +9,7 @@ use std::ops::Deref;
 use std::os::raw::c_void;
 
 use newt_sys::*;
-use crate::intern::{Child,ComponentPtr,GridElementType};
+use crate::intern::{Child,GridElementType};
 use crate::widgets::WidgetFns;
 use crate::widgets::form::ExitReason;
 use crate::intern;
@@ -44,7 +44,7 @@ impl<'a, T> Deref for Data<'a, T> {
 ///
 /// Trait implemented by `Widget` types and `Grid` types.
 ///
-pub trait Component: Child + ComponentPtr + GridElementType + WidgetFns {
+pub trait Component: Child + GridElementType + WidgetFns {
     /// Return `newtComponent` pointer.
     fn co(&self) -> newtComponent;
 }
