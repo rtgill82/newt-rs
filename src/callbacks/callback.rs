@@ -28,7 +28,7 @@ use newt_sys::*;
 ///     // allowing `value` to be borrowed immutably when printing the result later.
 ///     {
 ///         // Create closure to be called by Callback
-///         let mut f = |_c: Option<&dyn Component>, data: Option<&i32>| {
+///         let mut f = |_c: &dyn Component, data: Option<&i32>| {
 ///             value = *data.unwrap();
 ///         };
 ///
@@ -47,14 +47,14 @@ use newt_sys::*;
 /// ```
 ///
 pub struct Callback<'a, FN: 'a, T: 'a>
-where FN: FnMut(Option<&dyn Component>, Option<&T>)
+where FN: FnMut(&dyn Component, Option<&T>)
 {
     function: FN,
     components: Vec<(&'a dyn Component, Option<T>)>
 }
 
 impl<'a, FN: 'a, T: 'a> Callback<'a, FN, T>
-where FN: FnMut(Option<&dyn Component>, Option<&T>)
+where FN: FnMut(&dyn Component, Option<&T>)
 {
     ///
     /// Create a new `Callback` using the function or closure `function` and
@@ -92,14 +92,14 @@ where FN: FnMut(Option<&dyn Component>, Option<&T>)
     pub(crate) fn call(&mut self, co: newtComponent) {
         for (component, data) in self.components.iter() {
             if component.co() == co {
-                (self.function)(Some(*component), data.as_ref());
+                (self.function)(*component, data.as_ref());
             }
         }
     }
 }
 
 impl<'a, FN: 'a, T: 'a> Drop for Callback<'a, FN, T>
-where FN: FnMut(Option<&dyn Component>, Option<&T>)
+where FN: FnMut(&dyn Component, Option<&T>)
 {
     fn drop(&mut self) {
         for (component, _data) in self.components.iter() {

@@ -19,7 +19,7 @@ pub fn main() {
     // allowing `value` to be borrowed immutably when printing the result later.
     {
         // Create closure to be called by Callback
-        let mut f = |_c: Option<&dyn Component>, data: Option<&i32>| {
+        let mut f = |_c: &dyn Component, data: Option<&i32>| {
             value = *data.unwrap();
         };
 
