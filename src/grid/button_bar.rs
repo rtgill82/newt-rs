@@ -3,20 +3,18 @@ use std::cell::Cell;
 use std::mem::size_of;
 
 use newt_sys::*;
+use crate::component::Component;
+use crate::intern::{asm,Parent};
 use crate::widgets::Button;
-use crate::intern::asm;
 
 ///
 /// Creates a row of buttons.
 ///
 #[derive(Grid)]
 pub struct ButtonBar {
-    grid: newtGrid,
+    grid: Cell<newtGrid>,
     added_to_parent: Cell<bool>,
-
-    // Define children as Option for compatibility
-    // with macros defined in newt_proc_macros.
-    children: Option<Vec<Button>>
+    children: Vec<Button>
 }
 
 impl ButtonBar {
@@ -44,9 +42,9 @@ impl ButtonBar {
             libc::free(buttons_buf as *mut c_void);
 
             ButtonBar {
-                grid,
+                grid: Cell::new(grid),
                 added_to_parent: Cell::new(false),
-                children: Some(buttons)
+                children: buttons
             }
         }
     }
@@ -55,9 +53,16 @@ impl ButtonBar {
     /// Return the array of buttons contained by the grid.
     ///
     pub fn buttons(&self) -> &[Button] {
-        if let Some(buttons) = &self.children {
-            return buttons.as_slice();
+        return self.children.as_slice();
+    }
+}
+
+impl Parent for ButtonBar {
+    fn children(&self) -> Vec<&dyn Component> {
+        let mut vec: Vec<&dyn Component> = Vec::new();
+        for child in self.children.iter() {
+            vec.push(child);
         }
-        unreachable!();
+        vec
     }
 }

@@ -4,6 +4,7 @@ use std::os::raw::c_int;
 use std::ptr;
 
 use newt_sys::*;
+use crate::component::Component;
 use crate::constants::FlagsSense;
 
 ///
@@ -45,14 +46,15 @@ use crate::constants::FlagsSense;
 ///         return ch; // Return the entered character.
 ///     };
 ///
-///     let mut form = Form::new(None, 0);
 ///     let l1 = Label::new(1, 1, "Entry 1:");
 ///     let l2 = Label::new(1, 2, "Entry 2:");
 ///     let e1 = Entry::new(10, 1, None, 10, 0);
 ///     let e2 = Entry::new(10, 2, None, 10, 0);
 ///     let ok = CompactButton::new(7, 4, "Ok");
+///     let components: &[&dyn Component] = &[&l1, &l2, &e1, &e2, &ok];
 ///
-///     form.add_components(&[&l1, &l2, &e1, &e2, &ok]).unwrap();
+///     let mut form = Form::new(None, 0);
+///     form.add_components(components).unwrap();
 ///
 ///     // Filter the first Entry, passing user data `5`.
 ///     let mut filter = EntryFilter::new(&e1, &mut f, Some(5));
@@ -74,11 +76,11 @@ use crate::constants::FlagsSense;
 ///
 #[derive(Component)]
 pub struct Entry {
-    co: newtComponent,
+    co: Cell<newtComponent>,
     added_to_parent: Cell<bool>
 }
 
-impl Entry  {
+impl Entry {
     pub fn new(left: i32, top: i32, initial_value: Option<&str>, width: i32,
                flags: i32) -> Entry {
         let c_str: CString;
@@ -92,14 +94,16 @@ impl Entry  {
 
         Entry {
             co: unsafe {
-                newtEntry(left, top, ptr, width, ptr::null_mut(), flags)
+                let co = newtEntry(left, top, ptr, width, ptr::null_mut(),
+                                   flags);
+                Cell::new(co)
             },
             added_to_parent: Cell::new(false)
         }
     }
 
     pub fn get_text(&self) -> String {
-        unsafe { CStr::from_ptr(newtEntryGetValue(self.co)) }
+        unsafe { CStr::from_ptr(newtEntryGetValue(self.co())) }
             .to_string_lossy()
             .into_owned()
     }
@@ -107,23 +111,23 @@ impl Entry  {
     pub fn set_text(&self, text: &str, cursor_at_end: bool) {
         let c_str = CString::new(text).unwrap();
         unsafe {
-            newtEntrySet(self.co, c_str.as_ptr(), cursor_at_end as c_int);
+            newtEntrySet(self.co(), c_str.as_ptr(), cursor_at_end as c_int);
         }
     }
 
     pub fn set_flags(&self, flags: i32, sense: FlagsSense) {
-        unsafe { newtEntrySetFlags(self.co, flags, sense as u32); }
+        unsafe { newtEntrySetFlags(self.co(), flags, sense as u32); }
     }
 
     pub fn set_colors(&self, normal: i32, disabled: i32) {
-        unsafe { newtEntrySetColors(self.co, normal, disabled); }
+        unsafe { newtEntrySetColors(self.co(), normal, disabled); }
     }
 
     pub fn get_cursor_position(&self) -> i32 {
-        unsafe { newtEntryGetCursorPosition(self.co) }
+        unsafe { newtEntryGetCursorPosition(self.co()) }
     }
 
     pub fn set_cursor_position(&self, position: i32) {
-        unsafe { newtEntrySetCursorPosition(self.co, position) }
+        unsafe { newtEntrySetCursorPosition(self.co(), position) }
     }
 }

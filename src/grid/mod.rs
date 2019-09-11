@@ -39,10 +39,9 @@
 //!
 //!     let l1 = Label::new(0, 0, "Hello");
 //!     let l2 = Label::new(0, 0, "World");
-//!     let components: &[&dyn Component] = &[&l1, &l2];
 //!
 //!     let mut form = Form::new(None, 0);
-//!     let stacked = HorizontalGrid::new(components);
+//!     let stacked = HorizontalGrid::new(&[&l1, &l2]);
 //!     let button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
 //!
 //!     let mut grid = Grid::new(2, 2);
@@ -62,72 +61,12 @@
 //! }
 //! ```
 //!
-//! ## Warning
-//!
-//! It's possible for _use after free_ errors to occur when calling
-//! `Component` functions in situations where a `Form` is allocated within
-//! a more limited scope than the components being added to it. This is
-//! especially tricky when working with `Grid`s and `ButtonBar`s as a subscope
-//! allows mutably adding a `ButtonBar` to other `Grid`s while allowing it's
-//! buttons to be accessed immutably outside of the scope. Allocating the
-//! `Form` within the subscope will destroy it, leaving the `Component`s it
-//! contains invalid.
-//!
-//! The following illustrates what **NOT** to do:
-//!
-//! ```rust no_run
-//! extern crate newt;
-//! use newt::grid::*;
-//! use newt::prelude::*;
-//!
-//! pub fn main() {
-//!     newt::init().unwrap();
-//!     newt::cls();
-//!
-//!     let rv;
-//!
-//!     let l1 = Label::new(0, 0, "Hello");
-//!     let l2 = Label::new(0, 0, "World");
-//!     let components: &[&dyn Component] = &[&l1, &l2];
-//!
-//!     let stacked = HorizontalGrid::new(components);
-//!     let button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
-//!
-//!     // Save the position of the first button on the `ButtonBar`.
-//!     let pos1 = button_bar.buttons().first()
-//!                          .unwrap().get_position();
-//!
-//!     // Create a subscope so that `button_bar` can be mutably borrowed by
-//!     // `grid` and iterated over immutably later.
-//!     {
-//!         // Allocate `form` within subscope.
-//!         let mut form = Form::new(None, 0);
-//!         let mut grid = Grid::new(2, 2);
-//!         grid.set_field(1, 0, &stacked, 1, 1, 1, 1, 0, 0);
-//!         grid.set_field(0, 1, &button_bar, 1, 1, 1, 1, 0, 0);
-//!
-//!         wrapped_window(&grid, "Grids");
-//!         grid.add_to_form(&mut form).unwrap();
-//!         rv = form.run().unwrap();
-//!         // `form` is destroyed when this scope exits.
-//!     }
-//!     newt::finished();
-//!
-//!     // Try accessing the `ButtonBar` buttons after the `Form` they've been
-//!     // added to has been destroyed.
-//!     let pos2 = button_bar.buttons().first()
-//!                          .unwrap().get_position();
-//!
-//!     // This assertion will most likely fail.
-//!     assert_eq!(pos1, pos2);
-//! }
-//! ```
-//!
 use std::cell::Cell;
 use std::ffi::{CString,c_void};
 use newt_sys::*;
 
 use crate::component::Component;
+use crate::intern::ComponentPtr;
 
 #[doc(hidden)]
 pub mod r#trait;
@@ -154,7 +93,7 @@ pub use self::simple_window::SimpleWindow;
 pub use self::vertical_grid::VerticalGrid;
 
 #[doc(inline)]
-pub use self::r#trait::Grid as GridFns;
+pub use self::r#trait::GridFns;
 
 ///
 /// Arrange `Component`s and sub-grids within a two-dimensional grid.
@@ -164,11 +103,11 @@ pub use self::r#trait::Grid as GridFns;
 ///
 #[derive(Grid)]
 pub struct Grid<'a> {
-    grid: newtGrid,
-    cols: i32,
-    rows: i32,
+    grid: Cell<newtGrid>,
     added_to_parent: Cell<bool>,
-    children: Option<Vec<&'a dyn Component>>
+    children: Vec<&'a dyn Component>,
+    cols: i32,
+    rows: i32
 }
 
 impl<'a> Grid<'a> {
@@ -180,10 +119,10 @@ impl<'a> Grid<'a> {
         assert!(rows > 0, "`rows` must be greater than 0");
 
         Grid {
-            grid: unsafe { newtCreateGrid(cols, rows) },
+            grid: unsafe { Cell::new(newtCreateGrid(cols, rows)) },
             added_to_parent: Cell::new(false),
-            cols, rows,
-            children: None
+            children: Vec::new(),
+            cols, rows
         }
     }
 
@@ -200,19 +139,12 @@ impl<'a> Grid<'a> {
 
         let r#type = val.grid_element_type();
         let co = val.co();
-
-        if let Some(children) = &mut self.children {
-            children.push(val);
-        } else {
-            let mut children = Vec::new();
-            children.push(val);
-            self.children = Some(children);
-        }
+        self.children.push(val);
 
         unsafe {
-            newtGridSetField(self.grid, col, row, r#type, co as *mut c_void,
-                             pad_left, pad_top, pad_right, pad_bottom, anchor,
-                             flags);
+            newtGridSetField(self.grid_ptr(), col, row, r#type,
+                             co as *mut c_void, pad_left, pad_top, pad_right,
+                             pad_bottom, anchor, flags);
         }
     }
 }

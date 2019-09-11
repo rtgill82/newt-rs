@@ -16,9 +16,9 @@ pub fn main() {
     let b2 = CompactButton::new(8, 5, "Unset");
     let b3 = CompactButton::new(16, 5, "Exit");
 
+    let components: &[&dyn Component] = &[&l1, &l2, &l3, &e, &b1, &b2, &b3];
     let mut form = Form::new(None, 0);
-    form.add_components(&[&l1, &l2, &l3, &e, &b1, &b2, &b3])
-        .unwrap();
+    form.add_components(components).unwrap();
 
     loop {
         let r = form.run().unwrap();

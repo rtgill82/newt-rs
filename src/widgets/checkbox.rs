@@ -3,6 +3,7 @@ use std::ffi::CString;
 use std::ptr;
 
 use newt_sys::*;
+use crate::component::Component;
 use crate::constants::FlagsSense;
 use crate::intern::funcs::char_slice_to_cstring;
 
@@ -11,14 +12,14 @@ use crate::intern::funcs::char_slice_to_cstring;
 ///
 #[derive(Component)]
 pub struct Checkbox {
-    co: newtComponent,
+    co: Cell<newtComponent>,
     added_to_parent: Cell<bool>
 }
 
 impl Checkbox {
     pub fn new(left: i32, top: i32, text: &str, def_value: Option<char>,
                seq: Option<&[char]>)
-            -> Checkbox {
+      -> Checkbox {
         let c_text = CString::new(text).unwrap();
         let default: i8 = match def_value {
             Some(value) => value as i8,
@@ -36,22 +37,23 @@ impl Checkbox {
 
         Checkbox {
             co: unsafe {
-                newtCheckbox(left, top, c_text.as_ptr(), default, c_seq,
-                             ptr::null_mut())
+                let co = newtCheckbox(left, top, c_text.as_ptr(), default,
+                                      c_seq, ptr::null_mut());
+                Cell::new(co)
             },
             added_to_parent: Cell::new(false)
         }
     }
 
     pub fn get_value(&self) -> char {
-        unsafe { newtCheckboxGetValue(self.co) as u8 as char }
+        unsafe { newtCheckboxGetValue(self.co()) as u8 as char }
     }
 
     pub fn set_value(&self, value: char) {
-        unsafe { newtCheckboxSetValue(self.co, value as i8); }
+        unsafe { newtCheckboxSetValue(self.co(), value as i8); }
     }
 
     pub fn set_flags(&self, flags: i32, sense: FlagsSense) {
-        unsafe { newtCheckboxSetFlags(self.co, flags, sense as u32); }
+        unsafe { newtCheckboxSetFlags(self.co(), flags, sense as u32); }
     }
 }

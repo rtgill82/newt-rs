@@ -83,8 +83,8 @@ where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
     cb.call(entry, ch, cursor) as i32
 }
 
-pub fn newt_set_callback<'a, FN: 'a, T: 'a>(co: newtComponent,
-                                            cb: &Callback<'a, FN, T>)
+pub fn newt_set_callback<'a, FN: 'a, T: 'a>
+  (co: newtComponent, cb: &Callback<'a, FN, T>)
 where FN: FnMut(Option<&dyn Component>, Option<&T>)
 {
     unsafe {
@@ -120,8 +120,10 @@ pub fn newt_unset_suspend_callback()
     unsafe { newtSetSuspendCallback(None, ptr::null_mut()); }
 }
 
-pub fn newt_entry_set_filter<'a, FN: 'a, T: 'a>(co: newtComponent,
-                                                cb: &EntryFilter<'a, FN, T>)
+pub fn newt_entry_set_filter<'a, FN: 'a, T: 'a>(
+    co: newtComponent,
+    cb: &EntryFilter<'a, FN, T>
+)
 where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
 {
     unsafe {

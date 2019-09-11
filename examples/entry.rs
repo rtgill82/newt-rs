@@ -24,9 +24,9 @@ pub fn main() {
     let e2 = Entry::new(10, 2, None, 10, 0);
     let ok = CompactButton::new(7, 4, "Ok");
 
+    let components: &[&dyn Component] = &[&l1, &l2, &e1, &e2, &ok];
     let mut form = Form::new(None, 0);
-    form.add_components(&[&l1, &l2, &e1, &e2, &ok])
-        .unwrap();
+    form.add_components(components).unwrap();
 
     let mut filter = EntryFilter::new(&e1, &mut f, Some(5));
     filter.add_entry(&e2, Some(10));

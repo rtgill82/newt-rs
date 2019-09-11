@@ -16,22 +16,19 @@ struct TestStruct<'a> {
 
 #[test]
 fn checkbox_tree_create() {
-    let checkbox_tree: CheckboxTree =
-        CheckboxTree::new(0, 0, 10, None, 0);
+    let checkbox_tree: CheckboxTree = CheckboxTree::new(0, 0, 10, None, 0);
     assert!(checkbox_tree.co() != ptr::null_mut());
 }
 
 #[test]
 fn checkbox_tree_partial_eq_true() {
-    let checkbox_tree: CheckboxTree =
-        CheckboxTree::new(0, 0, 10, None, 0);
+    let checkbox_tree: CheckboxTree = CheckboxTree::new(0, 0, 10, None, 0);
     assert!(checkbox_tree == checkbox_tree);
 }
 
 #[test]
 fn checkbox_tree_partial_eq_false() {
-    let checkbox_tree: CheckboxTree =
-        CheckboxTree::new(0, 0, 10, None, 0);
+    let checkbox_tree: CheckboxTree = CheckboxTree::new(0, 0, 10, None, 0);
     let form = Form::new(None, 0);
     assert!(checkbox_tree != form);
 }

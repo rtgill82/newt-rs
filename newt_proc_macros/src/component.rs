@@ -21,15 +21,19 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
             #where_
         {
             fn ptr(&self) -> *mut ::libc::c_void {
-                self.co as *mut ::libc::c_void
+                let ptr = self.co.get();
+                if ptr.is_null() {
+                    panic!("Component has already been destroyed!");
+                }
+                ptr as *mut ::libc::c_void
             }
 
             fn co_ptr(&self) -> ::newt_sys::newtComponent {
-                self.co
+                self.ptr() as ::newt_sys::newtComponent
             }
 
             fn grid_ptr(&self) -> ::newt_sys::newtGrid {
-                self.co as newt_sys::newtGrid
+                self.ptr() as newt_sys::newtGrid
             }
         }
 
@@ -39,6 +43,30 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
             fn co(&self) -> ::newt_sys::newtComponent {
                 use ::intern::ComponentPtr;
                 self.co_ptr()
+            }
+        }
+
+        #[cfg(not(feature = "asm"))]
+        impl #impl_ ::intern::AsComponent for #name #type_ #where_ { }
+
+        #[cfg(feature = "asm")]
+        impl #impl_ ::intern::AsComponent for #name #type_
+            #where_
+        {
+            fn as_component(&self) -> Option<&::Component> {
+                Some(self)
+            }
+        }
+
+        #[cfg(not(feature = "asm"))]
+        impl #impl_ ::intern::AsGrid for #name #type_ #where_ { }
+
+        #[cfg(feature = "asm")]
+        impl #impl_ ::intern::AsGrid for #name #type_
+            #where_
+        {
+            fn as_grid(&self) -> Option<&::grid::r#trait::Grid> {
+                None
             }
         }
 
@@ -69,6 +97,13 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
                 NEWT_GRID_COMPONENT
             }
         }
+
+        impl #impl_ ::intern::Nullify for #name #type_
+        {
+            fn nullify(&self) {
+                self.co.replace(std::ptr::null_mut());
+            }
+        }
     };
     gen.into()
 }
@@ -84,9 +119,10 @@ fn impl_component_drop(name: &Ident, generics: &Generics) -> TokenStream {
             #where_
         {
             fn drop(&mut self) {
+                use ::Component;
                 if !self.added_to_parent.get() {
                     unsafe {
-                        ::newt_sys::newtComponentDestroy(self.co);
+                        ::newt_sys::newtComponentDestroy(self.co());
                     }
                 }
             }
@@ -105,10 +141,11 @@ fn impl_component_partial_eq_trait(name: &Ident, generics: &Generics)
             #where_
         {
             fn eq(&self, other: &Rhs) -> bool {
-                if self.co.is_null() {
+                use ::Component;
+                if self.co().is_null() {
                     return false
                 }
-                self.co == other.co()
+                self.co() == other.co()
             }
         }
     };
@@ -117,17 +154,18 @@ fn impl_component_partial_eq_trait(name: &Ident, generics: &Generics)
 }
 
 fn impl_component_partial_eq(name: &Ident, generics: &Generics)
-        -> TokenStream {
+  -> TokenStream {
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
         impl #impl_ std::cmp::PartialEq<Box<dyn (::Component)>> for #name #type_
             #where_
         {
             fn eq(&self, other: &Box<dyn (::Component)>) -> bool {
-                if self.co.is_null() {
+                use ::Component;
+                if self.co().is_null() {
                     return false
                 }
-                self.co == other.co()
+                self.co() == other.co()
             }
         }
 
@@ -144,7 +182,6 @@ fn impl_component_partial_eq(name: &Ident, generics: &Generics)
 
 fn generics_add_rhs(generics: &Generics) -> Generics {
     use syn::{GenericParam,parse_str};
-
     let mut generics = generics.clone();
     let rhs: GenericParam = parse_str("Rhs: ::Component").unwrap();
     generics.params.push(rhs);

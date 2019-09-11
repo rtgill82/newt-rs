@@ -25,8 +25,8 @@
 //!     newt::centered_window(20, 5, Some("Greetings")).unwrap();
 //!
 //!     let text = Textbox::new(4, 1, 12, 1, 0);
-//!     text.set_text("Hello World!");
 //!     let ok = CompactButton::new(7, 3, "Ok");
+//!     text.set_text("Hello World!");
 //!
 //!     let mut form = Form::new(None, 0);
 //!     form.add_components(&[&text, &ok]).unwrap();
@@ -63,18 +63,7 @@
 //! [win_menu]: windows/fn.win_menu.html
 //! [newt_sys]: https://crates.io/crates/newt-sys
 //!
-//! ## Bugs
-//!
-//! A [`Form`][form] can be destroyed before the `Component`s they contain are
-//! dropped, causing the `newtComponent` pointers they reference to become
-//! invalid. Any functions called on these `Component`s may return invalid
-//! values or even cause segmentation faults. Do **NOT** allocate `Form`s
-//! within a more limited scope than the `Component`s they contain. An example
-//! of this issue can be found [here][use_after_free].
-//!
-//! [form]: widgets/form/struct.Form.html
-//! [use_after_free]: grid/index.html#warning
-//!
+#![feature(dropck_eyepatch)]
 #![cfg_attr(feature = "asm", feature(asm))]
 #[macro_use]
 extern crate newt_proc_macros;
@@ -95,8 +84,6 @@ pub mod windows;
 
 #[doc(no_inline)]
 pub use self::component::Component;
-#[doc(no_inline)]
-pub use self::widgets::WidgetFns;
 
 #[cfg(feature = "asm")]
 pub mod grid;

@@ -1,17 +1,37 @@
 use newt_sys::*;
 use crate::component::Component;
 use crate::widgets::{Form,WidgetFns};
-use crate::intern::{Child,ComponentPtr};
+use crate::intern::{AsComponent,Child,ComponentPtr,Nullify,Parent};
+
+pub trait Grid: Component + GridFns { }
+
+impl <T: Grid> WidgetFns for T {
+    fn takes_focus(&self, _value: bool) {
+        panic!("`Grid` is not a `Widget`");
+    }
+
+    fn get_position(&self) -> (i32, i32) {
+        panic!("`Grid` is not a `Widget`");
+    }
+
+    fn get_size(&self) -> (i32, i32) {
+        panic!("`Grid` is not a `Widget`");
+    }
+}
+
+impl <T: Grid> Nullify for T {
+    fn nullify(&self) { }
+}
 
 ///
 /// Implements functions shared by `Grid`s.
 ///
-pub trait Grid: Child + Component + ComponentPtr {
-    fn add_to_form(&mut self, form: &mut Form) -> Result<(), &'static str> {
-        unsafe {
-            newtGridAddComponentsToForm(self.grid_ptr(), form.co(), 1);
-        }
+pub trait GridFns: AsComponent + Child + ComponentPtr + Parent {
+    fn add_to_form<'a>(&'a mut self, form: &mut Form<'a>)
+      -> Result<(), &'static str> {
         self.add_to_parent()?;
+        unsafe { newtGridAddComponentsToForm(self.grid_ptr(), form.co(), 1); }
+        form.add_refs(self.children());
         Ok(())
     }
 
@@ -28,19 +48,5 @@ pub trait Grid: Child + Component + ComponentPtr {
         unsafe {
             newtGridPlace(self.grid_ptr(), left, top);
         }
-    }
-}
-
-impl <T: Grid> WidgetFns for T {
-    fn takes_focus(&self, _value: bool) {
-        panic!("`Grid` is not a `Widget`");
-    }
-
-    fn get_position(&self) -> (i32, i32) {
-        panic!("`Grid` is not a `Widget`");
-    }
-
-    fn get_size(&self) -> (i32, i32) {
-        panic!("`Grid` is not a `Widget`");
     }
 }

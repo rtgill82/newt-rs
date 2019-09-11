@@ -1,4 +1,5 @@
 use std::os::raw::c_void;
+use std::marker::PhantomData;
 use std::ptr;
 
 use crate::component::Component;
@@ -32,13 +33,14 @@ use newt_sys::*;
 ///
 ///         let width = (len + 18) as u32;
 ///         newt::centered_window(width, 5, Some("Help")).unwrap();
-///         let mut form = Form::new(None, 0);
 ///
 ///         let text = format!("Help Text Data: {}", string);
 ///         let label = Label::new(1, 1, &text);
 ///
 ///         let pos = (width / 2 - 3) as i32;
 ///         let ok = CompactButton::new(pos, 3, "Ok");
+///
+///         let mut form = Form::new(None, 0);
 ///         form.add_component(&label).unwrap();
 ///         form.add_component(&ok).unwrap();
 ///         form.run().unwrap();
@@ -46,25 +48,26 @@ use newt_sys::*;
 ///     };
 ///
 ///     // `Form` is allocated with the callback and both are associated.
-///     let (mut form, _cb) =
-///         Form::new_with_help_callback(None, 0, f, Some("This is help text."));
 ///     let label = Label::new(1, 1, "Press F1 for help!");
 ///     let ok = CompactButton::new(7, 4, "Ok");
 ///
+///     let (mut form, _cb) =
+///         Form::new_with_help_callback(None, 0, f, Some("This is help text."));
 ///     form.add_components(&[&label, &ok]).unwrap();
 ///
 ///     form.run().unwrap();
 ///     newt::finished();
 /// }
 /// ```
-pub struct HelpCallback<FN, T>
+pub struct HelpCallback<'a, FN, T>
 where FN: FnMut(&Form, Option<&T>)
 {
     function: FN,
-    data: Option<T>
+    data: Option<T>,
+    form: PhantomData<Form<'a>>
 }
 
-impl<FN, T> HelpCallback<FN, T>
+impl<'a, FN, T> HelpCallback<'a, FN, T>
 where FN: FnMut(&Form, Option<&T>)
 {
     ///
@@ -81,9 +84,9 @@ where FN: FnMut(&Form, Option<&T>)
     ///
     pub fn new(scrollbar: Option<&VerticalScrollbar>,
                form_flags: i32, function: FN, data: Option<T>)
-      -> (Form, Box<HelpCallback<FN, T>>) {
+      -> (Form<'a>, Box<HelpCallback<'a, FN, T>>) {
 
-        let cb = Box::new(HelpCallback { function, data });
+        let cb = Box::new(HelpCallback { function, data, form: PhantomData });
         newt_init_help_callback(cb.as_ref());
 
         let scrollbar = if let Some(scrollbar) = scrollbar {
@@ -98,7 +101,7 @@ where FN: FnMut(&Form, Option<&T>)
         (form, cb)
     }
 
-    pub(crate) fn call(&mut self, form: &Form) {
+    pub(crate) fn call(&mut self, form: &Form<'a>) {
         (self.function)(form, self.data.as_ref())
     }
 }

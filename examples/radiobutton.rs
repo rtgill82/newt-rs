@@ -14,8 +14,7 @@ pub fn main() {
     let ok = CompactButton::new(7, 5, "Ok");
 
     let mut form = Form::new(None, 0);
-    form.add_components(&[&radio1, &radio2, &radio3, &ok])
-        .unwrap();
+    form.add_components(&[&radio1, &radio2, &radio3, &ok]).unwrap();
     form.run().unwrap();
     newt::finished();
 

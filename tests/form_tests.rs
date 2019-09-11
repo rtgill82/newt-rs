@@ -54,6 +54,7 @@ fn form_add_components() {
 fn form_add_components_x2() {
     let button1 = Button::new(0, 0, "Ok");
     let button2 = Button::new(0, 0, "Cancel");
+
     let mut form = Form::new(None, 0);
     form.add_component(&button2).unwrap();
     match form.add_components(&[&button1, &button2]) {

@@ -82,7 +82,8 @@ where FN: FnMut(Option<&dyn Component>, Option<&T>)
     /// * `component` - Another `Component` to associate with the callback.
     /// * `data` - Optional user data to pass to the function.
     ///
-    pub fn add_component(&mut self, component: &'a dyn Component, data: Option<T>)
+    pub fn add_component(&mut self, component: &'a dyn Component,
+                         data: Option<T>)
     {
         self.components.push((component, data));
         newt_set_callback(component.co(), &self);

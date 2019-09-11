@@ -11,6 +11,7 @@ pub fn impl_grid_macro(ast: &DeriveInput) -> TokenStream {
     tokens.extend(impl_component_base(&name, &generics));
     tokens.extend(impl_grid_child(&name, &generics));
     tokens.extend(impl_grid_drop(&name, &generics));
+    tokens.extend(impl_grid_parent(&name, &generics));
     tokens
 }
 
@@ -18,6 +19,10 @@ fn impl_grid_base(name: &Ident, generics: &Generics) -> TokenStream {
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
         impl #impl_ ::grid::r#trait::Grid for #name #type_
+            #where_
+        { }
+
+        impl #impl_ ::grid::r#trait::GridFns for #name #type_
             #where_
         { }
     };
@@ -31,15 +36,15 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
             #where_
         {
             fn ptr(&self) -> *mut ::libc::c_void {
-                self.grid as *mut ::libc::c_void
+                self.grid.get() as *mut ::libc::c_void
             }
 
             fn co_ptr(&self) -> ::newt_sys::newtComponent {
-                self.grid as ::newt_sys::newtComponent
+                self.ptr() as ::newt_sys::newtComponent
             }
 
             fn grid_ptr(&self) -> ::newt_sys::newtGrid {
-                self.grid
+                self.ptr() as ::newt_sys::newtGrid
             }
         }
 
@@ -49,6 +54,22 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
             fn co(&self) -> ::newt_sys::newtComponent {
                 use crate::intern::ComponentPtr;
                 self.co_ptr()
+            }
+        }
+
+        impl #impl_ ::intern::AsComponent for #name #type_
+            #where_
+        {
+            fn as_component(&self) -> Option<&::Component> {
+                Some(self)
+            }
+        }
+
+        impl #impl_ ::intern::AsGrid for #name #type_
+            #where_
+        {
+            fn as_grid(&self) -> Option<&::grid::r#trait::Grid> {
+                Some(self)
             }
         }
 
@@ -76,10 +97,8 @@ fn impl_grid_child(name: &Ident, generics: &Generics) -> TokenStream {
                     return Err("Grid already belongs to a parent.");
                 }
 
-                if let Some(children) = &self.children {
-                    for child in children.iter() {
-                        child.add_to_parent()?;
-                    }
+                for child in self.children.iter() {
+                    child.add_to_parent()?;
                 }
                 self.added_to_parent.set(true);
                 Ok(())
@@ -93,6 +112,37 @@ fn impl_grid_child(name: &Ident, generics: &Generics) -> TokenStream {
     gen.into()
 }
 
+fn impl_grid_parent(name: &Ident, generics: &Generics) -> TokenStream {
+    if name == "ButtonBar" {
+        return TokenStream::new();
+    }
+
+    let (impl_, type_, where_) = generics.split_for_impl();
+    let gen = quote! {
+        impl #impl_ ::intern::Parent for #name #type_
+            #where_
+        {
+            fn children(&self) -> Vec<&::Component> {
+                use ::constants::NEWT_GRID_COMPONENT;
+                use ::intern::{GridElementType,Parent};
+
+                let mut vec: Vec<&::Component> = Vec::new();
+                for child in self.children.iter() {
+                    if let Some(grid) = child.as_grid() {
+                        for child in grid.children().iter() {
+                            vec.push(*child);
+                        }
+                    } else {
+                        vec.push(*child);
+                    }
+                }
+                vec
+            }
+        }
+    };
+    gen.into()
+}
+
 fn impl_grid_drop(name: &Ident, generics: &Generics) -> TokenStream {
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
@@ -100,7 +150,7 @@ fn impl_grid_drop(name: &Ident, generics: &Generics) -> TokenStream {
             #where_
         {
             fn drop(&mut self) {
-                unsafe { ::newt_sys::newtGridFree(self.grid, 0); }
+                unsafe { ::newt_sys::newtGridFree(self.grid.get(), 0); }
             }
         }
     };

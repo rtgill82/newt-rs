@@ -6,17 +6,19 @@ use newt_sys::*;
 ///
 #[derive(Component)]
 pub struct VerticalScrollbar {
-    co: newtComponent,
+    co: Cell<newtComponent>,
     added_to_parent: Cell<bool>
 }
 
-impl VerticalScrollbar  {
+impl VerticalScrollbar {
     pub fn new(left: i32, top: i32, height: i32, normal_colorset: i32,
                thumb_colorset: i32) -> VerticalScrollbar {
         VerticalScrollbar {
             co: unsafe {
-                newtVerticalScrollbar (left, top, height,
-                                       normal_colorset, thumb_colorset)
+                let co = newtVerticalScrollbar (left, top, height,
+                                                normal_colorset,
+                                                thumb_colorset);
+                Cell::new(co)
             },
             added_to_parent: Cell::new(false)
         }

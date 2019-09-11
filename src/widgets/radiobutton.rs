@@ -3,13 +3,14 @@ use std::ffi::CString;
 use std::ptr;
 
 use newt_sys::*;
+use crate::component::Component;
 
 ///
 /// A Radiobutton widget.
 ///
 #[derive(Component)]
 pub struct Radiobutton {
-    co: newtComponent,
+    co: Cell<newtComponent>,
     added_to_parent: Cell<bool>
 }
 
@@ -18,14 +19,15 @@ impl Radiobutton {
                prev_button: Option<&Radiobutton>) -> Radiobutton {
         let c_text = CString::new(text).unwrap();
         let ptr = match prev_button {
-            Some(radio_button) => radio_button.co,
+            Some(radio_button) => radio_button.co(),
             None => ptr::null_mut()
         };
 
         Radiobutton {
             co: unsafe {
-                newtRadiobutton(left, top, c_text.as_ptr(),
-                                is_default as i32, ptr)
+                let co = newtRadiobutton(left, top, c_text.as_ptr(),
+                                         is_default as i32, ptr);
+                Cell::new(co)
             },
             added_to_parent: Cell::new(false)
         }
@@ -33,12 +35,12 @@ impl Radiobutton {
 
     pub fn get_current(&self) -> Radiobutton {
         Radiobutton {
-            added_to_parent: Cell::new(true),
-            co: unsafe { newtRadioGetCurrent(self.co) }
+            co: unsafe { Cell::new(newtRadioGetCurrent(self.co())) },
+            added_to_parent: Cell::new(true)
         }
     }
 
     pub fn set_current(&self) {
-        unsafe { newtRadioSetCurrent(self.co) }
+        unsafe { newtRadioSetCurrent(self.co()) }
     }
 }
