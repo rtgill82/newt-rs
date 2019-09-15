@@ -1,3 +1,22 @@
+//
+// Copyright (C) 2019  Robert Gill <locke@sdf.lonestar.org>
+//
+// This file is a part of newt-rs.
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License version 2.1 as published by the Free Software Foundation.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+//
+
 //! # newt-rs
 //!
 //! _Rust bindings for the Newt console UI library._
@@ -62,6 +81,23 @@
 //! [win_entries]: windows/fn.win_entries.html
 //! [win_menu]: windows/fn.win_menu.html
 //! [newt_sys]: https://crates.io/crates/newt-sys
+//!
+//! ## License
+//!
+//! Copyright (C) 2018,2019  Robert Gill <<locke@sdf.lonestar.org>>
+//!
+//! This library is free software; you can redistribute it and/or
+//! modify it under the terms of the GNU Lesser General Public
+//! License version 2.1 as published by the Free Software Foundation.
+//!
+//! This library is distributed in the hope that it will be useful,
+//! but WITHOUT ANY WARRANTY; without even the implied warranty of
+//! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//! Lesser General Public License for more details.
+//!
+//! You should have received a copy of the GNU Lesser General Public
+//! License along with this library; if not, write to the Free Software
+//! Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //!
 #![feature(dropck_eyepatch)]
 #![cfg_attr(feature = "asm", feature(asm))]

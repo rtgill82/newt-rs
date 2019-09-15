@@ -1,5 +1,13 @@
 # ChangeLog
 
+## 0.6.0
+
+* Prevent use after free bugs that were possible in previous versions.
+
+* Functions changing widget settings no longer declared as `mut`.
+
+* Change license to LGPL-2.1.
+
 ## 0.5.5
 
 * Implement Clone, Debug, and Default traits for the Colors struct.
