@@ -2,8 +2,8 @@
 
 _Rust bindings for the Newt console UI library._
 
-[ChangeLog](https://github.com/xelkarin/newt-rs/blob/v0.5.5/ChangeLog.md) |
-[API Docs](https://docs.rs/newt/0.5.5/newt/) |
+[ChangeLog](https://github.com/xelkarin/newt-rs/blob/v0.6.0/ChangeLog.md) |
+[API Docs](https://docs.rs/newt/0.6.0/newt/) |
 [crates.io](https://crates.io/crates/newt)
 
 This crate provides bindings to Red Hat, Inc.'s [Newt][newt] console UI
@@ -23,7 +23,7 @@ Include _newt_ as a dependency of in your `Cargo.toml` file as follows.
 
 ```
 [dependencies]
-newt = "0.5"
+newt = "0.6"
 ```
 
 The library API is currently subject to change and there are likely to be
@@ -41,7 +41,7 @@ It can be enabled in your `Cargo.toml` file as follows.
 
 ```
 [dependencies]
-newt = { version = "0.5", features = ["static"] }
+newt = { version = "0.6", features = ["static"] }
 ```
 
 [newt_sys]: https://crates.io/crates/newt-sys
@@ -57,7 +57,7 @@ Enable the feature as follows in your `Cargo.toml` file.
 
 ```
 [dependencies]
-newt = { version = "0.5", features = ["asm"] }
+newt = { version = "0.6", features = ["asm"] }
 ```
 
 ## LICENSE
