@@ -1,10 +1,10 @@
 [package]
 name = "newt"
-version = "0.6.0"
+version = "0.6.1"
 authors = ["Robert Gill <locke@sdf.lonestar.org>"]
 description = "Rust bindings for the Newt console UI library"
 repository = "https://github.com/xelkarin/newt-rs"
-license = "LGPL-2.0-only"
+license = "LGPL-2.1-only"
 categories = ["api-bindings", "os::unix-apis"]
 keywords = ["bindings", "tui"]
 readme = "README.md"

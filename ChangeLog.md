@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.6.1
+
+* Update license version in Cargo.toml, create new release to update crates.io.
+
 ## 0.6.0
 
 * Prevent use after free bugs that were possible in previous versions.
