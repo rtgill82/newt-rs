@@ -52,7 +52,7 @@ use newt_sys::*;
 ///         };
 ///
 ///         // Create Callback with first Checkbox using `5` as data.
-///         let mut callback = Callback::new(&cb1, &mut f, Some(5));
+///         let mut callback = Callback::new(&cb1, Some(5), &mut f);
 ///         // Add second Checkbox using `10` as data.
 ///         callback.add_component(&cb2, Some(10));
 ///
@@ -80,11 +80,11 @@ where FN: FnMut(&dyn Component, Option<&T>)
     /// associate it with `component`.
     ///
     /// * `component` - The `Component` associated with the callback.
+    /// * `data` - Optional user data to pass to the function.
     /// * `function` - The function or closure to call when the
     ///                `Component` is activated.
-    /// * `data` - Optional user data to pass to the function.
     ///
-    pub fn new(component: &'a dyn Component, function: FN, data: Option<T>)
+    pub fn new(component: &'a dyn Component, data: Option<T>, function: FN)
       -> Box<Callback<'a, FN, T>> {
 
         let cb = Box::new(Callback {

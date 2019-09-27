@@ -76,7 +76,7 @@ use crate::constants::FlagsSense;
 ///     form.add_components(components).unwrap();
 ///
 ///     // Filter the first Entry, passing user data `5`.
-///     let mut filter = EntryFilter::new(&e1, &mut f, Some(5));
+///     let mut filter = EntryFilter::new(&e1, Some(5), &mut f);
 ///     // Filter the second Entry, passing user data `10`.
 ///     filter.add_entry(&e2, Some(10));
 ///

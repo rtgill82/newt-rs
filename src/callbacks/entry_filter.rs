@@ -59,11 +59,11 @@ where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
     /// The function `function` will be called for each character entered.
     ///
     /// * `entry` - The `Entry` to associate with the callback.
+    /// * `data` - The optonal user data to pass to the function.
     /// * `function` - The function or closure to be called when a character
     ///                is entered.
-    /// * `data` - The optonal user data to pass to the function.
     ///
-    pub fn new(entry: &'a Entry, function: FN, data: Option<T>)
+    pub fn new(entry: &'a Entry, data: Option<T>, function: FN)
       -> Box<EntryFilter<'a, FN, T>> {
         let co: newtComponent = entry.co();
         let filter = Box::new(EntryFilter {

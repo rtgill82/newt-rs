@@ -43,7 +43,7 @@ pub fn main() {
         };
 
         // Create Callback with first Checkbox using `5` as data.
-        let mut callback = Callback::new(&cb1, &mut f, Some(5));
+        let mut callback = Callback::new(&cb1, Some(5), &mut f);
         // Add second Checkbox using `10` as data.
         callback.add_component(&cb2, Some(10));
 

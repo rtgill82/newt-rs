@@ -122,7 +122,7 @@ impl<'a> Form<'a>
         -> (Form<'a>, Box<HelpCallback<'a, FN, T>>)
         where FN: Fn(&Form, Option<&T>)
     {
-        HelpCallback::new(scrollbar, flags, function, data)
+        HelpCallback::new(scrollbar, flags, data, function)
     }
 
     pub(crate) fn new_co(co: newtComponent) -> Form<'a> {

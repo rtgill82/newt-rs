@@ -98,11 +98,11 @@ where FN: FnMut(&Form, Option<&T>)
     /// * `scrollbar` - A `VerticalScrollbar` to be attached to the created
     ///                 form.
     /// * `form_flags` - The flags the form is to be initialized with.
-    /// * `function` - The function or closure to associate with the `Form`.
     /// * `data` - The optional user data to pass to the function.
+    /// * `function` - The function or closure to associate with the `Form`.
     ///
     pub fn new(scrollbar: Option<&VerticalScrollbar>,
-               form_flags: i32, function: FN, data: Option<T>)
+               form_flags: i32, data: Option<T>, function: FN)
       -> (Form<'a>, Box<HelpCallback<'a, FN, T>>) {
 
         let cb = Box::new(HelpCallback { function, data, form: PhantomData });

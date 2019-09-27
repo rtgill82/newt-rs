@@ -37,7 +37,7 @@ pub fn main() {
         let mut f = |data: Option<&i32>| {
             value = *data.unwrap();
         };
-        let _callback = SuspendCallback::new(&mut f, Some(10));
+        let _callback = SuspendCallback::new(Some(10), &mut f);
 
         form.run().unwrap();
         newt::finished();

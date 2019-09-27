@@ -36,11 +36,11 @@ where FN: FnMut(Option<&T>)
     /// Create a new `SuspendCallback` to be called when a suspend (`Ctrl-Z`)
     /// event occurs.
     ///
+    /// * `data` - The optional user data to pass to the function.
     /// * `function` - The function or closure to be called when a suspend
     ///                event occurs.
-    /// * `data` - The optional user data to pass to the function.
     ///
-    pub fn new(function: FN, data: Option<T>)
+    pub fn new(data: Option<T>, function: FN)
       -> Box<SuspendCallback<FN, T>> {
         let cb = Box::new(SuspendCallback { function, data });
         newt_set_suspend_callback(cb.as_ref());

@@ -47,7 +47,7 @@ pub fn main() {
     let mut form = Form::new(None, 0);
     form.add_components(components).unwrap();
 
-    let mut filter = EntryFilter::new(&e1, &mut f, Some(5));
+    let mut filter = EntryFilter::new(&e1, Some(5), &mut f);
     filter.add_entry(&e2, Some(10));
 
     form.run().unwrap();
