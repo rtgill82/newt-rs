@@ -74,7 +74,7 @@ pub struct Form<'a>
     components: Vec<&'a dyn Component>
 }
 
-unsafe impl<#[may_dangle] 'a> Drop for Form<'a>
+impl<'a> Drop for Form<'a>
 {
     fn drop(&mut self) {
         for component in self.components.iter() {

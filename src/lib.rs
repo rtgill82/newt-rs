@@ -99,7 +99,6 @@
 //! License along with this library; if not, write to the Free Software
 //! Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //!
-#![feature(dropck_eyepatch)]
 #![cfg_attr(feature = "asm", feature(asm))]
 #[macro_use]
 extern crate newt_proc_macros;
