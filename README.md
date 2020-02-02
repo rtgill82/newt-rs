@@ -40,8 +40,9 @@ against local system libraries if they're available.
 It can be enabled in your `Cargo.toml` file as follows.
 
 ```
-[dependencies]
-newt = { version = "0.6", features = ["static"] }
+[dependencies.newt]
+version  = "0.6"
+features = ["static"]
 ```
 
 [newt_sys]: https://crates.io/crates/newt-sys
@@ -56,8 +57,9 @@ are currently only available on the _x86_ and <i>x86_64</i> architectures.
 Enable the feature as follows in your `Cargo.toml` file.
 
 ```
-[dependencies]
-newt = { version = "0.6", features = ["asm"] }
+[dependencies.newt]
+version  = "0.6"
+features = ["asm"]
 ```
 
 ## LICENSE
