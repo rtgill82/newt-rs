@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.6.2
+
+* Remove dependency on the `dropck_eyepatch` nightly feature.
+
 ## 0.6.1
 
 * Update license version in Cargo.toml, create new release to update crates.io.
