@@ -64,7 +64,7 @@ features = ["asm"]
 
 ## LICENSE
 
-Copyright (C) 2018,2019  Robert Gill <<locke@sdf.org>>
+Copyright (C) 2018-2020  Robert Gill <<locke@sdf.org>>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
