@@ -1,7 +1,7 @@
 [package]
 name = "newt_proc_macros"
 version = "0.0.6"
-authors = ["Robert Gill <locke@sdf.lonestar.org>"]
+authors = ["Robert Gill <locke@sdf.org>"]
 description = "Proc macros for newt-rs"
 repository = "https://github.com/xelkarin/newt-rs"
 license = "LGPL-2.0-only"

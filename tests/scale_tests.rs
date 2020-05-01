@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2019  Robert Gill <locke@sdf.lonestar.org>
+// Copyright (C) 2019 Robert Gill <locke@sdf.org>
 //
 // This file is a part of newt-rs.
 //
