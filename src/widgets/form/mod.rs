@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2019 Robert Gill <locke@sdf.org>
+// Copyright (C) 2019,2020 Robert Gill <locke@sdf.org>
 //
 // This file is a part of newt-rs.
 //
@@ -159,6 +159,18 @@ impl<'a> Form<'a>
         for component in components.iter() {
             self.add_component(*component)?;
         }
+        Ok(())
+    }
+
+    ///
+    /// Add a `Component` to the `Form`, taking ownership.
+    ///
+    pub fn take_component<T>(&mut self, component: T)
+        -> Result<(), &'static str>
+      where T: Component
+    {
+        component.add_to_parent()?;
+        unsafe { newtFormAddComponent(self.co(), component.co()); }
         Ok(())
     }
 

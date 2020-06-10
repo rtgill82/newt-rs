@@ -19,7 +19,7 @@
 
 extern crate newt;
 use newt::Component;
-use newt::widgets::{Button,Form};
+use newt::widgets::{Button,Form,Label};
 use std::ptr;
 
 use newt::constants::KEY_ENTER;
@@ -80,6 +80,14 @@ fn form_add_components_x2() {
         Ok(_) => assert!(false),
         Err(_) => assert!(true)
     }
+}
+
+#[test]
+fn form_take_component() {
+    let button = Button::new(0, 0, "Ok");
+
+    let mut form = Form::new(None, 0);
+    form.take_component(button).unwrap();
 }
 
 #[test]
