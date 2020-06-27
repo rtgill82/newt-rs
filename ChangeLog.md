@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.6.3
+
+* Add `take_component()` method to Form.
+
 ## 0.6.2
 
 * Remove dependency on the `dropck_eyepatch` nightly feature.
