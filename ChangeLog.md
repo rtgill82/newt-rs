@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.6.4
+
+* Use `llvm_asm!` macro to allow building with recent nightlies.
+
 ## 0.6.3
 
 * Add `take_component()` method to Form.
