@@ -99,7 +99,7 @@
 //! License along with this library; if not, write to the Free Software
 //! Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //!
-#![cfg_attr(feature = "asm", feature(asm))]
+#![cfg_attr(feature = "asm", feature(llvm_asm))]
 #[macro_use]
 extern crate newt_proc_macros;
 extern crate newt_sys;

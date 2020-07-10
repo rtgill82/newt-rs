@@ -30,7 +30,7 @@ pub fn grid_new(func: *const c_void, types: Vec<newtGridElement>,
                 values: Vec<newtComponent>, len: usize) -> newtGrid {
     unsafe {
         let grid: newtGrid;
-        asm! {
+        llvm_asm! {
             "movq $3,     %rcx
              movq $2,     %rsi
              movq $1,     %rdi
@@ -111,7 +111,7 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
 
     unsafe {
         let grid: newtGrid;
-        asm! {
+        llvm_asm! {
             "movq $3,     %rcx
              movq $2,     %rsi
              movq $1,     %rdi
@@ -223,7 +223,7 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
     button_ptrs.reverse();
 
     unsafe {
-        asm! {
+        llvm_asm! {
             "movq $10,    %rcx
              movq $9,     %rsi
              movq %rcx,   %rbx
@@ -341,7 +341,7 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
             values_text.push(value);
         }
 
-        asm! {
+        llvm_asm! {
             "movq $9,     %rcx
              movq $8,     %rsi
              movq %rcx,   %rbx
