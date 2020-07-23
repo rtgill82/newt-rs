@@ -19,7 +19,7 @@
 
 extern crate newt;
 use newt::Component;
-use newt::widgets::{Button,Form,Label};
+use newt::widgets::{Button,Form};
 use std::ptr;
 
 use newt::constants::KEY_ENTER;

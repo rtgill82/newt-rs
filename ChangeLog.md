@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.6.5
+
+* Check for non-ASCII `chars` when passing `chars` as `Data`
+
 ## 0.6.4
 
 * Use `llvm_asm!` macro to allow building with recent nightlies.
