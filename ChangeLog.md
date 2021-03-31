@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.6.6
+
+* Documentation updates
+
 ## 0.6.5
 
 * Check for non-ASCII `chars` when passing `chars` as `Data`
