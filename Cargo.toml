@@ -1,6 +1,6 @@
 [package]
 name = "newt"
-version = "0.6.6"
+version = "0.6.7"
 authors = ["Robert Gill <rtgill82@gmail.com>"]
 description = "Rust bindings for the Newt console UI library"
 repository = "https://github.com/rtgill82/newt-rs"
@@ -16,10 +16,10 @@ asm    = []
 
 [dependencies]
 libc     = "0.2"
-newt-sys = "~0.1.7"
+newt-sys = "~0.1.8"
 
 [dependencies.newt_proc_macros]
-version = "=0.0.7"
+version = "=0.0.8"
 path    = "./newt_proc_macros"
 
 [dev-dependencies]
