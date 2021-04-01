@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2019 Robert Gill <locke@sdf.org>
+// Copyright (C) 2019 Robert Gill <rtgill82@gmail.com>
 //
 // This file is a part of newt-rs.
 //
@@ -84,7 +84,7 @@
 //!
 //! ## License
 //!
-//! Copyright (C) 2018,2019 Robert Gill <<locke@sdf.org>>
+//! Copyright (C) 2018,2019 Robert Gill <<rtgill82@gmail.com>>
 //!
 //! This library is free software; you can redistribute it and/or
 //! modify it under the terms of the GNU Lesser General Public
