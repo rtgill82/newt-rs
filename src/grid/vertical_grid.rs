@@ -41,22 +41,9 @@ impl<'a> VerticalGrid<'a> {
     ///
     pub fn new<'t>(components: &'t [&'a dyn Component])
       -> VerticalGrid<'a> {
-        let mut types: Vec<newtGridElement> = Vec::new();
-        let mut values: Vec<newtComponent> = Vec::new();
-
-        let mut children = Vec::new();
-        for component in components.iter() {
-            types.push(component.grid_element_type());
-            values.push(component.co());
-            children.push(*component);
-        }
-
-        types.reverse();
-        values.reverse();
-
         let func = newtGridVStacked as *const c_void;
-        let len = components.len();
-        let grid = asm::grid_new(func, types, values, len);
+        let (grid, children) = asm::grid_new(components, func);
+
         VerticalGrid {
             grid: Cell::new(grid),
             added_to_parent: Cell::new(false),
@@ -70,22 +57,9 @@ impl<'a> VerticalGrid<'a> {
     ///
     pub fn new_close_stacked<'t>(components: &'t [&'a dyn Component])
       -> VerticalGrid<'a> {
-        let mut types: Vec<newtGridElement> = Vec::new();
-        let mut values: Vec<newtComponent> = Vec::new();
-
-        let mut children = Vec::new();
-        for component in components.iter() {
-            types.push(component.grid_element_type());
-            values.push(component.co());
-            children.push(*component);
-        }
-
-        types.reverse();
-        values.reverse();
-
         let func = newtGridVCloseStacked as *const c_void;
-        let len = components.len();
-        let grid = asm::grid_new(func, types, values, len);
+        let (grid, children) = asm::grid_new(components, func);
+
         VerticalGrid {
             grid: Cell::new(grid),
             added_to_parent: Cell::new(false),

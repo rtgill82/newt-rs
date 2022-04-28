@@ -35,12 +35,12 @@ pub fn main() {
     let stacked = HorizontalGrid::new(&[&l1, &l2]);
     let button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
 
-    let mut form = Form::new(None, 0);
     let mut grid = Grid::new(1, 2);
     grid.set_field(0, 0, &stacked, 1, 1, 1, 1, 0, 0);
     grid.set_field(0, 1, &button_bar, 1, 1, 1, 1, 0, 0);
 
     wrapped_window(&grid, "Grids");
+    let mut form = Form::new(None, 0);
     grid.add_to_form(&mut form).unwrap();
     rv = form.run().unwrap();
     newt::finished();

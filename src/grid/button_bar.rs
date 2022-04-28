@@ -52,9 +52,9 @@ impl ButtonBar {
 
             let num_buttons = buttons.len();
             let mut buttons = Vec::new();
-            let mut button_co = *buttons_buf.add(num_buttons - 1);
+            let mut button_co = *buttons_buf;
             buttons.push(Button::new_co(button_co));
-            for i in (0..num_buttons - 1).rev() {
+            for i in 1..num_buttons {
                 button_co = *buttons_buf.add(i);
                 buttons.push(Button::new_co(button_co));
             }

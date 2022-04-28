@@ -26,9 +26,25 @@ use std::ptr;
 
 #[test]
 fn button_bar_create() {
-    let button_bar = ButtonBar::new(&["Ok", "Cancel"]);
+    let button_bar = ButtonBar::new(&["One"]);
+    assert!(button_bar.co() != ptr::null_mut());
+    assert_eq!(button_bar.buttons().len(), 1);
+
+    let button_bar = ButtonBar::new(&["One", "Two"]);
     assert!(button_bar.co() != ptr::null_mut());
     assert_eq!(button_bar.buttons().len(), 2);
+
+    let button_bar = ButtonBar::new(&["One", "Two", "Three"]);
+    assert!(button_bar.co() != ptr::null_mut());
+    assert_eq!(button_bar.buttons().len(), 3);
+
+    let button_bar = ButtonBar::new(&["One", "Two", "Three", "Four"]);
+    assert!(button_bar.co() != ptr::null_mut());
+    assert_eq!(button_bar.buttons().len(), 4);
+
+    let button_bar = ButtonBar::new(&["One", "Two", "Three", "Four", "Five"]);
+    assert!(button_bar.co() != ptr::null_mut());
+    assert_eq!(button_bar.buttons().len(), 5);
 }
 
 #[test]
@@ -67,50 +83,132 @@ fn grid_invalid_row_position() {
 
 #[test]
 fn vertical_grid_create() {
-    let b1 = Button::new(0, 0, "Yes");
-    let b2 = Button::new(0, 0, "No");
+    let b1 = Button::new(0, 0, "One");
+    let grid = VerticalGrid::new(&[&b1]);
+    assert!(grid.co() != ptr::null_mut());
+
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
     let grid = VerticalGrid::new(&[&b1, &b2]);
     assert!(grid.co() != ptr::null_mut());
 
-    let b1 = Button::new(0, 0, "Yes");
-    let b2 = Button::new(0, 0, "No");
-    let b3 = Button::new(0, 0, "Maybe");
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
+    let b3 = Button::new(0, 0, "Three");
     let grid = VerticalGrid::new(&[&b1, &b2, &b3]);
     assert!(grid.co() != ptr::null_mut());
 
-    let b1 = Button::new(0, 0, "Yes");
-    let b2 = Button::new(0, 0, "No");
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
+    let b3 = Button::new(0, 0, "Three");
+    let b4 = Button::new(0, 0, "Four");
+    let grid = VerticalGrid::new(&[&b1, &b2, &b3, &b4]);
+    assert!(grid.co() != ptr::null_mut());
+
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
+    let b3 = Button::new(0, 0, "Three");
+    let b4 = Button::new(0, 0, "Four");
+    let b5 = Button::new(0, 0, "Five");
+    let grid = VerticalGrid::new(&[&b1, &b2, &b3, &b4, &b5]);
+    assert!(grid.co() != ptr::null_mut());
+}
+
+#[test]
+fn vertical_grid_close_stacked_create() {
+    let b1 = Button::new(0, 0, "One");
+    let grid = VerticalGrid::new_close_stacked(&[&b1]);
+    assert!(grid.co() != ptr::null_mut());
+
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
     let grid = VerticalGrid::new_close_stacked(&[&b1, &b2]);
     assert!(grid.co() != ptr::null_mut());
 
-    let b1 = Button::new(0, 0, "Yes");
-    let b2 = Button::new(0, 0, "No");
-    let b3 = Button::new(0, 0, "Maybe");
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
+    let b3 = Button::new(0, 0, "Three");
     let grid = VerticalGrid::new_close_stacked(&[&b1, &b2, &b3]);
+    assert!(grid.co() != ptr::null_mut());
+
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
+    let b3 = Button::new(0, 0, "Three");
+    let b4 = Button::new(0, 0, "Four");
+    let grid = VerticalGrid::new_close_stacked(&[&b1, &b2, &b3, &b4]);
+    assert!(grid.co() != ptr::null_mut());
+
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
+    let b3 = Button::new(0, 0, "Three");
+    let b4 = Button::new(0, 0, "Four");
+    let b5 = Button::new(0, 0, "Five");
+    let grid = VerticalGrid::new_close_stacked(&[&b1, &b2, &b3, &b4, &b5]);
     assert!(grid.co() != ptr::null_mut());
 }
 
 #[test]
 fn horizontal_grid_create() {
-    let b1 = Button::new(0, 0, "Yes");
-    let b2 = Button::new(0, 0, "No");
+    let b1 = Button::new(0, 0, "One");
+    let grid = HorizontalGrid::new(&[&b1]);
+    assert!(grid.co() != ptr::null_mut());
+
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
     let grid = HorizontalGrid::new(&[&b1, &b2]);
     assert!(grid.co() != ptr::null_mut());
 
-    let b1 = Button::new(0, 0, "Yes");
-    let b2 = Button::new(0, 0, "No");
-    let b3 = Button::new(0, 0, "Maybe");
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
+    let b3 = Button::new(0, 0, "Three");
     let grid = HorizontalGrid::new(&[&b1, &b2, &b3]);
     assert!(grid.co() != ptr::null_mut());
 
-    let b1 = Button::new(0, 0, "Yes");
-    let b2 = Button::new(0, 0, "No");
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
+    let b3 = Button::new(0, 0, "Three");
+    let b4 = Button::new(0, 0, "Four");
+    let grid = HorizontalGrid::new(&[&b1, &b2, &b3, &b4]);
+    assert!(grid.co() != ptr::null_mut());
+
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
+    let b3 = Button::new(0, 0, "Three");
+    let b4 = Button::new(0, 0, "Four");
+    let b5 = Button::new(0, 0, "Five");
+    let grid = HorizontalGrid::new(&[&b1, &b2, &b3, &b4, &b5]);
+    assert!(grid.co() != ptr::null_mut());
+}
+
+#[test]
+fn horizontal_grid_close_stacked_create() {
+    let b1 = Button::new(0, 0, "One");
+    let grid = HorizontalGrid::new_close_stacked(&[&b1]);
+    assert!(grid.co() != ptr::null_mut());
+
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
     let grid = HorizontalGrid::new_close_stacked(&[&b1, &b2]);
     assert!(grid.co() != ptr::null_mut());
 
-    let b1 = Button::new(0, 0, "Yes");
-    let b2 = Button::new(0, 0, "No");
-    let b3 = Button::new(0, 0, "Maybe");
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
+    let b3 = Button::new(0, 0, "Three");
     let grid = HorizontalGrid::new_close_stacked(&[&b1, &b2, &b3]);
+    assert!(grid.co() != ptr::null_mut());
+
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
+    let b3 = Button::new(0, 0, "Three");
+    let b4 = Button::new(0, 0, "Four");
+    let grid = HorizontalGrid::new_close_stacked(&[&b1, &b2, &b3, &b4]);
+    assert!(grid.co() != ptr::null_mut());
+
+    let b1 = Button::new(0, 0, "One");
+    let b2 = Button::new(0, 0, "Two");
+    let b3 = Button::new(0, 0, "Three");
+    let b4 = Button::new(0, 0, "Four");
+    let b5 = Button::new(0, 0, "Five");
+    let grid = HorizontalGrid::new_close_stacked(&[&b1, &b2, &b3, &b4, &b5]);
     assert!(grid.co() != ptr::null_mut());
 }

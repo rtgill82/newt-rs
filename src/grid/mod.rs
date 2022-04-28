@@ -59,7 +59,6 @@
 //!     let l1 = Label::new(0, 0, "Hello");
 //!     let l2 = Label::new(0, 0, "World");
 //!
-//!     let mut form = Form::new(None, 0);
 //!     let stacked = HorizontalGrid::new(&[&l1, &l2]);
 //!     let button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
 //!
@@ -68,6 +67,7 @@
 //!     grid.set_field(0, 1, &button_bar, 1, 1, 1, 1, 0, 0);
 //!
 //!     wrapped_window(&grid, "Grids");
+//!     let mut form = Form::new(None, 0);
 //!     grid.add_to_form(&mut form).unwrap();
 //!     rv = form.run().unwrap();
 //!     newt::finished();

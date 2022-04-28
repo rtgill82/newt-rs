@@ -17,166 +17,192 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-use libc::{c_char,c_void};
+use std::arch::asm;
 use std::ffi::{CStr,CString};
 use std::mem::size_of;
 
+use libc::{c_char,c_void};
 use newt_sys::{newtComponent,newtGrid,newtGridElement,newtWinEntry};
+
+use crate::Component;
 use crate::constants::NEWT_GRID_EMPTY;
 use crate::intern::funcs::*;
 use crate::windows::WinEntry;
 
-pub fn grid_new(func: *const c_void, types: Vec<newtGridElement>,
-                values: Vec<newtComponent>, len: usize) -> newtGrid {
+pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
+                        func: *const c_void)
+  -> (newtGrid, Vec<&'a dyn Component>)
+{
+    let mut types: Vec<newtGridElement> = Vec::new();
+    let mut values: Vec<newtComponent> = Vec::new();
+    let len = components.len();
+
+    let mut children = Vec::new();
+    for component in components.iter() {
+        types.push(component.grid_element_type());
+        values.push(component.co());
+        children.push(*component);
+    }
+
     unsafe {
-        let grid: newtGrid;
-        llvm_asm! {
-            "movq $3,     %rcx
-             movq $2,     %rsi
-             movq $1,     %rdi
+        let mut grid: newtGrid;
 
-             subq $$8,    %rsp
-             movq $4,     %rax
-             pushq        %rax
-             xorq %rbx,   %rbx
-             addq $$2,    %rbx
+        let values_ptr = values.as_ptr();
+        let types_ptr = types.as_ptr();
 
-             sub $$3,     %rcx
-             jz           reg0${:uid}
-             cmp $$-1,    %rcx
-             je           null_r8${:uid}
-             cmp $$-2,    %rcx
-             je           null_rdx${:uid}
-             movq %rcx,   %rax
-             shl $$1,     %rax
-             addq %rax,   %rbx
+        asm! {
+            "std
+             sub    rsp, 8
+             push   rax
+             mov    r12, 2
 
-             loop${:uid}:
-             movq (%rsi), %rax
-             pushq        %rax
-             addq $$8,    %rsi
-             movl (%rdi), %eax
-             pushq        %rax
-             addq $$4,    %rdi
-             loop         loop${:uid}
+             lea    rdi, [rdi+rcx*4-4]
+             lea    rsi, [rsi+rcx*8-8]
 
-             reg0${:uid}:
-             movq (%rsi), %r9
-             addq $$8,    %rsi
-             movl (%rdi), %eax
-             movq %rax,   %r8
-             addq $$4,    %rdi
+             sub    rcx, 3
+             jz     3f
+             cmp    rcx, -1
+             je     6f
+             cmp    rcx, -2
+             je     7f
+             mov    rax, rcx
+             shl    rax, 1
+             add    r12, rax
 
-             reg1${:uid}:
-             movq (%rsi), %rcx
-             addq $$8,    %rsi
-             movl (%rdi), %edx
-             addq $$4,    %rdi
+             2:
+             lodsq
+             push   rax
+             mov    eax, [rdi]
+             push   rax
+             sub    rdi, 4
+             loop   2b
 
-             reg2${:uid}:
-             movq (%rsi), %rsi
-             movl (%rdi), %eax
-             movq %rax,   %rdi
+             3:
+             mov    r8, [rsi]
+             sub    rsi, 8
+             mov    r9d, [rdi]
+             sub    rdi, 4
 
-             callq        *$5
-             movq %rax,   $0
+             4:
+             mov    rcx, [rsi]
+             sub    rsi, 8
+             mov    edx, [rdi]
+             sub    rdi, 4
 
-             shl $$3,     %rbx
-             addq %rbx,   %rsp
-             jmp          exit${:uid}
+             5:
+             mov    rsi, [rsi]
+             mov    edi, [rdi]
 
-             null_r8${:uid}:
-             xorq %r8,    %r8
-             jmp          reg1${:uid}
+             cld
+             call   {func}
 
-             null_rdx${:uid}:
-             xorq %rdx,   %rdx
-             jmp          reg2${:uid}
+             shl    r12, 3
+             add    rsp, r12
+             jmp    8f
 
-             exit${:uid}:"
+             6:
+             mov    r8, rax
+             jmp    4b
 
-             : "=r"(grid)
-             : "m"(types.as_ptr()), "m"(values.as_ptr()),
-               "m"(len), "i"(NEWT_GRID_EMPTY), "r"(func)
-             : "rsp", "rax", "rbx", "rcx", "rdi", "rsi", "r8", "r9"
+             7:
+             mov    rdx, rax
+             jmp    5b
+
+             8:",
+
+             func = in(reg) func,
+
+             in("rdi") types_ptr,
+             in("rsi") values_ptr,
+             in("rcx") len,
+
+             inlateout("rax") NEWT_GRID_EMPTY as usize => grid,
+
+             out("rdx") _, out("r8") _, out("r9") _, out("r12") _,
+             clobber_abi("sysv64")
         }
-        grid
+        (grid, children)
     }
 }
 
 pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
     let buttons = str_slice_to_cstring_vec(buttons);
-    let mut button_ptrs = cstring_vec_to_ptrs(&buttons);
-    button_ptrs.reverse();
+    let button_ptrs = cstring_vec_to_ptrs(&buttons);
+
+    let buttons_len = buttons.len();
+    let buttons_ptr = button_ptrs.as_ptr();
 
     unsafe {
         let grid: newtGrid;
-        llvm_asm! {
-            "movq $3,     %rcx
-             movq $2,     %rsi
-             movq $1,     %rdi
-             addq $$8,    %rdi
+        asm! {
+            "std
+             sub    rsp, 8
+             xor    rax, rax
+             push   rax
+             mov    r12, 2
 
-             subq $$8,    %rsp
-             xorq %rax,   %rax
-             pushq        %rax
-             xorq %rbx,   %rbx
-             addq $$2,    %rbx
+             lea    rdi, [rdi+rcx*8-8]
+             lea    rsi, [rsi+rcx*8-8]
 
-             sub $$3,     %rcx
-             jz           reg0${:uid}
-             cmp $$-1,    %rcx
-             je           null_r8${:uid}
-             cmp $$-2,    %rcx
-             je           null_rdx${:uid}
-             movq %rcx,   %rax
-             shl $$1,     %rax
-             addq %rax,   %rbx
+             sub    rcx, 3
+             jz     3f
+             cmp    rcx, -1
+             je     6f
+             cmp    rcx, -2
+             je     7f
+             mov    rax, rcx
+             shl    rax, 1
+             add    r12, rax
 
-             loop${:uid}:
-             movq %rsi,   %rax
-             pushq        %rax
-             addq $$8,    %rsi
-             movq (%rdi), %rax
-             pushq        %rax
-             addq $$8,    %rdi
-             loop         loop${:uid}
+             2:
+             mov    rax, rdi
+             push   rax
+             sub    rdi, 8
+             lodsq
+             push   rax
+             loop   2b
 
-             reg0${:uid}:
-             movq %rsi,   %r9
-             addq $$8,    %rsi
-             movq (%rdi), %r8
-             addq $$8,    %rdi
+             3:
+             mov    r9, rdi
+             sub    rdi, 8
+             mov    r8, [rsi]
+             sub    rsi, 8
 
-             reg1${:uid}:
-             movq %rsi,   %rcx
-             addq $$8,    %rsi
-             movq (%rdi), %rdx
-             addq $$8,    %rdi
+             4:
+             mov    rcx, rdi
+             sub    rdi, 8
+             mov    rdx, [rsi]
+             sub    rsi, 8
 
-             reg2${:uid}:
-             movq (%rdi), %rdi
+             5:
+             xchg   rdi, rsi
+             mov    rdi, [rdi]
 
+             cld
              call newtButtonBar
-             movq %rax,   $0
 
-             shl $$3,     %rbx
-             addq %rbx,   %rsp
-             jmp          exit${:uid}
+             shl    r12, 3
+             add    rsp, r12
+             jmp    8f
 
-             null_r8${:uid}:
-             xorq %r8,    %r8
-             jmp          reg1${:uid}
+             6:
+             xor    r8, r8
+             jmp    4b
 
-             null_rdx${:uid}:
-             xorq %rdx,   %rdx
-             jmp          reg2${:uid}
+             7:
+             xor    rdx, rdx
+             jmp    5b
 
-             exit${:uid}:"
+             8:",
 
-            : "=r"(grid)
-            : "m"(button_ptrs.as_ptr()), "m"(buf), "m"(buttons.len())
-            : "rsp", "rax", "rbx", "rcx", "rdi", "rsi", "r8", "r9"
+             in("rdi") buf,
+             in("rsi") buttons_ptr,
+             in("rcx") buttons_len,
+
+             out("rax") grid,
+
+             out("rdx") _, out("r8") _, out("r9") _, out("r12") _,
+             clobber_abi("sysv64")
         }
         grid
     }
@@ -208,9 +234,10 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
 #[allow(clippy::too_many_arguments)]
 pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
                 flex_up: i32, max_list_height: i32, items: &[&str],
-                buttons: &[&str]) -> (i32, i32) {
+                buttons: &[&str]) -> (i32, i32)
+{
     let mut rv: i32;
-    let list_item: i32 = 0;
+    let mut list_item: i32 = 0;
 
     let title = CString::new(title).unwrap();
     let text  = CString::new(text).unwrap();
@@ -219,55 +246,62 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
     let item_ptrs = cstring_vec_to_ptrs(&items);
 
     let buttons = str_slice_to_cstring_vec(buttons);
-    let mut button_ptrs = cstring_vec_to_ptrs(&buttons);
-    button_ptrs.reverse();
+    let button_ptrs = cstring_vec_to_ptrs(&buttons);
+
+    let text_ptr = text.as_ptr();
+    let title_ptr = title.as_ptr();
+    let buttons_ptr = button_ptrs.as_ptr();
+    let buttons_len = button_ptrs.len();
+    let items_ptr = item_ptrs.as_ptr();
+    let list_item_ref: *mut i32 = &mut list_item;
 
     unsafe {
-        llvm_asm! {
-            "movq $10,    %rcx
-             movq $9,     %rsi
-             movq %rcx,   %rbx
+        asm! {
+            "std
+             mov    r12, rcx
+             lea    rsi, [rsi+rcx*8-8]
+             test   rcx, 1
+             jz     2f
 
-             test $$1,    %rcx
-             jz           loop${:uid}
+             sub    rsp, 8
+             inc    r12
 
-             subq $$8,    %rsp
-             addq $$1,    %rbx
+             2:
+             lodsq
+             push   rax
+             loop   2b
+             cld
 
-             loop${:uid}:
-             movq (%rsi), %rax
-             pushq        %rax
-             addq $$8,    %rsi
-             loop         loop${:uid}
+             mov    rax, {list_item}
+             push   rax
+             mov    rax, {items_ptr}
+             push   rax
 
-             movq $8,     %rax
-             pushq        %rax
-             movq $7,     %rax
-             pushq        %rax
-
-             movq $1,     %rdi
-             movq $2,     %rsi
-             mov  $3,     %rdx
-             mov  $4,     %rcx
-             mov  $5,     %r8
-             mov  $6,     %r9
+             mov    rsi, {text_ptr}
+             mov    rcx, {flex_down:r}
 
              call newtWinMenu
-             mov  %eax,   $0
 
-             addq $$2,    %rbx
-             shl  $$3,    %rbx
-             addq %rbx,   %rsp"
+             add    r12, 2
+             shl    r12, 3
+             add    rsp, r12",
 
-            : "=r"(rv)
-            : "m"(title.as_ptr()), "m"(text.as_ptr()), "m"(suggested_width),
-              "m"(flex_down), "m"(flex_up), "m"(max_list_height),
-              "m"(item_ptrs.as_ptr()), "m"(&list_item),
-              "m"(button_ptrs.as_ptr()), "m"(button_ptrs.len())
-            : "rsp", "rax", "rbx", "rcx", "rdx", "rdi", "rsi", "r8", "r9"
+             list_item = in(reg) list_item_ref,
+             items_ptr = in(reg) items_ptr,
+             text_ptr  = in(reg) text_ptr,
+             flex_down = in(reg) flex_down,
+
+             in("rdi") title_ptr,
+             in("rsi") buttons_ptr,
+             in("rcx") buttons_len,
+             in("rdx") suggested_width,
+             in("r8") flex_up,
+             in("r9") max_list_height,
+
+             out("rax") rv, out("r12") _,
+             clobber_abi("sysv64")
         }
     }
-
     (rv, list_item)
 }
 
@@ -309,8 +343,7 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
     let text  = CString::new(text).unwrap();
 
     let buttons = str_slice_to_cstring_vec(buttons);
-    let mut button_ptrs = cstring_vec_to_ptrs(&buttons);
-    button_ptrs.reverse();
+    let button_ptrs = cstring_vec_to_ptrs(&buttons);
 
     let entries_buf: *mut newtWinEntry;
     let mut entries_text: Vec<CString> = Vec::new();
@@ -341,45 +374,52 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
             values_text.push(value);
         }
 
-        llvm_asm! {
-            "movq $9,     %rcx
-             movq $8,     %rsi
-             movq %rcx,   %rbx
+        let title_ptr = title.as_ptr();
+        let text_ptr = text.as_ptr();
+        let buttons_ptr = button_ptrs.as_ptr();
+        let buttons_len = button_ptrs.len();
 
-             test $$1,    %rcx
-             jnz          loop${:uid}
+        asm! {
+            "std
+             mov    r12, rcx
+             lea    rsi, [rsi+rcx*8-8]
+             test   rcx, 1
+             jnz    2f
 
-             subq $$8,    %rsp
-             addq $$1,    %rbx
+             sub    rsp, 8
+             inc    r12
 
-             loop${:uid}:
-             movq (%rsi), %rax
-             pushq        %rax
-             addq $$8,    %rsi
-             loop         loop${:uid}
+             2:
+             lodsq
+             push   rax
+             loop   2b
+             cld
 
-             movq $7,     %rax
-             pushq        %rax
+             mov    rax, {entries_buf}
+             push   rax
 
-             movq $1,     %rdi
-             movq $2,     %rsi
-             mov  $3,     %rdx
-             mov  $4,     %rcx
-             mov  $5,     %r8
-             mov  $6,     %r9
+             mov    rsi, {text_ptr}
+             mov    rcx, {flex_down:r}
 
              call newtWinEntries
-             mov  %eax,   $0
 
-             addq $$1,    %rbx
-             shl  $$3,    %rbx
-             addq %rbx,   %rsp"
+             add    r12, 1
+             shl    r12, 3
+             add    rsp, r12",
 
-            : "=r"(rv)
-            : "m"(title.as_ptr()), "m"(text.as_ptr()), "m"(suggested_width),
-              "m"(flex_down), "m"(flex_up), "m"(data_width), "m"(entries_buf),
-              "m"(button_ptrs.as_ptr()),  "m"(button_ptrs.len())
-            : "rsp", "rax", "rbx", "rcx", "rdx", "rdi", "rsi", "r8", "r9"
+             text_ptr = in(reg) text_ptr,
+             flex_down = in(reg) flex_down,
+             entries_buf = in(reg) entries_buf,
+
+             in("rdi") title_ptr,
+             in("rsi") buttons_ptr,
+             in("rcx") buttons_len,
+             in("rdx") suggested_width,
+             in("r8") flex_up,
+             in("r9") data_width,
+
+             out("rax") rv, out("r12") _,
+             clobber_abi("sysv64")
         }
 
         for (cnt, entry) in entries.iter_mut().enumerate() {
@@ -392,6 +432,5 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
         libc::free(entries_buf as *mut c_void);
         libc::free(values_buf as *mut c_void);
     }
-
     rv
 }

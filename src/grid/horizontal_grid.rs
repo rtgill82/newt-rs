@@ -41,22 +41,9 @@ impl<'a> HorizontalGrid<'a> {
     ///
     pub fn new<'t>(components: &'t [&'a dyn Component])
       -> HorizontalGrid<'a> {
-        let mut types: Vec<newtGridElement> = Vec::new();
-        let mut values: Vec<newtComponent> = Vec::new();
-
-        let mut children = Vec::new();
-        for component in components.iter() {
-            types.push(component.grid_element_type());
-            values.push(component.co());
-            children.push(*component);
-        }
-
-        types.reverse();
-        values.reverse();
-
         let func = newtGridHStacked as *const c_void;
-        let len = components.len();
-        let grid = asm::grid_new(func, types, values, len);
+        let (grid, children) = asm::grid_new(components, func);
+
         HorizontalGrid {
             grid: Cell::new(grid),
             added_to_parent: Cell::new(false),
@@ -70,22 +57,9 @@ impl<'a> HorizontalGrid<'a> {
     ///
     pub fn new_close_stacked<'t>(components: &'t [&'a dyn Component])
       -> HorizontalGrid<'a> {
-        let mut types: Vec<newtGridElement> = Vec::new();
-        let mut values: Vec<newtComponent> = Vec::new();
-
-        let mut children = Vec::new();
-        for component in components.iter() {
-            types.push(component.grid_element_type());
-            values.push(component.co());
-            children.push(*component);
-        }
-
-        types.reverse();
-        values.reverse();
-
         let func = newtGridHCloseStacked as *const c_void;
-        let len = components.len();
-        let grid = asm::grid_new(func, types, values, len);
+        let (grid, children) = asm::grid_new(components, func);
+
         HorizontalGrid {
             grid: Cell::new(grid),
             added_to_parent: Cell::new(false),
