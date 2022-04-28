@@ -19,7 +19,7 @@
 
 #[macro_use]
 pub mod macros;
-#[cfg(feature = "asm")]
+#[cfg(target_arch = "x86_64")]
 pub mod asm;
 pub mod data;
 pub mod funcs;
@@ -28,7 +28,7 @@ use libc::c_void;
 
 use newt_sys::*;
 use crate::Component;
-#[cfg(feature = "asm")]
+#[cfg(target_arch = "x86_64")]
 use crate::grid::r#trait::Grid;
 
 pub trait Child {
@@ -54,18 +54,18 @@ pub trait Parent {
     fn children(&self) -> Vec<&dyn Component>;
 }
 
-#[cfg(feature = "asm")]
+#[cfg(target_arch = "x86_64")]
 pub trait AsComponent {
     fn as_component(&self) -> Option<&dyn Component>;
 }
 
-#[cfg(not(feature = "asm"))]
+#[cfg(not(target_arch = "x86_64"))]
 pub trait AsComponent { }
 
-#[cfg(feature = "asm")]
+#[cfg(target_arch = "x86_64")]
 pub trait AsGrid {
     fn as_grid(&self) -> Option<&dyn Grid>;
 }
 
-#[cfg(not(feature = "asm"))]
+#[cfg(not(target_arch = "x86_64"))]
 pub trait AsGrid { }

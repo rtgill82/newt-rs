@@ -24,12 +24,12 @@ use std::ffi::CString;
 use libc::c_char;
 use newt_sys::*;
 
-#[cfg(feature = "asm")]
 #[doc(inline)]
+#[cfg(target_arch = "x86_64")]
 pub use crate::intern::asm::win_menu;
 
-#[cfg(feature = "asm")]
 #[doc(inline)]
+#[cfg(target_arch = "x86_64")]
 pub use crate::intern::asm::win_entries;
 
 ///
@@ -98,7 +98,7 @@ pub fn win_ternary(title: &str, button1: &str, button2: &str, button3: &str,
 ///
 /// [entry]: ../widgets/struct.Entry.html
 ///
-#[cfg(feature = "asm")]
+#[cfg(target_arch = "x86_64")]
 #[derive(Default)]
 pub struct WinEntry {
     pub(crate) text: String,
@@ -106,7 +106,7 @@ pub struct WinEntry {
     pub(crate) flags: i32
 }
 
-#[cfg(feature = "asm")]
+#[cfg(target_arch = "x86_64")]
 impl WinEntry {
     ///
     /// Create a new `WinEntry`.

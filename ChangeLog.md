@@ -1,5 +1,7 @@
 # ChangeLog
 
+* Automatically build asm functions on supported architectures.
+
 * Update `x86_64` assembly code for the new inline assembler.
 
 ## 0.6.6

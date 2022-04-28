@@ -18,7 +18,7 @@
 //
 
 extern crate newt;
-#[cfg(feature = "asm")]
+#[cfg(target_arch = "x86_64")]
 use newt::grid::*;
 use newt::prelude::*;
 
@@ -33,7 +33,7 @@ fn test_form_nullify() {
     button.get_position();
 }
 
-#[cfg(feature = "asm")]
+#[cfg(target_arch = "x86_64")]
 #[test]
 #[should_panic]
 fn test_grid_nullify() {
@@ -48,7 +48,7 @@ fn test_grid_nullify() {
     button.get_position();
 }
 
-#[cfg(feature = "asm")]
+#[cfg(target_arch = "x86_64")]
 #[test]
 #[should_panic]
 fn test_deep_grid_nullify() {

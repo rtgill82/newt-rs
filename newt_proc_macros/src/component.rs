@@ -65,10 +65,10 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
             }
         }
 
-        #[cfg(not(feature = "asm"))]
+        #[cfg(not(target_arch = "x86_64"))]
         impl #impl_ ::intern::AsComponent for #name #type_ #where_ { }
 
-        #[cfg(feature = "asm")]
+        #[cfg(target_arch = "x86_64")]
         impl #impl_ ::intern::AsComponent for #name #type_
             #where_
         {
@@ -77,10 +77,10 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
             }
         }
 
-        #[cfg(not(feature = "asm"))]
+        #[cfg(not(target_arch = "x86_64"))]
         impl #impl_ ::intern::AsGrid for #name #type_ #where_ { }
 
-        #[cfg(feature = "asm")]
+        #[cfg(target_arch = "x86_64")]
         impl #impl_ ::intern::AsGrid for #name #type_
             #where_
         {

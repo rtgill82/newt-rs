@@ -12,19 +12,15 @@ edition = "2018"
 
 [features]
 static = ["newt-sys/static"]
-asm    = []
 
 [dependencies]
 libc     = "0.2"
 newt-sys = "~0.1.8"
 
 [dependencies.newt_proc_macros]
-version = "=0.0.8"
+version = "=0.0.9"
 path    = "./newt_proc_macros"
 
 [dev-dependencies]
 chrono   = "0.4"
 tempfile = "3.0"
-
-[package.metadata.docs.rs]
-features = ["asm"]

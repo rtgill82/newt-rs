@@ -119,7 +119,7 @@ pub mod windows;
 #[doc(no_inline)]
 pub use self::component::Component;
 
-#[cfg(feature = "asm")]
+#[cfg(target_arch = "x86_64")]
 pub mod grid;
 
 #[doc(no_inline)]
@@ -133,10 +133,10 @@ pub use self::windows::win_choice;
 pub use self::windows::win_ternary;
 
 #[doc(no_inline)]
-#[cfg(feature = "asm")]
+#[cfg(target_arch = "x86_64")]
 pub use self::windows::win_menu;
 #[doc(no_inline)]
-#[cfg(feature = "asm")]
+#[cfg(target_arch = "x86_64")]
 pub use self::windows::win_entries;
 
 use newt_sys::*;

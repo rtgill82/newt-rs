@@ -17,7 +17,7 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#![cfg(feature = "asm")]
+#[cfg(target_arch = "x86_64")]
 extern crate newt;
 use newt::Component;
 use newt::widgets::Button;
