@@ -21,7 +21,7 @@
 //! Convenient windowing functions.
 //!
 use std::ffi::CString;
-use libc::c_char;
+use std::os::raw::c_char;
 use newt_sys::*;
 
 #[doc(inline)]

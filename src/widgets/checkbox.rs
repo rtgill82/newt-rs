@@ -19,6 +19,7 @@
 
 use std::cell::Cell;
 use std::ffi::CString;
+use std::os::raw::c_char;
 use std::ptr;
 
 use newt_sys::*;
@@ -40,9 +41,9 @@ impl Checkbox {
                seq: Option<&[char]>)
       -> Checkbox {
         let c_text = CString::new(text).unwrap();
-        let default: i8 = match def_value {
-            Some(value) => value as i8,
-            None => 0 as i8
+        let default: c_char = match def_value {
+            Some(value) => value as c_char,
+            None => 0 as c_char
         };
 
         let cstr: CString;
@@ -69,7 +70,7 @@ impl Checkbox {
     }
 
     pub fn set_value(&self, value: char) {
-        unsafe { newtCheckboxSetValue(self.co(), value as i8); }
+        unsafe { newtCheckboxSetValue(self.co(), value as c_char); }
     }
 
     pub fn set_flags(&self, flags: i32, sense: FlagsSense) {

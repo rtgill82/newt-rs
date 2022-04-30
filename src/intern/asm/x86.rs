@@ -20,8 +20,8 @@
 use std::arch::asm;
 use std::ffi::{CStr,CString};
 use std::mem::size_of;
+use std::os::raw::{c_char,c_void};
 
-use libc::{c_char,c_void};
 use newt_sys::{newtComponent,newtGrid,newtGridElement,newtWinEntry};
 
 use crate::Component;

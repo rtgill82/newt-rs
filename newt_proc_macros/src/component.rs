@@ -39,12 +39,12 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
         impl #impl_ ::intern::ComponentPtr for #name #type_
             #where_
         {
-            fn ptr(&self) -> *mut ::libc::c_void {
+            fn ptr(&self) -> *mut ::std::os::raw::c_void {
                 let ptr = self.co.get();
                 if ptr.is_null() {
                     panic!("Component has already been destroyed!");
                 }
-                ptr as *mut ::libc::c_void
+                ptr as *mut ::std::os::raw::c_void
             }
 
             fn co_ptr(&self) -> ::newt_sys::newtComponent {

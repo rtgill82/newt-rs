@@ -20,7 +20,7 @@
 //!
 //! newt UI widgets.
 //!
-use libc::c_int;
+use std::os::raw::c_int;
 
 use crate::intern::ComponentPtr;
 use newt_sys::*;

@@ -17,9 +17,9 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-use libc::c_void;
 use std::cell::Cell;
 use std::mem::size_of;
+use std::os::raw::c_void;
 
 use newt_sys::*;
 use crate::component::Component;

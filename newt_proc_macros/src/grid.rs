@@ -54,8 +54,8 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
         impl #impl_ ::intern::ComponentPtr for #name #type_
             #where_
         {
-            fn ptr(&self) -> *mut ::libc::c_void {
-                self.grid.get() as *mut ::libc::c_void
+            fn ptr(&self) -> *mut ::std::os::raw::c_void {
+                self.grid.get() as *mut ::std::os::raw::c_void
             }
 
             fn co_ptr(&self) -> ::newt_sys::newtComponent {

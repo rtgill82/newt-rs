@@ -47,7 +47,8 @@ impl<D: Data> CheckboxTree<D> {
                 let c_seq = char_slice_to_cstring(&seq);
                 unsafe {
                     newtCheckboxTreeMulti(left, top, height,
-                                          c_seq.as_ptr() as *mut i8, flags)
+                                          c_seq.as_ptr() as *mut c_char,
+                                          flags)
                 }
             },
 
@@ -119,7 +120,7 @@ impl<D: Data> CheckboxTree<D> {
             newtCheckboxTreeGetMultiSelection(
                 self.co(),
                 &mut numitems,
-                seqval as i8
+                seqval as c_char
             )
         };
         c_ptr_array_to_boxed_slice!(ptr[D], numitems)

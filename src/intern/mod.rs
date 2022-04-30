@@ -24,7 +24,7 @@ pub mod asm;
 pub mod data;
 pub mod funcs;
 
-use libc::c_void;
+use std::os::raw::c_void;
 
 use newt_sys::*;
 use crate::Component;
