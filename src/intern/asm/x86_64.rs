@@ -33,11 +33,11 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
                         func: *const c_void)
   -> (newtGrid, Vec<&'a dyn Component>)
 {
+    let mut grid: newtGrid;
+    let mut children = Vec::new();
+
     let mut types: Vec<newtGridElement> = Vec::new();
     let mut values: Vec<newtComponent> = Vec::new();
-    let len = components.len();
-
-    let mut children = Vec::new();
     for component in components.iter() {
         types.push(component.grid_element_type());
         values.push(component.co());
@@ -45,10 +45,9 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
     }
 
     unsafe {
-        let mut grid: newtGrid;
-
-        let values_ptr = values.as_ptr();
         let types_ptr = types.as_ptr();
+        let values_ptr = values.as_ptr();
+        let len = components.len();
 
         asm! {
             "std
@@ -121,19 +120,19 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
              out("rdx") _, out("r8") _, out("r9") _, out("r12") _,
              clobber_abi("sysv64")
         }
-        (grid, children)
     }
+    (grid, children)
 }
 
 pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
+    let mut grid: newtGrid;
+
     let buttons = str_slice_to_cstring_vec(buttons);
     let button_ptrs = cstring_vec_to_ptrs(&buttons);
-
     let buttons_len = buttons.len();
     let buttons_ptr = button_ptrs.as_ptr();
 
     unsafe {
-        let grid: newtGrid;
         asm! {
             "std
              sub    rsp, 8
@@ -198,14 +197,13 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
              in("rdi") buf,
              in("rsi") buttons_ptr,
              in("rcx") buttons_len,
-
              out("rax") grid,
 
              out("rdx") _, out("r8") _, out("r9") _, out("r12") _,
              clobber_abi("sysv64")
         }
-        grid
     }
+    grid
 }
 
 ///
@@ -238,6 +236,7 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
 {
     let mut rv: i32;
     let mut list_item: i32 = 0;
+    let list_item_ptr: *mut i32 = &mut list_item;
 
     let title = CString::new(title).unwrap();
     let text  = CString::new(text).unwrap();
@@ -253,7 +252,6 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
     let buttons_ptr = button_ptrs.as_ptr();
     let buttons_len = button_ptrs.len();
     let items_ptr = item_ptrs.as_ptr();
-    let list_item_ref: *mut i32 = &mut list_item;
 
     unsafe {
         asm! {
@@ -286,7 +284,7 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              shl    r12, 3
              add    rsp, r12",
 
-             list_item = in(reg) list_item_ref,
+             list_item = in(reg) list_item_ptr,
              items_ptr = in(reg) items_ptr,
              text_ptr  = in(reg) text_ptr,
              flex_down = in(reg) flex_down,

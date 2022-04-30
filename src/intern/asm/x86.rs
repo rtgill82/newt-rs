@@ -17,96 +17,120 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
+use std::arch::asm;
 use std::ffi::{CStr,CString};
 use std::mem::size_of;
-use libc::{c_char,c_void};
 
+use libc::{c_char,c_void};
 use newt_sys::{newtComponent,newtGrid,newtGridElement,newtWinEntry};
+
+use crate::Component;
 use crate::constants::NEWT_GRID_EMPTY;
 use crate::intern::funcs::*;
 use crate::windows::WinEntry;
 
-pub fn grid_new(func: *const c_void, types: Vec<newtGridElement>,
-                values: Vec<newtComponent>, len: usize) -> newtGrid {
+pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
+                        func: *const c_void)
+  -> (newtGrid, Vec<&'a dyn Component>)
+{
+    let mut grid: newtGrid;
+    let mut children = Vec::new();
+
+    let mut types: Vec<newtGridElement> = Vec::new();
+    let mut values: Vec<newtComponent> = Vec::new();
+    for component in components.iter() {
+        types.push(component.grid_element_type());
+        values.push(component.co());
+        children.push(*component);
+    }
+
+    let len = components.len();
+    let types_ptr = types.as_ptr();
+    let values_ptr = values.as_ptr();
+
    unsafe {
-       let grid: newtGrid;
-       llvm_asm! {
-           "mov $3,      %ecx
-            mov $2,      %esi
-            mov $1,      %edi
+       asm! {
+           "std
+            push    esi
+            push    ebp
+            mov     ebp, esp
 
-            sub $$4,     %esp
-            mov $4,      %eax
-            push         %eax
-            mov %ecx,    %ebx
-            add $$1,     %ebx
+            push    eax
+            mov     esi, ebx
+            lea     edi, [edi+ecx*4-4]
+            lea     esi, [esi+ecx*4-4]
 
-            loop${:uid}:
-            mov  (%esi), %eax
-            push         %eax
-            add $$4,     %esi
-            mov  (%edi), %eax
-            push         %eax
-            add $$4,     %edi
-            loop         loop${:uid}
+            2:
+            lodsd
+            push    eax
+            mov     eax, [edi]
+            push    eax
+            sub     edi, 4
+            loop    2b
+            cld
 
-            call         *$5
-            mov %eax,    $0
+            call    edx
 
-            shl $$3,     %ebx
-            add %ebx,    %esp"
+            mov     esp, ebp
+            pop     ebp
+            pop     esi",
 
-           : "=r"(grid)
-           : "m"(types.as_ptr()), "m"(values.as_ptr()),
-             "m"(len), "i"(NEWT_GRID_EMPTY), "r"(func)
-           : "esp", "eax", "ebx", "ecx", "edi", "esi"
+            in("ebx") values_ptr,
+            in("ecx") len,
+            in("edx") func,
+            in("edi") types_ptr,
+            inlateout("eax") NEWT_GRID_EMPTY => grid
        }
-       grid
    }
+   (grid, children)
 }
 
 pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
+    let mut grid: newtGrid;
+
     let buttons = str_slice_to_cstring_vec(buttons);
-    let mut button_ptrs = cstring_vec_to_ptrs(&buttons);
-    button_ptrs.reverse();
+    let button_ptrs = cstring_vec_to_ptrs(&buttons);
+    let buttons_ptr = button_ptrs.as_ptr();
+    let len = buttons.len();
 
     unsafe {
-        let grid: newtGrid;
-        llvm_asm!
+        asm!
         {
-            "mov $3,      %ecx
-             mov $2,      %esi
-             mov $1,      %edi
-             add $$4,     %edi
+            "std
+             push   esi
+             push   ebp
+             mov    ebp, esp
 
-             sub $$4,     %esp
-             xor %eax,    %eax
-             push         %eax
-             mov %ecx,    %ebx
-             add $$1,     %ebx
+             mov    esi, ebx
+             sub    esp, 4
+             xor    eax, eax
+             push   eax
 
-             loop${:uid}:
-             mov %esi,    %eax
-             push         %eax
-             add $$4,     %esi
-             mov (%edi),  %eax
-             push         %eax
-             add $$4,     %edi
-             loop         loop${:uid}
+             lea    edi, [edi+ecx*4-4]
+             lea    esi, [esi+ecx*4-4]
 
-             call newtButtonBar
-             mov %eax,    $0
+             2:
+             mov    eax, edi
+             push   eax
+             sub    edi, 4
+             lodsd
+             push   eax
+             loop   2b
+             cld
 
-             shl $$3,     %ebx
-             add %ebx,    %esp"
+             call   newtButtonBar
 
-            : "=r"(grid)
-            : "m"(button_ptrs.as_ptr()), "m"(buf), "m"(buttons.len())
-            : "esp", "eax", "ebx", "ecx", "edi", "esi"
+             mov    esp, ebp
+             pop    ebp
+             pop    esi",
 
+             in("ebx") buttons_ptr,
+             in("ecx") len,
+             in("edi") buf,
+             out("eax") grid
         }
-        grid
     }
+    grid
 }
 
 ///
@@ -135,71 +159,86 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
 #[allow(clippy::too_many_arguments)]
 pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
                 flex_up: i32, max_list_height: i32, items: &[&str],
-                buttons: &[&str]) -> (i32, i32) {
+                buttons: &[&str]) -> (i32, i32)
+{
     let mut rv: i32;
-    let list_item: i32 = 0;
+    let mut list_item: i32 = 0;
+    let list_item_ptr: *mut i32 = &mut list_item;
 
     let title = CString::new(title).unwrap();
     let text  = CString::new(text).unwrap();
 
+    let title_ptr = title.as_ptr();
+    let text_ptr = text.as_ptr();
+
     let items = str_slice_to_cstring_vec(items);
     let item_ptrs = cstring_vec_to_ptrs(&items);
+    let items_ptr = item_ptrs.as_ptr();
 
     let buttons = str_slice_to_cstring_vec(buttons);
-    let mut button_ptrs = cstring_vec_to_ptrs(&buttons);
-    button_ptrs.reverse();
+    let button_ptrs = cstring_vec_to_ptrs(&buttons);
+
+    let buttons_ptr = button_ptrs.as_ptr();
+    let len = button_ptrs.len();
+
+    let args: Vec<*const c_void> = vec![
+        &items_ptr as *const _ as *const c_void,
+        &max_list_height as *const _ as *const c_void,
+        &flex_up as *const _ as *const c_void,
+        &flex_down as *const _ as *const c_void,
+        &suggested_width as *const _ as *const c_void,
+        &text_ptr as *const _ as *const c_void,
+        &title_ptr as *const _ as *const c_void
+    ];
+    let args_ptr = args.as_ptr();
 
     unsafe {
-        llvm_asm! {
-            "mov $10,    %ecx
-             mov $9,     %esi
-             mov %ecx,   %ebx
+        asm! {
+            "std
+             push   esi
+             push   ebp
+             mov    ebp, esp
 
-             test $$1,   %ecx
-             jz          loop${:uid}
+             push   edx
+             push   eax
 
-             sub $$4,    %esp
-             add $$1,    %ebx
+             mov    esi, [ebp-4]
+             lea    esi, [esi+ecx*4-4]
+             test   ecx, 1
+             jz     2f
 
-             loop${:uid}:
-             mov (%esi), %eax
-             push        %eax
-             add $$4,    %esi
-             loop        loop${:uid}
+             sub    esp, 4
 
-             mov $8,     %eax
-             push        %eax
-             mov $7,     %eax
-             push        %eax
-             mov $6,     %eax
-             push        %eax
-             mov $5,     %eax
-             push        %eax
-             mov $4,     %eax
-             push        %eax
-             mov $3,     %eax
-             push        %eax
-             mov $2,     %eax
-             push        %eax
-             mov $1,     %eax
-             push        %eax
+             2:
+             lodsd
+             push   eax
+             loop   2b
+             cld
 
-             call newtWinMenu
-             mov %eax,   $0
+             mov    eax, [ebp-8]
+             push   eax
 
-             add $$8,    %ebx
-             shl $$2,    %ebx
-             add %ebx,   %esp"
+             mov    esi, ebx
+             mov    ecx, 7
 
-            : "=r"(rv)
-            : "m"(title.as_ptr()), "m"(text.as_ptr()), "m"(suggested_width),
-              "m"(flex_down), "m"(flex_up), "m"(max_list_height),
-              "m"(item_ptrs.as_ptr()), "m"(&list_item),
-              "m"(button_ptrs.as_ptr()), "m"(button_ptrs.len())
-            : "esp", "eax", "ebx", "ecx", "esi"
+             3:
+             lodsd
+             mov    eax, [eax]
+             push   eax
+             loop   3b
+
+             call   newtWinMenu
+
+             mov    esp, ebp
+             pop    ebp
+             pop    esi",
+
+             in("ebx") args_ptr,
+             in("ecx") len,
+             in("edx") buttons_ptr,
+             inlateout("eax") list_item_ptr => rv
         }
     }
-
     (rv, list_item)
 }
 
@@ -238,11 +277,16 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
     let mut rv: i32;
 
     let title = CString::new(title).unwrap();
+    let title_ptr = title.as_ptr();
+
     let text  = CString::new(text).unwrap();
+    let text_ptr = text.as_ptr();
 
     let buttons = str_slice_to_cstring_vec(buttons);
-    let mut button_ptrs = cstring_vec_to_ptrs(&buttons);
-    button_ptrs.reverse();
+    let button_ptrs = cstring_vec_to_ptrs(&buttons);
+
+    let buttons_ptr = button_ptrs.as_ptr();
+    let len = button_ptrs.len();
 
     let entries_buf: *mut newtWinEntry;
     let mut entries_text: Vec<CString> = Vec::new();
@@ -273,50 +317,55 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
             values_text.push(value);
         }
 
-        llvm_asm! {
-            "mov $9,     %ecx
-             mov $8,     %esi
-             mov %ecx,   %ebx
+        let args: Vec<*const c_void> = vec![
+            &entries_buf as *const _ as *const c_void,
+            &data_width as *const _ as *const c_void,
+            &flex_up as *const _ as *const c_void,
+            &flex_down as *const _ as *const c_void,
+            &suggested_width as *const _ as *const c_void,
+            &text_ptr as *const _ as *const c_void,
+            &title_ptr as *const _ as *const c_void
+        ];
+        let args_ptr = args.as_ptr();
 
-             test $$1,   %ecx
-             jnz         loop${:uid}
+        asm! {
+            "std
+             push   esi
+             push   ebp
+             mov    ebp, esp
 
-             sub $$4,    %esp
-             add $$1,    %ebx
+             mov    esi, eax
+             lea    esi, [esi+ecx*4-4]
+             test   ecx, 1
+             jz     2f
 
-             loop${:uid}:
-             mov (%esi), %eax
-             push        %eax
-             add  $$4,   %esi
-             loop        loop${:uid}
+             sub    esp, 4
 
-             mov $7,     %eax
-             push        %eax
-             mov $6,     %eax
-             push        %eax
-             mov $5,     %eax
-             push        %eax
-             mov $4,     %eax
-             push        %eax
-             mov $3,     %eax
-             push        %eax
-             mov $2,     %eax
-             push        %eax
-             mov $1,     %eax
-             push        %eax
+             2:
+             mov    eax, [esi]
+             push   eax
+             sub    esi, 4
+             loop   2b
+             cld
 
-             call newtWinEntries
-             mov  %eax,   $0
+             mov    esi, ebx
+             mov    ecx, 7
 
-             add $$7,    %ebx
-             shl $$2,    %ebx
-             add %ebx,   %esp"
+             4:
+             lodsd
+             mov    eax, [eax]
+             push   eax
+             loop   4b
 
-            : "=r"(rv)
-            : "m"(title.as_ptr()), "m"(text.as_ptr()), "m"(suggested_width),
-              "m"(flex_down), "m"(flex_up), "m"(data_width), "m"(entries_buf),
-              "m"(button_ptrs.as_ptr()),  "m"(button_ptrs.len())
-            : "esp", "eax", "ebx", "ecx", "esi"
+             call   newtWinEntries
+
+             mov    esp, ebp
+             pop    ebp
+             pop    esi",
+
+             in("ebx") args_ptr,
+             in("ecx") len,
+             inlateout("eax") buttons_ptr => rv
         }
 
         for (cnt, entry) in entries.iter_mut().enumerate() {
@@ -329,6 +378,5 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
         libc::free(entries_buf as *mut c_void);
         libc::free(values_buf as *mut c_void);
     }
-
     rv
 }

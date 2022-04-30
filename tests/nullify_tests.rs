@@ -18,7 +18,7 @@
 //
 
 extern crate newt;
-#[cfg(target_arch = "x86_64")]
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 use newt::grid::*;
 use newt::prelude::*;
 
@@ -33,9 +33,9 @@ fn test_form_nullify() {
     button.get_position();
 }
 
-#[cfg(target_arch = "x86_64")]
 #[test]
 #[should_panic]
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 fn test_grid_nullify() {
     let button = Button::new(0, 0, "Ok");
     let mut grid = Grid::new(1, 2);
@@ -48,9 +48,9 @@ fn test_grid_nullify() {
     button.get_position();
 }
 
-#[cfg(target_arch = "x86_64")]
 #[test]
 #[should_panic]
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 fn test_deep_grid_nullify() {
     let button = Button::new(0, 0, "Ok");
     let hgrid = HorizontalGrid::new(&[&button]);
