@@ -178,7 +178,7 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
              mov    rdi, [rdi]
 
              cld
-             call newtButtonBar
+             call   newtButtonBar
 
              shl    r12, 3
              add    rsp, r12
@@ -278,7 +278,7 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              mov    rsi, {text_ptr}
              mov    rcx, {flex_down:r}
 
-             call newtWinMenu
+             call   newtWinMenu
 
              add    r12, 2
              shl    r12, 3
@@ -399,7 +399,7 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              mov    rsi, {text_ptr}
              mov    rcx, {flex_down:r}
 
-             call newtWinEntries
+             call   newtWinEntries
 
              add    r12, 1
              shl    r12, 3

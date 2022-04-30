@@ -17,7 +17,6 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-use libc::free;
 use std::cell::Cell;
 use std::ffi::CString;
 use std::marker::PhantomData;
@@ -141,7 +140,7 @@ impl<D: Data> CheckboxTree<D> {
                 p = p.offset(1);
                 value = *p as i32;
             }
-            free(rv as *mut libc::c_void);
+            libc::free(rv as *mut libc::c_void);
         }
         vec.into_boxed_slice()
     }

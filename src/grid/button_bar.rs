@@ -18,9 +18,6 @@
 //
 
 use std::cell::Cell;
-use std::mem::size_of;
-use std::os::raw::c_void;
-
 use newt_sys::*;
 use crate::component::Component;
 use crate::intern::{asm,Parent};
@@ -44,27 +41,26 @@ impl ButtonBar {
     /// * `buttons` - A list of strings to use as button labels.
     ///
     pub fn new(buttons: &[&str]) -> ButtonBar {
+        let grid: newtGrid;
+
+        let len = buttons.len();
+        let mut buttons_buf: Vec<newtComponent> = Vec::with_capacity(len);
+
         unsafe {
-            let size = size_of::<newtComponent>() * (buttons.len());
-            let buttons_buf = libc::malloc(size) as *mut newtComponent;
-            libc::memset(buttons_buf as *mut c_void, 0, size);
-            let grid = asm::button_bar_new(buttons, buttons_buf);
+            let buttons_ptr: *mut newtComponent = buttons_buf.as_mut_ptr();
+            grid = asm::button_bar_new(buttons, buttons_ptr);
+            buttons_buf.set_len(len);
+        }
 
-            let num_buttons = buttons.len();
-            let mut buttons = Vec::new();
-            let mut button_co = *buttons_buf;
-            buttons.push(Button::new_co(button_co));
-            for i in 1..num_buttons {
-                button_co = *buttons_buf.add(i);
-                buttons.push(Button::new_co(button_co));
-            }
-            libc::free(buttons_buf as *mut c_void);
+        let mut buttons = Vec::new();
+        for co in buttons_buf {
+            buttons.push(Button::new_co(co));
+        }
 
-            ButtonBar {
-                grid: Cell::new(grid),
-                added_to_parent: Cell::new(false),
-                children: buttons
-            }
+        ButtonBar {
+            grid: Cell::new(grid),
+            added_to_parent: Cell::new(false),
+            children: buttons
         }
     }
 
