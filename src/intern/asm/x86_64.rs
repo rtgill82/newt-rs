@@ -93,7 +93,7 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
              mov    edi, [rdi]
 
              cld
-             call   {func}
+             call   r10
 
              shl    r12, 3
              add    rsp, r12
@@ -109,11 +109,10 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
 
              8:",
 
-             func = in(reg) func,
-
              in("rdi") types_ptr,
              in("rsi") values_ptr,
              in("rcx") len,
+             in("r10") func,
 
              inlateout("rax") NEWT_GRID_EMPTY as usize => grid,
 
