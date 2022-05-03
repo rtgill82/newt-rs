@@ -269,10 +269,8 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              loop   2b
              cld
 
-             mov    rax, {list_item}
-             push   rax
-             mov    rax, {items_ptr}
-             push   rax
+             push   {list_item}
+             push   {items_ptr}
 
              mov    rsi, {text_ptr}
              mov    rcx, {flex_down:r}
@@ -392,9 +390,7 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              loop   2b
              cld
 
-             mov    rax, {entries_buf}
-             push   rax
-
+             push   {entries_buf}
              mov    rsi, {text_ptr}
              mov    rcx, {flex_down:r}
 
