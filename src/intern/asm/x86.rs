@@ -18,16 +18,15 @@
 //
 
 use std::arch::asm;
-use std::ffi::{CStr,CString};
-use std::mem::size_of;
-use std::os::raw::{c_char,c_void};
+use std::ffi::CString;
+use std::os::raw::c_void;
 
-use newt_sys::{newtComponent,newtGrid,newtGridElement,newtWinEntry};
+use newt_sys::*;
 
 use crate::Component;
 use crate::constants::NEWT_GRID_EMPTY;
+use crate::windows::{WinEntry,WinEntryBuf};
 use crate::intern::funcs::*;
-use crate::windows::WinEntry;
 
 pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
                         func: *const c_void)
@@ -275,6 +274,7 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
                    flex_down: i32, flex_up: i32, data_width: i32,
                    entries: &mut [WinEntry], buttons: &[&str]) -> i32 {
     let mut rv: i32;
+    let mut entries_buf = WinEntryBuf::new(entries);
 
     let title = CString::new(title).unwrap();
     let title_ptr = title.as_ptr();
@@ -288,37 +288,9 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
     let buttons_ptr = button_ptrs.as_ptr();
     let len = button_ptrs.len();
 
-    let entries_buf: *mut newtWinEntry;
-    let mut entries_text: Vec<CString> = Vec::new();
-
-    let values_buf: *mut *mut c_char;
-    let mut values_text: Vec<CString> = Vec::new();
-
     unsafe {
-        let size = size_of::<newtWinEntry>() * (entries.len() + 1);
-        entries_buf = libc::malloc(size) as *mut newtWinEntry;
-        libc::memset(entries_buf as *mut c_void, 0, size);
-
-        let size = size_of::<*mut c_char>() * (entries.len());
-        values_buf = libc::malloc(size) as *mut *mut c_char;
-        libc::memset(values_buf as *mut c_void, 0, size);
-
-        for (cnt, entry) in entries.iter().enumerate() {
-            let entry_buf = entries_buf.add(cnt);
-            let value_buf = values_buf.add(cnt);
-            let text = CString::new(entry.text.as_str()).unwrap();
-            let value = CString::new(entry.value.as_str()).unwrap();
-            *value_buf = value.as_ptr() as *mut c_char;
-
-            (*entry_buf).text = text.as_ptr() as *mut c_char;
-            (*entry_buf).value = value_buf;
-            (*entry_buf).flags = entry.flags;
-            entries_text.push(text);
-            values_text.push(value);
-        }
-
+        let entries_ptr = entries_buf.as_mut_ptr();
         let args: Vec<*const c_void> = vec![
-            &entries_buf as *const _ as *const c_void,
             &data_width as *const _ as *const c_void,
             &flex_up as *const _ as *const c_void,
             &flex_down as *const _ as *const c_void,
@@ -348,8 +320,9 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              loop   2b
              cld
 
+             push   edx
              mov    esi, ebx
-             mov    ecx, 7
+             mov    ecx, 6
 
              4:
              lodsd
@@ -365,18 +338,9 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
 
              in("ebx") args_ptr,
              in("ecx") len,
+             in("edx") entries_ptr,
              inlateout("eax") buttons_ptr => rv
         }
-
-        for (cnt, entry) in entries.iter_mut().enumerate() {
-            let buf = entries_buf.add(cnt);
-            let value = CStr::from_ptr(*(*buf).value).to_str().unwrap();
-            entry.value = String::from(value);
-            libc::free(*(*buf).value as *mut c_void);
-        }
-
-        libc::free(entries_buf as *mut c_void);
-        libc::free(values_buf as *mut c_void);
     }
     rv
 }
