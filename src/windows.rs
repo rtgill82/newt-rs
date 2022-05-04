@@ -27,11 +27,11 @@ use std::os::raw::{c_char,c_int,c_void};
 use newt_sys::*;
 
 #[doc(inline)]
-#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
 pub use crate::intern::asm::win_menu;
 
 #[doc(inline)]
-#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
 pub use crate::intern::asm::win_entries;
 
 ///
@@ -101,14 +101,14 @@ pub fn win_ternary(title: &str, button1: &str, button2: &str, button3: &str,
 /// [entry]: ../widgets/struct.Entry.html
 ///
 #[derive(Default)]
-#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
 pub struct WinEntry {
     pub(crate) text: CString,
     pub(crate) value: String,
     pub(crate) flags: c_int
 }
 
-#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
 impl WinEntry {
     ///
     /// Create a new `WinEntry`.
@@ -138,7 +138,7 @@ impl WinEntry {
     }
 }
 
-#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
 pub struct WinEntryBuf<'a> {
     #[allow(dead_code)]
     values_text: Vec<CString>,
@@ -147,6 +147,7 @@ pub struct WinEntryBuf<'a> {
     values_buf: *mut *mut c_char
 }
 
+#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
 impl<'a> WinEntryBuf<'a> {
     pub fn new(entries: &'a mut [WinEntry]) -> WinEntryBuf {
         unsafe {
@@ -180,6 +181,7 @@ impl<'a> WinEntryBuf<'a> {
     }
 }
 
+#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
 impl<'a> Drop for WinEntryBuf<'a> {
     fn drop(&mut self) {
         unsafe {

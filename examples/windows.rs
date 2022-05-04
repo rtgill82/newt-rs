@@ -20,10 +20,10 @@
 extern crate newt;
 use newt::windows::*;
 
-#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+#[cfg(not(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64"))))]
 fn asm_functions() { }
 
-#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
 fn asm_functions() {
     let (rv, item) = win_menu("Test Menu", "Select an item", 50, 5, 5, 3,
                               &["Item1", "Item2"], &["Ok", "Cancel"]);
