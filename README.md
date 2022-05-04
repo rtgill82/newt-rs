@@ -2,8 +2,8 @@
 
 _Rust bindings for the Newt console UI library._
 
-[ChangeLog](https://github.com/rtgill82/newt-rs/blob/v0.6.6/ChangeLog.md) |
-[API Docs](https://docs.rs/newt/0.6.6/newt/) |
+[ChangeLog](https://github.com/rtgill82/newt-rs/blob/v0.6.8/ChangeLog.md) |
+[API Docs](https://docs.rs/newt/0.6.8/newt/) |
 [crates.io](https://crates.io/crates/newt)
 
 This crate provides bindings to Red Hat, Inc.'s [Newt][newt] console UI
@@ -11,8 +11,6 @@ library. Newt is a small and simple to use UI library providing widgets and
 basic stacked window management for console applications.
 
 The majority, if not all of Newt's functionality has been implemented.
-Although some [features][asm_feature] currently require the nightly build of the
-Rust compiler.
 
 [newt]: https://pagure.io/newt
 [asm_feature]: #asm_feature
@@ -27,7 +25,8 @@ newt = "0.6"
 ```
 
 The library API is currently subject to change and there are likely to be
-breaking changes between minor versions.
+breaking changes between minor versions. Requires Rust 1.59 for inline
+assembly functions on the supported architectures (x86 and x86_64).
 
 ## Features
 
