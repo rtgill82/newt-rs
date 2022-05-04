@@ -20,9 +20,15 @@
 //!
 //! Convenient windowing functions.
 //!
-use std::ffi::{CStr,CString};
+use std::ffi::CString;
+use std::os::raw::c_char;
+
+#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
+use std::ffi::CStr;
+#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
 use std::mem::size_of;
-use std::os::raw::{c_char,c_int,c_void};
+#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
+use std::os::raw::{c_int,c_void};
 
 use newt_sys::*;
 
