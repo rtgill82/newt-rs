@@ -1,8 +1,8 @@
 # ChangeLog
 
-* Fix compiliation on `armv7l` systems.
+## 0.6.7
 
-* Automatically build asm functions on supported architectures.
+* Fix compiliation on `armv7l` systems.
 
 * Update `x86_64` assembly code for the new inline assembler.
 
