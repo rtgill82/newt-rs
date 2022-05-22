@@ -17,6 +17,14 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
+#![doc(hidden)]
+#[cfg(feature = "asm")]
+use crate::Component;
+#[cfg(feature = "asm")]
+use crate::grid::r#trait::Grid;
+
+mod funcs;
+
 #[cfg(all(feature = "asm", target_arch = "x86_64"))]
 mod x86_64;
 #[cfg(all(feature = "asm", target_arch = "x86_64"))]
@@ -26,3 +34,25 @@ pub use self::x86_64::*;
 mod x86;
 #[cfg(all(feature = "asm", target_arch = "x86"))]
 pub use self::x86::*;
+
+#[cfg(feature = "asm")]
+pub mod grid;
+
+#[cfg(feature = "asm")]
+pub mod windows;
+
+#[cfg(feature = "asm")]
+pub trait AsComponent {
+    fn as_component(&self) -> Option<&dyn Component>;
+}
+
+#[cfg(not(feature = "asm"))]
+pub trait AsComponent { }
+
+#[cfg(feature = "asm")]
+pub trait AsGrid {
+    fn as_grid(&self) -> Option<&dyn Grid>;
+}
+
+#[cfg(not(feature = "asm"))]
+pub trait AsGrid { }

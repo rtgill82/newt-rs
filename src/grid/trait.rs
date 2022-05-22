@@ -20,7 +20,9 @@
 use newt_sys::*;
 use crate::component::Component;
 use crate::widgets::{Form,WidgetFns};
-use crate::intern::{AsComponent,Child,ComponentPtr,Nullify,Parent};
+
+use crate::intern::{Child,ComponentPtr,Nullify,Parent};
+use crate::asm::*;
 
 pub trait Grid: Component + GridFns { }
 

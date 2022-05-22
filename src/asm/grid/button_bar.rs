@@ -20,8 +20,10 @@
 use std::cell::Cell;
 use newt_sys::*;
 use crate::component::Component;
-use crate::intern::{asm,Parent};
 use crate::widgets::Button;
+
+use crate::intern::Parent;
+use crate::asm;
 
 ///
 /// Creates a row of buttons.

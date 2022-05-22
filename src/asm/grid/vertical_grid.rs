@@ -22,7 +22,7 @@ use std::os::raw::c_void;
 
 use newt_sys::*;
 use crate::component::Component;
-use crate::intern::asm;
+use crate::asm;
 
 ///
 /// Arrange components vertically.

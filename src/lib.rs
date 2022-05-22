@@ -109,35 +109,34 @@ use std::ptr;
 
 #[macro_use]
 mod intern;
+pub mod asm;
 pub mod callbacks;
 pub mod component;
 pub mod constants;
+pub mod grid;
 pub mod prelude;
 pub mod widgets;
 pub mod windows;
 
-#[doc(no_inline)]
+#[doc(hidden)]
 pub use self::component::Component;
 
-#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
-pub mod grid;
-
-#[doc(no_inline)]
+#[doc(hidden)]
 pub use self::callbacks::Callback;
 
-#[doc(no_inline)]
+#[doc(hidden)]
 pub use self::windows::win_message;
-#[doc(no_inline)]
+#[doc(hidden)]
 pub use self::windows::win_choice;
-#[doc(no_inline)]
+#[doc(hidden)]
 pub use self::windows::win_ternary;
 
-#[doc(no_inline)]
-#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
-pub use self::windows::win_menu;
-#[doc(no_inline)]
-#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
-pub use self::windows::win_entries;
+#[doc(hidden)]
+pub use self::asm::*;
+
+#[doc(hidden)]
+#[cfg(feature = "asm")]
+pub use self::grid::r#trait::Grid;
 
 use newt_sys::*;
 

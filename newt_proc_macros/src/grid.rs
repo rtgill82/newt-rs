@@ -76,7 +76,7 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
             }
         }
 
-        impl #impl_ ::intern::AsComponent for #name #type_
+        impl #impl_ ::asm::AsComponent for #name #type_
             #where_
         {
             fn as_component(&self) -> Option<&::Component> {
@@ -84,7 +84,7 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
             }
         }
 
-        impl #impl_ ::intern::AsGrid for #name #type_
+        impl #impl_ ::asm::AsGrid for #name #type_
             #where_
         {
             fn as_grid(&self) -> Option<&::grid::r#trait::Grid> {

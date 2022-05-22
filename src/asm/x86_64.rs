@@ -25,8 +25,8 @@ use newt_sys::*;
 
 use crate::Component;
 use crate::constants::NEWT_GRID_EMPTY;
-use crate::windows::{WinEntry,WinEntryBuf};
-use crate::intern::funcs::*;
+use crate::asm::windows::{WinEntry,WinEntryBuf};
+use crate::asm::funcs::*;
 
 pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
                         func: *const c_void)

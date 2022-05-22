@@ -17,36 +17,24 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#[macro_use]
-pub mod macros;
+#![cfg(feature = "asm")]
+use std::ffi::CString;
+use std::os::raw::c_char;
+use std::ptr;
 
-pub mod data;
-pub mod funcs;
-
-use std::os::raw::c_void;
-
-use newt_sys::*;
-use crate::Component;
-
-pub trait Child {
-    fn add_to_parent(&self) -> Result<(), &'static str>;
-    fn added_to_parent(&self) -> bool;
+pub fn str_slice_to_cstring_vec(slice: &[&str]) -> Vec<CString> {
+    let mut vec = Vec::new();
+    for s in slice.iter() {
+        vec.push(CString::new(*s).unwrap());
+    }
+    vec
 }
 
-pub trait ComponentPtr {
-    fn ptr(&self) -> *mut c_void;
-    fn co_ptr(&self) -> newtComponent;
-    fn grid_ptr(&self) -> newtGrid;
-}
-
-pub trait GridElementType {
-    fn grid_element_type(&self) -> u32;
-}
-
-pub trait Nullify {
-    fn nullify(&self);
-}
-
-pub trait Parent {
-    fn children(&self) -> Vec<&dyn Component>;
+pub fn cstring_vec_to_ptrs(strings: &[CString]) -> Vec<*const c_char> {
+    let mut vec = Vec::new();
+    for s in strings.iter() {
+        vec.push(s.as_ptr());
+    }
+    vec.push(ptr::null());
+    vec
 }

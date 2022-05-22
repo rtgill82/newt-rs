@@ -21,9 +21,6 @@ use std::ffi::CString;
 use std::os::raw::{c_int,c_void};
 use std::{char,ptr};
 
-#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
-use std::os::raw::c_char;
-
 use newt_sys::*;
 use crate::component::Component;
 use crate::widgets::{Entry,Form};
@@ -44,25 +41,6 @@ pub fn char_slice_to_cstring(slice: &[char]) -> CString {
 
     let string = String::from_utf8_lossy(vec.as_slice());
     CString::new(string.into_owned()).unwrap()
-}
-
-#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
-pub fn str_slice_to_cstring_vec(slice: &[&str]) -> Vec<CString> {
-    let mut vec = Vec::new();
-    for s in slice.iter() {
-        vec.push(CString::new(*s).unwrap());
-    }
-    vec
-}
-
-#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
-pub fn cstring_vec_to_ptrs(strings: &[CString]) -> Vec<*const c_char> {
-    let mut vec = Vec::new();
-    for s in strings.iter() {
-        vec.push(s.as_ptr());
-    }
-    vec.push(ptr::null());
-    vec
 }
 
 unsafe extern "C"

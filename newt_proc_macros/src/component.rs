@@ -65,11 +65,11 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
             }
         }
 
-        #[cfg(not(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64"))))]
-        impl #impl_ ::intern::AsComponent for #name #type_ #where_ { }
+        #[cfg(not(feature = "asm"))]
+        impl #impl_ ::asm::AsComponent for #name #type_ #where_ { }
 
-        #[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
-        impl #impl_ ::intern::AsComponent for #name #type_
+        #[cfg(feature = "asm")]
+        impl #impl_ ::asm::AsComponent for #name #type_
             #where_
         {
             fn as_component(&self) -> Option<&::Component> {
@@ -77,11 +77,11 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
             }
         }
 
-        #[cfg(not(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64"))))]
-        impl #impl_ ::intern::AsGrid for #name #type_ #where_ { }
+        #[cfg(not(feature = "asm"))]
+        impl #impl_ ::asm::AsGrid for #name #type_ #where_ { }
 
-        #[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
-        impl #impl_ ::intern::AsGrid for #name #type_
+        #[cfg(feature = "asm")]
+        impl #impl_ ::asm::AsGrid for #name #type_
             #where_
         {
             fn as_grid(&self) -> Option<&::grid::r#trait::Grid> {
