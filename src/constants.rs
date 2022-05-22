@@ -26,6 +26,13 @@ use std::os::raw::c_int;
 
 use newt_sys::*;
 
+///
+/// Wrapper function around the `NEWT_COLORSET_CUSTOM` macro.
+///
+/// Returns an ID for a new color set (_max predefined color sets_ + `i`).
+///
+pub use newt_sys::NEWT_COLORSET_CUSTOM as COLORSET_CUSTOM;
+
 const NEWT_FLAGS_SET:    newtFlagsSense = newtFlagsSense_NEWT_FLAGS_SET;
 const NEWT_FLAGS_RESET:  newtFlagsSense = newtFlagsSense_NEWT_FLAGS_RESET;
 const NEWT_FLAGS_TOGGLE: newtFlagsSense = newtFlagsSense_NEWT_FLAGS_TOGGLE;
@@ -60,8 +67,6 @@ pub const COLORSET_DISENTRY: c_int      = NEWT_COLORSET_DISENTRY;
 pub const COLORSET_COMPACTBUTTON: c_int = NEWT_COLORSET_COMPACTBUTTON;
 pub const COLORSET_ACTSELLISTBOX: c_int = NEWT_COLORSET_ACTSELLISTBOX;
 pub const COLORSET_SELLISTBOX: c_int    = NEWT_COLORSET_SELLISTBOX;
-
-pub use newt_sys::NEWT_COLORSET_CUSTOM as COLORSET_CUSTOM;
 
 pub const ARG_LAST: c_int   = NEWT_ARG_LAST;
 pub const ARG_APPEND: c_int = NEWT_ARG_APPEND;

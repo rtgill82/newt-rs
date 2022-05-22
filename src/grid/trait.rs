@@ -24,6 +24,9 @@ use crate::widgets::{Form,WidgetFns};
 use crate::intern::{Child,ComponentPtr,Nullify,Parent};
 use crate::asm::*;
 
+///
+/// Trait implemented by `Grid` type `Component`s.
+///
 pub trait Grid: Component + GridFns { }
 
 impl <T: Grid> WidgetFns for T {

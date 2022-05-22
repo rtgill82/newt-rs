@@ -68,8 +68,8 @@
 //! - `asm` - Allows building of the [Grid][grid] module and the
 //!           [windows::win_entries][win_entries] and [windows::win_menu][win_menu]
 //!           functions. These require the inline assembly feature of Rust
-//!           which is only available in nightly builds. This feature is also
-//!           only available on _x86/x86_64_ architectures.
+//!           which is only available in compiler versions after 1.59. This feature
+//!           is also only available on _x86/x86_64_ architectures.
 //!
 //! - `static` - Builds and links [`newt-sys`][newt_sys] statically against
 //!              its included libraries rather than linking dynamically
@@ -84,7 +84,7 @@
 //!
 //! ## License
 //!
-//! Copyright (C) 2018,2019 Robert Gill <<rtgill82@gmail.com>>
+//! Copyright (C) 2018-2022 Robert Gill <<rtgill82@gmail.com>>
 //!
 //! This library is free software; you can redistribute it and/or
 //! modify it under the terms of the GNU Lesser General Public
