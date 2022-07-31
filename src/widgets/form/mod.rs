@@ -133,7 +133,7 @@ impl<'a> Form<'a>
         }
     }
 
-    #[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
+    #[cfg(feature = "asm")]
     pub(crate) fn add_refs(&mut self, components: Vec<&'a dyn Component>) {
         for co in components.iter() {
             self.components.push(*co);

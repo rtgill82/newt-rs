@@ -19,6 +19,7 @@
 
 use std::cell::Cell;
 use std::ffi::{CString,c_void};
+use std::os::raw::c_char;
 use newt_sys::*;
 
 use crate::component::Component;
@@ -106,7 +107,9 @@ impl<'a> Grid<'a> {
 ///
 pub fn wrapped_window(grid: &dyn r#trait::Grid, title: &str) {
     let c_str = CString::new(title).unwrap();
-    unsafe { newtGridWrappedWindow(grid.grid_ptr(), c_str.as_ptr() as *mut i8); }
+    unsafe {
+        newtGridWrappedWindow(grid.grid_ptr(), c_str.as_ptr() as *mut c_char);
+    }
 }
 
 ///
@@ -116,7 +119,7 @@ pub fn wrapped_window_at(grid: &dyn r#trait::Grid, title: &str,
                          left: i32, top: i32) {
     let c_str = CString::new(title).unwrap();
     unsafe {
-        newtGridWrappedWindowAt(grid.grid_ptr(), c_str.as_ptr() as *mut i8,
+        newtGridWrappedWindowAt(grid.grid_ptr(), c_str.as_ptr() as *mut c_char,
                                 left, top);
     }
 }

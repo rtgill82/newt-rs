@@ -25,15 +25,20 @@ use crate::grid::r#trait::Grid;
 
 mod funcs;
 
-#[cfg(all(feature = "asm", target_arch = "x86_64"))]
-mod x86_64;
-#[cfg(all(feature = "asm", target_arch = "x86_64"))]
-pub use self::x86_64::*;
+#[cfg(all(feature = "asm", target_arch = "arm"))]
+mod arm;
+#[cfg(all(feature = "asm", target_arch = "arm"))]
+pub use self::arm::*;
 
 #[cfg(all(feature = "asm", target_arch = "x86"))]
 mod x86;
 #[cfg(all(feature = "asm", target_arch = "x86"))]
 pub use self::x86::*;
+
+#[cfg(all(feature = "asm", target_arch = "x86_64"))]
+mod x86_64;
+#[cfg(all(feature = "asm", target_arch = "x86_64"))]
+pub use self::x86_64::*;
 
 #[cfg(feature = "asm")]
 pub mod grid;

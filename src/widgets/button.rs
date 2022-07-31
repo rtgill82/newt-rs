@@ -42,7 +42,7 @@ impl Button {
         }
     }
 
-    #[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
+    #[cfg(feature = "asm")]
     pub(crate) fn new_co(co: newtComponent) -> Button {
         Button {
             co: Cell::new(co),

@@ -90,7 +90,7 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
     let buttons = str_slice_to_cstring_vec(buttons);
     let button_ptrs = cstring_vec_to_ptrs(&buttons);
     let buttons_ptr = button_ptrs.as_ptr();
-    let len = buttons.len();
+    let buttons_len = buttons.len();
 
     unsafe {
         asm!
@@ -124,8 +124,9 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
              pop    esi",
 
              in("ebx") buttons_ptr,
-             in("ecx") len,
+             in("ecx") buttons_len,
              in("edi") buf,
+
              out("eax") grid
         }
     }

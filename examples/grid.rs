@@ -19,11 +19,11 @@
 
 #![allow(unused_imports)]
 extern crate newt;
-#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
+#[cfg(feature = "asm")]
 use newt::grid::*;
 use newt::prelude::*;
 
-#[cfg(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64")))]
+#[cfg(feature = "asm")]
 pub fn main() {
     newt::init().unwrap();
     newt::cls();
@@ -52,6 +52,6 @@ pub fn main() {
     }
 }
 
-#[cfg(not(all(feature = "asm", any(target_arch = "x86", target_arch = "x86_64"))))]
+#[cfg(not(feature = "asm"))]
 pub fn main() {
 }
