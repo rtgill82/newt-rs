@@ -90,15 +90,14 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
              mov    r1, r1, LSL #2
              add    r13, r1",
 
-             in("r9") len,
-             in("r10") func,
-
              inlateout("r0") NEWT_GRID_EMPTY as usize => grid,
              inlateout("r7") types_ptr => _,
              inlateout("r8") values_ptr => _,
+             inlateout("r9") len => _,
+             inlateout("r10") func => _,
 
              out("r1") _, out("r2") _, out("r3") _, out("r4") _,
-             clobber_abi("C")
+             out("r5") _, out("r12") _, out("r14") _
         }
     }
     (grid, children)
@@ -162,14 +161,14 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
              mov    r10, r10, LSL #2
              add    r13, r10",
 
-             inlateout("r7") buttons_len => _,
              inlateout("r4") buf => _,
              inlateout("r5") buttons_ptr => _,
+             inlateout("r7") buttons_len => _,
              out("r0") grid,
 
              out("r1") _, out("r2") _, out("r3") _,
              out("r8") _, out("r9") _, out("r10") _,
-             clobber_abi("C")
+             out("r12") _, out("r14") _
         }
     }
     grid
@@ -265,18 +264,16 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              mov    r10, r10, LSL #2
              add    r13, r10",
 
-             in("r1") text_ptr,
-             in("r2") suggested_width,
-             in("r3") flex_down,
-             in("r5") buttons_len,
-             in("r7") list_item_ptr,
-
              inlateout("r0") title_ptr => rv,
+             inlateout("r1") text_ptr => _,
+             inlateout("r2") suggested_width => _,
+             inlateout("r3") flex_down => _,
              inlateout("r4") buttons_ptr => _,
+             inlateout("r5") buttons_len => _,
+             inlateout("r7") list_item_ptr => _,
              inlateout("r8") args_ptr  => _,
 
-             out("r10") _, out("r12") _,
-             clobber_abi("C")
+             out("r9") _, out("r10") _, out("r12") _, out("r14") _
         }
     }
     (rv, list_item)
@@ -363,16 +360,14 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              data_width = in(reg) data_width,
              flex_up = in(reg) flex_up,
 
-             in("r1") text_ptr,
-             in("r2") suggested_width,
-             in("r3") flex_down,
-             in("r5") buttons_len,
-
              inlateout("r0") title_ptr => rv,
+             inlateout("r1") text_ptr => _,
+             inlateout("r2") suggested_width => _,
+             inlateout("r3") flex_down => _,
              inlateout("r4") buttons_ptr => _,
+             inlateout("r5") buttons_len => _,
 
-             out("r7") _, out("r8") _,
-             clobber_abi("C")
+             out("r7") _, out("r8") _
         }
     }
     rv
