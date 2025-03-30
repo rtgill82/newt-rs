@@ -86,7 +86,7 @@ pub(crate) struct WinEntryBuf<'a> {
 }
 
 impl<'a> WinEntryBuf<'a> {
-    pub fn new(entries: &'a mut [WinEntry]) -> WinEntryBuf {
+    pub fn new(entries: &'a mut [WinEntry]) -> WinEntryBuf<'a> {
         unsafe {
             let mut values_text = Vec::new();
             let size = size_of::<newtWinEntry>() * (entries.len() + 1);
