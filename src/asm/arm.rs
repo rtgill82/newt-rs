@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2022 Robert Gill <rtgill82@gmail.com>
+// Copyright (C) 2022,2025 Robert Gill <rtgill82@gmail.com>
 //
 // This file is a part of newt-rs.
 //
@@ -88,7 +88,7 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
              blx    r10
 
              mov    r1, r1, LSL #2
-             add    r13, r1",
+             add    sp, r1",
 
              inlateout("r0") NEWT_GRID_EMPTY as usize => grid,
              inlateout("r7") types_ptr => _,
@@ -97,7 +97,7 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
              inlateout("r10") func => _,
 
              out("r1") _, out("r2") _, out("r3") _, out("r4") _,
-             out("r5") _, out("r12") _, out("r14") _
+             out("r5") _, out("r12") _, out("lr") _
         }
     }
     (grid, children)
@@ -113,7 +113,7 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
 
     unsafe {
         asm! {
-            "sub    r13, r13, #4
+            "sub    sp, sp, #4
              mov    r0, #0
              push   {{r0}}
              mov    r10, #2
@@ -159,7 +159,7 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
 
              6:
              mov    r10, r10, LSL #2
-             add    r13, r10",
+             add    sp, r10",
 
              inlateout("r4") buf => _,
              inlateout("r5") buttons_ptr => _,
@@ -168,7 +168,7 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
 
              out("r1") _, out("r2") _, out("r3") _,
              out("r8") _, out("r9") _, out("r10") _,
-             out("r12") _, out("r14") _
+             out("r12") _, out("lr") _
         }
     }
     grid
@@ -238,7 +238,7 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              tst    r5, #1
              bne    2f
 
-             sub    r13, r13, #4
+             sub    sp, sp, #4
              add    r10, r10, #1
 
              2:
@@ -262,7 +262,7 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
 
              add    r10, r10, #4
              mov    r10, r10, LSL #2
-             add    r13, r10",
+             add    sp, r10",
 
              inlateout("r0") title_ptr => rv,
              inlateout("r1") text_ptr => _,
@@ -273,7 +273,7 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              inlateout("r7") list_item_ptr => _,
              inlateout("r8") args_ptr  => _,
 
-             out("r9") _, out("r10") _, out("r12") _, out("r14") _
+             out("r9") _, out("r10") _, out("r12") _, out("lr") _
         }
     }
     (rv, list_item)
@@ -336,7 +336,7 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              tst    r5, #1
              bne    2f
 
-             sub    r13, r13, #4
+             sub    sp, sp, #4
              add    r8, r8, #1
 
              2:
@@ -354,7 +354,7 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
 
              add    r8, r8, #3
              mov    r8, r8, LSL #2
-             add    r13, r8",
+             add    sp, r8",
 
              entries_ptr = in(reg) entries_ptr,
              data_width = in(reg) data_width,
