@@ -51,7 +51,7 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
         asm! {
             "push   {{r0}}
              mov    r2, r0
-             mov    r1, #2
+             mov    r5, #1
 
              mov    r3, #4
              mov    r4, #-4
@@ -63,7 +63,7 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
              beq    3f
              cmp    r9, #-1
              beq    4f
-             add    r1, r1, r9, LSL #1
+             add    r5, r5, r9, LSL #1
 
              2:
              ldr    r0, [r8]
@@ -87,8 +87,8 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
 
              blx    r10
 
-             mov    r1, r1, LSL #2
-             add    sp, r1",
+             mov    r5, r5, LSL #2
+             add    sp, r5",
 
              inlateout("r0") NEWT_GRID_EMPTY as usize => grid,
              inlateout("r7") types_ptr => _,
