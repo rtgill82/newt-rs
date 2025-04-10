@@ -367,7 +367,7 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              inlateout("r4") buttons_ptr => _,
              inlateout("r5") buttons_len => _,
 
-             out("r7") _, out("r8") _
+             out("r7") _, out("r8") _, out("lr") _
         }
     }
     rv
