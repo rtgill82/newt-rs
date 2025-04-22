@@ -66,20 +66,16 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
              add    r5, r5, r9, LSL #1
 
              2:
-             ldr    r0, [r8]
+             ldr    r0, [r8], #-4
              push   {{r0}}
-             sub    r8, r8, #4
-             ldr    r0, [r7]
+             ldr    r0, [r7], #-4
              push   {{r0}}
-             sub    r7, r7, #4
              subs   r9, r9, #1
              bne    2b
 
              3:
-             ldr    r3, [r8]
-             sub    r8, r8, #4
-             ldr    r2, [r7]
-             sub    r7, r7, #4
+             ldr    r3, [r8], #-4
+             ldr    r2, [r7], #-4
 
              4:
              ldr    r1, [r8]
@@ -90,14 +86,14 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
              mov    r5, r5, LSL #2
              add    sp, r5",
 
-             inlateout("r0") NEWT_GRID_EMPTY as usize => grid,
+             inlateout("r0") NEWT_GRID_EMPTY as *const c_void => grid,
              inlateout("r7") types_ptr => _,
              inlateout("r8") values_ptr => _,
              inlateout("r9") len => _,
              inlateout("r10") func => _,
 
-             out("r1") _, out("r2") _, out("r3") _, out("r4") _,
-             out("r5") _, out("r12") _, out("lr") _
+             out("r1") _, out("r2") _, out("r3") _, out("r4") _, out("r5") _,
+             out("ip") _, out("lr") _
         }
     }
     (grid, children)
@@ -116,59 +112,54 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
             "sub    sp, sp, #4
              mov    r0, #0
              push   {{r0}}
-             mov    r10, #2
 
              mov    r8, #4
              mov    r9, #-4
              mla    r8, r7, r8, r9
              add    r4, r4, r8
              add    r5, r5, r8
+             mov    r9, #2
 
              subs   r7, r7, #2
              beq    3f
+
+             mov    r2, #0
              cmp    r7, #-1
-             beq    5f
+             beq    4f
+
              mov    r0, r7, LSL #1
-             add    r10, r0
+             add    r9, r0
 
              2:
-             push   {{r4}}
-             sub    r4, r4, #4
-             ldr    r0, [r5]
-             push   {{r0}}
+             push   {{r5}}
              sub    r5, r5, #4
+             ldr    r0, [r4], #-4
+             push   {{r0}}
              subs   r7, r7, #1
              bne    2b
 
              3:
-             mov    r3, r4
-             sub    r4, r4, #4
-             ldr    r2, [r5]
+             mov    r3, r5
              sub    r5, r5, #4
+             ldr    r2, [r4], #-4
 
              4:
-             mov    r1, r4
-             ldr    r0, [r5]
+             mov    r1, r5
+             ldr    r0, [r4]
 
              bl     newtButtonBar
-             b      6f
 
-             5:
-             mov    r2, #0
-             b      4b
+             mov    r9, r9, LSL #2
+             add    sp, r9",
 
-             6:
-             mov    r10, r10, LSL #2
-             add    sp, r10",
-
-             inlateout("r4") buf => _,
-             inlateout("r5") buttons_ptr => _,
+             inlateout("r4") buttons_ptr => _,
+             inlateout("r5") buf => _,
              inlateout("r7") buttons_len => _,
+
              out("r0") grid,
 
-             out("r1") _, out("r2") _, out("r3") _,
-             out("r8") _, out("r9") _, out("r10") _,
-             out("r12") _, out("lr") _
+             out("r1") _, out("r2") _, out("r3") _, out("r8") _, out("r9") _,
+             out("ip") _, out("lr") _
         }
     }
     grid
@@ -230,21 +221,20 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
 
     unsafe {
         asm! {
-            "mov    r10, #4
-             mov    r12, #-4
-             mla    r10, r5, r10, r12
-             add    r4, r4, r10
-             mov    r10, r5
+            "mov    r9, #4
+             mov    r10, #-4
+             mla    r9, r5, r9, r10
+             add    r4, r4, r9
+             mov    r9, r5
              tst    r5, #1
              bne    2f
 
              sub    sp, sp, #4
-             add    r10, r10, #1
+             add    r9, r9, #1
 
              2:
-             ldr    r12, [r4]
-             push   {{r12}}
-             sub    r4, r4, #4
+             ldr    r10, [r4], #-4
+             push   {{r10}}
              subs   r5, #1
              bne    2b
 
@@ -252,28 +242,29 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              mov    r5, #3
 
              3:
-             ldr    r12, [r8]
-             push   {{r12}}
-             add    r8, r8, #4
+             ldr    r10, [r8], #-4
+             push   {{r10}}
              subs   r5, #1
              bne    3b
 
              bl     newtWinMenu
 
-             add    r10, r10, #4
-             mov    r10, r10, LSL #2
-             add    sp, r10",
+             add    r9, r9, #4
+             mov    r9, r9, LSL #2
+             add    sp, r9",
 
              inlateout("r0") title_ptr => rv,
              inlateout("r1") text_ptr => _,
              inlateout("r2") suggested_width => _,
              inlateout("r3") flex_down => _,
+
              inlateout("r4") buttons_ptr => _,
              inlateout("r5") buttons_len => _,
              inlateout("r7") list_item_ptr => _,
              inlateout("r8") args_ptr  => _,
 
-             out("r9") _, out("r10") _, out("r12") _, out("lr") _
+             out("r9") _, out("r10") _,
+             out("ip") _, out("lr") _
         }
     }
     (rv, list_item)
@@ -340,9 +331,8 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              add    r8, r8, #1
 
              2:
-             ldr    r7, [r4]
+             ldr    r7, [r4], #-4
              push   {{r7}}
-             sub    r4, r4, #4
              subs   r5, r5, #1
              bne    2b
 
@@ -367,7 +357,8 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              inlateout("r4") buttons_ptr => _,
              inlateout("r5") buttons_len => _,
 
-             out("r7") _, out("r8") _, out("lr") _
+             out("r7") _, out("r8") _,
+             out("ip") _, out("lr") _
         }
     }
     rv
