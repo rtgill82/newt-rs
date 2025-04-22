@@ -59,10 +59,15 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
 
              sub    rcx, 3
              jz     3f
+
+             mov    r8, rax
              cmp    rcx, -1
-             je     6f
+             je     4f
+
+             mov    rdx, rax
              cmp    rcx, -2
-             je     7f
+             je     5f
+
              mov    rax, rcx
              shl    rax, 1
              add    r12, rax
@@ -95,28 +100,15 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
              call   r10
 
              shl    r12, 3
-             add    rsp, r12
-             jmp    8f
-
-             6:
-             mov    r8, rax
-             jmp    4b
-
-             7:
-             mov    rdx, rax
-             jmp    5b
-
-             8:",
+             add    rsp, r12",
 
              in("rdi") types_ptr,
              in("rsi") values_ptr,
              in("rcx") len,
              in("r10") func,
 
-             inlateout("rax") NEWT_GRID_EMPTY as usize => grid,
-
-             out("rdx") _, out("r8") _, out("r9") _, out("r12") _,
-             clobber_abi("sysv64")
+             inlateout("rax") NEWT_GRID_EMPTY as *const c_void => grid,
+             out("r12") _, clobber_abi("C")
         }
     }
     (grid, children)
@@ -143,10 +135,15 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
 
              sub    rcx, 3
              jz     3f
+
+             xor    r8, r8
              cmp    rcx, -1
-             je     6f
+             je     4f
+
+             xor    rdx, rdx
              cmp    rcx, -2
-             je     7f
+             je     5f
+
              mov    rax, rcx
              shl    rax, 1
              add    r12, rax
@@ -179,26 +176,14 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
              call   newtButtonBar
 
              shl    r12, 3
-             add    rsp, r12
-             jmp    8f
-
-             6:
-             xor    r8, r8
-             jmp    4b
-
-             7:
-             xor    rdx, rdx
-             jmp    5b
-
-             8:",
+             add    rsp, r12",
 
              in("rdi") buf,
              in("rsi") buttons_ptr,
              in("rcx") buttons_len,
              out("rax") grid,
 
-             out("rdx") _, out("r8") _, out("r9") _, out("r12") _,
-             clobber_abi("sysv64")
+             out("r12") _, clobber_abi("C")
         }
     }
     grid
@@ -292,8 +277,9 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              in("r8") flex_up,
              in("r9") max_list_height,
 
-             out("rax") rv, out("r12") _,
-             clobber_abi("sysv64")
+             out("rax") rv,
+
+             out("r12") _, clobber_abi("C")
         }
     }
     (rv, list_item)
@@ -384,8 +370,9 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              in("r8") flex_up,
              in("r9") data_width,
 
-             out("rax") rv, out("r12") _,
-             clobber_abi("sysv64")
+             out("rax") rv,
+
+             out("r12") _, clobber_abi("C")
         }
     }
     rv
