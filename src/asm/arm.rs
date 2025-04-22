@@ -72,7 +72,7 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
              ldr    r0, [r7]
              push   {{r0}}
              sub    r7, r7, #4
-             sub    r9, r9, #1
+             subs   r9, r9, #1
              bne    2b
 
              3:
