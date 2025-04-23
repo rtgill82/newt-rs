@@ -25,8 +25,8 @@ use newt_sys::*;
 
 use crate::Component;
 use crate::constants::NEWT_GRID_EMPTY;
-use crate::windows::{WinEntry,WinEntryBuf};
-use crate::intern::funcs::*;
+use crate::asm::windows::{WinEntry,WinEntryBuf};
+use crate::asm::funcs::*;
 
 pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
                         func: *const c_void)
@@ -78,7 +78,9 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
             in("ecx") len,
             in("edx") func,
             in("edi") types_ptr,
-            inlateout("eax") NEWT_GRID_EMPTY => grid
+            inlateout("eax") NEWT_GRID_EMPTY as *const c_void => grid,
+
+            clobber_abi("C")
        }
    }
    (grid, children)
@@ -127,7 +129,9 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
              in("ecx") buttons_len,
              in("edi") buf,
 
-             out("eax") grid
+             out("eax") grid,
+
+             clobber_abi("C")
         }
     }
     grid
@@ -236,7 +240,9 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              in("ebx") args_ptr,
              in("ecx") len,
              in("edx") buttons_ptr,
-             inlateout("eax") list_item_ptr => rv
+             inlateout("eax") list_item_ptr => rv,
+
+             clobber_abi("C")
         }
     }
     (rv, list_item)
@@ -340,7 +346,9 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              in("ebx") args_ptr,
              in("ecx") len,
              in("edx") entries_ptr,
-             inlateout("eax") buttons_ptr => rv
+             inlateout("eax") buttons_ptr => rv,
+
+             clobber_abi("C")
         }
     }
     rv
