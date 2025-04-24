@@ -17,8 +17,10 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
+#[cfg(all(feature = "asm",
+          any(target_arch = "aarch64", target_arch = "arm",
+              target_arch = "x86",     target_arch = "x86_64")))]
 extern crate newt;
-#[cfg(all(feature = "asm", any(target_arch = "arm", target_arch = "x86", target_arch = "x86_64")))]
 use newt::grid::*;
 use newt::prelude::*;
 
@@ -35,7 +37,6 @@ fn test_form_nullify() {
 
 #[test]
 #[should_panic]
-#[cfg(all(feature = "asm", any(target_arch = "arm", target_arch = "x86", target_arch = "x86_64")))]
 fn test_grid_nullify() {
     let button = Button::new(0, 0, "Ok");
     let mut grid = Grid::new(1, 2);
@@ -50,7 +51,6 @@ fn test_grid_nullify() {
 
 #[test]
 #[should_panic]
-#[cfg(all(feature = "asm", any(target_arch = "arm", target_arch = "x86", target_arch = "x86_64")))]
 fn test_deep_grid_nullify() {
     let button = Button::new(0, 0, "Ok");
     let hgrid = HorizontalGrid::new(&[&button]);
