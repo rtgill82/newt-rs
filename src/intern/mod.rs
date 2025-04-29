@@ -24,9 +24,7 @@ pub mod data;
 pub mod funcs;
 
 use std::os::raw::c_void;
-
 use newt_sys::*;
-use crate::Component;
 
 pub trait Child {
     fn add_to_parent(&self) -> Result<(), &'static str>;
@@ -47,6 +45,9 @@ pub trait Nullify {
     fn nullify(&self);
 }
 
+#[cfg(feature = "asm")]
+use crate::Component;
+#[cfg(feature = "asm")]
 pub trait Parent {
     fn children(&self) -> Vec<&dyn Component>;
 }
