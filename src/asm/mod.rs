@@ -35,6 +35,16 @@ mod aarch64;
 #[cfg(all(feature = "asm", target_arch = "aarch64"))]
 pub use self::aarch64::*;
 
+#[cfg(all(feature = "asm", target_arch = "riscv32"))]
+mod riscv32;
+#[cfg(all(feature = "asm", target_arch = "riscv32"))]
+pub use self::riscv32::*;
+
+#[cfg(all(feature = "asm", target_arch = "riscv64"))]
+mod riscv64;
+#[cfg(all(feature = "asm", target_arch = "riscv64"))]
+pub use self::riscv64::*;
+
 #[cfg(all(feature = "asm", target_arch = "x86"))]
 mod x86;
 #[cfg(all(feature = "asm", target_arch = "x86"))]

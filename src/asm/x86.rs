@@ -128,7 +128,6 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
              in("ebx") buttons_ptr,
              in("ecx") buttons_len,
              in("edi") buf,
-
              out("eax") grid,
 
              clobber_abi("C")

@@ -49,68 +49,84 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
         let len = components.len();
 
         asm! {
-            "str    x0, [sp, #-8]!
-             mov    x20, #1
+            "addi   sp, sp, -8
+             sd     a0, (sp)
+             li     s2, 1
 
-             mov    x2, #8
-             mul    x1, x12, x2
-             sub    x1, x1, #8
-             add    x10, x10, x1
-             add    x11, x11, x1
+             li     t5, 4
+             mul    t4, t2, t5
+             addi   t4, t4, -4
+             add    t0, t0, t4
 
-             subs   x12, x12, #4
-             beq    3f
+             li     t5, 8
+             mul    t4, t2, t5
+             addi   t4, t4, -8
+             add    t1, t1, t4
 
-             mov    x6, x0
-             cmp    x12, #-1
-             beq    4f
+             addi   t2, t2, -4
+             beq    t2, zero, 3f
 
-             mov    x4, x0
-             cmp    x12, #-2
-             beq    5f
+             mv     a6, a0
+             li     t4, -1
+             beq    t2, t4, 4f
 
-             mov    x2, x0
-             cmp    x12, #-3
-             beq    6f
-             add    x20, x20, x12, LSL #1
+             mv     a4, a0
+             li     t4, -2
+             beq    t2, t4, 5f
+
+             mv     a2, a0
+             li     t4, -3
+             beq    t2, t4, 6f
+             slli   t4, t2, 1
+             add    s2, s2, t4
 
              2:
-             ldr    x0, [x11], #-8
-             str    x0, [sp, #-8]!
-             ldr    x0, [x10], #-8
-             str    x0, [sp, #-8]!
-             subs   x12, x12, #1
-             bne    2b
+             ld     a0, (t1)
+             addi   t1, t1, -8
+             addi   sp, sp, -8
+             sd     a0, (sp)
+             lw     a0, (t0)
+             addi   t0, t0, -4
+             addi   sp, sp, -8
+             sd     a0, (sp)
+             addi   t2, t2, -1
+             bne    t2, zero, 2b
 
              3:
-             ldr    x7, [x11], #-8
-             ldr    x6, [x10], #-8
+             ld     a7, (t1)
+             addi   t1, t1, -8
+             lw     a6, (t0)
+             addi   t0, t0, -4
 
              4:
-             ldr    x5, [x11], #-8
-             ldr    x4, [x10], #-8
+             ld     a5, (t1)
+             addi   t1, t1, -8
+             lw     a4, (t0)
+             addi   t0, t0, -4
 
              5:
-             ldr    x3, [x11], #-8
-             ldr    x2, [x10], #-8
+             ld     a3, (t1)
+             addi   t1, t1, -8
+             lw     a2, (t0)
+             addi   t0, t0, -4
 
              6:
-             ldr    x1, [x11]
-             ldr    x0, [x10]
+             ld     a1, (t1)
+             lw     a0, (t0)
 
-             blr    x13
+             jalr   ra, t3
 
-             lsl    x20, x20, #3
-             add    sp, sp, x20",
+             slli   s2, s2, 3
+             add    sp, sp, s2",
 
-             inlateout("x0") NEWT_GRID_EMPTY as *const c_void => grid,
+             inlateout("a0") NEWT_GRID_EMPTY as *const c_void => grid,
 
-             inlateout("x10") types_ptr => _,
-             inlateout("x11") values_ptr => _,
-             inlateout("x12") len => _,
-             inlateout("x13") func => _,
+             inlateout("t0") types_ptr => _,
+             inlateout("t1") values_ptr => _,
+             inlateout("t2") len => _,
+             inlateout("t3") func => _,
 
-             out("x20") _, clobber_abi("C")
+             out("s2") _, clobber_abi("C")
         }
     }
 
@@ -127,71 +143,77 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
 
     unsafe {
         asm! {
-            "sub    sp, sp, #8
-             mov    x0, #0
-             str    x0, [sp, #-8]!
-             mov    x20, #2
+            "addi   sp, sp, -8
+             sd     zero, (sp)
+             li     s2, 1
 
-             mov    x2, #8
-             mul    x1, x12, x2
-             sub    x1, x1, #8
-             add    x10, x10, x1
-             add    x11, x11, x1
+             li     t3, 8
+             mul    t4, t2, t3
+             addi   t4, t4, -8
+             add    t0, t0, t4
+             add    t1, t1, t4
 
-             subs   x12, x12, #4
-             beq    3f
+             addi   t2, t2, -4
+             beq    t2, zero, 3f
 
-             mov    x6, x0
-             cmp    x12, #-1
-             beq    4f
+             mv     a6, zero
+             li     t3, -1
+             beq    t2, t3, 4f
 
-             mov    x4, x0
-             cmp    x12, #-2
-             beq    5f
+             mv     a4, zero
+             li     t3, -2
+             beq    t2, t3, 5f
 
-             mov    x2, x0
-             cmp    x12, #-3
-             beq    6f
-             add    x20, x20, x12, LSL #1
+             mv     a2, zero
+             li     t3, -3
+             beq    t2, t3, 6f
+             slli   t3, t2, 1
+             add    s2, s2, t3
 
              2:
-             str    x11, [sp, #-8]!
-             sub    x11, x11, #8
-             ldr    x0, [x10], #-8
-             str    x0, [sp, #-8]!
-             subs   x12, x12, #1
-             bne    2b
+             addi   sp, sp, -8
+             sd     t1, (sp)
+             addi   t1, t1, -8
+             ld     t3, (t0)
+             addi   t0, t0, -8
+             addi   sp, sp, -8
+             sd     t3, (sp)
+             addi   t2, t2, -1
+             bne    t2, zero, 2b
 
              3:
-             mov    x7, x11
-             sub    x11, x11, #8
-             ldr    x6, [x10], #-8
+             mv     a7, t1
+             addi   t1, t1, -8
+             ld     a6, (t0)
+             addi   t0, t0, -8
 
              4:
-             mov    x5, x11
-             sub    x11, x11, #8
-             ldr    x4, [x10], #-8
+             mv     a5, t1
+             addi   t1, t1, -8
+             ld     a4, (t0)
+             addi   t0, t0, -8
 
              5:
-             mov    x3, x11
-             sub    x11, x11, #8
-             ldr    x2, [x10], #-8
+             mv     a3, t1
+             addi   t1, t1, -8
+             ld     a2, (t0)
+             addi   t0, t0, -8
 
              6:
-             mov    x1, x11
-             ldr    x0, [x10]
+             mv     a1, t1
+             ld     a0, (t0)
 
-             bl     newtButtonBar
+             call   newtButtonBar
 
-             lsl    x20, x20, #3
-             add    sp, sp, x20",
+             slli   s2, s2, 3
+             add    sp, sp, s2",
 
-             inlateout("x10") buttons_ptr => _,
-             inlateout("x11") buf => _,
-             inlateout("x12") buttons_len => _,
+             inlateout("t0") buttons_ptr => _,
+             inlateout("t1") buf => _,
+             inlateout("t2") buttons_len => _,
 
-             out("x0") grid,
-             out("x20") _, clobber_abi("C")
+             out("a0") grid,
+             out("s2") _, clobber_abi("C")
         }
     }
 
@@ -247,47 +269,50 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
 
     unsafe {
         asm! {
-            "mov    x20, #8
-             mul    x20, x20, x11
-             sub    x20, x20, #8
-             add    x10, x10, x20
+            "li     t3, 1
+             li     s2, 8
+             mul    s2, s2, t2
+             addi   s2, s2, -8
+             add    t1, t1, s2
 
-             mov    x20, x11
-             tst    x11, #1
-             bne    2f
+             mv     s2, t2
+             andi   t4, t2, 1
+             beq    t4, t3, 2f
 
-             sub    sp, sp, #8
-             add    x20, x20, #1
+             addi   sp, sp, -8
+             addi   s2, s2, 1
 
              2:
-             ldr    x0, [x10], #-8
-             str    x0, [sp, #-8]
-             subs   x11, x11, #1
-             bne    2b
+             ld     a0, (t1)
+             addi   t1, t1, -8
+             addi   sp, sp, -8
+             sd     a0, (sp)
+             addi   t2, t2, -1
+             bne    t2, zero, 2b
 
-             mov    x0, {title_ptr}
-             bl     newtWinMenu
+             mv     a0, t0
+             call   newtWinMenu
 
-             lsl    x20, x20, #3
-             add    sp, sp, x20",
+             slli   s2, s2, 3
+             add    sp, sp, s2",
 
-             title_ptr = in(reg) title_ptr,
+             in("t0")        title_ptr,
+             inlateout("a1") text_ptr => _,
+             inlateout("a2") suggested_width => _,
+             inlateout("a3") flex_down => _,
+             inlateout("a4") flex_up => _,
+             inlateout("a5") max_list_height => _,
+             inlateout("a6") items_ptr => _,
+             inlateout("a7") list_item_ptr => _,
 
-             inlateout("x1") text_ptr => _,
-             inlateout("x2") suggested_width => _,
-             inlateout("x3") flex_down => _,
-             inlateout("x4") flex_up => _,
-             inlateout("x5") max_list_height => _,
-             inlateout("x6") items_ptr => _,
-             inlateout("x7") list_item_ptr => _,
+             inlateout("t1") buttons_ptr => _,
+             inlateout("t2") buttons_len => _,
 
-             inlateout("x10") buttons_ptr => _,
-             inlateout("x11") buttons_len => _,
-
-             out("x0") rv,
-             out("x20") _, clobber_abi("C")
+             out("a0") rv,
+             out("s2") _, clobber_abi("C")
         }
     }
+
     (rv, list_item)
 }
 
@@ -340,50 +365,51 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
         let buttons_len = button_ptrs.len();
 
         asm! {
-            "cmp    x11, #1
-             beq    3f
+            "li     t3, 1
+             beq    t2, t3, 3f
 
-             mov    x20, #8
-             mul    x20, x20, x11
-             sub    x20, x20, #8
-             add    x10, x10, x20
-             sub    x11, x11, #1
+             li     s2, 8
+             mul    s2, s2, t2
+             addi   s2, s2, -8
+             add    t1, t1, s2
+             addi   t2, t2, -1
 
-             mov    x20, x11
-             tst    x11, #1
-             bne    2f
+             mv     s2, t2
+             andi   t4, t2, 1
+             beq    t4, t3, 2f
 
-             sub    sp, sp, #8
-             add    x20, x20, #1
+             addi   sp, sp, -8
+             addi   s2, s2, 1
 
              2:
-             ldr    x7, [x10], #-8
-             str    x7, [sp, #-8]
-             subs   x11, x11, #1
-             bne    2b
+             ld     a7, (t1)
+             addi   t1, t1, -8
+             addi   sp, sp, -8
+             sd     a7, (sp)
+             addi   t2, t2, -1
+             bne    t2, zero, 2b
 
              3:
-             ldr    x7, [x10]
-             mov    x0, {title_ptr}
-             bl     newtWinEntries
+             ld     a7, (t1)
+             mv     a0, t0
+             call   newtWinEntries
 
-             lsl    x20, x20, #3
-             add    sp, sp, x20",
+             slli   s2, s2, 3
+             add    sp, sp, s2",
 
-             title_ptr = in(reg) title_ptr,
+             in("t0")        title_ptr,
+             inlateout("a1") text_ptr => _,
+             inlateout("a2") suggested_width => _,
+             inlateout("a3") flex_down => _,
+             inlateout("a4") flex_up => _,
+             inlateout("a5") data_width => _,
+             inlateout("a6") entries_ptr => _,
 
-             inlateout("x1") text_ptr => _,
-             inlateout("x2") suggested_width => _,
-             inlateout("x3") flex_down => _,
-             inlateout("x4") flex_up => _,
-             inlateout("x5") data_width => _,
-             inlateout("x6") entries_ptr => _,
+             inlateout("t1") buttons_ptr => _,
+             inlateout("t2") buttons_len => _,
 
-             inlateout("x10") buttons_ptr => _,
-             inlateout("x11") buttons_len => _,
-
-             out("x0") rv,
-             out("x20") _, clobber_abi("C")
+             out("a0") rv,
+             out("s2") _, clobber_abi("C")
         }
     }
 

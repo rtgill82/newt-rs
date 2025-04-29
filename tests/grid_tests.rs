@@ -17,7 +17,10 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#![cfg(all(feature = "asm", any(target_arch = "aarch64", target_arch = "arm", target_arch = "x86", target_arch = "x86_64")))]
+#![cfg(all(feature = "asm",
+           any(target_arch = "aarch64", target_arch = "arm",
+               target_arch = "riscv32", target_arch = "riscv64",
+               target_arch = "x86",     target_arch = "x86_64")))]
 extern crate newt;
 use newt::Component;
 use newt::widgets::Button;
