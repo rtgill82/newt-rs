@@ -49,13 +49,17 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
         let len = components.len();
 
         asm! {
-            "str    x0, [sp, #-8]!
-             mov    x20, #1
+            "stp    x0, x0, [sp, #-16]!
+             mov    x20, #2
+
+             mov    x2, #4
+             mul    x1, x12, x2
+             sub    x1, x1, #4
+             add    x10, x10, x1
 
              mov    x2, #8
              mul    x1, x12, x2
              sub    x1, x1, #8
-             add    x10, x10, x1
              add    x11, x11, x1
 
              subs   x12, x12, #4
@@ -76,27 +80,26 @@ pub fn grid_new<'t, 'a>(components: &'t [&'a dyn Component],
 
              2:
              ldr    x0, [x11], #-8
-             str    x0, [sp, #-8]!
-             ldr    x0, [x10], #-8
-             str    x0, [sp, #-8]!
+             ldr    x1, [x10], #-4
+             stp    x0, x1, [sp, #-16]!
              subs   x12, x12, #1
              bne    2b
 
              3:
              ldr    x7, [x11], #-8
-             ldr    x6, [x10], #-8
+             ldr    w6, [x10], #-4
 
              4:
              ldr    x5, [x11], #-8
-             ldr    x4, [x10], #-8
+             ldr    w4, [x10], #-4
 
              5:
              ldr    x3, [x11], #-8
-             ldr    x2, [x10], #-8
+             ldr    w2, [x10], #-4
 
              6:
              ldr    x1, [x11]
-             ldr    x0, [x10]
+             ldr    w0, [x10]
 
              blr    x13
 
@@ -127,9 +130,7 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
 
     unsafe {
         asm! {
-            "sub    sp, sp, #8
-             mov    x0, #0
-             str    x0, [sp, #-8]!
+            "stp    xzr, xzr, [sp, #-16]!
              mov    x20, #2
 
              mov    x2, #8
@@ -141,24 +142,23 @@ pub fn button_bar_new(buttons: &[&str], buf: *mut newtComponent) -> newtGrid {
              subs   x12, x12, #4
              beq    3f
 
-             mov    x6, x0
+             mov    x6, xzr
              cmp    x12, #-1
              beq    4f
 
-             mov    x4, x0
+             mov    x4, xzr
              cmp    x12, #-2
              beq    5f
 
-             mov    x2, x0
+             mov    x2, xzr
              cmp    x12, #-3
              beq    6f
              add    x20, x20, x12, LSL #1
 
              2:
-             str    x11, [sp, #-8]!
-             sub    x11, x11, #8
              ldr    x0, [x10], #-8
-             str    x0, [sp, #-8]!
+             stp    x0, x11, [sp, #-16]!
+             sub    x11, x11, #8
              subs   x12, x12, #1
              bne    2b
 
@@ -254,17 +254,22 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
 
              mov    x20, x11
              tst    x11, #1
-             bne    2f
+             beq    2f
 
-             sub    sp, sp, #8
+             ldr    x0, [x10], #-8
+             stp    x0, xzr, [sp, #-16]!
              add    x20, x20, #1
+             subs   x11, x11, #1
+             beq    3f
 
              2:
-             ldr    x0, [x10], #-8
-             str    x0, [sp, #-8]
-             subs   x11, x11, #1
+             ldr    x12, [x10], #-8
+             ldr    x13, [x10], #-8
+             stp    x12, x13, [sp, #-16]!
+             subs   x11, x11, #2
              bne    2b
 
+             3:
              mov    x0, {title_ptr}
              bl     newtWinMenu
 
@@ -285,7 +290,8 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
              inlateout("x11") buttons_len => _,
 
              out("x0") rv,
-             out("x20") _, clobber_abi("C")
+             out("x12") _, out("x13") _, out("x20") _,
+             clobber_abi("C")
         }
     }
     (rv, list_item)
@@ -351,15 +357,17 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
 
              mov    x20, x11
              tst    x11, #1
-             bne    2f
+             beq    2f
 
-             sub    sp, sp, #8
+             ldr    x0, [x10], #-8
+             stp    x0, xzr, [sp, #-16]!
              add    x20, x20, #1
 
              2:
-             ldr    x7, [x10], #-8
-             str    x7, [sp, #-8]
-             subs   x11, x11, #1
+             ldr    x12, [x10], #-8
+             ldr    x13, [x10], #-8
+             stp    x12, x13, [sp, #-16]!
+             subs   x11, x11, #2
              bne    2b
 
              3:
@@ -383,7 +391,8 @@ pub fn win_entries(title: &str, text: &str, suggested_width: i32,
              inlateout("x11") buttons_len => _,
 
              out("x0") rv,
-             out("x20") _, clobber_abi("C")
+             out("x12") _, out("x13") _, out("x20") _,
+             clobber_abi("C")
         }
     }
 
