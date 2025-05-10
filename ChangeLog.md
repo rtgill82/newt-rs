@@ -1,10 +1,20 @@
 # ChangeLog
 
+## 0.6.9
+
+* Support `aarch64`, `riscv32`, and `riscv64` architectures.
+
+* Assembly clean ups and fixes.
+
+* Bug fixes and compilation warning fixes.
+
+## 0.6.8
+
+* Bug fixes
+
 ## 0.6.7
 
-* Fix compiliation on `armv7l` systems.
-
-* Update `x86_64` assembly code for the new inline assembler.
+* Update assembly code for the new inline assembler.
 
 ## 0.6.6
 
