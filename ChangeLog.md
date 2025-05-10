@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.6.10
+
+* Documentation updates
+
 ## 0.6.9
 
 * Support `aarch64`, `riscv32`, and `riscv64` architectures.
