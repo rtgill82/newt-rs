@@ -23,10 +23,13 @@ extern crate syn;
 use proc_macro::TokenStream;
 use syn::{DeriveInput,Generics,Ident};
 
+use crate::common::*;
+
 pub fn impl_grid_macro(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let generics = generics_remove_defaults(&ast.generics);
-    let mut tokens = impl_grid_base(&name, &generics);
+    let mut tokens = impl_component_common(&name, &generics);
+    tokens.extend(impl_grid_base(&name, &generics));
     tokens.extend(impl_component_base(&name, &generics));
     tokens.extend(impl_grid_child(&name, &generics));
     tokens.extend(impl_grid_drop(&name, &generics));
@@ -37,11 +40,11 @@ pub fn impl_grid_macro(ast: &DeriveInput) -> TokenStream {
 fn impl_grid_base(name: &Ident, generics: &Generics) -> TokenStream {
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ ::grid::r#trait::Grid for #name #type_
+        impl #impl_ crate::grid::r#trait::Grid for #name #type_
             #where_
         { }
 
-        impl #impl_ ::grid::r#trait::GridFns for #name #type_
+        impl #impl_ crate::grid::r#trait::GridFns for #name #type_
             #where_
         { }
     };
@@ -51,52 +54,19 @@ fn impl_grid_base(name: &Ident, generics: &Generics) -> TokenStream {
 fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ ::intern::ComponentPtr for #name #type_
+        impl #impl_ crate::asm::AsGrid for #name #type_
             #where_
         {
-            fn ptr(&self) -> *mut ::std::os::raw::c_void {
-                self.grid.get() as *mut ::std::os::raw::c_void
-            }
-
-            fn co_ptr(&self) -> ::newt_sys::newtComponent {
-                self.ptr() as ::newt_sys::newtComponent
-            }
-
-            fn grid_ptr(&self) -> ::newt_sys::newtGrid {
-                self.ptr() as ::newt_sys::newtGrid
-            }
-        }
-
-        impl #impl_ ::Component for #name #type_
-            #where_
-        {
-            fn co(&self) -> ::newt_sys::newtComponent {
-                use crate::intern::ComponentPtr;
-                self.co_ptr()
-            }
-        }
-
-        impl #impl_ ::asm::AsComponent for #name #type_
-            #where_
-        {
-            fn as_component(&self) -> Option<&::Component> {
+            fn as_grid(&self) -> Option<&crate::grid::r#trait::Grid> {
                 Some(self)
             }
         }
 
-        impl #impl_ ::asm::AsGrid for #name #type_
-            #where_
-        {
-            fn as_grid(&self) -> Option<&::grid::r#trait::Grid> {
-                Some(self)
-            }
-        }
-
-        impl #impl_ ::intern::GridElementType for #name #type_
+        impl #impl_ crate::intern::GridElementType for #name #type_
             #where_
         {
             fn grid_element_type(&self) -> u32 {
-                use constants::NEWT_GRID_SUBGRID;
+                use crate::constants::NEWT_GRID_SUBGRID;
                 NEWT_GRID_SUBGRID
             }
         }
@@ -138,14 +108,14 @@ fn impl_grid_parent(name: &Ident, generics: &Generics) -> TokenStream {
 
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ ::intern::Parent for #name #type_
+        impl #impl_ crate::intern::Parent for #name #type_
             #where_
         {
-            fn children(&self) -> Vec<&::Component> {
-                use ::constants::NEWT_GRID_COMPONENT;
-                use ::intern::{GridElementType,Parent};
+            fn children(&self) -> Vec<&crate::Component> {
+                use crate::constants::NEWT_GRID_COMPONENT;
+                use crate::intern::{GridElementType,Parent};
 
-                let mut vec: Vec<&::Component> = Vec::new();
+                let mut vec: Vec<&crate::Component> = Vec::new();
                 for child in self.children.iter() {
                     if let Some(grid) = child.as_grid() {
                         for child in grid.children().iter() {
@@ -169,7 +139,8 @@ fn impl_grid_drop(name: &Ident, generics: &Generics) -> TokenStream {
             #where_
         {
             fn drop(&mut self) {
-                unsafe { ::newt_sys::newtGridFree(self.grid.get(), 0); }
+                use crate::intern::ComponentPtr;
+                unsafe { ::newt_sys::newtGridFree(self.grid_ptr(), 0); }
             }
         }
     };

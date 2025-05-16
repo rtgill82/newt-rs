@@ -30,7 +30,7 @@ use crate::asm;
 ///
 #[derive(Grid)]
 pub struct ButtonBar {
-    grid: Cell<newtGrid>,
+    co: Cell<newtGrid>,
     added_to_parent: Cell<bool>,
     children: Vec<Button>
 }
@@ -60,7 +60,7 @@ impl ButtonBar {
         }
 
         ButtonBar {
-            grid: Cell::new(grid),
+            co: Cell::new(grid),
             added_to_parent: Cell::new(false),
             children: buttons
         }

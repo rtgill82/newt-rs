@@ -28,7 +28,7 @@ use crate::constants::{NEWT_GRID_COMPONENT,NEWT_GRID_SUBGRID};
 ///
 #[derive(Grid)]
 pub struct BasicWindow<'a> {
-    grid: Cell<newtGrid>,
+    co: Cell<newtGrid>,
     added_to_parent: Cell<bool>,
     children: Vec<&'a dyn Component>
 }
@@ -60,7 +60,7 @@ impl<'a> BasicWindow<'a> {
         children.push(buttons);
 
         BasicWindow {
-            grid: Cell::new(grid),
+            co: Cell::new(grid),
             added_to_parent: Cell::new(false),
             children
         }

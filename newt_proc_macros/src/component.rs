@@ -23,10 +23,13 @@ extern crate syn;
 use proc_macro::TokenStream;
 use syn::{DeriveInput,Generics,Ident};
 
+use crate::common::*;
+
 pub fn impl_component_macro(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let generics = generics_remove_defaults(&ast.generics);
-    let mut tokens = impl_component_base(&name, &generics);
+    let mut tokens = impl_component_common(&name, &generics);
+    tokens.extend(impl_component_base(&name, &generics));
     tokens.extend(impl_component_drop(&name, &generics));
     tokens.extend(impl_component_partial_eq_trait(&name, &generics));
     tokens.extend(impl_component_partial_eq(&name, &generics));
@@ -36,62 +39,9 @@ pub fn impl_component_macro(ast: &DeriveInput) -> TokenStream {
 fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ ::intern::ComponentPtr for #name #type_
-            #where_
-        {
-            fn ptr(&self) -> *mut ::std::os::raw::c_void {
-                let ptr = self.co.get();
-                if ptr.is_null() {
-                    panic!("Component has already been destroyed!");
-                }
-                ptr as *mut ::std::os::raw::c_void
-            }
+        impl #impl_ crate::widgets::WidgetFns for #name #type_ { }
 
-            fn co_ptr(&self) -> ::newt_sys::newtComponent {
-                self.ptr() as ::newt_sys::newtComponent
-            }
-
-            fn grid_ptr(&self) -> ::newt_sys::newtGrid {
-                self.ptr() as newt_sys::newtGrid
-            }
-        }
-
-        impl #impl_ ::Component for #name #type_
-            #where_
-        {
-            fn co(&self) -> ::newt_sys::newtComponent {
-                use ::intern::ComponentPtr;
-                self.co_ptr()
-            }
-        }
-
-        #[cfg(not(feature = "asm"))]
-        impl #impl_ ::asm::AsComponent for #name #type_ #where_ { }
-
-        #[cfg(feature = "asm")]
-        impl #impl_ ::asm::AsComponent for #name #type_
-            #where_
-        {
-            fn as_component(&self) -> Option<&::Component> {
-                Some(self)
-            }
-        }
-
-        #[cfg(not(feature = "asm"))]
-        impl #impl_ ::asm::AsGrid for #name #type_ #where_ { }
-
-        #[cfg(feature = "asm")]
-        impl #impl_ ::asm::AsGrid for #name #type_
-            #where_
-        {
-            fn as_grid(&self) -> Option<&::grid::r#trait::Grid> {
-                None
-            }
-        }
-
-        impl #impl_ ::widgets::WidgetFns for #name #type_ { }
-
-        impl #impl_ ::intern::Child for #name #type_
+        impl #impl_ crate::intern::Child for #name #type_
             #where_
         {
             fn add_to_parent(&self)
@@ -108,16 +58,28 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
             }
         }
 
-        impl #impl_ ::intern::GridElementType for #name #type_
+        #[cfg(not(feature = "asm"))]
+        impl #impl_ crate::asm::AsGrid for #name #type_ #where_ { }
+
+        #[cfg(feature = "asm")]
+        impl #impl_ crate::asm::AsGrid for #name #type_
+            #where_
+        {
+            fn as_grid(&self) -> Option<&crate::grid::r#trait::Grid> {
+                None
+            }
+        }
+
+        impl #impl_ crate::intern::GridElementType for #name #type_
             #where_
         {
             fn grid_element_type(&self) -> u32 {
-                use constants::NEWT_GRID_COMPONENT;
+                use crate::constants::NEWT_GRID_COMPONENT;
                 NEWT_GRID_COMPONENT
             }
         }
 
-        impl #impl_ ::intern::Nullify for #name #type_
+        impl #impl_ crate::intern::Nullify for #name #type_
         {
             fn nullify(&self) {
                 self.co.replace(std::ptr::null_mut());
@@ -138,7 +100,7 @@ fn impl_component_drop(name: &Ident, generics: &Generics) -> TokenStream {
             #where_
         {
             fn drop(&mut self) {
-                use ::Component;
+                use crate::Component;
                 if !self.added_to_parent.get() {
                     unsafe {
                         ::newt_sys::newtComponentDestroy(self.co());
@@ -160,7 +122,7 @@ fn impl_component_partial_eq_trait(name: &Ident, generics: &Generics)
             #where_
         {
             fn eq(&self, other: &Rhs) -> bool {
-                use ::Component;
+                use crate::Component;
                 if self.co().is_null() {
                     return false
                 }
@@ -176,11 +138,11 @@ fn impl_component_partial_eq(name: &Ident, generics: &Generics)
   -> TokenStream {
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ std::cmp::PartialEq<Box<dyn (::Component)>> for #name #type_
+        impl #impl_ std::cmp::PartialEq<Box<dyn (crate::Component)>> for #name #type_
             #where_
         {
-            fn eq(&self, other: &Box<dyn (::Component)>) -> bool {
-                use ::Component;
+            fn eq(&self, other: &Box<dyn (crate::Component)>) -> bool {
+                use crate::Component;
                 if self.co().is_null() {
                     return false
                 }
@@ -188,10 +150,10 @@ fn impl_component_partial_eq(name: &Ident, generics: &Generics)
             }
         }
 
-        impl #impl_ std::cmp::PartialEq<::widgets::form::ExitReason> for #name #type_
+        impl #impl_ std::cmp::PartialEq<crate::widgets::form::ExitReason> for #name #type_
             #where_
         {
-            fn eq(&self, other: &::widgets::form::ExitReason) -> bool {
+            fn eq(&self, other: &crate::widgets::form::ExitReason) -> bool {
                 other == self
             }
         }
@@ -202,7 +164,7 @@ fn impl_component_partial_eq(name: &Ident, generics: &Generics)
 fn generics_add_rhs(generics: &Generics) -> Generics {
     use syn::{GenericParam,parse_str};
     let mut generics = generics.clone();
-    let rhs: GenericParam = parse_str("Rhs: ::Component").unwrap();
+    let rhs: GenericParam = parse_str("Rhs: crate::Component").unwrap();
     generics.params.push(rhs);
     generics
 }

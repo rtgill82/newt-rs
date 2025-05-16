@@ -56,7 +56,7 @@ pub use self::vertical_grid::VerticalGrid;
 ///
 #[derive(Grid)]
 pub struct Grid<'a> {
-    grid: Cell<newtGrid>,
+    co: Cell<newtGrid>,
     added_to_parent: Cell<bool>,
     children: Vec<&'a dyn Component>,
     cols: i32,
@@ -72,7 +72,7 @@ impl<'a> Grid<'a> {
         assert!(rows > 0, "`rows` must be greater than 0");
 
         Grid {
-            grid: unsafe { Cell::new(newtCreateGrid(cols, rows)) },
+            co: unsafe { Cell::new(newtCreateGrid(cols, rows)) },
             added_to_parent: Cell::new(false),
             children: Vec::new(),
             cols, rows

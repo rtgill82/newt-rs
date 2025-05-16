@@ -24,6 +24,7 @@ extern crate syn;
 #[macro_use]
 extern crate quote;
 
+mod common;
 mod component;
 mod grid;
 

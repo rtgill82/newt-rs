@@ -5,6 +5,7 @@ authors = ["Robert Gill <rtgill82@gmail.com>"]
 description = "Proc macros for newt-rs"
 repository = "https://github.com/rtgill82/newt-rs"
 license = "LGPL-2.0-only"
+edition = "2018"
 
 [lib]
 proc-macro = true

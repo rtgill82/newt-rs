@@ -29,7 +29,7 @@ use crate::asm;
 ///
 #[derive(Grid)]
 pub struct HorizontalGrid<'a> {
-    grid: Cell<newtGrid>,
+    co: Cell<newtGrid>,
     added_to_parent: Cell<bool>,
     children: Vec<&'a dyn Component>
 }
@@ -45,7 +45,7 @@ impl<'a> HorizontalGrid<'a> {
         let (grid, children) = asm::grid_new(components, func);
 
         HorizontalGrid {
-            grid: Cell::new(grid),
+            co: Cell::new(grid),
             added_to_parent: Cell::new(false),
             children
         }
@@ -61,7 +61,7 @@ impl<'a> HorizontalGrid<'a> {
         let (grid, children) = asm::grid_new(components, func);
 
         HorizontalGrid {
-            grid: Cell::new(grid),
+            co: Cell::new(grid),
             added_to_parent: Cell::new(false),
             children
         }

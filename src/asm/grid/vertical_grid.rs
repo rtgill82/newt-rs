@@ -29,7 +29,7 @@ use crate::asm;
 ///
 #[derive(Grid)]
 pub struct VerticalGrid<'a> {
-    grid: Cell<newtGrid>,
+    co: Cell<newtGrid>,
     added_to_parent: Cell<bool>,
     children: Vec<&'a dyn Component>
 }
@@ -45,7 +45,7 @@ impl<'a> VerticalGrid<'a> {
         let (grid, children) = asm::grid_new(components, func);
 
         VerticalGrid {
-            grid: Cell::new(grid),
+            co: Cell::new(grid),
             added_to_parent: Cell::new(false),
             children
         }
@@ -61,7 +61,7 @@ impl<'a> VerticalGrid<'a> {
         let (grid, children) = asm::grid_new(components, func);
 
         VerticalGrid {
-            grid: Cell::new(grid),
+            co: Cell::new(grid),
             added_to_parent: Cell::new(false),
             children
         }
