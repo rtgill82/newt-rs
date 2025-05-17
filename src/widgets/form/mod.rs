@@ -77,13 +77,13 @@ pub struct Form<'a>
 impl<'a> Drop for Form<'a>
 {
     fn drop(&mut self) {
-        for component in self.components.iter() {
-            component.nullify();
-        }
-
         if !self.added_to_parent() {
             unsafe { newtFormDestroy(self.co()); }
             self.nullify();
+        }
+
+        for component in self.components.iter() {
+            component.nullify();
         }
     }
 }

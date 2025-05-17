@@ -29,6 +29,11 @@ pub fn impl_component_common(name: &Ident, generics: &Generics) -> TokenStream {
         impl #impl_ crate::intern::ComponentPtr for #name #type_
             #where_
         {
+            fn is_null(&self) -> bool {
+                let ptr = self.co.get();
+                ptr.is_null()
+            }
+
             fn ptr(&self) -> *mut ::std::os::raw::c_void {
                 let ptr = self.co.get();
                 if ptr.is_null() {

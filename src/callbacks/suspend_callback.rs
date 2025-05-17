@@ -42,9 +42,12 @@ where FN: FnMut(Option<&T>)
     ///
     pub fn new(data: Option<T>, function: FN)
       -> Box<SuspendCallback<FN, T>> {
-        let cb = Box::new(SuspendCallback { function, data });
-        newt_set_suspend_callback(cb.as_ref());
-        cb
+
+        unsafe {
+            let cb = Box::new(SuspendCallback { function, data });
+            newt_set_suspend_callback(cb.as_ref());
+            cb
+        }
     }
 
     pub(crate) fn call(&mut self) {
@@ -56,6 +59,6 @@ impl<FN, T> Drop for SuspendCallback<FN, T>
 where FN: FnMut(Option<&T>)
 {
     fn drop(&mut self) {
-        newt_unset_suspend_callback();
+        unsafe { newt_unset_suspend_callback(); }
     }
 }

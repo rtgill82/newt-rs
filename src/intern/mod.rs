@@ -32,6 +32,7 @@ pub trait Child {
 }
 
 pub trait ComponentPtr {
+    fn is_null(&self) -> bool;
     fn ptr(&self) -> *mut c_void;
     fn co_ptr(&self) -> newtComponent;
     fn grid_ptr(&self) -> newtGrid;

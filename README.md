@@ -10,8 +10,6 @@ This crate provides bindings to Red Hat, Inc.'s [Newt][newt] console UI
 library. Newt is a small and simple to use UI library providing widgets and
 basic stacked window management for console applications.
 
-The majority, if not all of Newt's functionality has been implemented.
-
 [newt]: https://pagure.io/newt
 [asm_feature]: #asm_feature
 

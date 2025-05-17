@@ -101,8 +101,8 @@ fn impl_component_drop(name: &Ident, generics: &Generics) -> TokenStream {
         {
             fn drop(&mut self) {
                 use crate::Component;
-                if !self.added_to_parent.get() {
-                    unsafe {
+                unsafe {
+                    if !self.added_to_parent.get() {
                         ::newt_sys::newtComponentDestroy(self.co());
                     }
                 }
@@ -123,7 +123,9 @@ fn impl_component_partial_eq_trait(name: &Ident, generics: &Generics)
         {
             fn eq(&self, other: &Rhs) -> bool {
                 use crate::Component;
-                if self.co().is_null() {
+                use crate::intern::ComponentPtr;
+
+                if self.is_null() {
                     return false
                 }
                 self.co() == other.co()
@@ -143,7 +145,9 @@ fn impl_component_partial_eq(name: &Ident, generics: &Generics)
         {
             fn eq(&self, other: &Box<dyn (crate::Component)>) -> bool {
                 use crate::Component;
-                if self.co().is_null() {
+                use crate::intern::ComponentPtr;
+
+                if self.is_null() {
                     return false
                 }
                 self.co() == other.co()

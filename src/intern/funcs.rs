@@ -26,6 +26,7 @@ use crate::component::Component;
 use crate::widgets::{Entry,Form};
 
 use crate::Callback;
+use crate::callbacks::DestroyCallback;
 use crate::callbacks::EntryFilter;
 use crate::callbacks::HelpCallback;
 use crate::callbacks::SuspendCallback;
@@ -49,6 +50,15 @@ where FN: FnMut(&dyn Component, Option<&T>)
 {
     let cb = &mut *(data as *mut Callback<'a, FN, T>);
     cb.call(co);
+}
+
+unsafe extern "C"
+fn destroy_callback<'a, FN: 'a, T: 'a>(co: newtComponent, data: *mut c_void)
+where FN: FnMut(&dyn Component, Option<&T>)
+{
+    let cb = &mut *(data as *mut DestroyCallback<'a, FN, T>);
+    cb.call(co);
+    newt_unset_destroy_callback(co);
 }
 
 unsafe extern "C"
@@ -80,51 +90,56 @@ where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
     cb.call(entry, ch, cursor) as i32
 }
 
-pub fn newt_set_callback<'a, FN: 'a, T: 'a>
+pub unsafe fn newt_set_callback<'a, FN: 'a, T: 'a>
   (co: newtComponent, cb: &Callback<'a, FN, T>)
 where FN: FnMut(&dyn Component, Option<&T>)
 {
-    unsafe {
-        let c_ptr = cb as *const _ as *mut c_void;
-        newtComponentAddCallback(co, Some(callback::<FN, T>), c_ptr);
-    }
+    let c_ptr = cb as *const _ as *mut c_void;
+    newtComponentAddCallback(co, Some(callback::<FN, T>), c_ptr);
 }
 
-pub fn newt_unset_callback(co: &dyn Component)
+pub unsafe fn newt_unset_callback(co: &dyn Component)
 {
-    unsafe {
-        newtComponentAddCallback(co.co(), None, ptr::null_mut());
-    }
+    newtComponentAddCallback(co.co(), None, ptr::null_mut());
 }
 
-pub fn newt_init_help_callback<FN, T>(_cb: &HelpCallback<FN, T>)
+pub unsafe fn newt_set_destroy_callback<'a, FN: 'a, T: 'a>
+  (co: newtComponent, cb: &DestroyCallback<'a, FN, T>)
+where FN: FnMut(&dyn Component, Option<&T>)
+{
+    let c_ptr = cb as *const _ as *mut c_void;
+    newtComponentAddDestroyCallback(co, Some(destroy_callback::<FN, T>), c_ptr);
+}
+
+pub unsafe fn newt_unset_destroy_callback(co: newtComponent)
+{
+    newtComponentAddDestroyCallback(co, None, ptr::null_mut());
+}
+
+pub unsafe fn newt_init_help_callback<FN, T>(_cb: &HelpCallback<FN, T>)
 where FN: FnMut(&Form, Option<&T>)
 {
-    unsafe { newtSetHelpCallback(Some(help_callback::<FN, T>)); }
+    newtSetHelpCallback(Some(help_callback::<FN, T>));
 }
 
-pub fn newt_set_suspend_callback<FN, T>(cb: &SuspendCallback<FN, T>)
+pub unsafe fn newt_set_suspend_callback<FN, T>(cb: &SuspendCallback<FN, T>)
 where FN: FnMut(Option<&T>)
 {
-    unsafe {
-        let c_ptr = cb as *const _ as *mut c_void;
-        newtSetSuspendCallback(Some(suspend_callback::<FN, T>), c_ptr);
-    }
+    let c_ptr = cb as *const _ as *mut c_void;
+    newtSetSuspendCallback(Some(suspend_callback::<FN, T>), c_ptr);
 }
 
-pub fn newt_unset_suspend_callback()
+pub unsafe fn newt_unset_suspend_callback()
 {
-    unsafe { newtSetSuspendCallback(None, ptr::null_mut()); }
+    newtSetSuspendCallback(None, ptr::null_mut());
 }
 
-pub fn newt_entry_set_filter<'a, FN: 'a, T: 'a>(
+pub unsafe fn newt_entry_set_filter<'a, FN: 'a, T: 'a>(
     co: newtComponent,
     cb: &EntryFilter<'a, FN, T>
 )
 where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
 {
-    unsafe {
-        let c_ptr = cb as *const _ as *mut c_void;
-        newtEntrySetFilter(co, Some(entry_filter::<FN, T>), c_ptr)
-    }
+    let c_ptr = cb as *const _ as *mut c_void;
+    newtEntrySetFilter(co, Some(entry_filter::<FN, T>), c_ptr)
 }

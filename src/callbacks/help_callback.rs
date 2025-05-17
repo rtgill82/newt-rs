@@ -105,19 +105,23 @@ where FN: FnMut(&Form, Option<&T>)
                form_flags: i32, data: Option<T>, function: FN)
       -> (Form<'a>, Box<HelpCallback<'a, FN, T>>) {
 
-        let cb = Box::new(HelpCallback { function, data, form: PhantomData });
-        newt_init_help_callback(cb.as_ref());
+        unsafe {
+            let cb = Box::new(HelpCallback {
+                function, data, form: PhantomData
+            });
+            newt_init_help_callback(cb.as_ref());
 
-        let scrollbar = if let Some(scrollbar) = scrollbar {
-            scrollbar.co()
-        } else {
-            ptr::null_mut()
-        };
+            let scrollbar = if let Some(scrollbar) = scrollbar {
+                scrollbar.co()
+            } else {
+                ptr::null_mut()
+            };
 
-        let c_ptr = cb.as_ref() as *const _ as *mut c_void;
-        let co = unsafe { newtForm(scrollbar, c_ptr, form_flags) };
-        let form = Form::new_co(co);
-        (form, cb)
+            let c_ptr = cb.as_ref() as *const _ as *mut c_void;
+            let co = newtForm(scrollbar, c_ptr, form_flags);
+            let form = Form::new_co(co);
+            (form, cb)
+        }
     }
 
     pub(crate) fn call(&mut self, form: &Form<'a>) {

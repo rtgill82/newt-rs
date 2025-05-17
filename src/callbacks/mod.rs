@@ -22,6 +22,8 @@
 //!
 mod callback;
 pub use self::callback::Callback;
+mod destroy_callback;
+pub use self::destroy_callback::DestroyCallback;
 mod entry_filter;
 pub use self::entry_filter::EntryFilter;
 mod help_callback;

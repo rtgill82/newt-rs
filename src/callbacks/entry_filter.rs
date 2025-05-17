@@ -65,13 +65,16 @@ where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
     ///
     pub fn new(entry: &'a Entry, data: Option<T>, function: FN)
       -> Box<EntryFilter<'a, FN, T>> {
-        let co: newtComponent = entry.co();
-        let filter = Box::new(EntryFilter {
-            function,
-            entries: vec![(entry, data)]
-        });
-        newt_entry_set_filter(co, filter.as_ref());
-        filter
+
+        unsafe {
+            let co: newtComponent = entry.co();
+            let filter = Box::new(EntryFilter {
+                function,
+                entries: vec![(entry, data)]
+            });
+            newt_entry_set_filter(co, filter.as_ref());
+            filter
+        }
     }
 
     ///
@@ -81,9 +84,11 @@ where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
     /// * `data` - The optonal user data to pass to the function.
     ///
     pub fn add_entry(&mut self, entry: &'a Entry, data: Option<T>) {
-        let co: newtComponent = entry.co();
-        self.entries.push((entry, data));
-        newt_entry_set_filter(co, self);
+        unsafe {
+            let co: newtComponent = entry.co();
+            self.entries.push((entry, data));
+            newt_entry_set_filter(co, self);
+        }
     }
 
     pub(crate) fn call(&mut self, co: newtComponent, ch: char, cursor: i32)
