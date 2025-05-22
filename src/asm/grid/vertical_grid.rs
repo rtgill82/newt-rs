@@ -42,7 +42,9 @@ impl<'a> VerticalGrid<'a> {
     pub fn new<'t>(components: &'t [&'a dyn Component])
       -> VerticalGrid<'a> {
         let func = newtGridVStacked as *const c_void;
-        let (grid, children) = asm::grid_new(components, func);
+        let (grid, children) = unsafe {
+            asm::grid_new(components, func)
+        };
 
         VerticalGrid {
             co: Cell::new(grid),
@@ -58,7 +60,9 @@ impl<'a> VerticalGrid<'a> {
     pub fn new_close_stacked<'t>(components: &'t [&'a dyn Component])
       -> VerticalGrid<'a> {
         let func = newtGridVCloseStacked as *const c_void;
-        let (grid, children) = asm::grid_new(components, func);
+        let (grid, children) = unsafe {
+            asm::grid_new(components, func)
+        };
 
         VerticalGrid {
             co: Cell::new(grid),

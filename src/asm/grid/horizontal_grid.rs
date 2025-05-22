@@ -42,7 +42,9 @@ impl<'a> HorizontalGrid<'a> {
     pub fn new<'t>(components: &'t [&'a dyn Component])
       -> HorizontalGrid<'a> {
         let func = newtGridHStacked as *const c_void;
-        let (grid, children) = asm::grid_new(components, func);
+        let (grid, children) = unsafe {
+            asm::grid_new(components, func)
+        };
 
         HorizontalGrid {
             co: Cell::new(grid),
@@ -58,7 +60,9 @@ impl<'a> HorizontalGrid<'a> {
     pub fn new_close_stacked<'t>(components: &'t [&'a dyn Component])
       -> HorizontalGrid<'a> {
         let func = newtGridHCloseStacked as *const c_void;
-        let (grid, children) = asm::grid_new(components, func);
+        let (grid, children) = unsafe {
+            asm::grid_new(components, func)
+        };
 
         HorizontalGrid {
             co: Cell::new(grid),

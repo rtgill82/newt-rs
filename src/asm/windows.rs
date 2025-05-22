@@ -29,11 +29,10 @@ use std::os::raw::{c_int,c_void};
 
 use newt_sys::*;
 
-#[doc(inline)]
-pub use crate::asm::win_menu;
-
-#[doc(inline)]
-pub use crate::asm::win_entries;
+#[doc(no_inline)]
+pub use crate::asm::win_menu_new;
+#[doc(no_inline)]
+pub use crate::asm::win_entries_new;
 
 ///
 /// A struct used to pass initial [`Entry`][entry] information to the
@@ -131,5 +130,95 @@ impl<'a> Drop for WinEntryBuf<'a> {
             libc::free(self.entries_buf as *mut c_void);
             libc::free(self.values_buf as *mut c_void);
         }
+    }
+}
+
+///
+/// Open a window containing a [`Listbox`][listbox] menu.
+///
+/// _Requires that the `asm` feature be enabled._
+///
+/// * `title` - The window title.
+/// * `text` - The message to display in the window.
+/// * `suggested_width` - The preferred width for the window.
+/// * `flex_down` - The minimum allowed difference between `suggested_width`
+///                 and actual width.
+/// * `flex_up` - The maximum allowed difference between `suggested_width`
+///               and actual width.
+/// * `max_list_height` - The maximum height to display the list of items.
+/// * `items` - A slice containing the text for each item in the list.
+/// * `buttons` - A slice containing the text for a number of buttons to display
+///               in the window.
+///
+/// Returns a tuple pair as `(button, item)` where `button` is the button
+/// number pressed to close the window and `item` is the item number in the
+/// list that was selected. Returned `button` is numbered starting from `1`.
+///
+/// [listbox]: ../widgets/struct.Listbox.html
+///
+#[allow(clippy::too_many_arguments)]
+pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
+                flex_up: i32, max_list_height: i32, items: &[&str],
+                buttons: &[&str]) -> (i32, i32)
+{
+    unsafe {
+        win_menu_new(
+            title,
+            text,
+            suggested_width,
+            flex_down,
+            flex_up,
+            max_list_height,
+            items,
+            buttons
+        )
+    }
+}
+
+///
+/// Open a window containing a number of text [`Entry`s][entry].
+///
+/// _Requires that the `asm` feature be enabled._
+///
+/// * `title` - The window title.
+/// * `text` - The message to display in the window.
+/// * `suggested_width` - The preferred width for the window.
+/// * `flex_down` - The minimum allowed difference between `suggested_width`
+///                 and actual width.
+/// * `flex_up` - The maximum allowed difference between `suggested_width`
+///               and actual width.
+/// * `data_width` - The field width for all `Entry`s.
+/// * `entries` - A slice containing a list of [`WinEntry`s][win_entry]
+///               providing initial settings for each `Entry` field.
+/// * `buttons` - A slice containing the text for a number of buttons to
+///               display in the window.
+///
+/// Returns the number of the button pressed to close the window, starting
+/// from `1`.
+///
+/// Each `WinEntry` in the `entries` array will be modified to contain the
+/// data entered by the user. This can be accessed via the
+/// [`WinEntry.value()`][win_entry_value] function.
+///
+/// [entry]: ../widgets/struct.Entry.html
+/// [win_entry]: ../windows/struct.WinEntry.html
+/// [win_entry_value]: ../windows/struct.WinEntry.html#method.value
+///
+#[allow(clippy::too_many_arguments)]
+pub fn win_entries(title: &str, text: &str, suggested_width: i32, flex_down: i32,
+                   flex_up: i32, data_width: i32, entries: &mut [WinEntry],
+                   buttons: &[&str]) -> i32
+{
+    unsafe {
+        win_entries_new(
+            title,
+            text,
+            suggested_width,
+            flex_down,
+            flex_up,
+            data_width,
+            entries,
+            buttons
+        )
     }
 }
