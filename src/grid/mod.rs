@@ -86,4 +86,7 @@ pub mod r#trait;
 pub use crate::asm::grid::*;
 
 #[doc(inline)]
+pub use self::r#trait::Parent;
+
+#[doc(inline)]
 pub use self::r#trait::GridFns;

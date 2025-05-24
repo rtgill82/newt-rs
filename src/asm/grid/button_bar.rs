@@ -20,9 +20,9 @@
 use std::cell::Cell;
 use newt_sys::*;
 use crate::component::Component;
+use crate::grid::Parent;
 use crate::widgets::Button;
 
-use crate::intern::Parent;
 use crate::asm;
 
 ///

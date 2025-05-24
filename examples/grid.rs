@@ -23,6 +23,8 @@ extern crate newt;
 use newt::grid::*;
 use newt::prelude::*;
 
+use crate::newt::grid::Parent;
+
 #[cfg(feature = "asm")]
 pub fn main() {
     newt::init().unwrap();
@@ -34,7 +36,6 @@ pub fn main() {
 
     let stacked = HorizontalGrid::new(&[&l1, &l2]);
     let button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
-
     let mut grid = Grid::new(1, 2);
     grid.set_field(0, 0, &stacked, 1, 1, 1, 1, 0, 0);
     grid.set_field(0, 1, &button_bar, 1, 1, 1, 1, 0, 0);
@@ -45,8 +46,14 @@ pub fn main() {
     rv = form.run().unwrap();
     newt::finished();
 
-    for (i, button) in button_bar.buttons().iter().enumerate() {
-        if rv == *button {
+    for (i, co) in grid.children().iter().enumerate() {
+        if rv == *co {
+            println!("Component {} activated.", i);
+        }
+    }
+
+    for (i, co) in button_bar.buttons().iter().enumerate() {
+        if rv == *co {
             println!("Button {} pressed.", i);
         }
     }

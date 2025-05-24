@@ -60,3 +60,12 @@ impl<Rhs: Component> PartialEq<Rhs> for ExitReason {
         false
     }
 }
+
+impl PartialEq<&dyn Component> for ExitReason {
+    fn eq(&self, other: &&dyn Component) -> bool {
+        if let ExitReason::Component(ref component) = self {
+            return component.co() == other.co();
+        }
+        false
+    }
+}

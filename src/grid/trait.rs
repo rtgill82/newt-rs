@@ -21,7 +21,7 @@ use newt_sys::*;
 use crate::component::Component;
 use crate::widgets::{Form,WidgetFns};
 
-use crate::intern::{Child,ComponentPtr,Nullify,Parent};
+use crate::intern::{Child,ComponentPtr,Nullify};
 use crate::asm::*;
 
 ///
@@ -48,11 +48,21 @@ impl <T: Grid> Nullify for T {
 }
 
 ///
+/// Trait implemented by `Grid`s that returns all child components from
+/// themselves and sub-Grids.
+///
+pub trait Parent {
+    /// Get all child components from `Grid` and sub-Grids.
+    fn children(&self) -> Vec<&dyn Component>;
+}
+
+///
 /// Implements functions shared by `Grid`s.
 ///
 pub trait GridFns: AsComponent + Child + ComponentPtr + Parent {
-    fn add_to_form<'a>(&'a mut self, form: &mut Form<'a>)
-      -> Result<(), &'static str> {
+    fn add_to_form<'a>(&'a self, form: &mut Form<'a>)
+      -> Result<(), &'static str>
+    {
         self.add_to_parent()?;
         unsafe { newtGridAddComponentsToForm(self.grid_ptr(), form.co(), 1); }
         form.add_refs(self.children());

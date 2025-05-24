@@ -108,12 +108,13 @@ fn impl_grid_parent(name: &Ident, generics: &Generics) -> TokenStream {
 
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ crate::intern::Parent for #name #type_
+        impl #impl_ crate::grid::Parent for #name #type_
             #where_
         {
             fn children(&self) -> Vec<&crate::Component> {
+                use crate::grid::Parent;
                 use crate::constants::NEWT_GRID_COMPONENT;
-                use crate::intern::{GridElementType,Parent};
+                use crate::intern::GridElementType;
 
                 let mut vec: Vec<&crate::Component> = Vec::new();
                 for child in self.children.iter() {

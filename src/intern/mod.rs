@@ -45,10 +45,3 @@ pub trait GridElementType {
 pub trait Nullify {
     fn nullify(&self);
 }
-
-#[cfg(feature = "asm")]
-use crate::Component;
-#[cfg(feature = "asm")]
-pub trait Parent {
-    fn children(&self) -> Vec<&dyn Component>;
-}
