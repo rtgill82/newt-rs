@@ -30,10 +30,10 @@ use newt_sys::*;
 /// A callback called when `F1` is pressed while a `Form` is running.
 ///
 /// A new `Form` is initalized along with the callback associating the two
-/// together. The [`Form::new_with_help_callback()`][form] could also be used
-/// in lieu of `HelpCallback::new()`.
+/// together. The [`Form::new_with_help_callback()`][form] function could
+/// also be used in lieu of [`HelpCallback::new()`].
 ///
-/// [form]: ../widgets/form/struct.Form.html#method.new_with_help_callback
+/// [form]: crate::widgets::form::Form::new_with_help_callback
 ///
 /// ## Example
 /// ```rust no_run
@@ -78,6 +78,7 @@ use newt_sys::*;
 ///     newt::finished();
 /// }
 /// ```
+///
 pub struct HelpCallback<'a, FN, T>
 where FN: FnMut(&Form, Option<&T>)
 {

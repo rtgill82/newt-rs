@@ -45,7 +45,7 @@ type newtExitStructUnion = newtExitStruct__bindgen_ty_2;
 ///
 /// File descriptor flags for the [`Form.watch_fd()`][watch_fd] function.
 ///
-/// [watch_fd]: ../form/struct.Form.html#method.watch_fd
+/// [watch_fd]: crate::widgets::form::Form::watch_fd
 ///
 #[repr(C)]
 pub enum FDFlags {
@@ -112,9 +112,7 @@ impl<'a> Form<'a>
 
     ///
     /// Creates a new `Form` with an associated help `HelpCallback`. See
-    /// [HelpCallback][help_cb] for additional information.
-    ///
-    /// [help_cb]: ../../callbacks/struct.HelpCallback.html#method.new
+    /// [`HelpCallback`] for additional information.
     ///
     pub fn new_with_help_callback<FN, T>
       (scrollbar: Option<&VerticalScrollbar>, flags: i32,
@@ -197,7 +195,10 @@ impl<'a> Form<'a>
 
     ///
     /// Add an exit hot key to the `Form`. The `Form` will stop running
-    /// when the key is pressed.
+    /// when the key is pressed. Defaults to `F12`. Use the
+    /// [FORM_NOF12][form_nof12] flag to disable the default.
+    ///
+    /// [form_nof12]: crate::constants::form::FORM_NOF12
     ///
     pub fn add_hot_key(&self, key: i32) {
         unsafe { newtFormAddHotKey(self.co(), key); }
@@ -257,8 +258,8 @@ impl<'a> Form<'a>
     }
 
     ///
-    /// Run the form displaying all added components and accepting
-    /// input from the user.
+    /// Run the form displaying all added components and accept input from
+    /// the user.
     ///
     pub fn run(&self) -> Result<ExitReason, ()> {
         use self::ExitReason::{HotKey,Component,FDReady,Timer};

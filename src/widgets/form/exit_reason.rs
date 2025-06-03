@@ -24,7 +24,7 @@ use crate::component::Component;
 /// The `Form` exit reason.
 /// Returned by [`Form.run()`][form_run].
 ///
-/// [form_run]: ../form/struct.Form.html#method.run
+/// [form_run]: crate::widgets::form::Form::run
 ///
 #[derive(Debug)]
 pub enum ExitReason {

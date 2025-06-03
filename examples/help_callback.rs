@@ -25,6 +25,7 @@ pub fn main() {
     newt::cls();
     newt::centered_window(20, 6, Some("Help Test")).unwrap();
 
+    // Closure that will display a new window when `F1` is pressed.
     let f = |_form: &Form, data: Option<&&str>| {
         let string = data.unwrap_or(&"None");
         let len = string.len();
@@ -46,6 +47,7 @@ pub fn main() {
         newt::pop_window();
     };
 
+    // `Form` is allocated with the callback and both are associated.
     let label = Label::new(1, 1, "Press F1 for help!");
     let ok = CompactButton::new(7, 4, "Ok");
 

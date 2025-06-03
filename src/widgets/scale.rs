@@ -23,7 +23,7 @@ use newt_sys::*;
 use crate::component::Component;
 
 ///
-/// A progress bar widget.
+/// A widget that can display a filled horizontal bar representing a percentage.
 ///
 #[derive(Component)]
 pub struct Scale {
@@ -32,20 +32,42 @@ pub struct Scale {
 }
 
 impl Scale {
-    pub fn new(left: i32, top: i32, width: i32, full_value: i64) -> Scale {
+    ///
+    /// Create a new `Scale` widget.
+    ///
+    /// * `left` - The left-most position of the `Scale`.
+    /// * `top` - The top-most position of the `Scale`.
+    /// * `width` - The width of the `Scale`.
+    /// * `maximum` - The maximum value that the `Scale` will represent.
+    ///
+    pub fn new(left: i32, top: i32, width: i32, maximum: i64) -> Scale {
         Scale {
             co: unsafe {
-                let co = newtScale(left, top, width, full_value);
+                let co = newtScale(left, top, width, maximum);
                 Cell::new(co)
             },
             added_to_parent: Cell::new(false)
         }
     }
 
+    ///
+    /// Set the current value of the `Scale`.
+    ///
+    /// The `Scale` will be updated to display the percentage of
+    /// `amount`/`maximum`.
+    ///
+    /// * `amount` - The amount to set the current value to.
+    ///
     pub fn set(&self, amount: u64) {
         unsafe { newtScaleSet(self.co(), amount); }
     }
 
+    ///
+    /// Set the colors of the `Scale`.
+    ///
+    /// * `empty` - The color used to represent the unfilled percentage.
+    /// * `full` - The color used to represent the filled percentage.
+    ///
     pub fn set_colors(&self, empty: i32, full: i32) {
         unsafe { newtScaleSetColors(self.co(), empty, full); }
     }

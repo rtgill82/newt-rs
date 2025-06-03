@@ -23,6 +23,7 @@ extern crate newt;
 use newt::grid::*;
 use newt::prelude::*;
 
+// use the `Parent` trait, allowing access to all of a `Grid`'s children.
 use crate::newt::grid::Parent;
 
 #[cfg(feature = "asm")]
@@ -46,12 +47,14 @@ pub fn main() {
     rv = form.run().unwrap();
     newt::finished();
 
+    // Find the component which was activated to close the `Form`.
     for (i, co) in grid.children().iter().enumerate() {
         if rv == *co {
             println!("Component {} activated.", i);
         }
     }
 
+    // Find the button which was activated to close the `Form`.
     for (i, co) in button_bar.buttons().iter().enumerate() {
         if rv == *co {
             println!("Button {} pressed.", i);

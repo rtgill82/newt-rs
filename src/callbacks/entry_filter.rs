@@ -36,11 +36,11 @@ use crate::intern::funcs::newt_entry_set_filter;
 /// * `cursor_pos` - The current cursor position in the `Entry`.
 ///
 /// The function should return the character to be entered into the
-/// `Entry` field or '\0' to ignore the entered character.
+/// `Entry` field or `'\0'` to ignore the entered character.
 ///
 /// See the example under [Entry][entry_example].
 ///
-/// [entry_example]: ../widgets/struct.Entry.html#example
+/// [entry_example]: crate::widgets::Entry#example
 ///
 pub struct EntryFilter<'a, FN: 'a, T: 'a>
 where FN: FnMut(&Entry, Option<&T>, char, i32) -> char

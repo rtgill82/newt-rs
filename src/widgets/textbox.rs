@@ -25,7 +25,7 @@ use newt_sys::*;
 use crate::component::Component;
 
 ///
-/// A multi-line Textbox widget.
+/// A widget that can display multiple lines of text.
 ///
 #[derive(Component)]
 pub struct Textbox {
@@ -34,6 +34,19 @@ pub struct Textbox {
 }
 
 impl Textbox {
+    ///
+    /// Create a new `Textbox`.
+    ///
+    /// * `left` - The left-most postion of the `Textbox`.
+    /// * `top` - The top-most position of the `Textbox`.
+    /// * `width` - The width of the `Textbox`.
+    /// * `height` - The height of the `Textbox`.
+    /// * `flags` - The [flags][textbox] specifying `Textbox` behavior.
+    ///             See also [general flags][flags].
+    ///
+    /// [textbox]: crate::constants::textbox
+    /// [flags]: crate::constants::flags
+    ///
     pub fn new(left: i32, top: i32, width: i32, height: i32, flags: i32)
       -> Textbox {
         Textbox {
@@ -45,6 +58,27 @@ impl Textbox {
         }
     }
 
+    ///
+    /// Create a new `Textbox` in which text is automatically reflowed.
+    ///
+    /// A `Textbox` in which the text is automatically reflowed on whitespace
+    /// boundaries, rather than splitting words when word wrapping. Height is
+    /// automatically calculated and word wrap is automatically enabled.
+    ///
+    /// * `left` - The left-most position of the `Textbox`.
+    /// * `top` - The top-most position of the `Textbox`.
+    /// * `text` - The text for the `Textbox` to display.
+    /// * `width` - The width of the `Textbox`.
+    /// * `flex_down` - The minimum difference from target width for word
+    ///                 wrapping.
+    /// * `flex_up` - The maximum difference from target width for word
+    ///               wrapping.
+    /// * `flags` - The [flags][textbox] specifying widget behavior.
+    ///             See also [general flags][flags].
+    ///
+    /// [textbox]: crate::constants::textbox
+    /// [flags]: crate::constants::flags
+    ///
     pub fn new_reflowed(left: i32, top: i32, text: &str, width: i32,
                         flex_down: i32, flex_up: i32, flags: i32)
       -> Textbox {
@@ -61,19 +95,42 @@ impl Textbox {
         }
     }
 
+    ///
+    /// Set the text displayed in the `Textbox`.
+    ///
+    /// * `text` - The text for the `Textbox` to display.
+    ///
     pub fn set_text(&self, text: &str) {
         let c_text = CString::new(text).unwrap();
         unsafe { newtTextboxSetText(self.co(), c_text.as_ptr()); }
     }
 
+    ///
+    /// Set the height of the `Textbox`.
+    ///
+    /// * `height` - The height to set the `Textbox`.
+    ///
     pub fn set_height(&self, height: i32) {
         unsafe { newtTextboxSetHeight(self.co(), height); }
     }
 
+    ///
+    /// `Returns` the number of lines of text displayed in the `Textbox`.
+    ///
     pub fn get_num_lines(&self) -> i32 {
         unsafe { newtTextboxGetNumLines(self.co()) }
     }
 
+    ///
+    /// Set the colors of the `Textbox`.
+    ///
+    /// See [COLORSET_CUSTOM][colorset_custom] for defining new color sets.
+    ///
+    /// * `normal` - The color set to use when in a normal state.
+    /// * `active` - The color set to use when activated or selected.
+    ///
+    /// [colorset_custom]: crate::constants::COLORSET_CUSTOM
+    ///
     pub fn set_colors(&self, normal: i32, active: i32) {
         unsafe { newtTextboxSetColors(self.co(), normal, active); }
     }

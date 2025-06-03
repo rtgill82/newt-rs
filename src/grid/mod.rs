@@ -21,49 +21,46 @@
 //! Methods for easily arranging component placement.
 //!
 //! Grids can be used to automatically arrange widgets in a window without
-//! having to manually specify their positions. The standard [`Grid`][grid]
+//! having to manually specify their positions. The standard [`struct@Grid`]
 //! can be used to place components in specific arrangements. There are also
 //! [horizontal][horizontal] and [vertical][vertical] flavors to easily build
-//! rows or columns of components. The [`ButtonBar`][button_bar] will build
-//! a horizontal `Grid` full of `Button`s when provided with a list of strings to
-//! use as `Button` labels.
+//! rows or columns of components. The [`ButtonBar`] will build a horizontal
+//! `Grid` full of `Button`s when provided with a list of strings to use as
+//! `Button` labels.
 //!
 //! Simple window management involving grids is also provided.
-//! [`grid::wrapped_window`][wrapped] and [`grid::wrapped_window_at`][wrapped_at]
-//! will create a titled window wrapping a `Grid` for quick information
-//! display. [`SimpleWindow`][simple] and [`BasicWindow`][basic] include
-//! `ButtonBar`s as well for simple user interaction.
+//! [`grid::wrapped_window()`][wrapped] and
+//! [`grid::wrapped_window_at()`][wrapped_at] will create a titled window
+//! wrapping a `Grid` for quick information display.  [`SimpleWindow`] and
+//! [`BasicWindow`] include `ButtonBar`s as well for simple user interaction.
 //!
-//! [grid]: struct.Grid.html
-//! [horizontal]: struct.HorizontalGrid.html
-//! [vertical]: struct.VerticalGrid.html
-//! [button_bar]: struct.ButtonBar.html
-//! [wrapped]: fn.wrapped_window.html
-//! [wrapped_at]: fn.wrapped_window_at.html
-//! [simple]: struct.SimpleWindow.html
-//! [basic]: struct.BasicWindow.html
+//! [horizontal]: crate::grid::HorizontalGrid
+//! [vertical]: crate::grid::VerticalGrid
+//! [button_bar]: crate::grid::ButtonBar
+//! [wrapped]: crate::grid::wrapped_window
+//! [wrapped_at]: crate::grid::wrapped_window_at
 //!
 //! ## Example
-//!
 //! ```rust no_run
 //! extern crate newt;
 //! use newt::grid::*;
 //! use newt::prelude::*;
+//!
+//! // use the `Parent` trait, allowing access to all of a `Grid`'s children.
+//! use crate::newt::grid::Parent;
 //!
 //! pub fn main() {
 //!     newt::init().unwrap();
 //!     newt::cls();
 //!
 //!     let rv;
-//!
 //!     let l1 = Label::new(0, 0, "Hello");
 //!     let l2 = Label::new(0, 0, "World");
 //!
 //!     let stacked = HorizontalGrid::new(&[&l1, &l2]);
 //!     let button_bar = ButtonBar::new(&["Yes", "No", "Maybe"]);
-//!
-//!     let mut grid = Grid::new(2, 2);
-//!     grid.set_field(1, 0, &stacked, 1, 1, 1, 1, 0, 0);
+//!     let mut grid = Grid::new(1, 2);
+//!     grid.set_field(0, 0, &stacked, 1, 1, 1, 1, 0, 0);
 //!     grid.set_field(0, 1, &button_bar, 1, 1, 1, 1, 0, 0);
 //!
 //!     wrapped_window(&grid, "Grids");
@@ -72,8 +69,16 @@
 //!     rv = form.run().unwrap();
 //!     newt::finished();
 //!
-//!     for (i, button) in button_bar.buttons().iter().enumerate() {
-//!         if rv == *button {
+//!     // Find the component which was activated to close the `Form`.
+//!     for (i, co) in grid.children().iter().enumerate() {
+//!         if rv == *co {
+//!             println!("Component {} activated.", i);
+//!         }
+//!     }
+//!
+//!     // Find the button which was activated to close the `Form`.
+//!     for (i, co) in button_bar.buttons().iter().enumerate() {
+//!         if rv == *co {
 //!             println!("Button {} pressed.", i);
 //!         }
 //!     }

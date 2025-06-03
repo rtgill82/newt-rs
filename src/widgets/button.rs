@@ -23,7 +23,10 @@ use std::ffi::CString;
 use newt_sys::*;
 
 ///
-/// A Button widget.
+/// A widget that when activated causes the currently running
+/// [Form][form] to exit.
+///
+/// [form]: crate::widgets::form::Form
 ///
 #[derive(Component)]
 pub struct Button {
@@ -32,6 +35,13 @@ pub struct Button {
 }
 
 impl Button {
+    ///
+    /// Create a new `Button`.
+    ///
+    /// * `left` - The left-most position of the button.
+    /// * `top` - The top-most position of the button.
+    /// * `text` - The text to be displayed as the label on the button.
+    ///
     pub fn new(left: i32, top: i32, text: &str) -> Button {
         let c_str = CString::new(text).unwrap();
         Button {

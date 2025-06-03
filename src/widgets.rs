@@ -58,19 +58,16 @@ pub use self::scale::Scale;
 ///
 pub trait WidgetFns: ComponentPtr {
     ///
-    /// Allow the `Widget` to be focused when its parent [`Form`][form] is
-    /// run.
-    ///
-    /// [form]: form/struct.Form.html
+    /// Allow the widget to be focused when its parent [`Form`] is run.
     ///
     fn takes_focus(&self, value: bool) {
         unsafe { newtComponentTakesFocus(self.co_ptr(), value as c_int); }
     }
 
     ///
-    /// Get the position of the `Widget`'s top left corner.
+    /// Get the position of the widget's top left corner.
     ///
-    /// Returns a tuple in the form of `(left, top)`.
+    /// `Returns` a tuple in the form of `(left, top)`.
     ///
     fn get_position(&self) -> (i32, i32) {
         let mut left: i32 = 0;
@@ -83,9 +80,9 @@ pub trait WidgetFns: ComponentPtr {
     }
 
     ///
-    /// Get the `Widget`'s width and height.
+    /// Get the widget's width and height.
     ///
-    /// Returns a tuple in the form of `(width, height)`.
+    /// `Returns` a tuple in the form of `(width, height)`.
     ///
     fn get_size(&self) -> (i32, i32) {
         let mut width:  i32 = 0;

@@ -32,10 +32,9 @@ use crate::constants::FlagsSense;
 /// An [EntryFilter][entry_filter] can be use to filter characters as the user
 /// enters them into the `Entry`.
 ///
-/// [entry_filter]: ../callbacks/struct.EntryFilter.html
+/// [entry_filter]: crate::callbacks::EntryFilter
 ///
 /// ## Example
-///
 /// ```rust no_run
 /// extern crate newt;
 /// use newt::callbacks::EntryFilter;
@@ -100,6 +99,19 @@ pub struct Entry {
 }
 
 impl Entry {
+    ///
+    /// Create a new `Entry`.
+    ///
+    /// * `left` - The left-most position of the `Entry`.
+    /// * `top` - The top-most position of the `Entry`.
+    /// * `initial_value` - The optional inital text of the `Entry`.
+    /// * `width` - The width of the `Entry`.
+    /// * `flags` - [Flags][entry] modifying the behavior of the `Entry`.
+    ///             See also [generalized flags][flags].
+    ///
+    /// [entry]: crate::constants::entry
+    /// [flags]: crate::constants::flags
+    ///
     pub fn new(left: i32, top: i32, initial_value: Option<&str>, width: i32,
                flags: i32) -> Entry {
         let c_str: CString;
@@ -121,12 +133,22 @@ impl Entry {
         }
     }
 
+    ///
+    /// Get the text currently in the `Entry`.
+    ///
     pub fn get_text(&self) -> String {
         unsafe { CStr::from_ptr(newtEntryGetValue(self.co())) }
             .to_string_lossy()
             .into_owned()
     }
 
+    ///
+    /// Set the current text in the `Entry`.
+    ///
+    /// * `text` - The text to enter into the `Entry`.
+    /// * `cursor_at_end` - Move the cursor to the end of the string after
+    ///                     setting the text.
+    ///
     pub fn set_text(&self, text: &str, cursor_at_end: bool) {
         let c_str = CString::new(text).unwrap();
         unsafe {
@@ -134,18 +156,46 @@ impl Entry {
         }
     }
 
+    ///
+    /// Set flags modifying the `Entry`'s behavior.
+    ///
+    /// See [Entry flags][entry] as well as [flags][flags] for possible flags.
+    ///
+    /// * `flags` - A logical `or`ed list of flags.
+    /// * `sense` - The operation used to set the flags
+    ///             (`Set`, `Reset`, or `Toggle`).
+    ///
+    /// [entry]: crate::constants::entry
+    /// [flags]: crate::constants::flags
+    ///
     pub fn set_flags(&self, flags: i32, sense: FlagsSense) {
         unsafe { newtEntrySetFlags(self.co(), flags, sense as u32); }
     }
 
+    ///
+    /// Set the colors of the `Entry`.
+    ///
+    /// See [COLORSET_CUSTOM][colorset_custom] for defining new color sets.
+    ///
+    /// * `normal` - The color set to use when in a normal state.
+    /// * `active` - The color set to use when activated or selected.
+    ///
+    /// [colorset_custom]: crate::constants::COLORSET_CUSTOM
+    ///
     pub fn set_colors(&self, normal: i32, disabled: i32) {
         unsafe { newtEntrySetColors(self.co(), normal, disabled); }
     }
 
+    ///
+    /// Get the current cursor position in the `Entry`.
+    ///
     pub fn get_cursor_position(&self) -> i32 {
         unsafe { newtEntryGetCursorPosition(self.co()) }
     }
 
+    ///
+    /// Set the current cursor position in the `Entry`.
+    ///
     pub fn set_cursor_position(&self, position: i32) {
         unsafe { newtEntrySetCursorPosition(self.co(), position) }
     }

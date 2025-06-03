@@ -29,7 +29,6 @@
 //! [features]: #features
 //!
 //! ## Example
-//!
 //! ```rust no_run
 //! extern crate newt;
 //! use newt::prelude::*;
@@ -61,11 +60,12 @@
 //!
 //! ## Features
 //!
-//! - `asm` - Allows building of the [Grid][grid] module and the
-//!           [windows::win_entries][win_entries] and [windows::win_menu][win_menu] functions.
-//!           These require the inline assembly feature of Rust which is only available in compiler
-//!           versions after 1.59. Supported architectures include _x86_, _x86_64_, _arm_,
-//!           _aarch64_, _riscv32_, and _riscv64_.
+//! - `asm` - Allows building of the [`Grid`][grid] module and the
+//!           [`windows::win_entries`] and [`windows::win_menu`] functions.
+//!           These require the inline assembly feature of Rust which is only
+//!           available in compiler versions after 1.59. Supported
+//!           architectures include _x86_, _x86_64_, _arm_, _aarch64_,
+//!           _riscv32_, and _riscv64_.
 //!
 //! - `static` - Builds and links [`newt-sys`][newt_sys] statically against
 //!              its included libraries rather than linking dynamically
@@ -73,9 +73,7 @@
 //!              automatically if the required system libraries are
 //!              unavailable.
 //!
-//! [grid]: grid/index.html
-//! [win_entries]: windows/fn.win_entries.html
-//! [win_menu]: windows/fn.win_menu.html
+//! [grid]: crate::grid::Grid
 //! [newt_sys]: https://crates.io/crates/newt-sys
 //!
 //! ## License
@@ -139,30 +137,101 @@ use newt_sys::*;
 ///
 /// A struct containing the color sets for all components.
 ///
+/// Valid color names are _black_, _blue_, _green_, _cyan_, _red_,
+/// _magenta_, _brown_, _lightgray_, _gray_, _brightblue_,
+/// _brightgreen_, _brightcyan_, _brightred_, _brightmagenta_,
+/// _yellow_, and _white_.
+///
 #[derive(Clone,Debug)]
 pub struct Colors<'a> {
-    pub root_fg: &'a str,            pub root_bg: &'a str,
-    pub border_fg: &'a str,          pub border_bg: &'a str,
-    pub window_fg: &'a str,          pub window_bg: &'a str,
-    pub shadow_fg: &'a str,          pub shadow_bg: &'a str,
-    pub title_fg: &'a str,           pub title_bg: &'a str,
-    pub button_fg: &'a str,          pub button_bg: &'a str,
-    pub act_button_fg: &'a str,      pub act_button_bg: &'a str,
-    pub checkbox_fg: &'a str,        pub checkbox_bg: &'a str,
-    pub act_checkbox_fg: &'a str,    pub act_checkbox_bg: &'a str,
-    pub entry_fg: &'a str,           pub entry_bg: &'a str,
-    pub label_fg: &'a str,           pub label_bg: &'a str,
-    pub listbox_fg: &'a str,         pub listbox_bg: &'a str,
-    pub act_listbox_fg: &'a str,     pub act_listbox_bg: &'a str,
-    pub textbox_fg: &'a str,         pub textbox_bg: &'a str,
-    pub act_textbox_fg: &'a str,     pub act_textbox_bg: &'a str,
-    pub help_line_fg: &'a str,       pub help_line_bg: &'a str,
-    pub root_text_fg: &'a str,       pub root_text_bg: &'a str,
-    pub empty_scale: &'a str,        pub full_scale: &'a str,
-    pub disabled_entry_fg: &'a str,  pub disabled_entry_bg: &'a str,
-    pub compact_button_fg: &'a str,  pub compact_button_bg: &'a str,
-    pub act_sel_listbox_fg: &'a str, pub act_sel_listbox_bg: &'a str,
-    pub sel_listbox_fg: &'a str,     pub sel_listbox_bg: &'a str
+    /// The root window foreground color.
+    pub root_fg: &'a str,
+    /// The root window background color.
+    pub root_bg: &'a str,
+    /// [Window](crate::open_window) border foreground color.
+    pub border_fg: &'a str,
+    /// [Window](crate::open_window) border background color.
+    pub border_bg: &'a str,
+    /// [Window](crate::open_window) foreground color.
+    pub window_fg: &'a str,
+    /// [Window](crate::open_window) background color.
+    pub window_bg: &'a str,
+    /// [Window](crate::open_window)/[`Button`](crate::widgets::Button) shadow foreground color.
+    pub shadow_fg: &'a str,
+    /// [Window](crate::open_window)/[`Button`](crate::widgets::Button) shadow background color.
+    pub shadow_bg: &'a str,
+    /// [Window](crate::open_window) title foreground color.
+    pub title_fg: &'a str,
+    /// [Window](crate::open_window) title background color.
+    pub title_bg: &'a str,
+    /// [`Button`](crate::widgets::Button) foreground color.
+    pub button_fg: &'a str,
+    /// [`Button`](crate::widgets::Button) background color.
+    pub button_bg: &'a str,
+    /// Activated [`Button`](crate::widgets::Button) foreground color.
+    pub act_button_fg: &'a str,
+    /// Activated [`Button`](crate::widgets::Button) background color.
+    pub act_button_bg: &'a str,
+    /// [`Checkbox`](crate::widgets::Checkbox) foreground color.
+    pub checkbox_fg: &'a str,
+    /// [`Checkbox`](crate::widgets::Checkbox) background color.
+    pub checkbox_bg: &'a str,
+    /// Activated [`Checkbox`](crate::widgets::Checkbox) foreground color.
+    pub act_checkbox_fg: &'a str,
+    /// Activated [`Checkbox`](crate::widgets::Checkbox) background color.
+    pub act_checkbox_bg: &'a str,
+    /// [`Entry`](crate::widgets::Entry) foreground color.
+    pub entry_fg: &'a str,
+    /// [`Entry`](crate::widgets::Entry) background color.
+    pub entry_bg: &'a str,
+    /// [`Label`](crate::widgets::Label) foreground color.
+    pub label_fg: &'a str,
+    /// [`Label`](crate::widgets::Label) background color.
+    pub label_bg: &'a str,
+    /// [`Listbox`](crate::widgets::Listbox) foreground color.
+    pub listbox_fg: &'a str,
+    /// [`Listbox`](crate::widgets::Listbox) background color.
+    pub listbox_bg: &'a str,
+    /// Activated [`Listbox`](crate::widgets::Listbox) foreground color.
+    pub act_listbox_fg: &'a str,
+    /// Activated [`Listbox`](crate::widgets::Listbox) background color.
+    pub act_listbox_bg: &'a str,
+    /// [`Textbox`](crate::widgets::Textbox) foreground color.
+    pub textbox_fg: &'a str,
+    /// [`Textbox`](crate::widgets::Textbox) background color.
+    pub textbox_bg: &'a str,
+    /// Activated [`Textbox`](crate::widgets::Textbox) foreground color.
+    pub act_textbox_fg: &'a str,
+    /// Activated [`Textbox`](crate::widgets::Textbox) background color.
+    pub act_textbox_bg: &'a str,
+    /// [Help line](crate::push_help_line) foreground color.
+    pub help_line_fg: &'a str,
+    /// [Help line](crate::push_help_line) background color.
+    pub help_line_bg: &'a str,
+    /// [Root text](crate::draw_root_text) foreground color.
+    pub root_text_fg: &'a str,
+    /// [Root text](crate::draw_root_text) background color.
+    pub root_text_bg: &'a str,
+    /// Empty [`Scale`](crate::widgets::Scale) color.
+    pub empty_scale: &'a str,
+    /// Full [`Scale`](crate::widgets::Scale) color.
+    pub full_scale: &'a str,
+    /// Disabled [`Entry`](crate::widgets::Entry) foreground color.
+    pub disabled_entry_fg: &'a str,
+    /// Disabled [`Entry`](crate::widgets::Entry) background color.
+    pub disabled_entry_bg: &'a str,
+    /// [`CompactButton`](crate::widgets::CompactButton) foreground color.
+    pub compact_button_fg: &'a str,
+    /// [`CompactButton`](crate::widgets::CompactButton) background color.
+    pub compact_button_bg: &'a str,
+    /// Activated [`Listbox`](crate::widgets::Listbox) selection foreground color.
+    pub act_sel_listbox_fg: &'a str,
+    /// Activated [`Listbox`](crate::widgets::Listbox) selection background color.
+    pub act_sel_listbox_bg: &'a str,
+    /// [`Listbox`](crate::widgets::Listbox) selection foreground color.
+    pub sel_listbox_fg: &'a str,
+    /// [`Listbox`](crate::widgets::Listbox) selection background color.
+    pub sel_listbox_bg: &'a str
 }
 
 macro_rules! cstr {
@@ -275,6 +344,10 @@ pub fn open_window(left: i32, top: i32, width: u32, height: u32,
 
 ///
 /// Open a window in the center of the screen.
+///
+/// * `width` - The width of the window.
+/// * `height` - The height of the window.
+/// * `title` - The optional title of the window.
 ///
 pub fn centered_window(width: u32, height: u32, title: Option<&str>)
       -> Result<(), ()> {
@@ -405,11 +478,16 @@ pub fn set_colors(colors: &Colors) {
 }
 
 ///
-/// Set a specific color set.
+/// Set the colors for specific color set.
+///
+/// Valid color names are _black_, _blue_, _green_, _cyan_, _red_,
+/// _magenta_, _brown_, _lightgray_, _gray_, _brightblue_,
+/// _brightgreen_, _brightcyan_, _brightred_, _brightmagenta_,
+/// _yellow_, and _white_.
 ///
 /// * `colorset` - The color set number to set.
-/// * `fg` - The color set foreground color.
-/// * `bg` - The color set background color.
+/// * `fg`       - The color set foreground color.
+/// * `bg`       - The color set background color.
 ///
 pub fn set_color(colorset: i32, fg: &str, bg: &str) {
     let c_fg = CString::new(fg).unwrap();
@@ -429,14 +507,14 @@ pub fn refresh() {
 }
 
 ///
-/// Temporarily suspend the newt library and reset the terminal.
+/// Temporarily suspend the application and reset the terminal.
 ///
 pub fn suspend() {
     unsafe { newtSuspend(); }
 }
 
 ///
-/// Resume running the newt library.
+/// Resume running the application.
 ///
 pub fn resume() {
     unsafe { newtResume(); }
@@ -444,6 +522,11 @@ pub fn resume() {
 
 ///
 /// Display a help string on the bottom of the screen.
+///
+/// Prevous help line is pushed on to a stack to be restored with
+/// [`pop_help_line`].
+///
+/// * `text` - The help text to be displayed.
 ///
 pub fn push_help_line(text: &str) {
     let c_str = CString::new(text).unwrap();
@@ -458,7 +541,9 @@ pub fn redraw_help_line() {
 }
 
 ///
-/// Remove the help line.
+/// Remove the current help line.
+///
+/// Restore the previous help line from the stack if one exists.
 ///
 pub fn pop_help_line() {
     unsafe { newtPopHelpLine(); }
@@ -466,6 +551,10 @@ pub fn pop_help_line() {
 
 ///
 /// Draw text directly to the root window.
+///
+/// * `col` - The column position of the text.
+/// * `row` - The row positon of the text.
+/// * `text` - The text to be displayed.
 ///
 pub fn draw_root_text(col: i32, row: i32, text: &str) {
     let c_str = CString::new(text).unwrap();
@@ -496,7 +585,7 @@ pub fn cursor_on() {
 ///
 /// Get the terminal screen size.
 ///
-/// Returns a tuple pair in the order of (columns, rows).
+/// `Returns` a tuple pair in the order of (`columns`, `rows`).
 ///
 pub fn get_screen_size() -> (i32, i32) {
     let mut cols: c_int = 0;
@@ -513,9 +602,9 @@ pub fn get_screen_size() -> (i32, i32) {
 /// * `flex_down` - The minimum difference from target width.
 /// * `flex_up` - The maximum difference from target width.
 ///
-/// Returns the tuple ``(text, width, height)`` where ``text`` is the newly
-/// formatted text, ``width`` is the new width of the text, and ``height``
-/// is the number of lines in the text.
+/// `Returns` the tuple ``(text, width, height)`` where ``text`` is the
+/// newly formatted text, ``width`` is the new width of the text, and
+/// ``height`` is the number of lines in the text.
 ///
 pub fn reflow_text(text: &str, width: i32, flex_down: i32, flex_up: i32)
       -> (String, i32, i32) {

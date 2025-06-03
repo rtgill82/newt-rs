@@ -31,6 +31,9 @@ use newt_sys::*;
 /// use newt::prelude::*;
 ///
 /// pub fn main() {
+///     // Receives the new value when the DestroyCallback is activated.
+///     let mut value: i32 = 0;
+///
 ///     newt::init().unwrap();
 ///     newt::cls();
 ///     newt::centered_window(20, 6, Some("DestroyCallback Test")).unwrap();
@@ -39,10 +42,9 @@ use newt_sys::*;
 ///     let cb2 = Checkbox::new(3, 2, "Check 2", None, None);
 ///     let ok = CompactButton::new(7, 4, "Ok");
 ///
-///     let mut value: i32 = 0;
-///
 ///     // Closure `f` borrows `value` as mutable so create a new subscope here
-///     // allowing `value` to be borrowed immutably when printing the result later.
+///     // allowing `value` to be borrowed immutably when printing the result
+///     // later.
 ///     {
 ///         // Create closure to be called by DestroyCallback
 ///         let mut f = |_c: &dyn Component, data: Option<&i32>| {
@@ -54,9 +56,8 @@ use newt_sys::*;
 ///         callback.add_component(&cb1, Some(10));
 ///         callback.add_component(&cb2, Some(15));
 ///
-///         //
-///         // Create a subscope so that Form and the components added to it are dropped when it ends.
-///         //
+///         // Create another subscope so that Form and the components added to it
+///         // are dropped when it ends.
 ///         {
 ///             let mut form = Form::new(None, 0);
 ///             form.add_components(&[&cb1, &cb2, &ok]).unwrap();
@@ -68,6 +69,7 @@ use newt_sys::*;
 ///     // `value` should be 5 because `ok` button was the last added to the form
 ///     println!("value = {}", value);
 /// }
+/// ```
 ///
 pub struct DestroyCallback<'a, FN: 'a, T: 'a>
 where FN: FnMut(&dyn Component, Option<&T>)

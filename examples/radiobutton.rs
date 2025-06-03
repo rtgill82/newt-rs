@@ -25,11 +25,19 @@ pub fn main() {
     newt::cls();
     newt::centered_window(20, 6, Some("Options")).unwrap();
 
+    // Create the first `Radiobutton` in the set, set as default.
     let radio1 = Radiobutton::new(4, 1, "Option 1", true, None);
+
+    // Create the second `Radiobutton in the set, adding `radio1` as the
+    // previous button.
     let radio2 = Radiobutton::new(4, 2, "Option 2", false,
-                                      Some(&radio1));
+                                  Some(&radio1));
+
+    // Create the third `Radiobutton` in the set, adding `radio2` as the
+    // previous button.
     let radio3 = Radiobutton::new(4, 3, "Option 3", false,
-                                      Some(&radio2));
+                                  Some(&radio2));
+
     let ok = CompactButton::new(7, 5, "Ok");
 
     let mut form = Form::new(None, 0);
@@ -41,7 +49,12 @@ pub fn main() {
                    (&radio2, "Option 2"),
                    (&radio3, "Option 3")];
 
+    // Get the currently selected `Radiobutton` from the first in the set
+    // (any will do).
     let current = radio1.get_current();
+
+    // Find the currently selected `Radiobutton` in the array of available
+    // buttons.
     for val in buttons.iter() {
         let &(radio, text) = val;
         if *radio == current {

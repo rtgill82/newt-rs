@@ -31,6 +31,10 @@ pub use crate::asm::windows::*;
 ///
 /// Open a simple message window.
 ///
+/// * `title` - The title to be displayed at the top of the window.
+/// * `button_text` - The label to be displayed on the button.
+/// * `text` - The text to be displayed in the main area of the window.
+///
 pub fn win_message(title: &str, button_text: &str, text: &str) {
     unsafe {
         let c_title = CString::new(title).unwrap();
@@ -47,10 +51,15 @@ pub fn win_message(title: &str, button_text: &str, text: &str) {
 ///
 /// Open a window providing a choice of buttons.
 ///
-/// Returns the number of the button pressed.
+/// * `title` - The title to be displayed at the top of the window.
+/// * `button1` - The label to be displayed on the first button.
+/// * `button2` - The label to be displayed on the second button.
+/// * `text` - The text to be displayed in the main area of the window.
 ///
-pub fn win_choice(title: &str, button1: &str, button2: &str, text: &str)
-  -> i32 {
+/// `Returns` the number of the button pressed indexed from `1`.
+///
+pub fn win_choice(title: &str, button1: &str, button2: &str, text: &str) -> i32
+{
     unsafe {
         let c_title = CString::new(title).unwrap();
         let c_button1 = CString::new(button1).unwrap();
@@ -68,10 +77,16 @@ pub fn win_choice(title: &str, button1: &str, button2: &str, text: &str)
 ///
 /// Open a window with three buttons.
 ///
-/// Returns the number of the button pressed.
+/// * `title` - The title to be displayed at the top of the window.
+/// * `button1` - The label to be displayed on the first button.
+/// * `button2` - The label to be displayed on the second button.
+/// * `text` - The text to be displayed in the main area of the window.
+///
+/// `Returns` the number of the button pressed indexed from `1`.
 ///
 pub fn win_ternary(title: &str, button1: &str, button2: &str, button3: &str,
-                   text: &str) -> i32 {
+                   text: &str) -> i32
+{
     unsafe {
         let c_title = CString::new(title).unwrap();
         let c_button1 = CString::new(button1).unwrap();

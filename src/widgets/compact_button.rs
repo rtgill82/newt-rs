@@ -22,7 +22,9 @@ use std::ffi::CString;
 use newt_sys::*;
 
 ///
-/// A small button with no padding around its label.
+/// A smaller [Button][button] with no padding around its label.
+///
+/// [button]: crate::widgets::Button
 ///
 #[derive(Component)]
 pub struct CompactButton {
@@ -31,6 +33,13 @@ pub struct CompactButton {
 }
 
 impl CompactButton {
+    ///
+    /// Create a new `CompactButton`.
+    ///
+    /// * `left` - The left-most position of the button.
+    /// * `top` - The top-most position of the button.
+    /// * `text` - The text to be displayed as the label on the button.
+    ///
     pub fn new(left: i32, top: i32, text: &str) -> CompactButton {
         let c_str = CString::new(text).unwrap();
         CompactButton {

@@ -67,6 +67,9 @@ impl<'a> Grid<'a> {
     ///
     /// Create a new Grid with the specified columns and rows.
     ///
+    /// * `cols` - The number of columns the `Grid` should have.
+    /// * `rows` - The number of rows the `Grid` should have.
+    ///
     pub fn new(cols: i32, rows: i32) -> Grid<'a> {
         assert!(cols > 0, "`cols` must be greater than 0");
         assert!(rows > 0, "`rows` must be greater than 0");
@@ -81,6 +84,21 @@ impl<'a> Grid<'a> {
 
     ///
     /// Add a component or sub-grid to the positon (`col`, `row`) in the grid.
+    ///
+    /// * `col` - The column to position the component.
+    /// * `row` - The row to position the component.
+    /// * `val` - The `Component` to be added to the `Grid`.
+    /// * `pad_left` - The amount of padding towards the left of the cell.
+    /// * `pad_top` - The amount of padding towards the top of the cell.
+    /// * `pad_right` - The amount of padding towards the right of the cell.
+    /// * `pad_bottom` - The amount of padding towards the bottom of the cell.
+    /// * `anchor` - Anchor the component towards the specified direction of
+    ///              its cell compared to surrounding cells. See
+    ///              [anchor flags][anchors].
+    /// * `flags` - [Flags][flags] modifying sub-Grid behavior.
+    ///
+    /// [flags]: crate::constants::grid
+    /// [anchors]: crate::constants::grid
     ///
     pub fn set_field(&mut self, col: i32, row: i32, val: &'a dyn Component,
                      pad_left: i32, pad_top: i32, pad_right: i32,
@@ -105,6 +123,11 @@ impl<'a> Grid<'a> {
 ///
 /// Wrap a `Grid` in a centered window.
 ///
+/// Wraps a `Grid` in a centered window and automatically displays it.
+///
+/// * `grid` - The `Grid` to be wrapped in the window.
+/// * `title` - The title of the window to be displayed.
+///
 pub fn wrapped_window(grid: &dyn r#trait::Grid, title: &str) {
     let c_str = CString::new(title).unwrap();
     unsafe {
@@ -114,6 +137,14 @@ pub fn wrapped_window(grid: &dyn r#trait::Grid, title: &str) {
 
 ///
 /// Wrap a `Grid` in a window at a specified location.
+///
+/// Wraps a `Grid` in a window and displays the window at the specified
+/// location.
+///
+/// * `grid` - The `Grid` to be wrapped in the window.
+/// * `title` - The title of the window to be displayed.
+/// * `left` - The left-most position of the window.
+/// * `top` - The top-most position of the window.
 ///
 pub fn wrapped_window_at(grid: &dyn r#trait::Grid, title: &str,
                          left: i32, top: i32) {

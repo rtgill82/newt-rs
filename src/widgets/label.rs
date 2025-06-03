@@ -33,6 +33,13 @@ pub struct Label {
 }
 
 impl Label {
+    ///
+    /// Create a new `Label`.
+    ///
+    /// * `left` - The left-most position of the `Label`.
+    /// * `top` - The top-most position of the `Label`.
+    /// * `text` - The text to be displayed as the `Label`.
+    ///
     pub fn new(left: i32, top: i32, text: &str) -> Label {
         let c_text = CString::new(text).unwrap();
         Label {
@@ -44,11 +51,25 @@ impl Label {
         }
     }
 
+    ///
+    /// Set the `Label`'s text.
+    ///
+    /// * `text` - The text to be displayed as the `Label`.
+    ///
     pub fn set_text(&self, text: &str) {
         let c_text = CString::new(text).unwrap();
         unsafe { newtLabelSetText(self.co(), c_text.as_ptr()); }
     }
 
+    ///
+    /// Set the colors of the `Label.
+    ///
+    /// See [COLORSET_CUSTOM][colorset_custom] for defining new color sets.
+    ///
+    /// * `colorset` - The color set to use for the `Label`.
+    ///
+    /// [colorset_custom]: crate::constants::COLORSET_CUSTOM
+    ///
     pub fn set_colors(&self, colorset: i32) {
         unsafe { newtLabelSetColors(self.co(), colorset); }
     }

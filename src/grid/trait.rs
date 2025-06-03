@@ -60,6 +60,11 @@ pub trait Parent {
 /// Implements functions shared by `Grid`s.
 ///
 pub trait GridFns: AsComponent + Child + ComponentPtr + Parent {
+    ///
+    /// Add `Grid` to a `Form`.
+    ///
+    /// * `form` - The form to add the `Grid` to.
+    ///
     fn add_to_form<'a>(&'a self, form: &mut Form<'a>)
       -> Result<(), &'static str>
     {
@@ -69,6 +74,11 @@ pub trait GridFns: AsComponent + Child + ComponentPtr + Parent {
         Ok(())
     }
 
+    ///
+    /// Get the size of the `Grid`.
+    ///
+    /// `Returns` the width and height as a tuple (`width`, `height`).
+    ///
     fn get_size(&self) -> (i32, i32) {
         let mut width: i32 = 0;
         let mut height: i32 = 0;
@@ -78,6 +88,12 @@ pub trait GridFns: AsComponent + Child + ComponentPtr + Parent {
         (width, height)
     }
 
+    ///
+    /// Move the `Grid` to a specified location.
+    ///
+    /// * `left` - The left-most position of the `Grid`.
+    /// * `top` - The top-most position of the `Grid`.
+    ///
     fn place(&self, left: i32, top: i32) {
         unsafe {
             newtGridPlace(self.grid_ptr(), left, top);

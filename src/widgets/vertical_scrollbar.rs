@@ -21,7 +21,8 @@ use std::cell::Cell;
 use newt_sys::*;
 
 ///
-/// A VerticalScrollbar widget.
+/// A vertical scrollbar which can be attached to a
+/// [Form](crate::widgets::form::Form).
 ///
 #[derive(Component)]
 pub struct VerticalScrollbar {
@@ -30,8 +31,20 @@ pub struct VerticalScrollbar {
 }
 
 impl VerticalScrollbar {
+    ///
+    /// Create a new `VerticalScrollbar`.
+    ///
+    /// * `left` - The left-most position of the `VerticalScrollbar`.
+    /// * `top` - The top-most position of the `VerticalScrollabar`.
+    /// * `height` - The height of the `VerticalScrollbar`.
+    /// * `normal_colorset` - The normal colorset of the `VerticalScrollbar`.
+    /// * `thumb_colorset` - The colorset when the thumb button is activated.
+    ///
+    /// (as of `newt-0.52.25`, `thumb_colorset` does not appear to be used)
+    ///
     pub fn new(left: i32, top: i32, height: i32, normal_colorset: i32,
-               thumb_colorset: i32) -> VerticalScrollbar {
+               thumb_colorset: i32) -> VerticalScrollbar
+    {
         VerticalScrollbar {
             co: unsafe {
                 let co = newtVerticalScrollbar (left, top, height,

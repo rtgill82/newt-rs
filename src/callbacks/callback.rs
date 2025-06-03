@@ -31,6 +31,9 @@ use newt_sys::*;
 /// use newt::prelude::*;
 ///
 /// pub fn main() {
+///     // Receives the new value when the Callback is activated.
+///     let mut value: i32 = 0;
+///
 ///     newt::init().unwrap();
 ///     newt::cls();
 ///     newt::centered_window(20, 6, Some("Callback Test")).unwrap();
@@ -42,9 +45,9 @@ use newt_sys::*;
 ///     let mut form = Form::new(None, 0);
 ///     form.add_components(&[&cb1, &cb2, &ok]).unwrap();
 ///
-///     let mut value: i32 = 0;
 ///     // Closure `f` borrows `value` as mutable so create a new subscope here
-///     // allowing `value` to be borrowed immutably when printing the result later.
+///     // allowing `value` to be borrowed immutably when printing the result
+///     // later.
 ///     {
 ///         // Create closure to be called by Callback
 ///         let mut f = |_c: &dyn Component, data: Option<&i32>| {

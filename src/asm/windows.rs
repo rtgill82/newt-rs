@@ -36,9 +36,9 @@ pub use crate::asm::win_entries_new;
 
 ///
 /// A struct used to pass initial [`Entry`][entry] information to the
-/// `win_entries()` function.
+/// [`win_entries()`] function.
 ///
-/// [entry]: ../widgets/struct.Entry.html
+/// [entry]: crate::widgets::Entry
 ///
 #[derive(Default)]
 pub struct WinEntry {
@@ -51,7 +51,7 @@ impl WinEntry {
     ///
     /// Create a new `WinEntry`.
     ///
-    /// * `text` - The text to display as the entry field label.
+    /// * `text` - The text to display as the `Entry` field label.
     /// * `value` - The initial value of the `Entry` field.
     /// * `flags` - The settings flags for the `Entry`.
     ///
@@ -64,12 +64,13 @@ impl WinEntry {
     }
 
     ///
-    /// Returns the value of the corresponding `Entry`. This is either
-    /// the inital `value` set when the `WinEntry` is created, or the user
-    /// entered data provided by the [`win_entries()`][win_entries] function
-    /// if that has been run.
+    /// Get the value of the corresponding `Entry`.
     ///
-    /// [win_entries]: ../windows/fn.win_entries.html
+    /// This is either the inital `value` set when the `WinEntry` is created,
+    /// or the user entered data provided by the
+    /// [`win_entries()`][win_entries] function if that has been run.
+    ///
+    /// [win_entries]: crate::windows::win_entries
     ///
     pub fn value(&self) -> &str {
         self.value.as_str()
@@ -150,11 +151,11 @@ impl<'a> Drop for WinEntryBuf<'a> {
 /// * `buttons` - A slice containing the text for a number of buttons to display
 ///               in the window.
 ///
-/// Returns a tuple pair as `(button, item)` where `button` is the button
-/// number pressed to close the window and `item` is the item number in the
-/// list that was selected. Returned `button` is numbered starting from `1`.
+/// `Returns` a tuple pair as `(`button`, `item`)` where `button` is the
+/// button number pressed to close the window and `item` is the item number
+/// in the list that was selected. Returned `button` is indexed from `1`.
 ///
-/// [listbox]: ../widgets/struct.Listbox.html
+/// [listbox]:  crate::widgets::Listbox
 ///
 #[allow(clippy::too_many_arguments)]
 pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
@@ -178,6 +179,10 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
 ///
 /// Open a window containing a number of text [`Entry`s][entry].
 ///
+/// Each [`WinEntry`] in the `entries` array will be modified to contain the
+/// data entered by the user. This can be accessed via the
+/// [`WinEntry.value()`][win_entry_value] function.
+///
 /// _Requires that the `asm` feature be enabled._
 ///
 /// * `title` - The window title.
@@ -193,16 +198,12 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
 /// * `buttons` - A slice containing the text for a number of buttons to
 ///               display in the window.
 ///
-/// Returns the number of the button pressed to close the window, starting
+/// `Returns` the number of the button pressed to close the window, indexed
 /// from `1`.
 ///
-/// Each `WinEntry` in the `entries` array will be modified to contain the
-/// data entered by the user. This can be accessed via the
-/// [`WinEntry.value()`][win_entry_value] function.
-///
-/// [entry]: ../widgets/struct.Entry.html
-/// [win_entry]: ../windows/struct.WinEntry.html
-/// [win_entry_value]: ../windows/struct.WinEntry.html#method.value
+/// [entry]: crate::widgets::Entry
+/// [win_entry]: crate::windows::WinEntry
+/// [win_entry_value]: crate::windows::WinEntry::value
 ///
 #[allow(clippy::too_many_arguments)]
 pub fn win_entries(title: &str, text: &str, suggested_width: i32, flex_down: i32,

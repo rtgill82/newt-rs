@@ -22,6 +22,46 @@ use crate::intern::funcs::*;
 ///
 /// A callback called when `Ctrl-Z` is pressed.
 ///
+/// ## Example
+/// ```rust no_run
+/// extern crate newt;
+/// use newt::callbacks::SuspendCallback;
+/// use newt::prelude::*;
+///
+/// pub fn main() {
+///     // Receives the new value when the SuspendCallback is activated.
+///     let mut value: i32 = 0;
+///
+///     newt::init().unwrap();
+///     newt::cls();
+///     newt::centered_window(20, 5, Some("Suspend Callback Test")).unwrap();
+///
+///     let label = Label::new(4, 1, "Press Ctrl-Z");
+///     let ok = CompactButton::new(7, 4, "Ok");
+///
+///     let mut form = Form::new(None, 0);
+///     form.add_components(&[&label, &ok]).unwrap();
+///
+///     // Closure `f` borrows `value` as mutable so create a new subscope here
+///     // allowing `value` to be borrowed immutably when printing the result
+///     // later.
+///     {
+///         // Create closure to be called by SuspendCallback
+///         let mut f = |data: Option<&i32>| {
+///             value = *data.unwrap();
+///         };
+///         // Create SuspendCallback using `10` as data.
+///         let _callback = SuspendCallback::new(Some(10), &mut f);
+///
+///         form.run().unwrap();
+///         newt::finished();
+///     }
+///
+///     // `value` will be `10` if Ctrl-Z was pressed.
+///     println!("value = {}", value);
+/// }
+/// ```
+///
 pub struct SuspendCallback<FN, T>
 where FN: FnMut(Option<&T>)
 {

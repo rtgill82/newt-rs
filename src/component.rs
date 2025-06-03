@@ -37,8 +37,8 @@ use crate::intern;
 /// A wrapper for passing complex data to [CheckboxTree][checkbox_tree] and
 /// [Listbox][listbox] widgets.
 ///
-/// [checkbox_tree]: ../widgets/struct.CheckboxTree.html
-/// [listbox]: ../widgets/struct.Listbox.html
+/// [checkbox_tree]: crate::widgets::CheckboxTree
+/// [listbox]: crate::widgets::Listbox
 ///
 pub struct Data<'a, T: 'a>(pub &'a T);
 

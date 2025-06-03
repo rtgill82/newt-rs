@@ -26,15 +26,23 @@ pub fn main() {
     newt::cls();
     newt::centered_window(22, 5, None).unwrap();
 
+    // last character entered
     let mut g_ch: char = '\0';
+    // last cursor position
     let mut g_cursor: i32 = 0;
+    // user data from last Entry modified
     let mut g_data: i32 = 0;
 
+    // Create closure to be used to filter the Entry field.
     let mut f = |_e: &Entry, data: Option<&i32>, ch: char, cursor: i32| {
-        g_data = *data.unwrap();
-        g_ch = ch;
-        g_cursor = cursor;
-        return ch;
+        g_data = *data.unwrap(); // set user data
+        g_ch = ch;               // set character entered
+        g_cursor = cursor;       // set cursor position
+
+        // The returned character gets added to the entry.
+        // If for example you want to fill an entry with asterisks despite
+        // what the user entered, then return '*' here.
+        return ch; // Return the entered character.
     };
 
     let l1 = Label::new(1, 1, "Entry 1:");
@@ -47,7 +55,9 @@ pub fn main() {
     let mut form = Form::new(None, 0);
     form.add_components(components).unwrap();
 
+    // Filter the first Entry, passing user data `5`.
     let mut filter = EntryFilter::new(&e1, Some(5), &mut f);
+    // Filter the second Entry, passing user data `10`.
     filter.add_entry(&e2, Some(10));
 
     form.run().unwrap();
@@ -56,6 +66,7 @@ pub fn main() {
     println!("Entry 1: {}", e1.get_text());
     println!("Entry 2: {}", e2.get_text());
 
+    // Display the last values set by the filter.
     println!("ch = {}", g_ch);
     println!("cursor = {}", g_cursor);
     println!("data = {}", g_data);
