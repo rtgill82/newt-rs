@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2019 Robert Gill <rtgill82@gmail.com>
+// Copyright (C) 2019,2025 Robert Gill <rtgill82@gmail.com>
 //
 // This file is a part of newt-rs.
 //
@@ -18,7 +18,9 @@
 //
 
 use std::cell::Cell;
+
 use newt_sys::*;
+use crate::component::Component;
 
 ///
 /// A vertical scrollbar which can be attached to a
@@ -37,8 +39,8 @@ impl VerticalScrollbar {
     /// * `left` - The left-most position of the `VerticalScrollbar`.
     /// * `top` - The top-most position of the `VerticalScrollabar`.
     /// * `height` - The height of the `VerticalScrollbar`.
-    /// * `normal_colorset` - The normal colorset of the `VerticalScrollbar`.
-    /// * `thumb_colorset` - The colorset when the thumb button is activated.
+    /// * `normal_colorset` - The normal color set of the `VerticalScrollbar`.
+    /// * `thumb_colorset` - The color set when the thumb button is activated.
     ///
     /// (as of `newt-0.52.25`, `thumb_colorset` does not appear to be used)
     ///
@@ -53,6 +55,34 @@ impl VerticalScrollbar {
                 Cell::new(co)
             },
             added_to_parent: Cell::new(false)
+        }
+    }
+
+    ///
+    /// Set the current scroll position of the `VerticalScrollbar`.
+    ///
+    /// * `where` - The new scroll position of the `VerticalScrollbar`.
+    /// * `total` - The amount of the range of the `VerticalScrollbar` used
+    ///             to calculate the new position. `0` or `1` means to use
+    ///             the entirety of the range.
+    ///
+    pub fn set(&self, where_: i32, total: i32) {
+        unsafe {
+            newtScrollbarSet(self.co(), where_, total);
+        }
+    }
+
+    ///
+    /// Set the colors of the `VerticalScrollbar`.
+    ///
+    /// * `normal` - The normal color set of the `VerticalScrollbar`.
+    /// * `thumb` - The color set when the thumb button is activated.
+    ///
+    /// (as of `newt-0.52.25`, the `thumb` color set does not appear to be used)
+    ///
+    pub fn set_colors(&self, normal: i32, thumb: i32) {
+        unsafe {
+            newtScrollbarSetColors(self.co(), normal, thumb);
         }
     }
 }
