@@ -36,7 +36,7 @@ impl Data for () {
 impl Data for char {
     fn newt_to_ptr(&self) -> *const c_void {
         if !self.is_ascii() {
-            panic!("newt library is unable to accept raw UTF-8 characters.");
+            panic!("UTF-8 characters are not supported.");
         }
 
         *self as usize as *const c_void
@@ -108,7 +108,7 @@ impl Data for usize {
 }
 
 #[test]
-#[should_panic(expected = "newt library is unable to accept raw UTF-8 characters.")]
+#[should_panic(expected = "UTF-8 characters are not supported.")]
 fn char_data_should_not_accept_utf8() {
     let s = "\u{1F603}";
     let c = s.chars().next().unwrap();

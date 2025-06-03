@@ -25,7 +25,7 @@ use std::ptr;
 use newt_sys::*;
 use crate::component::Component;
 use crate::constants::FlagsSense;
-use crate::intern::funcs::char_slice_to_cstring;
+use crate::intern::funcs::*;
 
 ///
 /// A widget displaying a box which can be cycled through various
@@ -55,8 +55,8 @@ impl Checkbox {
       -> Checkbox {
         let c_text = CString::new(text).unwrap();
         let default: c_char = match default {
-            Some(value) => value as c_char,
-            None => 0 as c_char
+            Some(value) => char_to_c_char(value),
+            None        => 0
         };
 
         let cstr: CString;
@@ -93,7 +93,7 @@ impl Checkbox {
     ///             creation.
     ///
     pub fn set_value(&self, value: char) {
-        unsafe { newtCheckboxSetValue(self.co(), value as c_char); }
+        unsafe { newtCheckboxSetValue(self.co(), char_to_c_char(value)); }
     }
 
     ///

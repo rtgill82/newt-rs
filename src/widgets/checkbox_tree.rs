@@ -20,12 +20,12 @@
 use std::cell::Cell;
 use std::ffi::CString;
 use std::marker::PhantomData;
-use std::os::raw::{c_char, c_void};
+use std::os::raw::{c_char,c_void};
 
 use newt_sys::*;
 use crate::component::Component;
 use crate::intern::data::Data;
-use crate::intern::funcs::char_slice_to_cstring;
+use crate::intern::funcs::*;
 use crate::constants;
 
 ///
@@ -115,9 +115,13 @@ impl<D: Data> CheckboxTree<D> {
             Some(seq) => {
                 let c_seq = char_slice_to_cstring(&seq);
                 unsafe {
-                    newtCheckboxTreeMulti(left, top, height,
-                                          c_seq.as_ptr() as *mut c_char,
-                                          flags)
+                    newtCheckboxTreeMulti(
+                        left,
+                        top,
+                        height,
+                        c_seq.as_ptr() as *mut c_char,
+                        flags
+                    )
                 }
             },
 
@@ -243,7 +247,7 @@ impl<D: Data> CheckboxTree<D> {
             newtCheckboxTreeGetMultiSelection(
                 self.co(),
                 &mut numitems,
-                seqval as c_char
+                char_to_c_char(seqval)
             )
         };
         c_ptr_array_to_boxed_slice!(ptr[D], numitems)
@@ -336,7 +340,7 @@ impl<D: Data> CheckboxTree<D> {
             newtCheckboxTreeSetEntryValue(
                 self.co(),
                 data.newt_to_ptr(),
-                value as c_char
+                char_to_c_char(value)
             );
         }
     }

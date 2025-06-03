@@ -17,8 +17,9 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
+use std::convert::TryInto;
 use std::ffi::CString;
-use std::os::raw::{c_int,c_void};
+use std::os::raw::{c_char,c_int,c_void};
 use std::{char,ptr};
 
 use newt_sys::*;
@@ -32,12 +33,17 @@ use crate::callbacks::HelpCallback;
 use crate::callbacks::SuspendCallback;
 use crate::intern::Child;
 
+pub fn char_to_c_char(ch: char) -> c_char {
+    match TryInto::<u8>::try_into(ch) {
+        Ok(ch) => ch as c_char,
+        Err(_) => panic!("cannot convert `char` {} to `c_char`", ch)
+    }
+}
+
 pub fn char_slice_to_cstring(slice: &[char]) -> CString {
     let mut vec: Vec<u8> = Vec::new();
-    for c in slice.iter() {
-        let mut b = [0; 1];
-        let ch = c.encode_utf8(&mut b);
-        vec.push(ch.as_bytes()[0]);
+    for ch in slice.iter() {
+        vec.push(char_to_c_char(*ch) as u8);
     }
 
     let string = String::from_utf8_lossy(vec.as_slice());

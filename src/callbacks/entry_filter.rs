@@ -92,7 +92,8 @@ where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
     }
 
     pub(crate) fn call(&mut self, co: newtComponent, ch: char, cursor: i32)
-      -> char {
+        -> char
+    {
         for (entry, data) in self.entries.iter() {
             if entry.co() == co {
                 return (self.function)(*entry, data.as_ref(), ch, cursor);
