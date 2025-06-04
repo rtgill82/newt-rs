@@ -65,6 +65,13 @@ fn checkbox_tree_add_item() {
 }
 
 #[test]
+#[should_panic(expected = "Indexes must be positive integers.")]
+fn checkbox_tree_add_item_with_negative_index() {
+    let checkbox_tree: CheckboxTree = CheckboxTree::new(0, 0, 10, None, 0);
+    checkbox_tree.add_item("item 1", 5, 0, Some(&[-100]));
+}
+
+#[test]
 fn checkbox_tree_get_current() {
     let checkbox_tree: CheckboxTree = CheckboxTree::new(0, 0, 10, None, 0);
     checkbox_tree.add_item("item 1", 5, 0, None);

@@ -170,6 +170,13 @@ impl<D: Data> CheckboxTree<D> {
         if let Some(indexes) = indexes {
             c_array = Vec::with_capacity(indexes.len() + 1);
             while i < indexes.len() {
+                if indexes[i] < 0 {
+                    match indexes[i] {
+                        constants::ARG_APPEND => (),
+                        constants::ARG_LAST   => (),
+                        _  => panic!("Indexes must be positive integers.")
+                    };
+                }
                 c_array.push(indexes[i]);
                 i += 1;
             }
