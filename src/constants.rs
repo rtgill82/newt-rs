@@ -281,28 +281,51 @@ pub mod grid {
     use newt_sys::*;
 
     /// Anchor a component towards the left of its cell.
-    pub const ANCHOR_LEFT: c_int   = NEWT_ANCHOR_LEFT;
+    pub const GRID_ANCHOR_LEFT: c_int   = NEWT_ANCHOR_LEFT;
     /// Anchor a component towards the right of its cell.
-    pub const ANCHOR_RIGHT: c_int  = NEWT_ANCHOR_RIGHT;
+    pub const GRID_ANCHOR_RIGHT: c_int  = NEWT_ANCHOR_RIGHT;
     /// Anchor a component towards the top of its cell.
-    pub const ANCHOR_TOP: c_int    = NEWT_ANCHOR_TOP;
+    pub const GRID_ANCHOR_TOP: c_int    = NEWT_ANCHOR_TOP;
     /// Anchor a component towards the bottom of its cell.
-    pub const ANCHOR_BOTTOM: c_int = NEWT_ANCHOR_BOTTOM;
-
-    /// Used to terminate a list of elements when adding them to a
-    /// [`Grid`](crate::grid::Grid).
-    pub const NEWT_GRID_EMPTY: newtGridElement     = newtGridElement_NEWT_GRID_EMPTY;
-    /// Specify that the element being added to a [`Grid`](crate::grid::Grid)
-    /// is a Component.
-    pub const NEWT_GRID_COMPONENT: newtGridElement = newtGridElement_NEWT_GRID_COMPONENT;
-    /// Specify that the element being added to a [`Grid`](crate::grid::Grid)
-    /// is a sub-Grid.
-    pub const NEWT_GRID_SUBGRID: newtGridElement   = newtGridElement_NEWT_GRID_SUBGRID;
+    pub const GRID_ANCHOR_BOTTOM: c_int = NEWT_ANCHOR_BOTTOM;
 
     /// Grow a sub-Grid to fill the X-dimension of the parent cell.
     pub const GRID_FLAG_GROWX: c_int = NEWT_GRID_FLAG_GROWX;
     /// Grow a sub-Grid to fill the Y-dimension of the parent cell.
     pub const GRID_FLAG_GROWY: c_int = NEWT_GRID_FLAG_GROWY;
+
+    /// Used to terminate a list of elements when adding them to a
+    /// [`Grid`](crate::grid::Grid).
+    pub const GRID_EMPTY: newtGridElement     = newtGridElement_NEWT_GRID_EMPTY;
+    /// Specify that the element being added to a [`Grid`](crate::grid::Grid)
+    /// is a Component.
+    pub const GRID_COMPONENT: newtGridElement = newtGridElement_NEWT_GRID_COMPONENT;
+    /// Specify that the element being added to a [`Grid`](crate::grid::Grid)
+    /// is a sub-Grid.
+    pub const GRID_SUBGRID: newtGridElement   = newtGridElement_NEWT_GRID_SUBGRID;
+
+    #[deprecated(since="0.6.11", note="please use `GRID_ANCHOR_LEFT`")]
+    /// Alias for [`GRID_ANCHOR_LEFT`].
+    pub const ANCHOR_LEFT: c_int   = NEWT_ANCHOR_LEFT;
+    #[deprecated(since="0.6.11", note="please use `GRID_ANCHOR_RIGHT`")]
+    /// Alias for [`GRID_ANCHOR_RIGHT`].
+    pub const ANCHOR_RIGHT: c_int  = NEWT_ANCHOR_RIGHT;
+    #[deprecated(since="0.6.11", note="please use `GRID_ANCHOR_TOP`")]
+    /// Alias for [`GRID_ANCHOR_TOP`].
+    pub const ANCHOR_TOP: c_int    = NEWT_ANCHOR_TOP;
+    #[deprecated(since="0.6.11", note="please use `GRID_ANCHOR_BOTTOM`")]
+    /// Alias for [`GRID_ANCHOR_BOTTOM`].
+    pub const ANCHOR_BOTTOM: c_int = NEWT_ANCHOR_BOTTOM;
+
+    #[deprecated(since="0.6.11", note="please use `GRID_EMPTY`")]
+    /// Alias for [`GRID_EMPTY`].
+    pub const NEWT_GRID_EMPTY: newtGridElement     = GRID_EMPTY;
+    #[deprecated(since="0.6.11", note="please use `GRID_COMPONENT`")]
+    /// Alias for [`GRID_COMPONENT`].
+    pub const NEWT_GRID_COMPONENT: newtGridElement = GRID_COMPONENT;
+    #[deprecated(since="0.6.11", note="please use `GRID_SUBGRID`")]
+    /// Alias for [`GRID_SUBGRID`].
+    pub const NEWT_GRID_SUBGRID: newtGridElement   = GRID_SUBGRID;
 }
 pub use crate::constants::grid::*;
 

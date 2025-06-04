@@ -21,7 +21,7 @@ use std::cell::Cell;
 
 use newt_sys::*;
 use crate::component::Component;
-use crate::constants::{NEWT_GRID_COMPONENT,NEWT_GRID_SUBGRID};
+use crate::constants::{GRID_COMPONENT,GRID_SUBGRID};
 
 ///
 /// Create a simple window using sub-grids.
@@ -44,11 +44,12 @@ impl<'a> BasicWindow<'a> {
     ///
     pub fn new(text: &'a dyn Component, middle: &'a dyn Component,
                buttons: &'a dyn Component)
-      -> BasicWindow<'a> {
+        -> BasicWindow<'a>
+    {
 
-        assert_eq!(text.grid_element_type(), NEWT_GRID_COMPONENT);
-        assert_eq!(middle.grid_element_type(), NEWT_GRID_SUBGRID);
-        assert_eq!(buttons.grid_element_type(), NEWT_GRID_SUBGRID);
+        assert_eq!(text.grid_element_type(), GRID_COMPONENT);
+        assert_eq!(middle.grid_element_type(), GRID_SUBGRID);
+        assert_eq!(buttons.grid_element_type(), GRID_SUBGRID);
 
         let grid = unsafe {
             newtGridBasicWindow(text.co(), middle.grid_ptr(), buttons.grid_ptr())

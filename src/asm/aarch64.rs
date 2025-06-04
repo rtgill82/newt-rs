@@ -24,7 +24,7 @@ use std::os::raw::c_void;
 use newt_sys::*;
 
 use crate::Component;
-use crate::constants::NEWT_GRID_EMPTY;
+use crate::constants::GRID_EMPTY;
 use crate::asm::windows::{WinEntry,WinEntryBuf};
 use crate::asm::funcs::*;
 
@@ -107,7 +107,7 @@ grid_new<'t, 'a>(components: &'t [&'a dyn Component],
          lsl    x20, x20, #3
          add    sp, sp, x20",
 
-         inlateout("x0") NEWT_GRID_EMPTY as *const c_void => grid,
+         inlateout("x0") GRID_EMPTY as *const c_void => grid,
 
          inlateout("x10") types_ptr => _,
          inlateout("x11") values_ptr => _,

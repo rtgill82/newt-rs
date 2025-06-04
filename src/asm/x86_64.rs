@@ -24,7 +24,7 @@ use std::os::raw::c_void;
 use newt_sys::*;
 
 use crate::Component;
-use crate::constants::NEWT_GRID_EMPTY;
+use crate::constants::GRID_EMPTY;
 use crate::asm::windows::{WinEntry,WinEntryBuf};
 use crate::asm::funcs::*;
 
@@ -108,7 +108,7 @@ grid_new<'t, 'a>(components: &'t [&'a dyn Component],
          in("rcx") len,
          in("r10") func,
 
-         inlateout("rax") NEWT_GRID_EMPTY as *const c_void => grid,
+         inlateout("rax") GRID_EMPTY as *const c_void => grid,
          out("r12") _, clobber_abi("C")
     }
     (grid, children)
