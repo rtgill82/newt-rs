@@ -32,6 +32,7 @@ const NEWT_FLAGS_TOGGLE: newtFlagsSense = newtFlagsSense_NEWT_FLAGS_TOGGLE;
 /// for a `Component`.
 ///
 #[repr(C)]
+#[derive(Clone,Copy)]
 pub enum FlagsSense {
     /// Set the specified flags that are not currently set.
     Set    = NEWT_FLAGS_SET    as isize,

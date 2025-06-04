@@ -20,7 +20,7 @@
 use std::cell::Cell;
 use std::ffi::{CStr, CString};
 use std::marker::PhantomData;
-use std::os::raw::{c_char, c_void};
+use std::os::raw::{c_char,c_uint,c_void};
 use std::ptr;
 
 use newt_sys::*;
@@ -242,8 +242,31 @@ impl<D: Data> Listbox<D> {
     ///
     pub fn select_item(&self, key: D, sense: FlagsSense) {
         unsafe {
-            newtListboxSelectItem(self.co(), key.newt_to_ptr(), sense as u32)
-        };
+            newtListboxSelectItem(
+                self.co(),
+                key.newt_to_ptr(),
+                sense as c_uint
+            );
+        }
+    }
+
+    ///
+    /// Modify multiple items' current selection status.
+    ///
+    /// * `keys` - An array of user `Data` associated with the items.
+    /// * `sense` - The sense in which the selection should be modified
+    ///             (`Set`, `Reset`, or `Toggle`).
+    ///
+    pub fn select_items(&self, keys: &[D], sense: FlagsSense) {
+        unsafe {
+            for key in keys {
+                newtListboxSelectItem(
+                    self.co(),
+                    key.newt_to_ptr(),
+                    sense as c_uint
+                );
+            }
+        }
     }
 
     ///

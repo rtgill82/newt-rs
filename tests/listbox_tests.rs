@@ -26,7 +26,7 @@ use newt::Component;
 use newt::component::Data;
 use newt::widgets::{Form,Listbox};
 use newt::constants::FLAG_MULTIPLE;
-use newt::constants::FlagsSense::Set;
+use newt::constants::FlagsSense::{Reset,Set,Toggle};
 
 struct TestStruct<'a> {
     pub v1: usize,
@@ -162,6 +162,38 @@ fn listbox_select_item() {
     listbox.append_entry("entry 1", 5).unwrap();
     listbox.append_entry("entry 2", 10).unwrap();
     listbox.select_item(10, Set);
+    let result = listbox.get_selection();
+    assert!(result.len() == 1);
+    assert!(result[0] == 10);
+}
+
+#[test]
+fn listbox_select_items() {
+    let listbox: Listbox = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
+    for i in 1..10 {
+        let text = format!("entry {}", i);
+        listbox.append_entry(&text, i).unwrap();
+    }
+    listbox.select_items(&[3, 6, 9], Set);
+
+    let result = listbox.get_selection();
+    assert!(result.len() == 3);
+    assert!(result[0] == 3);
+    assert!(result[1] == 6);
+    assert!(result[2] == 9);
+
+    listbox.select_items(&[6], Toggle);
+    let result = listbox.get_selection();
+    assert!(result.len() == 2);
+    assert!(result[0] == 3);
+    assert!(result[1] == 9);
+
+    listbox.select_items(&[6], Toggle);
+    listbox.select_items(&[3], Reset);
+    let result = listbox.get_selection();
+    assert!(result.len() == 2);
+    assert!(result[0] == 6);
+    assert!(result[1] == 9);
 }
 
 #[test]
