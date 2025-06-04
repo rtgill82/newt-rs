@@ -32,26 +32,28 @@ pub use self::form::Form;
 mod vertical_scrollbar;
 pub use self::vertical_scrollbar::VerticalScrollbar;
 
-mod compact_button;
-pub use self::compact_button::CompactButton;
 mod button;
 pub use self::button::Button;
 mod checkbox;
 pub use self::checkbox::Checkbox;
-mod radiobutton;
-pub use self::radiobutton::Radiobutton;
+mod checkbox_tree;
+pub use self::checkbox_tree::CheckboxTree;
+mod compact_button;
+pub use self::compact_button::CompactButton;
+mod entry;
+pub use self::entry::Entry;
 mod label;
 pub use self::label::Label;
 mod listbox;
 pub use self::listbox::Listbox;
-mod checkbox_tree;
-pub use self::checkbox_tree::CheckboxTree;
-mod textbox;
-pub use self::textbox::Textbox;
-mod entry;
-pub use self::entry::Entry;
+mod radiobutton;
+pub use self::radiobutton::Radiobutton;
+mod radiobutton_set;
+pub use self::radiobutton_set::RadiobuttonSet;
 mod scale;
 pub use self::scale::Scale;
+mod textbox;
+pub use self::textbox::Textbox;
 
 ///
 /// Implement shared functions for newt component widgets.

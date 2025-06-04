@@ -117,7 +117,7 @@ impl<'a> Form<'a>
     pub fn new_with_help_callback<FN, T>
       (scrollbar: Option<&VerticalScrollbar>, flags: i32,
        function: FN, data: Option<T>)
-        -> (Form<'a>, Box<HelpCallback<'a, FN, T>>)
+      -> (Form<'a>, Box<HelpCallback<'a, FN, T>>)
         where FN: Fn(&Form, Option<&T>)
     {
         HelpCallback::new(scrollbar, flags, data, function)
@@ -142,7 +142,8 @@ impl<'a> Form<'a>
     /// Add a `Component` to the `Form` to be displayed when the `Form` is run.
     ///
     pub fn add_component(&mut self, component: &'a dyn Component)
-      -> Result<(), &'static str> {
+        -> Result<(), &'static str>
+    {
         component.add_to_parent()?;
         self.components.push(component);
         unsafe { newtFormAddComponent(self.co(), component.co()); }
@@ -153,7 +154,8 @@ impl<'a> Form<'a>
     /// Add multiple `Component`s to the `Form`.
     ///
     pub fn add_components<'t>(&mut self, components: &'t [&'a dyn Component])
-      -> Result<(), &'static str> {
+        -> Result<(), &'static str>
+    {
         for component in components.iter() {
             self.add_component(*component)?;
         }
@@ -165,7 +167,7 @@ impl<'a> Form<'a>
     ///
     pub fn take_component<T>(&mut self, component: T)
         -> Result<(), &'static str>
-      where T: Component
+        where T: Component
     {
         component.add_to_parent()?;
         unsafe { newtFormAddComponent(self.co(), component.co()); }
