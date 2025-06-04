@@ -116,7 +116,7 @@ fn char_data_should_not_accept_utf8() {
 }
 
 #[test]
-fn char_data_should_accpet_ascii() {
+fn char_data_should_accept_ascii() {
     let c = '0';
     let _ptr = c.newt_to_ptr();
 }
