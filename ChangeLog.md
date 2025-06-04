@@ -1,5 +1,25 @@
 # ChangeLog
 
+## 0.6.11
+
+* Implement DestroyCallback.
+
+* Add `RadiobuttonSet`.
+
+* Add `set` and `set_colors` functions to `VerticalScrollbar`.
+
+* Add `select_items` function to `Listbox`.
+
+* Make the `newt::grid::Parent` trait public.
+
+* Implement better error handling when converting `char` to `c_char`
+
+* CheckboxTree: only accept positive integers as indexes.
+
+* Add aliases for and deprecate some `Grid` related constants.
+
+* Documentation updates
+
 ## 0.6.10
 
 * Documentation updates
