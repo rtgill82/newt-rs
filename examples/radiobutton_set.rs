@@ -32,8 +32,8 @@ pub fn main() {
     let ok = CompactButton::new(7, 5, "Ok");
 
     let mut form = Form::new(None, 0);
-    set.add_to_form(&mut form);
-    form.add_component(&ok);
+    set.add_to_form(&mut form).unwrap();
+    form.add_component(&ok).unwrap();
 
     form.run().unwrap();
     newt::finished();
