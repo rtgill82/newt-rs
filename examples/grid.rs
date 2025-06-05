@@ -24,6 +24,7 @@ use newt::grid::*;
 use newt::prelude::*;
 
 // use the `Parent` trait, allowing access to all of a `Grid`'s children.
+#[cfg(feature = "asm")]
 use crate::newt::grid::Parent;
 
 #[cfg(feature = "asm")]
