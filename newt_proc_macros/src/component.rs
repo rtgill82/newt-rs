@@ -154,10 +154,10 @@ fn impl_component_partial_eq(name: &Ident, generics: &Generics)
             }
         }
 
-        impl #impl_ std::cmp::PartialEq<crate::widgets::form::ExitReason> for #name #type_
+        impl #impl_ std::cmp::PartialEq<crate::form::ExitReason> for #name #type_
             #where_
         {
-            fn eq(&self, other: &crate::widgets::form::ExitReason) -> bool {
+            fn eq(&self, other: &crate::form::ExitReason) -> bool {
                 other == self
             }
         }
