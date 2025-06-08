@@ -23,7 +23,8 @@
 
 pub use crate::component::Component;
 pub use crate::constants::*;
+pub use crate::form::*;
 pub use crate::widgets::*;
 
 #[doc(no_inline)]
-pub use crate::widgets::form::ExitReason;
+pub use crate::form::ExitReason;

@@ -18,7 +18,8 @@
 //
 
 extern crate newt;
-use newt::widgets::{Button,Form};
+use newt::form::Form;
+use newt::widgets::Button;
 
 use newt::constants::KEY_ENTER;
 

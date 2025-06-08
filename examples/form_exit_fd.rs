@@ -27,7 +27,7 @@ use std::os::unix::net::{UnixListener,UnixStream};
 use std::process::exit;
 use tempfile::tempdir;
 
-use newt::widgets::form::FDFlags;
+use newt::form::FDFlags;
 use newt::prelude::*;
 
 fn help() {

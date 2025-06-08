@@ -18,16 +18,12 @@
 //
 
 //!
-//! newt UI widgets.
+//! newt UI `Component`s.
 //!
 use std::os::raw::c_int;
 
 use crate::intern::ComponentPtr;
 use newt_sys::*;
-
-pub mod form;
-#[doc(no_inline)]
-pub use self::form::Form;
 
 mod vertical_scrollbar;
 pub use self::vertical_scrollbar::VerticalScrollbar;
@@ -60,7 +56,9 @@ pub use self::textbox::Textbox;
 ///
 pub trait WidgetFns: ComponentPtr {
     ///
-    /// Allow the widget to be focused when its parent [`Form`] is run.
+    /// Allow the widget to be focused when its parent [`Form`][form] is run.
+    ///
+    /// [form]: crate::form::Form
     ///
     fn takes_focus(&self, value: bool) {
         unsafe { newtComponentTakesFocus(self.co_ptr(), value as c_int); }

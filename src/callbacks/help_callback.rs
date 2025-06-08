@@ -22,7 +22,8 @@ use std::marker::PhantomData;
 use std::ptr;
 
 use crate::component::Component;
-use crate::widgets::{Form,VerticalScrollbar};
+use crate::form::Form;
+use crate::widgets::VerticalScrollbar;
 use crate::intern::funcs::*;
 use newt_sys::*;
 
@@ -33,7 +34,7 @@ use newt_sys::*;
 /// together. The [`Form::new_with_help_callback()`][form] function could
 /// also be used in lieu of [`HelpCallback::new()`].
 ///
-/// [form]: crate::widgets::form::Form::new_with_help_callback
+/// [form]: crate::form::Form::new_with_help_callback
 ///
 /// ## Example
 /// ```rust no_run

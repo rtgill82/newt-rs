@@ -16,7 +16,7 @@ asm    = []
 
 [dependencies]
 libc             = "0.2"
-newt_proc_macros = "=0.0.12"
+newt_proc_macros = "=0.0.13"
 newt-sys         = "0.2"
 
 [dev-dependencies]

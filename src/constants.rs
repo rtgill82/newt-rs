@@ -128,7 +128,7 @@ pub mod flags {
     use std::os::raw::c_int;
     use newt_sys::*;
 
-    /// Exit the currently running [`Form`](crate::widgets::form::Form)
+    /// Exit the currently running [`Form`](crate::form::Form)
     /// when the `Enter` key is pressed while the `Component` is focused.
     pub const FLAG_RETURNEXIT: c_int    = NEWT_FLAG_RETURNEXIT;
 
@@ -149,7 +149,7 @@ pub mod flags {
     pub const FLAG_WRAP: c_int          = NEWT_FLAG_WRAP;
 
     /// Disable the default exit on F12 hot key in a
-    /// [`Form`](crate::widgets::form::Form).
+    /// [`Form`](crate::form::Form).
     pub const FLAG_NOF12: c_int         = NEWT_FLAG_NOF12;
 
     /// Allow selecting multiple items in a
@@ -172,7 +172,7 @@ pub mod flags {
 pub use crate::constants::flags::*;
 
 ///
-/// Flags specific to [Forms](crate::widgets::form::Form).
+/// Flags specific to [Forms](crate::form::Form).
 ///
 pub mod form {
     use std::os::raw::c_int;

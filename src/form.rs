@@ -17,6 +17,9 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
+//!
+//! Displays `Component`s and accepts user input.
+//!
 use std::cell::Cell;
 use std::ops::Drop;
 use std::os::unix::io::RawFd;
@@ -44,7 +47,7 @@ type newtExitStructUnion = newtExitStruct__bindgen_ty_2;
 ///
 /// File descriptor flags for the [`Form.watch_fd()`][watch_fd] function.
 ///
-/// [watch_fd]: crate::widgets::form::Form::watch_fd
+/// [watch_fd]: crate::form::Form::watch_fd
 ///
 #[repr(C)]
 pub enum FDFlags {

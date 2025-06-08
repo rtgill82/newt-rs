@@ -24,7 +24,7 @@ use crate::component::Component;
 
 ///
 /// A vertical scrollbar which can be attached to a
-/// [Form](crate::widgets::form::Form).
+/// [Form](crate::form::Form).
 ///
 #[derive(Component)]
 pub struct VerticalScrollbar {

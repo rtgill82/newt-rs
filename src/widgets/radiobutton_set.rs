@@ -18,7 +18,8 @@
 //
 
 use crate::component::Component;
-use crate::widgets::{Form,Radiobutton};
+use crate::form::Form;
+use crate::widgets::Radiobutton;
 
 ///
 /// A convenience wrapper for managing [`Radiobutton`]s.

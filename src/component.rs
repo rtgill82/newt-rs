@@ -18,7 +18,10 @@
 //
 
 //!
-//! Trait implemented by `Widget` and `Grid` types.
+//! Trait implemented by [widget][widget] and [`Grid`][grid] types.
+//!
+//! [grid]: crate::grid
+//! [widget]: crate::widgets
 //!
 use std::cmp::PartialEq;
 use std::fmt::Debug;
@@ -26,8 +29,8 @@ use std::ops::Deref;
 use std::os::raw::c_void;
 
 use newt_sys::*;
+use crate::form::ExitReason;
 use crate::widgets::WidgetFns;
-use crate::widgets::form::ExitReason;
 
 use crate::asm::*;
 use crate::intern::*;

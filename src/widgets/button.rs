@@ -26,7 +26,7 @@ use newt_sys::*;
 /// A widget that when activated causes the currently running
 /// [Form][form] to exit.
 ///
-/// [form]: crate::widgets::form::Form
+/// [form]: crate::form::Form
 ///
 #[derive(Component)]
 pub struct Button {

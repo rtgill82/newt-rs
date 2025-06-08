@@ -107,6 +107,7 @@ pub mod asm;
 pub mod callbacks;
 pub mod component;
 pub mod constants;
+pub mod form;
 pub mod grid;
 pub mod prelude;
 pub mod widgets;

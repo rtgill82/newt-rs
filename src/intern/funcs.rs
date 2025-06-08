@@ -24,7 +24,8 @@ use std::{char,ptr};
 
 use newt_sys::*;
 use crate::component::Component;
-use crate::widgets::{Entry,Form};
+use crate::form::Form;
+use crate::widgets::Entry;
 
 use crate::Callback;
 use crate::callbacks::DestroyCallback;
