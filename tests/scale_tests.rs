@@ -19,7 +19,7 @@
 
 extern crate newt;
 use newt::Component;
-use newt::widgets::{Form,Scale};
+use newt::widgets::{Button,Scale};
 use std::ptr;
 
 use newt::constants::COLORSET_EMPTYSCALE;
@@ -27,31 +27,31 @@ use newt::constants::COLORSET_FULLSCALE;
 
 #[test]
 fn scale_create() {
-    let scale = Scale::new(0, 0, 10, 100);
+    let scale = Scale::new(-1, -1, 10, 100);
     assert!(scale.co() != ptr::null_mut());
 }
 
 #[test]
 fn scale_partial_eq_true() {
-    let scale = Scale::new(0, 0, 10, 100);
+    let scale = Scale::new(-1, -1, 10, 100);
     assert!(scale == scale);
 }
 
 #[test]
 fn scale_partial_eq_false() {
-    let scale = Scale::new(0, 0, 10, 100);
-    let form = Form::new(None, 0);
-    assert!(scale != form);
+    let scale = Scale::new(-1, -1, 10, 100);
+    let button = Button::new(-1, -1, "Ok");
+    assert!(scale != button);
 }
 
 #[test]
 fn scale_set() {
-    let scale = Scale::new(0, 0, 10, 100);
+    let scale = Scale::new(-1, -1, 10, 100);
     scale.set(50);
 }
 
 #[test]
 fn scale_set_colors() {
-    let scale = Scale::new(0, 0, 10, 100);
+    let scale = Scale::new(-1, -1, 10, 100);
     scale.set_colors(COLORSET_EMPTYSCALE, COLORSET_FULLSCALE);
 }

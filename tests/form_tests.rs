@@ -18,41 +18,25 @@
 //
 
 extern crate newt;
-use newt::Component;
 use newt::widgets::{Button,Form};
-use std::ptr;
 
 use newt::constants::KEY_ENTER;
 
 #[test]
 fn form_create() {
-    let form = Form::new(None, 0);
-    assert!(form.co() != ptr::null_mut());
-}
-
-#[test]
-fn form_partial_eq_true() {
-    let form = Form::new(None, 0);
-    assert!(form == form);
-}
-
-#[test]
-fn form_partial_eq_false() {
-    let form1 = Form::new(None, 0);
-    let form2 = Form::new(None, 0);
-    assert!(form1 != form2);
+    let _form = Form::new(None, 0);
 }
 
 #[test]
 fn form_add_component() {
-    let button = Button::new(0, 0, "Ok");
+    let button = Button::new(-1, -1, "Ok");
     let mut form = Form::new(None, 0);
     form.add_component(&button).unwrap();
 }
 
 #[test]
 fn form_add_component_x2() {
-    let button = Button::new(0, 0, "Ok");
+    let button = Button::new(-1, -1, "Ok");
     let mut form = Form::new(None, 0);
     form.add_component(&button).unwrap();
     match form.add_component(&button) {
@@ -63,16 +47,16 @@ fn form_add_component_x2() {
 
 #[test]
 fn form_add_components() {
-    let button1 = Button::new(0, 0, "Ok");
-    let button2 = Button::new(0, 0, "Cancel");
+    let button1 = Button::new(-1, -1, "Ok");
+    let button2 = Button::new(-1, -1, "Cancel");
     let mut form = Form::new(None, 0);
     form.add_components(&[&button1, &button2]).unwrap();
 }
 
 #[test]
 fn form_add_components_x2() {
-    let button1 = Button::new(0, 0, "Ok");
-    let button2 = Button::new(0, 0, "Cancel");
+    let button1 = Button::new(-1, -1, "Ok");
+    let button2 = Button::new(-1, -1, "Cancel");
 
     let mut form = Form::new(None, 0);
     form.add_component(&button2).unwrap();
@@ -84,7 +68,7 @@ fn form_add_components_x2() {
 
 #[test]
 fn form_take_component() {
-    let button = Button::new(0, 0, "Ok");
+    let button = Button::new(-1, -1, "Ok");
 
     let mut form = Form::new(None, 0);
     form.take_component(button).unwrap();

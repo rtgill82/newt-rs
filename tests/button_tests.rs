@@ -19,24 +19,24 @@
 
 extern crate newt;
 use newt::Component;
-use newt::widgets::{Button,Form};
+use newt::widgets::Button;
 use std::ptr;
 
 #[test]
 fn button_create() {
-    let button = Button::new(0, 0, "Ok");
+    let button = Button::new(-1, -1, "Ok");
     assert!(button.co() != ptr::null_mut());
 }
 
 #[test]
 fn button_partial_eq_true() {
-    let button = Button::new(0, 0, "Ok");
+    let button = Button::new(-1, -1, "Ok");
     assert!(button == button);
 }
 
 #[test]
 fn button_partial_eq_false() {
-    let button = Button::new(0, 0, "Ok");
-    let form = Form::new(None, 0);
-    assert!(button != form);
+    let button1 = Button::new(-1, -1, "Ok");
+    let button2 = Button::new(-1, -1, "Ok");
+    assert!(button1 != button2);
 }

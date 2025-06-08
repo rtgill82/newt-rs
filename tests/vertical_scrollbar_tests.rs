@@ -19,19 +19,19 @@
 
 extern crate newt;
 use newt::Component;
-use newt::widgets::{Form,VerticalScrollbar};
+use newt::widgets::{Button,VerticalScrollbar};
 use std::ptr;
 
 #[test]
 fn vertical_scrollbar_create() {
-    let scrollbar = VerticalScrollbar::new(0, 0, 10, 0, 0);
+    let scrollbar = VerticalScrollbar::new(-1, -1, 10, 0, 0);
     assert!(scrollbar.co() != ptr::null_mut());
 }
 
 #[test]
 fn vertical_scrollbar_partial_eq_false() {
-    let scrollbar = VerticalScrollbar::new(0, 0, 10, 0, 0);
-    let form = Form::new(Some(&scrollbar), 0);
+    let scrollbar = VerticalScrollbar::new(-1, -1, 10, 0, 0);
+    let button = Button::new(-1, -1, "Ok");
     assert!(scrollbar == scrollbar);
-    assert!(scrollbar != form);
+    assert!(scrollbar != button);
 }

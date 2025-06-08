@@ -31,7 +31,6 @@ use crate::callbacks::DestroyCallback;
 use crate::callbacks::EntryFilter;
 use crate::callbacks::HelpCallback;
 use crate::callbacks::SuspendCallback;
-use crate::intern::Child;
 
 pub fn char_to_c_char(ch: char) -> c_char {
     match TryInto::<u8>::try_into(ch) {
@@ -74,7 +73,6 @@ where FN: FnMut(&Form, Option<&T>)
     if data.is_null() { return; };
     let cb = &mut *(data as *mut HelpCallback<FN, T>);
     let form = Form::new_co(co);
-    form.add_to_parent().unwrap();
     cb.call(&form);
 }
 

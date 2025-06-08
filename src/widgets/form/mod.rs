@@ -26,7 +26,6 @@ use newt_sys::*;
 use crate::component::Component;
 use crate::callbacks::HelpCallback;
 use crate::widgets::VerticalScrollbar;
-use crate::intern::{Child,Nullify};
 
 mod exit_reason;
 pub use self::exit_reason::ExitReason;
@@ -66,21 +65,17 @@ struct BaseComponent {
 ///
 /// Displays `Component`s and accepts user input.
 ///
-#[derive(Component)]
 pub struct Form<'a>
 {
-    co: Cell<newtComponent>,
-    added_to_parent: Cell<bool>,
+    pub(crate) co: newtComponent,
     components: Vec<&'a dyn Component>
 }
 
 impl<'a> Drop for Form<'a>
 {
     fn drop(&mut self) {
-        if !self.added_to_parent() {
-            unsafe { newtFormDestroy(self.co()); }
-            self.nullify();
-        }
+        unsafe { newtFormDestroy(self.co); }
+        self.co = ptr::null_mut();
 
         for component in self.components.iter() {
             component.nullify();
@@ -101,12 +96,8 @@ impl<'a> Form<'a>
         };
 
         Form {
-            co: unsafe {
-                let co = newtForm(scrollbar, ptr::null_mut(), flags);
-                Cell::new(co)
-            },
-            components: Vec::new(),
-            added_to_parent: Cell::new(false)
+            co: unsafe { newtForm(scrollbar, ptr::null_mut(), flags) },
+            components: Vec::new()
         }
     }
 
@@ -125,9 +116,8 @@ impl<'a> Form<'a>
 
     pub(crate) fn new_co(co: newtComponent) -> Form<'a> {
         Form {
-            co: Cell::new(co),
-            components: Vec::new(),
-            added_to_parent: Cell::new(false)
+            co: co,
+            components: Vec::new()
         }
     }
 
@@ -146,7 +136,7 @@ impl<'a> Form<'a>
     {
         component.add_to_parent()?;
         self.components.push(component);
-        unsafe { newtFormAddComponent(self.co(), component.co()); }
+        unsafe { newtFormAddComponent(self.co, component.co()); }
         Ok(())
     }
 
@@ -170,7 +160,7 @@ impl<'a> Form<'a>
         where T: Component
     {
         component.add_to_parent()?;
-        unsafe { newtFormAddComponent(self.co(), component.co()); }
+        unsafe { newtFormAddComponent(self.co, component.co()); }
         Ok(())
     }
 
@@ -178,21 +168,21 @@ impl<'a> Form<'a>
     /// Set the height of the `Form`.
     ///
     pub fn set_height(&self, height: i32) {
-        unsafe { newtFormSetHeight(self.co(), height); }
+        unsafe { newtFormSetHeight(self.co, height); }
     }
 
     ///
     /// Set the width of the `Form`.
     ///
     pub fn set_width(&self, width: i32) {
-        unsafe { newtFormSetWidth(self.co(), width); }
+        unsafe { newtFormSetWidth(self.co, width); }
     }
 
     ///
     /// Tell the `Form` to resize itself.
     ///
     pub fn set_size(&self) {
-        unsafe { newtFormSetSize(self.co()); }
+        unsafe { newtFormSetSize(self.co); }
     }
 
     ///
@@ -203,7 +193,7 @@ impl<'a> Form<'a>
     /// [form_nof12]: crate::constants::form::FORM_NOF12
     ///
     pub fn add_hot_key(&self, key: i32) {
-        unsafe { newtFormAddHotKey(self.co(), key); }
+        unsafe { newtFormAddHotKey(self.co, key); }
     }
 
     ///
@@ -213,7 +203,7 @@ impl<'a> Form<'a>
     /// * `millisecs` - The timer countdown in milliseconds.
     ///
     pub fn set_timer(&self, millisecs: i32) {
-        unsafe { newtFormSetTimer(self.co(), millisecs); }
+        unsafe { newtFormSetTimer(self.co, millisecs); }
     }
 
     ///
@@ -224,7 +214,7 @@ impl<'a> Form<'a>
     /// * `flags` - Flags specifying the activity to watch for.
     ///
     pub fn watch_fd(&self, fd: RawFd, flags: FDFlags) {
-        unsafe { newtFormWatchFd(self.co(), fd, flags as i32); }
+        unsafe { newtFormWatchFd(self.co, fd, flags as i32); }
     }
 
     ///
@@ -232,7 +222,7 @@ impl<'a> Form<'a>
     ///
     pub fn get_current(&self) -> Box<dyn Component> {
         Box::new(BaseComponent {
-            co: unsafe { Cell::new(newtFormGetCurrent(self.co())) },
+            co: unsafe { Cell::new(newtFormGetCurrent(self.co)) },
             added_to_parent: Cell::new(true)
         })
     }
@@ -241,22 +231,22 @@ impl<'a> Form<'a>
     /// Set the `Form`'s currently focused `Component`.
     ///
     pub fn set_current(&self, subcomponent: &dyn Component) {
-        unsafe { newtFormSetCurrent(self.co(), subcomponent.co()); }
+        unsafe { newtFormSetCurrent(self.co, subcomponent.co()); }
     }
 
     ///
     /// Set the `Form`'s background color.
     ///
     pub fn set_background(&self, color: i32) {
-        unsafe { newtFormSetBackground(self.co(), color); }
+        unsafe { newtFormSetBackground(self.co, color); }
     }
 
     pub fn get_scroll_position(&self) -> i32 {
-        unsafe { newtFormGetScrollPosition(self.co()) }
+        unsafe { newtFormGetScrollPosition(self.co) }
     }
 
     pub fn set_scroll_position(&self, position: i32) {
-        unsafe { newtFormSetScrollPosition(self.co(), position); }
+        unsafe { newtFormSetScrollPosition(self.co, position); }
     }
 
     ///
@@ -272,7 +262,7 @@ impl<'a> Form<'a>
         };
 
         unsafe {
-            newtFormRun(self.co(), &mut es);
+            newtFormRun(self.co, &mut es);
             match es.reason {
                 NEWT_EXIT_HOTKEY => Ok(HotKey(es.u.key)),
                 NEWT_EXIT_COMPONENT => Ok(
@@ -293,6 +283,6 @@ impl<'a> Form<'a>
     /// Redraw the `Form`.
     ///
     pub fn draw(&self) {
-        unsafe { newtDrawForm(self.co()); }
+        unsafe { newtDrawForm(self.co); }
     }
 }

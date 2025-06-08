@@ -19,7 +19,7 @@
 
 extern crate newt;
 use newt::Component;
-use newt::widgets::{Form,Textbox};
+use newt::widgets::{Button,Textbox};
 use std::ptr;
 
 use newt::constants::COLORSET_TEXTBOX;
@@ -27,50 +27,51 @@ use newt::constants::COLORSET_ACTTEXTBOX;
 
 #[test]
 fn textbox_create() {
-    let textbox = Textbox::new(0, 0, 10, 10, 0);
+    let textbox = Textbox::new(-1, -1, 10, 10, 0);
     assert!(textbox.co() != ptr::null_mut());
 }
 
 #[test]
 fn textbox_create_reflowed() {
-    let textbox = Textbox::new_reflowed(0, 0, "Hello world!", 20, 15, 20, 0);
+    let textbox = Textbox::new_reflowed(-1, -1, "Hello world!",
+                                        20, 15, 20, 0);
     assert!(textbox.co() != ptr::null_mut());
 }
 
 #[test]
 fn textbox_partial_eq_true() {
-    let textbox = Textbox::new(0, 0, 10, 10, 0);
+    let textbox = Textbox::new(-1, -1, 10, 10, 0);
     assert!(textbox == textbox);
 }
 
 #[test]
 fn textbox_partial_eq_false() {
-    let textbox = Textbox::new(0, 0, 10, 10, 0);
-    let form = Form::new(None, 0);
-    assert!(textbox != form);
+    let textbox = Textbox::new(-1, -1, 10, 10, 0);
+    let button = Button::new(-1, -1, "Ok");
+    assert!(textbox != button);
 }
 
 #[test]
 fn textbox_set_text() {
-    let textbox = Textbox::new(0, 0, 10, 10, 0);
+    let textbox = Textbox::new(-1, -1, 10, 10, 0);
     textbox.set_text("Hello world!");
 }
 
 #[test]
 fn textbox_set_height() {
-    let textbox = Textbox::new(0, 0, 10, 10, 0);
+    let textbox = Textbox::new(-1, -1, 10, 10, 0);
     textbox.set_height(20);
 }
 
 #[test]
 fn textbox_get_num_lines() {
-    let textbox = Textbox::new(0, 0, 10, 10, 0);
+    let textbox = Textbox::new(-1, -1, 10, 10, 0);
     textbox.set_text("Hello\nworld!");
     assert!(textbox.get_num_lines() == 2);
 }
 
 #[test]
 fn textbox_set_colors() {
-    let textbox = Textbox::new(0, 0, 10, 10, 0);
+    let textbox = Textbox::new(-1, -1, 10, 10, 0);
     textbox.set_colors(COLORSET_TEXTBOX, COLORSET_ACTTEXTBOX);
 }

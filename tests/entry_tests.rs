@@ -20,7 +20,7 @@
 extern crate newt;
 use newt::constants::FlagsSense;
 use newt::Component;
-use newt::widgets::{Entry,Form};
+use newt::widgets::{Button,Entry};
 use std::ptr;
 
 use newt::constants::COLORSET_ENTRY;
@@ -28,26 +28,26 @@ use newt::constants::COLORSET_DISENTRY;
 
 #[test]
 fn entry_create() {
-    let entry = Entry::new(0, 0, None, 10, 0);
+    let entry = Entry::new(-1, -1, None, 10, 0);
     assert!(entry.co() != ptr::null_mut());
 }
 
 #[test]
 fn entry_partial_eq_true() {
-    let entry = Entry::new(0, 0, None, 10, 0);
+    let entry = Entry::new(-1, -1, None, 10, 0);
     assert!(entry == entry);
 }
 
 #[test]
 fn entry_partial_eq_false() {
-    let entry = Entry::new(0, 0, None, 10, 0);
-    let form = Form::new(None, 0);
-    assert!(entry != form);
+    let entry = Entry::new(-1, -1, None, 10, 0);
+    let button = Button::new(-1, -1, "Ok");
+    assert!(entry != button);
 }
 
 #[test]
 fn entry_set_text() {
-    let entry = Entry::new(0, 0, None, 10, 0);
+    let entry = Entry::new(-1, -1, None, 10, 0);
     let text = entry.get_text();
     assert!(text == "");
 
@@ -58,25 +58,25 @@ fn entry_set_text() {
 
 #[test]
 fn entry_set_flags() {
-    let entry = Entry::new(0, 0, None, 10, 0);
+    let entry = Entry::new(-1, -1, None, 10, 0);
     entry.set_flags(0, FlagsSense::Reset);
 }
 
 #[test]
 fn entry_set_colors() {
-    let entry = Entry::new(0, 0, None, 10, 0);
+    let entry = Entry::new(-1, -1, None, 10, 0);
     entry.set_colors(COLORSET_ENTRY, COLORSET_DISENTRY);
 }
 
 #[test]
 fn entry_get_cursor_position() {
-    let entry = Entry::new(0, 0, None, 10, 0);
+    let entry = Entry::new(-1, -1, None, 10, 0);
     assert!(entry.get_cursor_position() == 0);
 }
 
 #[test]
 fn entry_set_cursor_position() {
-    let entry = Entry::new(0, 0, None, 10, 0);
+    let entry = Entry::new(-1, -1, None, 10, 0);
     entry.set_cursor_position(5);
     assert!(entry.get_cursor_position() == 5);
 }

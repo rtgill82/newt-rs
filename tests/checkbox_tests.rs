@@ -19,39 +19,39 @@
 
 extern crate newt;
 use newt::Component;
-use newt::widgets::{Checkbox,Form};
+use newt::widgets::{Button,Checkbox};
 use std::ptr;
 
 use newt::constants::FlagsSense;
 
 #[test]
 fn checkbox_create() {
-    let checkbox = Checkbox::new(0, 0, "Ok", None, None);
+    let checkbox = Checkbox::new(-1, -1, "Ok", None, None);
     assert!(checkbox.co() != ptr::null_mut());
 }
 
 #[test]
 fn checkbox_partial_eq_true() {
-    let checkbox = Checkbox::new(0, 0, "Ok", None, None);
+    let checkbox = Checkbox::new(-1, -1, "Ok", None, None);
     assert!(checkbox == checkbox);
 }
 
 #[test]
 fn checkbox_partial_eq_false() {
-    let checkbox = Checkbox::new(0, 0, "Ok", None, None);
-    let form = Form::new(None, 0);
-    assert!(checkbox != form);
+    let checkbox = Checkbox::new(-1, -1, "Ok", None, None);
+    let button = Button::new(-1, -1, "Ok");
+    assert!(checkbox != button);
 }
 
 #[test]
 fn checkbox_get_value() {
-    let checkbox = Checkbox::new(0, 0, "Ok", None, None);
+    let checkbox = Checkbox::new(-1, -1, "Ok", None, None);
     assert!(checkbox.get_value() == ' ');
 }
 
 #[test]
 fn checkbox_set_value() {
-    let checkbox = Checkbox::new(0, 0, "Ok", None, None);
+    let checkbox = Checkbox::new(-1, -1, "Ok", None, None);
     assert!(checkbox.get_value() == ' ');
     checkbox.set_value('X');
     assert!(checkbox.get_value() == 'X');
@@ -59,6 +59,6 @@ fn checkbox_set_value() {
 
 #[test]
 fn checkbox_set_flags() {
-    let checkbox = Checkbox::new(0, 0, "Ok", None, None);
+    let checkbox = Checkbox::new(-1, -1, "Ok", None, None);
     checkbox.set_flags(0, FlagsSense::Reset);
 }

@@ -69,7 +69,7 @@ pub trait GridFns: AsComponent + Child + ComponentPtr + Parent {
       -> Result<(), &'static str>
     {
         self.add_to_parent()?;
-        unsafe { newtGridAddComponentsToForm(self.grid_ptr(), form.co(), 1); }
+        unsafe { newtGridAddComponentsToForm(self.grid_ptr(), form.co, 1); }
         form.add_refs(self.children());
         Ok(())
     }
