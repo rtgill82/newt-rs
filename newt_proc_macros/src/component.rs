@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2019 Robert Gill <rtgill82@gmail.com>
+// Copyright (C) 2019,2025 Robert Gill <rtgill82@gmail.com>
 //
 // This file is a part of newt-rs.
 //
@@ -36,7 +36,9 @@ pub fn impl_component_macro(ast: &DeriveInput) -> TokenStream {
     tokens
 }
 
-fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
+fn impl_component_base(name: &Ident, generics: &Generics)
+    -> TokenStream
+{
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
         impl #impl_ crate::widgets::WidgetFns for #name #type_ { }
@@ -89,7 +91,9 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
     gen.into()
 }
 
-fn impl_component_drop(name: &Ident, generics: &Generics) -> TokenStream {
+fn impl_component_drop(name: &Ident, generics: &Generics)
+    -> TokenStream
+{
     if name == "Form" {
         return TokenStream::new();
     }
@@ -113,7 +117,8 @@ fn impl_component_drop(name: &Ident, generics: &Generics) -> TokenStream {
 }
 
 fn impl_component_partial_eq_trait(name: &Ident, generics: &Generics)
-        -> TokenStream {
+    -> TokenStream
+{
     let generics_rhs = generics_add_rhs(&generics);
     let (_impl, type_, _where) = generics.split_for_impl();
     let (impl_, _type, where_) = generics_rhs.split_for_impl();
@@ -137,7 +142,8 @@ fn impl_component_partial_eq_trait(name: &Ident, generics: &Generics)
 }
 
 fn impl_component_partial_eq(name: &Ident, generics: &Generics)
-  -> TokenStream {
+    -> TokenStream
+{
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
         impl #impl_ std::cmp::PartialEq<Box<dyn (crate::Component)>> for #name #type_
@@ -173,6 +179,12 @@ fn generics_add_rhs(generics: &Generics) -> Generics {
     generics
 }
 
+//
+// Remove the default type as specified for generics. Specifying the default
+// type for generics is not necessary for traits and I think including it
+// used to cause compilation errors, but it doesn't seem to be an issue
+// anymore. Leaving this function in place anyways.
+//
 fn generics_remove_defaults(generics: &Generics) -> Generics {
     use syn::GenericParam::Type;
 

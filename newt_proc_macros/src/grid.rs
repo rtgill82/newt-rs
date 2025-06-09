@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2019 Robert Gill <rtgill82@gmail.com>
+// Copyright (C) 2019,2025 Robert Gill <rtgill82@gmail.com>
 //
 // This file is a part of newt-rs.
 //
@@ -27,7 +27,7 @@ use crate::common::*;
 
 pub fn impl_grid_macro(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
-    let generics = generics_remove_defaults(&ast.generics);
+    let generics = &ast.generics;
     let mut tokens = impl_component_common(&name, &generics);
     tokens.extend(impl_grid_base(&name, &generics));
     tokens.extend(impl_component_base(&name, &generics));
@@ -37,7 +37,9 @@ pub fn impl_grid_macro(ast: &DeriveInput) -> TokenStream {
     tokens
 }
 
-fn impl_grid_base(name: &Ident, generics: &Generics) -> TokenStream {
+fn impl_grid_base(name: &Ident, generics: &Generics)
+    -> TokenStream
+{
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
         impl #impl_ crate::grid::r#trait::Grid for #name #type_
@@ -51,7 +53,9 @@ fn impl_grid_base(name: &Ident, generics: &Generics) -> TokenStream {
     gen.into()
 }
 
-fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
+fn impl_component_base(name: &Ident, generics: &Generics)
+    -> TokenStream
+{
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
         impl #impl_ crate::asm::AsGrid for #name #type_
@@ -74,7 +78,9 @@ fn impl_component_base(name: &Ident, generics: &Generics) -> TokenStream {
     gen.into()
 }
 
-fn impl_grid_child(name: &Ident, generics: &Generics) -> TokenStream {
+fn impl_grid_child(name: &Ident, generics: &Generics)
+    -> TokenStream
+{
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
         impl #impl_ crate::intern::Child for #name #type_
@@ -101,7 +107,9 @@ fn impl_grid_child(name: &Ident, generics: &Generics) -> TokenStream {
     gen.into()
 }
 
-fn impl_grid_parent(name: &Ident, generics: &Generics) -> TokenStream {
+fn impl_grid_parent(name: &Ident, generics: &Generics)
+    -> TokenStream
+{
     if name == "ButtonBar" {
         return TokenStream::new();
     }
@@ -133,7 +141,9 @@ fn impl_grid_parent(name: &Ident, generics: &Generics) -> TokenStream {
     gen.into()
 }
 
-fn impl_grid_drop(name: &Ident, generics: &Generics) -> TokenStream {
+fn impl_grid_drop(name: &Ident, generics: &Generics)
+    -> TokenStream
+{
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
         impl #impl_ std::ops::Drop for #name #type_
@@ -146,16 +156,4 @@ fn impl_grid_drop(name: &Ident, generics: &Generics) -> TokenStream {
         }
     };
     gen.into()
-}
-
-fn generics_remove_defaults(generics: &Generics) -> Generics {
-    use syn::GenericParam::Type;
-
-    let mut generics = generics.clone();
-    for param in generics.params.iter_mut() {
-        if let Type(ref mut type_) = param {
-            type_.default = None;
-        }
-    }
-    generics
 }
