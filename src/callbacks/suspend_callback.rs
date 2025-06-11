@@ -17,7 +17,7 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-use crate::intern::funcs::*;
+use crate::private::funcs::*;
 
 ///
 /// A callback called when `Ctrl-Z` is pressed.

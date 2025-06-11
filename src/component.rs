@@ -30,8 +30,8 @@ use crate::widgets::WidgetFns;
 use crate::widgets::form::ExitReason;
 
 use crate::asm::*;
-use crate::intern::*;
-use crate::intern;
+use crate::private::*;
+use crate::private;
 
 ///
 /// A wrapper for passing complex data to [CheckboxTree][checkbox_tree] and
@@ -42,7 +42,7 @@ use crate::intern;
 ///
 pub struct Data<'a, T: 'a>(pub &'a T);
 
-impl<'a, T: 'a> intern::data::Data for Data<'a, T> {
+impl<'a, T: 'a> private::data::Data for Data<'a, T> {
     fn newt_to_ptr(&self) -> *const c_void {
         self.0 as *const _ as *const c_void
     }

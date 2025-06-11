@@ -23,8 +23,8 @@ use std::os::raw::c_char;
 use newt_sys::*;
 
 use crate::component::Component;
-use crate::intern::ComponentPtr;
 use crate::grid::r#trait;
+use crate::private::ComponentPtr;
 
 #[doc(hidden)]
 pub mod basic_window;

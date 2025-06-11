@@ -31,7 +31,7 @@ use crate::callbacks::DestroyCallback;
 use crate::callbacks::EntryFilter;
 use crate::callbacks::HelpCallback;
 use crate::callbacks::SuspendCallback;
-use crate::intern::Child;
+use crate::private::Child;
 
 pub fn char_to_c_char(ch: char) -> c_char {
     match TryInto::<u8>::try_into(ch) {

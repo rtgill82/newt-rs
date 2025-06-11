@@ -25,7 +25,7 @@ use std::ptr;
 use newt_sys::*;
 use crate::component::Component;
 use crate::constants::FlagsSense;
-use crate::intern::funcs::*;
+use crate::private::funcs::*;
 
 ///
 /// A widget displaying a box which can be cycled through various

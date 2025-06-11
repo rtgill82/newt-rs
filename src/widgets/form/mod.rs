@@ -26,7 +26,7 @@ use newt_sys::*;
 use crate::component::Component;
 use crate::callbacks::HelpCallback;
 use crate::widgets::VerticalScrollbar;
-use crate::intern::{Child,Nullify};
+use crate::private::{Child,Nullify};
 
 mod exit_reason;
 pub use self::exit_reason::ExitReason;
