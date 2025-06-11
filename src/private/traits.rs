@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2019,2025 Robert Gill <rtgill82@gmail.com>
+// Copyright (C) 2025 Robert Gill <rtgill82@gmail.com>
 //
 // This file is a part of newt-rs.
 //
@@ -17,9 +17,25 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#[macro_use]
-pub mod macros;
+use std::os::raw::c_void;
+use newt_sys::*;
 
-pub mod data;
-pub mod funcs;
-pub mod traits;
+pub trait Child {
+    fn add_to_parent(&self) -> Result<(), &'static str>;
+    fn added_to_parent(&self) -> bool;
+}
+
+pub trait ComponentPtr {
+    fn is_null(&self) -> bool;
+    fn ptr(&self) -> *mut c_void;
+    fn co_ptr(&self) -> newtComponent;
+    fn grid_ptr(&self) -> newtGrid;
+}
+
+pub trait GridElementType {
+    fn grid_element_type(&self) -> u32;
+}
+
+pub trait Nullify {
+    fn nullify(&self);
+}

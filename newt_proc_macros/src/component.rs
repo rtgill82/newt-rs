@@ -43,7 +43,7 @@ fn impl_component_base(name: &Ident, generics: &Generics)
     let gen = quote! {
         impl #impl_ crate::widgets::WidgetFns for #name #type_ { }
 
-        impl #impl_ crate::private::Child for #name #type_
+        impl #impl_ crate::private::traits::Child for #name #type_
             #where_
         {
             fn add_to_parent(&self)
@@ -72,7 +72,7 @@ fn impl_component_base(name: &Ident, generics: &Generics)
             }
         }
 
-        impl #impl_ crate::private::GridElementType for #name #type_
+        impl #impl_ crate::private::traits::GridElementType for #name #type_
             #where_
         {
             fn grid_element_type(&self) -> u32 {
@@ -81,7 +81,7 @@ fn impl_component_base(name: &Ident, generics: &Generics)
             }
         }
 
-        impl #impl_ crate::private::Nullify for #name #type_
+        impl #impl_ crate::private::traits::Nullify for #name #type_
         {
             fn nullify(&self) {
                 self.co.replace(std::ptr::null_mut());
@@ -128,7 +128,7 @@ fn impl_component_partial_eq_trait(name: &Ident, generics: &Generics)
         {
             fn eq(&self, other: &Rhs) -> bool {
                 use crate::Component;
-                use crate::private::ComponentPtr;
+                use crate::private::traits::ComponentPtr;
 
                 if self.is_null() {
                     return false
@@ -151,7 +151,7 @@ fn impl_component_partial_eq(name: &Ident, generics: &Generics)
         {
             fn eq(&self, other: &Box<dyn (crate::Component)>) -> bool {
                 use crate::Component;
-                use crate::private::ComponentPtr;
+                use crate::private::traits::ComponentPtr;
 
                 if self.is_null() {
                     return false

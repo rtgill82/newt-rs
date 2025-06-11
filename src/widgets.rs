@@ -22,7 +22,7 @@
 //!
 use std::os::raw::c_int;
 
-use crate::private::ComponentPtr;
+use crate::private::traits::ComponentPtr;
 use newt_sys::*;
 
 mod vertical_scrollbar;

@@ -26,7 +26,7 @@ use syn::{Generics,Ident};
 pub fn impl_component_common(name: &Ident, generics: &Generics) -> TokenStream {
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ crate::private::ComponentPtr for #name #type_
+        impl #impl_ crate::private::traits::ComponentPtr for #name #type_
             #where_
         {
             fn is_null(&self) -> bool {
@@ -55,7 +55,7 @@ pub fn impl_component_common(name: &Ident, generics: &Generics) -> TokenStream {
             #where_
         {
             fn co(&self) -> ::newt_sys::newtComponent {
-                use crate::private::ComponentPtr;
+                use crate::private::traits::ComponentPtr;
                 self.co_ptr()
             }
         }

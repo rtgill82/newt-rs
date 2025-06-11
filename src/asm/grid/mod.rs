@@ -24,7 +24,7 @@ use newt_sys::*;
 
 use crate::component::Component;
 use crate::grid::r#trait;
-use crate::private::ComponentPtr;
+use crate::private::traits::ComponentPtr;
 
 #[doc(hidden)]
 pub mod basic_window;

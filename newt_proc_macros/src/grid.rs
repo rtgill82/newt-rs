@@ -66,7 +66,7 @@ fn impl_component_base(name: &Ident, generics: &Generics)
             }
         }
 
-        impl #impl_ crate::private::GridElementType for #name #type_
+        impl #impl_ crate::private::traits::GridElementType for #name #type_
             #where_
         {
             fn grid_element_type(&self) -> u32 {
@@ -83,7 +83,7 @@ fn impl_grid_child(name: &Ident, generics: &Generics)
 {
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ crate::private::Child for #name #type_
+        impl #impl_ crate::private::traits::Child for #name #type_
             #where_
         {
             fn add_to_parent(&self)
@@ -122,7 +122,7 @@ fn impl_grid_parent(name: &Ident, generics: &Generics)
             fn children(&self) -> Vec<&crate::Component> {
                 use crate::grid::Parent;
                 use crate::constants::NEWT_GRID_COMPONENT;
-                use crate::private::GridElementType;
+                use crate::private::traits::GridElementType;
 
                 let mut vec: Vec<&crate::Component> = Vec::new();
                 for child in self.children.iter() {
@@ -150,7 +150,7 @@ fn impl_grid_drop(name: &Ident, generics: &Generics)
             #where_
         {
             fn drop(&mut self) {
-                use crate::private::ComponentPtr;
+                use crate::private::traits::ComponentPtr;
                 unsafe { ::newt_sys::newtGridFree(self.grid_ptr(), 0); }
             }
         }

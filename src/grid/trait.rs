@@ -21,7 +21,7 @@ use crate::component::Component;
 use crate::form::Form;
 use crate::widgets::WidgetFns;
 
-use crate::private::{Child,ComponentPtr,Nullify};
+use crate::private::traits::{Child,ComponentPtr,Nullify};
 use crate::asm::*;
 use newt_sys::*;
 

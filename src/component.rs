@@ -33,7 +33,7 @@ use crate::form::ExitReason;
 use crate::widgets::WidgetFns;
 
 use crate::asm::*;
-use crate::private::*;
+use crate::private::traits::*;
 use crate::private;
 
 ///
