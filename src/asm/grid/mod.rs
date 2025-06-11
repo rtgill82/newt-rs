@@ -23,7 +23,7 @@ use std::os::raw::c_char;
 use newt_sys::*;
 
 use crate::component::Component;
-use crate::grid::r#trait;
+use crate::grid::traits;
 use crate::private::traits::ComponentPtr;
 
 #[doc(hidden)]
@@ -128,7 +128,7 @@ impl<'a> Grid<'a> {
 /// * `grid` - The `Grid` to be wrapped in the window.
 /// * `title` - The title of the window to be displayed.
 ///
-pub fn wrapped_window(grid: &dyn r#trait::Grid, title: &str) {
+pub fn wrapped_window(grid: &dyn traits::Grid, title: &str) {
     let c_str = CString::new(title).unwrap();
     unsafe {
         newtGridWrappedWindow(grid.grid_ptr(), c_str.as_ptr() as *mut c_char);
@@ -146,7 +146,7 @@ pub fn wrapped_window(grid: &dyn r#trait::Grid, title: &str) {
 /// * `left` - The left-most position of the window.
 /// * `top` - The top-most position of the window.
 ///
-pub fn wrapped_window_at(grid: &dyn r#trait::Grid, title: &str,
+pub fn wrapped_window_at(grid: &dyn traits::Grid, title: &str,
                          left: i32, top: i32) {
     let c_str = CString::new(title).unwrap();
     unsafe {

@@ -21,7 +21,7 @@
 #[cfg(feature = "asm")]
 use crate::Component;
 #[cfg(feature = "asm")]
-use crate::grid::r#trait::Grid;
+use crate::grid::traits::Grid;
 
 mod funcs;
 

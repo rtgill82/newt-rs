@@ -42,11 +42,11 @@ fn impl_grid_base(name: &Ident, generics: &Generics)
 {
     let (impl_, type_, where_) = generics.split_for_impl();
     let gen = quote! {
-        impl #impl_ crate::grid::r#trait::Grid for #name #type_
+        impl #impl_ crate::grid::traits::Grid for #name #type_
             #where_
         { }
 
-        impl #impl_ crate::grid::r#trait::GridFns for #name #type_
+        impl #impl_ crate::grid::traits::GridFns for #name #type_
             #where_
         { }
     };
@@ -61,7 +61,7 @@ fn impl_component_base(name: &Ident, generics: &Generics)
         impl #impl_ crate::asm::AsGrid for #name #type_
             #where_
         {
-            fn as_grid(&self) -> Option<&crate::grid::r#trait::Grid> {
+            fn as_grid(&self) -> Option<&crate::grid::traits::Grid> {
                 Some(self)
             }
         }

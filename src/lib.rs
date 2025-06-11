@@ -131,7 +131,7 @@ pub use self::asm::*;
 
 #[doc(hidden)]
 #[cfg(feature = "asm")]
-pub use self::grid::r#trait::Grid;
+pub use self::grid::traits::Grid;
 
 use newt_sys::*;
 

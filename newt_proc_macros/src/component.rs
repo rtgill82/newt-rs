@@ -67,7 +67,7 @@ fn impl_component_base(name: &Ident, generics: &Generics)
         impl #impl_ crate::asm::AsGrid for #name #type_
             #where_
         {
-            fn as_grid(&self) -> Option<&crate::grid::r#trait::Grid> {
+            fn as_grid(&self) -> Option<&crate::grid::traits::Grid> {
                 None
             }
         }

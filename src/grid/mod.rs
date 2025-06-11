@@ -87,11 +87,11 @@
 //!
 
 #![cfg(feature = "asm")]
-pub mod r#trait;
+pub mod traits;
 pub use crate::asm::grid::*;
 
 #[doc(inline)]
-pub use self::r#trait::Parent;
+pub use self::traits::Parent;
 
 #[doc(inline)]
-pub use self::r#trait::GridFns;
+pub use self::traits::GridFns;
