@@ -26,7 +26,7 @@ use std::ptr;
 use newt_sys::*;
 use crate::component::Component;
 use crate::constants::FlagsSense;
-use crate::intern::data::Data;
+use crate::private::data::Data;
 
 ///
 /// A widget for displaying a list of selectable items.

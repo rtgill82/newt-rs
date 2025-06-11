@@ -24,7 +24,8 @@ use std::ptr;
 use crate::component::Component;
 use crate::form::Form;
 use crate::widgets::VerticalScrollbar;
-use crate::intern::funcs::*;
+
+use crate::private::funcs::*;
 use newt_sys::*;
 
 ///

@@ -17,13 +17,13 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-use newt_sys::*;
 use crate::component::Component;
 use crate::form::Form;
 use crate::widgets::WidgetFns;
 
-use crate::intern::{Child,ComponentPtr,Nullify};
+use crate::private::{Child,ComponentPtr,Nullify};
 use crate::asm::*;
+use newt_sys::*;
 
 ///
 /// Trait implemented by `Grid` type `Component`s.

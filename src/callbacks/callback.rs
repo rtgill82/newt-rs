@@ -18,7 +18,7 @@
 //
 
 use crate::component::Component;
-use crate::intern::funcs::*;
+use crate::private::funcs::*;
 use newt_sys::*;
 
 ///

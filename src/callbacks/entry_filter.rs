@@ -17,10 +17,11 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-use newt_sys::newtComponent;
 use crate::component::Component;
 use crate::widgets::Entry;
-use crate::intern::funcs::newt_entry_set_filter;
+
+use newt_sys::newtComponent;
+use crate::private::funcs::newt_entry_set_filter;
 
 ///
 /// A callback used to filter text entered into an `Entry` component.
