@@ -21,6 +21,7 @@ use std::cell::Cell;
 use std::ffi::CString;
 
 use newt_sys::*;
+use crate::private::traits::ComponentClone;
 
 ///
 /// A widget that when activated causes the currently running
@@ -51,12 +52,13 @@ impl Button {
             added_to_parent: Cell::new(false)
         }
     }
+}
 
-    #[cfg(feature = "asm")]
-    pub(crate) fn new_co(co: newtComponent) -> Button {
+impl ComponentClone for Button {
+    unsafe fn clone_co(co: newtComponent, added_to_parent: bool) -> Button {
         Button {
             co: Cell::new(co),
-            added_to_parent: Cell::new(false)
+            added_to_parent: Cell::new(added_to_parent)
         }
     }
 }

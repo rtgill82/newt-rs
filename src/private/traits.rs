@@ -25,6 +25,10 @@ pub trait Child {
     fn added_to_parent(&self) -> bool;
 }
 
+pub trait ComponentClone {
+    unsafe fn clone_co(co: newtComponent, added_to_parent: bool) -> Self;
+}
+
 pub trait ComponentPtr {
     fn is_null(&self) -> bool;
     fn ptr(&self) -> *mut c_void;

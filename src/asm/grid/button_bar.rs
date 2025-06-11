@@ -24,6 +24,7 @@ use crate::grid::Parent;
 use crate::widgets::Button;
 
 use crate::asm;
+use crate::private::traits::ComponentClone;
 
 ///
 /// Creates a row of buttons.
@@ -52,17 +53,17 @@ impl ButtonBar {
             let buttons_ptr: *mut newtComponent = buttons_buf.as_mut_ptr();
             grid = asm::button_bar_new(buttons, buttons_ptr);
             buttons_buf.set_len(len);
-        }
 
-        let mut buttons = Vec::new();
-        for co in buttons_buf {
-            buttons.push(Button::new_co(co));
-        }
+            let mut buttons = Vec::new();
+            for co in buttons_buf {
+                buttons.push(Button::clone_co(co, false));
+            }
 
-        ButtonBar {
-            co: Cell::new(grid),
-            added_to_parent: Cell::new(false),
-            children: buttons
+            ButtonBar {
+                co: Cell::new(grid),
+                added_to_parent: Cell::new(false),
+                children: buttons
+            }
         }
     }
 
