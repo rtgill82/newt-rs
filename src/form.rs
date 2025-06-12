@@ -223,11 +223,20 @@ impl<'a> Form<'a>
     ///
     /// Get the `Form`'s currently focused `Component`.
     ///
-    pub fn get_current(&self) -> Box<dyn Component> {
-        Box::new(BaseComponent {
-            co: unsafe { Cell::new(newtFormGetCurrent(self.co)) },
-            added_to_parent: Cell::new(true)
-        })
+    pub fn get_current(&self) -> Option<Box<dyn Component>> {
+        unsafe {
+            let co = newtFormGetCurrent(self.co);
+            if co == ptr::null_mut() {
+                return None;
+            }
+
+            let component = Box::new(BaseComponent {
+                co: Cell::new(co),
+                added_to_parent: Cell::new(true)
+            });
+
+            Some(component)
+        }
     }
 
     ///
