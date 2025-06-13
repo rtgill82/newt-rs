@@ -51,7 +51,7 @@ pub fn main() {
 
     // Get the currently selected `Radiobutton` from the first in the set
     // (any will do).
-    let current = radio1.get_current();
+    let current = radio1.get_current().unwrap();
 
     // Find the currently selected `Radiobutton` in the array of available
     // buttons.

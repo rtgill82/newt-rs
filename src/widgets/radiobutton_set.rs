@@ -20,19 +20,20 @@
 use crate::component::Component;
 use crate::form::Form;
 use crate::widgets::Radiobutton;
+use crate::private::traits::ComponentClone;
 
 ///
 /// A convenience wrapper for managing [`Radiobutton`]s.
 ///
-pub struct RadiobuttonSet {
-    radiobuttons: Vec<Radiobutton>
+pub struct RadiobuttonSet<'a> {
+    radiobuttons: Vec<Radiobutton<'a>>
 }
 
-impl RadiobuttonSet {
+impl<'a> RadiobuttonSet<'a> {
     ///
     /// Create an empty `RadiobuttonSet`.
     ///
-    pub fn new() -> RadiobuttonSet {
+    pub fn new() -> RadiobuttonSet<'a> {
         RadiobuttonSet { radiobuttons: Vec::new() }
     }
 
@@ -62,15 +63,17 @@ impl RadiobuttonSet {
         } else {
             let len = self.radiobuttons.len();
             let last = &self.radiobuttons[len-1];
-            let radiobutton = Radiobutton::new(
-                left,
-                top,
-                text,
-                false,
-                Some(last)
-            );
-
-            self.radiobuttons.push(radiobutton);
+            unsafe {
+                let last = Radiobutton::clone_co(last.co(), true);
+                let radiobutton = Radiobutton::new_take(
+                    left,
+                    top,
+                    text,
+                    false,
+                    Some(last)
+                );
+                self.radiobuttons.push(radiobutton);
+            }
             self.radiobuttons.len()
         }
     }
@@ -89,7 +92,7 @@ impl RadiobuttonSet {
     ///
     /// * `form` - The `Form` to add the `Radiobutton`s to.
     ///
-    pub fn add_to_form<'a>(&'a self, form: &mut Form<'a>)
+    pub fn add_to_form(&'a self, form: &mut Form<'a>)
         -> Result<(), &'static str>
     {
         for radiobutton in &self.radiobuttons {
@@ -104,11 +107,19 @@ impl RadiobuttonSet {
     /// `Returns` the index of the currently selected `Radiobutton`.
     ///
     pub fn get_current(&self) -> usize {
-        let co = self.radiobuttons[0].get_current().co();
-        for (i, rb) in self.radiobuttons.iter().enumerate() {
-            if rb.co() == co { return i; }
+        fn unreachable() -> ! {
+            unreachable!("No `Radiobutton` selected.");
         }
-        panic!("No `Radiobutton` selected.");
+
+        let rb1 = match self.radiobuttons[0].get_current() {
+            Some(rb) => rb,
+            None     => unreachable()
+        };
+
+        for (i, rb2) in self.radiobuttons.iter().enumerate() {
+            if rb2.co() == rb1.co() { return i; }
+        }
+        unreachable()
     }
 
     ///

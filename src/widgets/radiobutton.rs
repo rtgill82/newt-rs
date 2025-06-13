@@ -19,10 +19,12 @@
 
 use std::cell::Cell;
 use std::ffi::CString;
+use std::marker::PhantomData;
 use std::ptr;
 
 use newt_sys::*;
 use crate::component::Component;
+use crate::private::traits::ComponentClone;
 
 ///
 /// A set of widgets similar to [Checkboxes][checkbox] in which only one may
@@ -66,7 +68,7 @@ use crate::component::Component;
 ///
 ///     // Get the currently selected `Radiobutton` from the first in the set
 ///     // (any will do).
-///     let current = radio1.get_current();
+///     let current = radio1.get_current().unwrap();
 ///
 ///     // Find the currently selected `Radiobutton` in the array of available
 ///     // buttons.
@@ -80,12 +82,13 @@ use crate::component::Component;
 /// ```
 ///
 #[derive(Component)]
-pub struct Radiobutton {
+pub struct Radiobutton<'a> {
     co: Cell<newtComponent>,
-    added_to_parent: Cell<bool>
+    added_to_parent: Cell<bool>,
+    data: PhantomData<&'a Radiobutton<'a>>
 }
 
-impl Radiobutton {
+impl<'a> Radiobutton<'a> {
     ///
     /// Create a new `Radiobutton`.
     ///
@@ -105,30 +108,58 @@ impl Radiobutton {
     ///                   `Radiobutton` the first in a set.
     ///
     pub fn new(left: i32, top: i32, text: &str, default: bool,
-               prev_button: Option<&Radiobutton>) -> Radiobutton {
+               prev_button: Option<&'a Radiobutton>) -> Radiobutton<'a>
+    {
+        unsafe { Radiobutton::alloc(left, top, text, default, prev_button) }
+    }
+
+    //
+    // Create a new `Radiobutton` taking ownership of `prev_button`. The
+    // `newtComponent` pointer is kept as a reference within the C code of
+    // the newly created Radiobutton and the Rust struct wrapping it is
+    // dropped.
+    //
+    pub(crate) fn new_take(left: i32, top: i32, text: &str, default: bool,
+                           prev_button: Option<Radiobutton>) -> Radiobutton<'a>
+    {
+        unsafe {
+            Radiobutton::alloc(left, top, text, default, prev_button.as_ref())
+        }
+    }
+
+    //
+    // Allocate a new Radiobutton struct using an anonymous lifetime for
+    // `prev_button`.
+    //
+    unsafe fn alloc(left: i32, top: i32, text: &str, default: bool,
+                    prev_button: Option<&'_ Radiobutton>) -> Radiobutton<'a>
+    {
         let c_text = CString::new(text).unwrap();
         let ptr = match prev_button {
             Some(radio_button) => radio_button.co(),
             None => ptr::null_mut()
         };
 
+        let text_ptr = c_text.as_ptr();
+        let co = newtRadiobutton(left, top, text_ptr, default as i32, ptr);
         Radiobutton {
-            co: unsafe {
-                let co = newtRadiobutton(left, top, c_text.as_ptr(),
-                                         default as i32, ptr);
-                Cell::new(co)
-            },
-            added_to_parent: Cell::new(false)
+            co: Cell::new(co),
+            added_to_parent: Cell::new(false),
+            data: PhantomData
         }
     }
 
     ///
     /// Get the currently selected `Radiobutton` from the set.
     ///
-    pub fn get_current(&self) -> Radiobutton {
-        Radiobutton {
-            co: unsafe { Cell::new(newtRadioGetCurrent(self.co())) },
-            added_to_parent: Cell::new(true)
+    pub fn get_current(&self) -> Option<Radiobutton<'a>> {
+        unsafe {
+            let co = newtRadioGetCurrent(self.co());
+            if co == ptr::null_mut() {
+                return None;
+            }
+
+            Some(Radiobutton::clone_co(co, true))
         }
     }
 
@@ -137,5 +168,15 @@ impl Radiobutton {
     ///
     pub fn set_current(&self) {
         unsafe { newtRadioSetCurrent(self.co()) }
+    }
+}
+
+impl<'a> ComponentClone for Radiobutton<'a> {
+    unsafe fn clone_co(co: newtComponent, added_to_parent: bool) -> Radiobutton<'a> {
+        Radiobutton {
+            co: Cell::new(co),
+            added_to_parent: Cell::new(added_to_parent),
+            data: PhantomData
+        }
     }
 }

@@ -44,7 +44,7 @@ fn radiobutton_partial_eq_false() {
 #[test]
 fn radiobutton_get_current() {
     let radio = Radiobutton::new(-1, -1, "Yes", true, None);
-    assert!(radio.get_current() == radio);
+    assert!(radio.get_current().unwrap() == radio);
 }
 
 #[test]
@@ -52,8 +52,14 @@ fn radiobutton_set_current() {
     let radio1 = Radiobutton::new(-1, -1, "Yes", true, None);
     let radio2 = Radiobutton::new(-1, -1, "No", false, Some(&radio1));
     radio2.set_current();
-    assert!(radio1.get_current() == radio2);
-    assert!(radio2.get_current() == radio2);
-    assert!(radio1.get_current() != radio1);
-    assert!(radio2.get_current() != radio1);
+    assert!(radio1.get_current().unwrap() == radio2);
+    assert!(radio2.get_current().unwrap() == radio2);
+    assert!(radio1.get_current().unwrap() != radio1);
+    assert!(radio2.get_current().unwrap() != radio1);
+}
+
+#[test]
+fn radiobutton_no_current() {
+    let radio = Radiobutton::new(-1, -1, "Yes", false, None);
+    assert!(radio.get_current().is_none());
 }
