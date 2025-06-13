@@ -517,8 +517,14 @@ pub fn suspend() {
 ///
 /// Resume running the application.
 ///
-pub fn resume() {
-    unsafe { newtResume(); }
+pub fn resume() -> Result<(), ()> {
+    unsafe {
+        match newtResume() {
+             0 => Ok(()),
+            -1 => Err(()),
+             _ => unreachable!("Invalid result returned by `newtResume()`.")
+        }
+    }
 }
 
 ///
