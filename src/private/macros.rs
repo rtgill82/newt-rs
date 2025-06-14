@@ -22,7 +22,7 @@
 macro_rules! c_ptr_array_to_boxed_slice {
     ($ptr:tt [ $type:tt ], $numitems:tt) => {{
         let mut vec: Vec<$type> = Vec::new();
-        if $numitems > 0 {
+        if !$ptr.is_null() && $numitems > 0 {
             let mut count = 0;
             let mut p = $ptr;
             unsafe {
