@@ -228,10 +228,10 @@ impl<D: Data> CheckboxTree<D> {
     ///
     pub fn get_selection(&self) -> Box<[D]> {
         let mut numitems: i32 = 0;
-        let ptr = unsafe {
-            newtCheckboxTreeGetSelection(self.co(), &mut numitems)
-        };
-        c_ptr_array_to_boxed_slice!(ptr[D], numitems)
+        unsafe {
+            let ptr = newtCheckboxTreeGetSelection(self.co(), &mut numitems);
+            c_ptr_array_to_boxed_slice(ptr, numitems)
+        }
     }
 
     ///
@@ -250,14 +250,14 @@ impl<D: Data> CheckboxTree<D> {
     ///
     pub fn get_multi_selection(&self, seqval: char) -> Box<[D]> {
         let mut numitems: i32 = 0;
-        let ptr = unsafe {
-            newtCheckboxTreeGetMultiSelection(
+        unsafe {
+            let ptr = newtCheckboxTreeGetMultiSelection(
                 self.co(),
                 &mut numitems,
                 char_to_c_char(seqval)
-            )
-        };
-        c_ptr_array_to_boxed_slice!(ptr[D], numitems)
+            );
+            c_ptr_array_to_boxed_slice(ptr, numitems)
+        }
     }
 
     ///

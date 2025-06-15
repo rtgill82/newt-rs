@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2019 Robert Gill <rtgill82@gmail.com>
+// Copyright (C) 2019,2025 Robert Gill <rtgill82@gmail.com>
 //
 // This file is a part of newt-rs.
 //
@@ -32,6 +32,25 @@ use crate::callbacks::EntryFilter;
 use crate::callbacks::HelpCallback;
 use crate::callbacks::SuspendCallback;
 use crate::private::Child;
+
+use crate::private::data::Data;
+
+pub unsafe
+fn c_ptr_array_to_boxed_slice<D>(ptr: *const *const c_void, numitems: i32)
+    -> Box<[D]> where D: Data
+{
+    let mut vec: Vec<D> = Vec::new();
+    if !ptr.is_null() && numitems > 0 {
+        let mut count = 0;
+        let mut p = ptr;
+        while count < numitems {
+            vec.push(D::newt_from_ptr(*p));
+            p = p.add(std::mem::size_of::<c_void>());
+            count += 1;
+        }
+    }
+    vec.into_boxed_slice()
+}
 
 pub fn char_to_c_char(ch: char) -> c_char {
     match TryInto::<u8>::try_into(ch) {

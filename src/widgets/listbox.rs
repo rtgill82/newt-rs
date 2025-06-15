@@ -25,8 +25,10 @@ use std::ptr;
 
 use newt_sys::*;
 use crate::component::Component;
-use crate::constants::FlagsSense;
 use crate::private::data::Data;
+use crate::private::funcs::*;
+
+use crate::constants::FlagsSense;
 
 ///
 /// A widget for displaying a list of selectable items.
@@ -229,8 +231,11 @@ impl<D: Data> Listbox<D> {
     ///
     pub fn get_selection(&self) -> Box<[D]> {
         let mut numitems: i32 = 0;
-        let ptr = unsafe { newtListboxGetSelection(self.co(), &mut numitems) };
-        c_ptr_array_to_boxed_slice!(ptr[D], numitems)
+        unsafe {
+            let ptr = newtListboxGetSelection(self.co(), &mut numitems);
+            let ptr = ptr as *const *const c_void;
+            c_ptr_array_to_boxed_slice(ptr, numitems)
+        }
     }
 
     ///

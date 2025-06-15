@@ -17,9 +17,6 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#[macro_use]
-pub mod macros;
-
 pub mod data;
 pub mod funcs;
 
