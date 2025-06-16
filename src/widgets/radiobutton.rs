@@ -23,6 +23,7 @@ use std::ptr;
 
 use newt_sys::*;
 use crate::component::Component;
+use crate::private::funcs::*;
 
 ///
 /// A set of widgets similar to [Checkboxes][checkbox] in which only one may
@@ -112,13 +113,17 @@ impl Radiobutton {
             None => ptr::null_mut()
         };
 
-        Radiobutton {
-            co: unsafe {
-                let co = newtRadiobutton(left, top, c_text.as_ptr(),
-                                         default as i32, ptr);
-                Cell::new(co)
-            },
-            added_to_parent: Cell::new(false)
+        let text_ptr = c_text.as_ptr();
+        unsafe {
+            let co = newtRadiobutton(left, top, text_ptr, default as i32, ptr);
+            if co.is_null() {
+                malloc_failure();
+            }
+
+            Radiobutton {
+                co: Cell::new(co),
+                added_to_parent: Cell::new(false)
+            }
         }
     }
 

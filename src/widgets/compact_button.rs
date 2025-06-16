@@ -19,7 +19,9 @@
 
 use std::cell::Cell;
 use std::ffi::CString;
+
 use newt_sys::*;
+use crate::private::funcs::*;
 
 ///
 /// A smaller [Button][button] with no padding around its label.
@@ -42,12 +44,16 @@ impl CompactButton {
     ///
     pub fn new(left: i32, top: i32, text: &str) -> CompactButton {
         let c_str = CString::new(text).unwrap();
-        CompactButton {
-            co: unsafe {
-                let co = newtCompactButton(left, top, c_str.as_ptr());
-                Cell::new(co)
-            },
-            added_to_parent: Cell::new(false)
+        unsafe {
+            let co = newtCompactButton(left, top, c_str.as_ptr());
+            if co.is_null() {
+                malloc_failure();
+            }
+
+            CompactButton {
+                co: Cell::new(co),
+                added_to_parent: Cell::new(false)
+            }
         }
     }
 }

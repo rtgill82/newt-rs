@@ -21,6 +21,7 @@ use std::cell::Cell;
 use std::ffi::CString;
 
 use newt_sys::*;
+use crate::private::funcs::*;
 
 ///
 /// A widget that when activated causes the currently running
@@ -44,11 +45,17 @@ impl Button {
     ///
     pub fn new(left: i32, top: i32, text: &str) -> Button {
         let c_str = CString::new(text).unwrap();
-        Button {
-            co: unsafe {
-                Cell::new(newtButton(left, top, c_str.as_ptr()))
-            },
-            added_to_parent: Cell::new(false)
+
+        unsafe {
+            let co = newtButton(left, top, c_str.as_ptr());
+            if co.is_null() {
+                malloc_failure();
+            }
+
+            Button {
+                co: Cell::new(co),
+                added_to_parent: Cell::new(false)
+            }
         }
     }
 

@@ -23,6 +23,7 @@ use std::os::raw::c_char;
 
 use newt_sys::*;
 use crate::component::Component;
+use crate::private::funcs::*;
 
 ///
 /// A widget that can display multiple lines of text.
@@ -48,13 +49,18 @@ impl Textbox {
     /// [flags]: crate::constants::flags
     ///
     pub fn new(left: i32, top: i32, width: i32, height: i32, flags: i32)
-      -> Textbox {
-        Textbox {
-            co: unsafe {
-                let co = newtTextbox(left, top, width, height, flags);
-                Cell::new(co)
-            },
-            added_to_parent: Cell::new(false)
+        -> Textbox
+    {
+        unsafe {
+            let co = newtTextbox(left, top, width, height, flags);
+            if co.is_null() {
+                malloc_failure();
+            }
+
+            Textbox {
+                co: Cell::new(co),
+                added_to_parent: Cell::new(false)
+            }
         }
     }
 
@@ -81,17 +87,28 @@ impl Textbox {
     ///
     pub fn new_reflowed(left: i32, top: i32, text: &str, width: i32,
                         flex_down: i32, flex_up: i32, flags: i32)
-      -> Textbox {
+        -> Textbox
+    {
         let c_text = CString::new(text).unwrap();
-        Textbox {
-            co: unsafe {
-                let co = newtTextboxReflowed(left, top,
-                                             c_text.as_ptr() as *mut c_char,
-                                             width, flex_down, flex_up,
-                                             flags);
-                Cell::new(co)
-            },
-            added_to_parent: Cell::new(false)
+        unsafe {
+            let co = newtTextboxReflowed(
+                left,
+                top,
+                c_text.as_ptr() as *mut c_char,
+                width,
+                flex_down,
+                flex_up,
+                flags
+            );
+
+            if co.is_null() {
+                malloc_failure();
+            }
+
+            Textbox {
+                co: Cell::new(co),
+                added_to_parent: Cell::new(false)
+            }
         }
     }
 

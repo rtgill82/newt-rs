@@ -54,14 +54,19 @@ impl<D: Data> Listbox<D> {
     /// [flags]: crate::constants::flags
     ///
     pub fn new(left: i32, top: i32, height: i32, flags: i32)
-      -> Listbox<D> {
-        Listbox {
-            co: unsafe {
-                let co = newtListbox(left, top, height, flags);
-                Cell::new(co)
-            },
-            added_to_parent: Cell::new(false),
-            data: PhantomData
+        -> Listbox<D>
+    {
+        unsafe {
+            let co = newtListbox(left, top, height, flags);
+            if co.is_null() {
+                malloc_failure();
+            }
+
+            Listbox {
+                co: Cell::new(co),
+                added_to_parent: Cell::new(false),
+                data: PhantomData
+            }
         }
     }
 

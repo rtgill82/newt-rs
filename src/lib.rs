@@ -133,6 +133,7 @@ pub use self::asm::*;
 pub use self::grid::r#trait::Grid;
 
 use newt_sys::*;
+use crate::private::funcs::*;
 
 ///
 /// A struct containing the color sets for all components.
@@ -611,10 +612,21 @@ pub fn reflow_text(text: &str, width: i32, flex_down: i32, flex_up: i32)
     let c_str = CString::new(text).unwrap();
     let mut actual_width: c_int = 0;
     let mut actual_height: c_int = 0;
+
     unsafe {
-        let rstr = newtReflowText(c_str.as_ptr() as *mut c_char,
-                                  width, flex_down, flex_up, &mut actual_width,
-                                  &mut actual_height);
+        let rstr = newtReflowText(
+            c_str.as_ptr() as *mut c_char,
+            width,
+            flex_down,
+            flex_up,
+            &mut actual_width,
+            &mut actual_height
+        );
+
+        if rstr.is_null() {
+            malloc_failure();
+        }
+
         let c_str = CStr::from_ptr(rstr).to_string_lossy().into_owned();
         (c_str, actual_width, actual_height)
     }

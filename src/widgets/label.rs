@@ -22,6 +22,7 @@ use std::ffi::CString;
 
 use newt_sys::*;
 use crate::component::Component;
+use crate::private::funcs::*;
 
 ///
 /// A simple widget for displaying static text.
@@ -42,12 +43,17 @@ impl Label {
     ///
     pub fn new(left: i32, top: i32, text: &str) -> Label {
         let c_text = CString::new(text).unwrap();
-        Label {
-            co: unsafe {
-                let co = newtLabel(left, top, c_text.as_ptr());
-                Cell::new(co)
-            },
-            added_to_parent: Cell::new(false)
+
+        unsafe {
+            let co = newtLabel(left, top, c_text.as_ptr());
+            if co.is_null() {
+                malloc_failure();
+            }
+
+            Label {
+                co: Cell::new(co),
+                added_to_parent: Cell::new(false)
+            }
         }
     }
 

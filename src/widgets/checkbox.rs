@@ -68,13 +68,23 @@ impl Checkbox {
             None => ptr::null()
         };
 
-        Checkbox {
-            co: unsafe {
-                let co = newtCheckbox(left, top, c_text.as_ptr(), default,
-                                      c_seq, ptr::null_mut());
-                Cell::new(co)
-            },
-            added_to_parent: Cell::new(false)
+        unsafe {
+            let co = newtCheckbox(left,
+                top,
+                c_text.as_ptr(),
+                default,
+                c_seq,
+                ptr::null_mut()
+            );
+
+            if co.is_null() {
+                malloc_failure();
+            }
+
+            Checkbox {
+                co: Cell::new(co),
+                added_to_parent: Cell::new(false)
+            }
         }
     }
 

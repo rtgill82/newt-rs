@@ -25,6 +25,7 @@ use std::ptr;
 use newt_sys::*;
 use crate::component::Component;
 use crate::constants::FlagsSense;
+use crate::private::funcs::*;
 
 ///
 /// A field for reading text input from the user.
@@ -123,13 +124,16 @@ impl Entry {
             None => ptr::null()
         };
 
-        Entry {
-            co: unsafe {
-                let co = newtEntry(left, top, ptr, width, ptr::null_mut(),
-                                   flags);
-                Cell::new(co)
-            },
-            added_to_parent: Cell::new(false)
+        unsafe {
+            let co = newtEntry(left, top, ptr, width, ptr::null_mut(), flags);
+            if co.is_null() {
+                malloc_failure();
+            }
+
+            Entry {
+                co: Cell::new(co),
+                added_to_parent: Cell::new(false)
+            }
         }
     }
 

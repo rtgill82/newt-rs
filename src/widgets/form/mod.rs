@@ -27,6 +27,7 @@ use crate::component::Component;
 use crate::callbacks::HelpCallback;
 use crate::widgets::VerticalScrollbar;
 use crate::private::{Child,Nullify};
+use crate::private::funcs::*;
 
 mod exit_reason;
 pub use self::exit_reason::ExitReason;
@@ -100,13 +101,15 @@ impl<'a> Form<'a>
             ptr::null_mut()
         };
 
+        let co = unsafe { newtForm(scrollbar, ptr::null_mut(), flags) };
+        if co.is_null() {
+            malloc_failure();
+        }
+
         Form {
-            co: unsafe {
-                let co = newtForm(scrollbar, ptr::null_mut(), flags);
-                Cell::new(co)
-            },
-            components: Vec::new(),
-            added_to_parent: Cell::new(false)
+            co: Cell::new(co),
+            added_to_parent: Cell::new(false),
+            components: Vec::new()
         }
     }
 

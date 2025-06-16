@@ -69,6 +69,10 @@ pub fn char_slice_to_cstring(slice: &[char]) -> CString {
     CString::new(string.into_owned()).unwrap()
 }
 
+pub fn malloc_failure() -> ! {
+    panic!("memory allocation failed");
+}
+
 unsafe extern "C"
 fn callback<'a, FN: 'a, T: 'a>(co: newtComponent, data: *mut c_void)
 where FN: FnMut(&dyn Component, Option<&T>)

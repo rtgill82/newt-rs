@@ -111,7 +111,7 @@ impl<D: Data> CheckboxTree<D> {
     pub fn new(left: i32, top: i32, height: i32, sequence: Option<&[char]>,
                flags: i32) -> CheckboxTree<D>
     {
-        let component: newtComponent = match sequence {
+        let co: newtComponent = match sequence {
             Some(seq) => {
                 let c_seq = char_slice_to_cstring(&seq);
                 unsafe {
@@ -128,8 +128,12 @@ impl<D: Data> CheckboxTree<D> {
             None => unsafe { newtCheckboxTree(left, top, height, flags) }
         };
 
+        if co.is_null() {
+            malloc_failure();
+        }
+
         CheckboxTree {
-            co: Cell::new(component),
+            co: Cell::new(co),
             added_to_parent: Cell::new(false),
             data: PhantomData
         }

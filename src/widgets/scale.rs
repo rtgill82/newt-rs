@@ -21,6 +21,7 @@ use std::cell::Cell;
 
 use newt_sys::*;
 use crate::component::Component;
+use crate::private::funcs::*;
 
 ///
 /// A widget that can display a filled horizontal bar representing a percentage.
@@ -41,12 +42,16 @@ impl Scale {
     /// * `maximum` - The maximum value that the `Scale` will represent.
     ///
     pub fn new(left: i32, top: i32, width: i32, maximum: i64) -> Scale {
-        Scale {
-            co: unsafe {
-                let co = newtScale(left, top, width, maximum);
-                Cell::new(co)
-            },
-            added_to_parent: Cell::new(false)
+        unsafe {
+            let co = newtScale(left, top, width, maximum);
+            if co.is_null() {
+                malloc_failure();
+            }
+
+            Scale {
+                co: Cell::new(co),
+                added_to_parent: Cell::new(false)
+            }
         }
     }
 
