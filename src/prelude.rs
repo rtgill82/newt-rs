@@ -22,6 +22,8 @@
 //!
 
 pub use crate::component::Component;
+
+#[allow(ambiguous_glob_reexports)]
 pub use crate::constants::*;
 pub use crate::widgets::*;
 
