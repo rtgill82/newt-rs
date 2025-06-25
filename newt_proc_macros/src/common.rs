@@ -25,6 +25,7 @@ use syn::{Generics,Ident};
 
 pub fn impl_component_common(name: &Ident, generics: &Generics) -> TokenStream {
     let (impl_, type_, where_) = generics.split_for_impl();
+    let debug_string = format!("{} {{{{ {{:p}} }}}}", name);
     let gen = quote! {
         impl #impl_ crate::private::ComponentPtr for #name #type_
             #where_
@@ -57,6 +58,15 @@ pub fn impl_component_common(name: &Ident, generics: &Generics) -> TokenStream {
             fn co(&self) -> ::newt_sys::newtComponent {
                 use crate::private::ComponentPtr;
                 self.co_ptr()
+            }
+        }
+
+        impl #impl_ ::std::fmt::Debug for #name #type_
+            #where_
+        {
+            fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+                use crate::component::Component;
+                write!(f, #debug_string, self.co())
             }
         }
 
