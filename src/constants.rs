@@ -234,6 +234,9 @@ pub mod entry {
     /// Enable automatic horizontal scrolling as text is entered.
     pub const ENTRY_SCROLL: c_int       = NEWT_ENTRY_SCROLL;
 
+    /// Display entered text as `*`.
+    pub const ENTRY_PASSWORD: c_int     = NEWT_FLAG_PASSWORD;
+
     /// Do not display entered text.
     pub const ENTRY_HIDDEN: c_int       = NEWT_ENTRY_HIDDEN;
 
