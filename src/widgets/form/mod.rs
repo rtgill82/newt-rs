@@ -29,19 +29,11 @@ use crate::widgets::VerticalScrollbar;
 use crate::private::{Child,Nullify};
 use crate::private::funcs::*;
 
+mod constants;
+use self::constants::*;
+
 mod exit_reason;
 pub use self::exit_reason::ExitReason;
-
-#[allow(non_camel_case_types)]
-type newtExitReason = newtExitStruct__bindgen_ty_1;
-const NEWT_EXIT_HOTKEY: newtExitReason    = newtExitStruct_NEWT_EXIT_HOTKEY;
-const NEWT_EXIT_COMPONENT: newtExitReason = newtExitStruct_NEWT_EXIT_COMPONENT;
-const NEWT_EXIT_FDREADY: newtExitReason   = newtExitStruct_NEWT_EXIT_FDREADY;
-const NEWT_EXIT_TIMER: newtExitReason     = newtExitStruct_NEWT_EXIT_TIMER;
-const NEWT_EXIT_ERROR: newtExitReason     = newtExitStruct_NEWT_EXIT_ERROR;
-
-#[allow(non_camel_case_types)]
-type newtExitStructUnion = newtExitStruct__bindgen_ty_2;
 
 ///
 /// Displays `Component`s and accepts user input.
