@@ -44,6 +44,23 @@ const NEWT_EXIT_ERROR: newtExitReason     = newtExitStruct_NEWT_EXIT_ERROR;
 type newtExitStructUnion = newtExitStruct__bindgen_ty_2;
 
 ///
+/// Displays `Component`s and accepts user input.
+///
+#[derive(Component)]
+pub struct Form<'a>
+{
+    co: Cell<newtComponent>,
+    added_to_parent: Cell<bool>,
+    components: Vec<&'a dyn Component>
+}
+
+#[derive(Component)]
+struct BaseComponent {
+    co: Cell<newtComponent>,
+    added_to_parent: Cell<bool>
+}
+
+///
 /// File descriptor flags for the [`Form.watch_fd()`][watch_fd] function.
 ///
 /// [watch_fd]: crate::widgets::form::Form::watch_fd
@@ -56,37 +73,6 @@ pub enum FDFlags {
     Write  = NEWT_FD_WRITE as isize,
     /// Exit when an exception has occurred on the file descriptor.
     Except = NEWT_FD_EXCEPT as isize
-}
-
-#[derive(Component)]
-struct BaseComponent {
-    co: Cell<newtComponent>,
-    added_to_parent: Cell<bool>
-}
-
-///
-/// Displays `Component`s and accepts user input.
-///
-#[derive(Component)]
-pub struct Form<'a>
-{
-    co: Cell<newtComponent>,
-    added_to_parent: Cell<bool>,
-    components: Vec<&'a dyn Component>
-}
-
-impl<'a> Drop for Form<'a>
-{
-    fn drop(&mut self) {
-        if !self.added_to_parent() {
-            unsafe { newtFormDestroy(self.co()); }
-            self.nullify();
-        }
-
-        for component in self.components.iter() {
-            component.nullify();
-        }
-    }
 }
 
 impl<'a> Form<'a>
@@ -297,5 +283,19 @@ impl<'a> Form<'a>
     ///
     pub fn draw(&self) {
         unsafe { newtDrawForm(self.co()); }
+    }
+}
+
+impl<'a> Drop for Form<'a>
+{
+    fn drop(&mut self) {
+        if !self.added_to_parent() {
+            unsafe { newtFormDestroy(self.co()); }
+            self.nullify();
+        }
+
+        for component in self.components.iter() {
+            component.nullify();
+        }
     }
 }
