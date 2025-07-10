@@ -232,10 +232,16 @@ impl<'a> Form<'a>
         unsafe { newtFormSetBackground(self.co(), color); }
     }
 
+    ///
+    /// Get the current vertical scroll position of the `Form`.
+    ///
     pub fn get_scroll_position(&self) -> i32 {
         unsafe { newtFormGetScrollPosition(self.co()) }
     }
 
+    ///
+    /// Set the vertical scroll position of the `Form`.
+    ///
     pub fn set_scroll_position(&self, position: i32) {
         unsafe { newtFormSetScrollPosition(self.co(), position); }
     }
