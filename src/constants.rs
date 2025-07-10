@@ -231,21 +231,21 @@ pub mod entry {
     use std::os::raw::c_int;
     use newt_sys::*;
 
-    /// Enable automatic horizontal scrolling as text is entered.
-    pub const ENTRY_SCROLL: c_int       = NEWT_ENTRY_SCROLL;
-
-    /// Display entered text as `*`.
-    pub const ENTRY_PASSWORD: c_int     = NEWT_FLAG_PASSWORD;
+    /// Disable the `Entry`, disallowing entering of text.
+    pub const ENTRY_DISABLED: c_int     = NEWT_ENTRY_DISABLED;
 
     /// Do not display entered text.
     pub const ENTRY_HIDDEN: c_int       = NEWT_ENTRY_HIDDEN;
+
+    /// Display entered text as `*`.
+    pub const ENTRY_PASSWORD: c_int     = NEWT_FLAG_PASSWORD;
 
     /// Exit the currently running `Form` when the `Enter` key is pressed
     /// while the `Entry` is focused.
     pub const ENTRY_RETURNEXIT: c_int   = NEWT_ENTRY_RETURNEXIT;
 
-    /// Disable the `Entry`, disallowing entering of text.
-    pub const ENTRY_DISABLED: c_int     = NEWT_ENTRY_DISABLED;
+    /// Enable automatic horizontal scrolling as text is entered.
+    pub const ENTRY_SCROLL: c_int       = NEWT_ENTRY_SCROLL;
 }
 pub use crate::constants::entry::*;
 
@@ -256,9 +256,22 @@ pub mod listbox {
     use std::os::raw::c_int;
     use newt_sys::*;
 
+    /// Display a border around the `Listbox`.
+    pub const LISTBOX_BORDER: c_int     = NEWT_FLAG_BORDER;
+
+    /// Enable selecting multiple items.
+    pub const LISTBOX_MULTIPLE: c_int   = NEWT_FLAG_MULTIPLE;
+
     /// Exit the currently running `Form` when the `Enter` key is pressed
     /// while the `Listbox`is focused.
     pub const LISTBOX_RETURNEXIT: c_int = NEWT_LISTBOX_RETURNEXIT;
+
+    /// Enable vertical scrolling.
+    pub const LISTBOX_SCROLL: c_int     = NEWT_FLAG_SCROLL;
+
+    /// Display a cursor at the beginning of the currently selected
+    /// `Listbox` item.
+    pub const LISTBOX_SHOWCURSER: c_int = NEWT_FLAG_SHOWCURSOR;
 }
 pub use crate::constants::listbox::*;
 
