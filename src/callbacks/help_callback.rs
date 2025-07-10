@@ -119,8 +119,8 @@ where FN: FnMut(&Form, Option<&T>)
                 ptr::null_mut()
             };
 
-            let c_ptr = cb.as_ref() as *const _ as *mut c_void;
-            let co = newtForm(scrollbar, c_ptr, form_flags);
+            let cb_ptr = cb.as_ref() as *const _ as *mut c_void;
+            let co = newtForm(scrollbar, cb_ptr, form_flags);
             let form = Form::new_co(co);
             (form, cb)
         }
