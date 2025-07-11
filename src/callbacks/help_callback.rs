@@ -80,16 +80,16 @@ use newt_sys::*;
 /// }
 /// ```
 ///
-pub struct HelpCallback<'a, FN, T>
-where FN: FnMut(&Form, Option<&T>)
+pub struct HelpCallback<'a, F, T>
+where F: FnMut(&Form, Option<&T>)
 {
-    function: FN,
+    function: F,
     data: Option<T>,
     form: PhantomData<Form<'a>>
 }
 
-impl<'a, FN, T> HelpCallback<'a, FN, T>
-where FN: FnMut(&Form, Option<&T>)
+impl<'a, F, T> HelpCallback<'a, F, T>
+where F: FnMut(&Form, Option<&T>)
 {
     ///
     /// Initialize a new `Form` and associate the function or closure
@@ -104,8 +104,8 @@ where FN: FnMut(&Form, Option<&T>)
     /// * `function` - The function or closure to associate with the `Form`.
     ///
     pub fn new(scrollbar: Option<&VerticalScrollbar>,
-               form_flags: i32, data: Option<T>, function: FN)
-      -> (Form<'a>, Box<HelpCallback<'a, FN, T>>) {
+               form_flags: i32, data: Option<T>, function: F)
+      -> (Form<'a>, Box<HelpCallback<'a, F, T>>) {
 
         unsafe {
             let cb = Box::new(HelpCallback {

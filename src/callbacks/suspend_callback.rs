@@ -62,15 +62,15 @@ use crate::private::funcs::*;
 /// }
 /// ```
 ///
-pub struct SuspendCallback<FN, T>
-where FN: FnMut(Option<&T>)
+pub struct SuspendCallback<F, T>
+where F: FnMut(Option<&T>)
 {
-    function: FN,
+    function: F,
     data: Option<T>
 }
 
-impl<FN, T> SuspendCallback<FN, T>
-where FN: FnMut(Option<&T>)
+impl<F, T> SuspendCallback<F, T>
+where F: FnMut(Option<&T>)
 {
     ///
     /// Create a new `SuspendCallback` to be called when a suspend (`Ctrl-Z`)
@@ -80,8 +80,8 @@ where FN: FnMut(Option<&T>)
     /// * `function` - The function or closure to be called when a suspend
     ///                event occurs.
     ///
-    pub fn new(data: Option<T>, function: FN)
-      -> Box<SuspendCallback<FN, T>> {
+    pub fn new(data: Option<T>, function: F)
+      -> Box<SuspendCallback<F, T>> {
 
         unsafe {
             let cb = Box::new(SuspendCallback { function, data });
@@ -95,8 +95,8 @@ where FN: FnMut(Option<&T>)
     }
 }
 
-impl<FN, T> Drop for SuspendCallback<FN, T>
-where FN: FnMut(Option<&T>)
+impl<F, T> Drop for SuspendCallback<F, T>
+where F: FnMut(Option<&T>)
 {
     fn drop(&mut self) {
         unsafe { newt_unset_suspend_callback(); }

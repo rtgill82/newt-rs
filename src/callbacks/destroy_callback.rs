@@ -71,15 +71,15 @@ use newt_sys::*;
 /// }
 /// ```
 ///
-pub struct DestroyCallback<'a, FN: 'a, T: 'a>
-where FN: FnMut(&dyn Component, Option<&T>)
+pub struct DestroyCallback<'a, F: 'a, T: 'a>
+where F: FnMut(&dyn Component, Option<&T>)
 {
-    function: FN,
+    function: F,
     components: Vec<(&'a dyn Component, Option<T>)>
 }
 
-impl<'a, FN: 'a, T: 'a> DestroyCallback<'a, FN, T>
-where FN: FnMut(&dyn Component, Option<&T>)
+impl<'a, F: 'a, T: 'a> DestroyCallback<'a, F, T>
+where F: FnMut(&dyn Component, Option<&T>)
 {
     ///
     /// Create a new `DestroyCallback` using the function or closure `function` and
@@ -90,8 +90,8 @@ where FN: FnMut(&dyn Component, Option<&T>)
     /// * `function` - The function or closure to call when the
     ///                `Component` is activated.
     ///
-    pub fn new(component: &'a dyn Component, data: Option<T>, function: FN)
-      -> Box<DestroyCallback<'a, FN, T>> {
+    pub fn new(component: &'a dyn Component, data: Option<T>, function: F)
+      -> Box<DestroyCallback<'a, F, T>> {
 
         unsafe {
             let cb = Box::new(DestroyCallback {
@@ -131,8 +131,8 @@ where FN: FnMut(&dyn Component, Option<&T>)
     }
 }
 
-impl<'a, FN: 'a, T: 'a> Drop for DestroyCallback<'a, FN, T>
-where FN: FnMut(&dyn Component, Option<&T>)
+impl<'a, F: 'a, T: 'a> Drop for DestroyCallback<'a, F, T>
+where F: FnMut(&dyn Component, Option<&T>)
 {
     fn drop(&mut self) {
         unsafe {

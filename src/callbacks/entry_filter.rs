@@ -43,15 +43,15 @@ use crate::private::funcs::newt_entry_set_filter;
 ///
 /// [entry_example]: crate::widgets::Entry#example
 ///
-pub struct EntryFilter<'a, FN: 'a, T: 'a>
-where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
+pub struct EntryFilter<'a, F: 'a, T: 'a>
+where F: FnMut(&Entry, Option<&T>, char, i32) -> char
 {
-    function: FN,
+    function: F,
     entries: Vec<(&'a Entry, Option<T>)>
 }
 
-impl<'a, FN: 'a, T: 'a> EntryFilter<'a, FN, T>
-where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
+impl<'a, F: 'a, T: 'a> EntryFilter<'a, F, T>
+where F: FnMut(&Entry, Option<&T>, char, i32) -> char
 {
     ///
     /// Create a new `EntryFilter`.
@@ -64,9 +64,9 @@ where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
     /// * `function` - The function or closure to be called when a character
     ///                is entered.
     ///
-    pub fn new(entry: &'a Entry, data: Option<T>, function: FN)
-      -> Box<EntryFilter<'a, FN, T>> {
-
+    pub fn new(entry: &'a Entry, data: Option<T>, function: F)
+      -> Box<EntryFilter<'a, F, T>>
+    {
         unsafe {
             let co: newtComponent = entry.co();
             let filter = Box::new(EntryFilter {

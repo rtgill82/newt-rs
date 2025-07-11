@@ -74,57 +74,57 @@ pub fn malloc_failure() -> ! {
 }
 
 unsafe extern "C"
-fn callback<'a, FN: 'a, T: 'a>(co: newtComponent, data: *mut c_void)
-where FN: FnMut(&dyn Component, Option<&T>)
+fn callback<'a, F: 'a, T: 'a>(co: newtComponent, data: *mut c_void)
+where F: FnMut(&dyn Component, Option<&T>)
 {
-    let cb = &mut *(data as *mut Callback<'a, FN, T>);
+    let cb = &mut *(data as *mut Callback<'a, F, T>);
     cb.call(co);
 }
 
 unsafe extern "C"
-fn destroy_callback<'a, FN: 'a, T: 'a>(co: newtComponent, data: *mut c_void)
-where FN: FnMut(&dyn Component, Option<&T>)
+fn destroy_callback<'a, F: 'a, T: 'a>(co: newtComponent, data: *mut c_void)
+where F: FnMut(&dyn Component, Option<&T>)
 {
-    let cb = &mut *(data as *mut DestroyCallback<'a, FN, T>);
+    let cb = &mut *(data as *mut DestroyCallback<'a, F, T>);
     cb.call(co);
     newt_unset_destroy_callback(co);
 }
 
 unsafe extern "C"
-fn help_callback<FN, T>(co: newtComponent, data: *mut c_void)
-where FN: FnMut(&Form, Option<&T>)
+fn help_callback<F, T>(co: newtComponent, data: *mut c_void)
+where F: FnMut(&Form, Option<&T>)
 {
     if data.is_null() { return; };
-    let cb = &mut *(data as *mut HelpCallback<FN, T>);
+    let cb = &mut *(data as *mut HelpCallback<F, T>);
     let form = Form::new_co(co);
     form.add_to_parent().unwrap();
     cb.call(&form);
 }
 
 unsafe extern "C"
-fn suspend_callback<FN, T>(data: *mut c_void)
-where FN: FnMut(Option<&T>)
+fn suspend_callback<F, T>(data: *mut c_void)
+where F: FnMut(Option<&T>)
 {
-    let cb = &mut *(data as *mut SuspendCallback<FN, T>);
+    let cb = &mut *(data as *mut SuspendCallback<F, T>);
     cb.call();
 }
 
 unsafe extern "C"
-fn entry_filter<'a, FN: 'a, T: 'a>
+fn entry_filter<'a, F: 'a, T: 'a>
   (entry: newtComponent, data: *mut c_void, ch: c_int, cursor: c_int) -> i32
-where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
+where F: FnMut(&Entry, Option<&T>, char, i32) -> char
 {
-    let cb = &mut *(data as *mut EntryFilter<'a, FN, T>);
+    let cb = &mut *(data as *mut EntryFilter<'a, F, T>);
     let ch = char::from_u32(ch as u32).unwrap();
     cb.call(entry, ch, cursor) as i32
 }
 
-pub unsafe fn newt_set_callback<'a, FN: 'a, T: 'a>
-  (co: newtComponent, cb: &Callback<'a, FN, T>)
-where FN: FnMut(&dyn Component, Option<&T>)
+pub unsafe fn newt_set_callback<'a, F: 'a, T: 'a>
+  (co: newtComponent, cb: &Callback<'a, F, T>)
+where F: FnMut(&dyn Component, Option<&T>)
 {
     let c_ptr = cb as *const _ as *mut c_void;
-    newtComponentAddCallback(co, Some(callback::<FN, T>), c_ptr);
+    newtComponentAddCallback(co, Some(callback::<F, T>), c_ptr);
 }
 
 pub unsafe fn newt_unset_callback(co: &dyn Component)
@@ -132,12 +132,12 @@ pub unsafe fn newt_unset_callback(co: &dyn Component)
     newtComponentAddCallback(co.co(), None, ptr::null_mut());
 }
 
-pub unsafe fn newt_set_destroy_callback<'a, FN: 'a, T: 'a>
-  (co: newtComponent, cb: &DestroyCallback<'a, FN, T>)
-where FN: FnMut(&dyn Component, Option<&T>)
+pub unsafe fn newt_set_destroy_callback<'a, F: 'a, T: 'a>
+  (co: newtComponent, cb: &DestroyCallback<'a, F, T>)
+where F: FnMut(&dyn Component, Option<&T>)
 {
     let c_ptr = cb as *const _ as *mut c_void;
-    newtComponentAddDestroyCallback(co, Some(destroy_callback::<FN, T>), c_ptr);
+    newtComponentAddDestroyCallback(co, Some(destroy_callback::<F, T>), c_ptr);
 }
 
 pub unsafe fn newt_unset_destroy_callback(co: newtComponent)
@@ -145,17 +145,17 @@ pub unsafe fn newt_unset_destroy_callback(co: newtComponent)
     newtComponentAddDestroyCallback(co, None, ptr::null_mut());
 }
 
-pub unsafe fn newt_init_help_callback<FN, T>(_cb: &HelpCallback<FN, T>)
-where FN: FnMut(&Form, Option<&T>)
+pub unsafe fn newt_init_help_callback<F, T>(_cb: &HelpCallback<F, T>)
+where F: FnMut(&Form, Option<&T>)
 {
-    newtSetHelpCallback(Some(help_callback::<FN, T>));
+    newtSetHelpCallback(Some(help_callback::<F, T>));
 }
 
-pub unsafe fn newt_set_suspend_callback<FN, T>(cb: &SuspendCallback<FN, T>)
-where FN: FnMut(Option<&T>)
+pub unsafe fn newt_set_suspend_callback<F, T>(cb: &SuspendCallback<F, T>)
+where F: FnMut(Option<&T>)
 {
     let c_ptr = cb as *const _ as *mut c_void;
-    newtSetSuspendCallback(Some(suspend_callback::<FN, T>), c_ptr);
+    newtSetSuspendCallback(Some(suspend_callback::<F, T>), c_ptr);
 }
 
 pub unsafe fn newt_unset_suspend_callback()
@@ -163,12 +163,12 @@ pub unsafe fn newt_unset_suspend_callback()
     newtSetSuspendCallback(None, ptr::null_mut());
 }
 
-pub unsafe fn newt_entry_set_filter<'a, FN: 'a, T: 'a>(
+pub unsafe fn newt_entry_set_filter<'a, F: 'a, T: 'a>(
     co: newtComponent,
-    cb: &EntryFilter<'a, FN, T>
+    cb: &EntryFilter<'a, F, T>
 )
-where FN: FnMut(&Entry, Option<&T>, char, i32) -> char
+where F: FnMut(&Entry, Option<&T>, char, i32) -> char
 {
     let c_ptr = cb as *const _ as *mut c_void;
-    newtEntrySetFilter(co, Some(entry_filter::<FN, T>), c_ptr)
+    newtEntrySetFilter(co, Some(entry_filter::<F, T>), c_ptr)
 }
