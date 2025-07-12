@@ -18,6 +18,7 @@
 //
 
 use std::convert::TryInto;
+use std::error::Error;
 use std::ffi::CString;
 use std::os::raw::{c_char,c_int,c_void};
 use std::{char,ptr};
@@ -66,9 +67,18 @@ fn c_ptr_array_to_boxed_slice<D>(ptr: *const *const c_void, numitems: i32)
 //  Convert a `char` to a C character.
 //
 pub fn char_to_c_char(ch: char) -> c_char {
-    match TryInto::<u8>::try_into(ch) {
-        Ok(ch) => ch as c_char,
-        Err(_) => panic!("cannot convert `char` {} to `c_char`", ch)
+    let result: Result<c_char, Box<dyn Error>> =
+        match TryInto::<u8>::try_into(ch) {
+            Ok(ch) => match TryInto::<c_char>::try_into(ch) {
+                Ok(ch) => Ok(ch),
+                Err(e) => Err(Box::new(e))
+            },
+            Err(e) => Err(Box::new(e))
+        };
+
+    match result {
+        Ok(ch) => ch,
+        Err(e) => panic!("cannot convert `char` {} to `c_char: {}`", ch, e)
     }
 }
 
