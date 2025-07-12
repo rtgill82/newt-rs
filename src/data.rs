@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2019 Robert Gill <rtgill82@gmail.com>
+// Copyright (C) 2025 Robert Gill <rtgill82@gmail.com>
 //
 // This file is a part of newt-rs.
 //
@@ -17,9 +17,23 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
+//!
+//! Trait that allows for conveniently passing data as pointers to the
+//! underlying C library.
+//!
 use std::os::raw::c_void;
 use std::ptr;
 
+///
+/// Trait that allows for conveniently passing data as pointers to the
+/// underlying C library.
+///
+/// Used with [`Listbox`][listbox] and [`CheckboxTree`][checkbox_tree]
+/// for associating data with their list items.
+///
+/// [listbox]: crate::widgets::Listbox
+/// [checkbox_tree]: crate::widgets::CheckboxTree
+///
 pub trait Data {
     fn newt_to_ptr(&self) -> *const c_void;
     fn newt_from_ptr(ptr: *const c_void) -> Self;

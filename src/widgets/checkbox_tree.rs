@@ -24,7 +24,7 @@ use std::os::raw::{c_char,c_void};
 
 use newt_sys::*;
 use crate::component::Component;
-use crate::private::data::Data;
+use crate::data::Data;
 use crate::private::funcs::*;
 use crate::constants;
 

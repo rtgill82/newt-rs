@@ -32,9 +32,9 @@ use crate::callbacks::DestroyCallback;
 use crate::callbacks::EntryFilter;
 use crate::callbacks::HelpCallback;
 use crate::callbacks::SuspendCallback;
+use crate::data::Data;
 use crate::private::Child;
 
-use crate::private::data::Data;
 
 //
 // Panic! when memory allocation fails.

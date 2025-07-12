@@ -25,7 +25,7 @@ use std::ptr;
 
 use newt_sys::*;
 use crate::component::Component;
-use crate::private::data::Data;
+use crate::data::Data;
 use crate::private::funcs::*;
 
 use crate::constants::FlagsSense;

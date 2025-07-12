@@ -31,18 +31,20 @@ use crate::widgets::form::ExitReason;
 
 use crate::asm::*;
 use crate::private::*;
-use crate::private;
 
 ///
-/// A wrapper for passing complex data to [CheckboxTree][checkbox_tree] and
-/// [Listbox][listbox] widgets.
+/// A convenience wrapper for passing complex data to
+/// [`CheckboxTree`][checkbox_tree] and [`Listbox`][listbox] widgets.
+///
+/// Implements the [`Data`][data] trait.
 ///
 /// [checkbox_tree]: crate::widgets::CheckboxTree
 /// [listbox]: crate::widgets::Listbox
+/// [data]: crate::data::Data
 ///
 pub struct Data<'a, T: 'a>(pub &'a T);
 
-impl<'a, T: 'a> private::data::Data for Data<'a, T> {
+impl<'a, T: 'a> crate::data::Data for Data<'a, T> {
     fn newt_to_ptr(&self) -> *const c_void {
         self.0 as *const _ as *const c_void
     }
