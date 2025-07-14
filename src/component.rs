@@ -45,11 +45,11 @@ use crate::private::*;
 pub struct Data<'a, T: 'a>(pub &'a T);
 
 impl<'a, T: 'a> crate::data::Data for Data<'a, T> {
-    fn newt_to_ptr(&self) -> *const c_void {
+    unsafe fn newt_to_ptr(&self) -> *const c_void {
         self.0 as *const _ as *const c_void
     }
 
-    fn newt_from_ptr(ptr: *const c_void) -> Self {
+    unsafe fn newt_from_ptr(ptr: *const c_void) -> Self {
         let data = unsafe { &*(ptr as *const T) };
         Data(data)
     }

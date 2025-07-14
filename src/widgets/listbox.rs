@@ -128,9 +128,11 @@ impl<D: Data> Listbox<D> {
     /// Get the user `Data` of the currently selected item in the `Listbox`.
     ///
     pub fn get_current(&self) -> Option<D> {
-        let c_data = unsafe { newtListboxGetCurrent(self.co()) };
-        if c_data.is_null() { return None; }
-        Some(D::newt_from_ptr(c_data))
+        unsafe {
+            let c_data =newtListboxGetCurrent(self.co());
+            if c_data.is_null() { return None; }
+            Some(D::newt_from_ptr(c_data))
+        }
     }
 
     ///
@@ -173,9 +175,9 @@ impl<D: Data> Listbox<D> {
 
         unsafe {
             newtListboxGetEntry(self.co(), num, &mut c_str, &mut c_data);
+            let c_str = CStr::from_ptr(c_str);
+            (c_str.to_str().unwrap(), D::newt_from_ptr(c_data))
         }
-        let c_str = unsafe { CStr::from_ptr(c_str) };
-        (c_str.to_str().unwrap(), D::newt_from_ptr(c_data))
     }
 
     ///
