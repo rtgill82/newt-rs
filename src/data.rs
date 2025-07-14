@@ -155,7 +155,7 @@ impl Data for f32 {
     }
 
     unsafe fn newt_from_ptr(ptr: *const c_void) -> Self {
-        Self::from_bits(ptr as u32) as Self
+        Self::from_bits(ptr as u32)
     }
 }
 
@@ -188,7 +188,7 @@ impl Data for f64 {
     }
 
     unsafe fn newt_from_ptr(ptr: *const c_void) -> Self {
-        Self::from_bits(ptr as u64) as Self
+        Self::from_bits(ptr as u64)
     }
 }
 
