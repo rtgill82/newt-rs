@@ -11,7 +11,6 @@ library. Newt is a small and simple to use UI library providing widgets and
 basic stacked window management for console applications.
 
 [newt]: https://pagure.io/newt
-[asm_feature]: #asm_feature
 
 ## Usage
 
@@ -28,19 +27,18 @@ assembly functions on the supported architectures.
 
 ## Features
 
+The following features are available as build options:
+[`static`][static_feature], [`asm`][asm_feature], [`f16`][f16_feature].
+
+[static_feature]: #static_feature
+[asm_feature]: #asm_feature
+[f16_feature]: #f16_feature
+
 ### `static` feature
 
 Enabling the `static` feature will force the `newt-sys` dependency to be
 statically built against its included libraries rather than dynamically against
 local system libraries when the required libraries are available on the system.
-
-It can be enabled in your `Cargo.toml` file as follows.
-
-```
-[dependencies.newt]
-version  = "0.6"
-features = ["static"]
-```
 
 [newt_sys]: https://crates.io/crates/newt-sys
 
@@ -53,13 +51,13 @@ the _asm_ feature to be enabled.
 These are currently available on the _x86_, <i>x86_64</i>, _arm_, _aarch64_,
 _riscv32_, and _riscv64_ architectures.
 
-Enable the feature as follows in your `Cargo.toml` file.
+### <a name="f16_feature"></a> `f16` feature
 
-```
-[dependencies.newt]
-version  = "0.6"
-features = ["asm"]
-```
+Enable an implementation of the `Data` trait for the `f16` primitive, allowing
+it to be passed as data to `Listbox`es and `CheckboxTree`s. This primitive is
+unstable and only available in nightly builds of the compiler. Adding the
+`-Zcrate-attr=feature(f16)` option to the `RUSTFLAGS` environment variable
+is required to build.
 
 ## LICENSE
 

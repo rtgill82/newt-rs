@@ -126,6 +126,17 @@ impl Data for u16 {
     }
 }
 
+#[cfg(all(nightly, feature = "f16"))]
+impl Data for f16 {
+    unsafe fn newt_to_ptr(&self) -> *const c_void {
+        self.to_bits() as usize as *const c_void
+    }
+
+    unsafe fn newt_from_ptr(ptr: *const c_void) -> Self {
+        Self::from_bits(ptr as u16)
+    }
+}
+
 #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
 impl Data for i32 {
     unsafe fn newt_to_ptr(&self) -> *const c_void {
@@ -256,6 +267,17 @@ fn i16_data_should_cast_correctly() {
         let ptr = i.newt_to_ptr();
         let i = i16::newt_from_ptr(ptr);
         assert!(i == (i16::MIN / 3));
+    }
+}
+
+#[test]
+#[cfg(all(nightly,feature = "f16"))]
+fn f16_data_should_cast_correctly() {
+    unsafe {
+        let f: f16 = f16::MIN / 3.0;
+        let ptr = f.newt_to_ptr();
+        let f = f16::newt_from_ptr(ptr);
+        assert!(f == (f16::MIN / 3.0));
     }
 }
 
