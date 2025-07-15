@@ -54,7 +54,7 @@ _riscv32_, and _riscv64_ architectures.
 ### <a name="f16_feature"></a> `f16` feature
 
 Enable an implementation of the `Data` trait for the `f16` primitive, allowing
-it to be passed as data to `Listbox`es and `CheckboxTree`s. This primitive is
+it to be passed as data to `Listboxes` and `CheckboxTrees`. This primitive is
 unstable and only available in nightly builds of the compiler. Adding the
 `-Zcrate-attr=feature(f16)` option to the `RUSTFLAGS` environment variable
 is required to build.
