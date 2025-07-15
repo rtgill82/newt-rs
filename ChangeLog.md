@@ -1,5 +1,20 @@
 # ChangeLog
 
+## 0.6.12
+
+* Implement `Data` trait for floating point primitives.
+
+* Make the `Data` trait public.
+
+* Add constants: ENTRY_PASSWORD, LISTBOX_BORDER, LISTBOX_MULTIPLE,
+  LISTBOX_SCROLL, LISTBOX_SHOWCURSOR.
+
+* Panic! on memory allocation errors when creating widgets.
+
+* Fix build error when the `asm` feature is not enabled.
+
+* Additional documentation.
+
 ## 0.6.11
 
 * Implement DestroyCallback.
