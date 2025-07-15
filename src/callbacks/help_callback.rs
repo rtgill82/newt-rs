@@ -111,7 +111,7 @@ where F: FnMut(&Form, Option<&T>)
             let cb = Box::new(HelpCallback {
                 function, data, form: PhantomData
             });
-            newt_init_help_callback(cb.as_ref());
+            newt_init_help_callback::<F, T>();
 
             let scrollbar = if let Some(scrollbar) = scrollbar {
                 scrollbar.co()

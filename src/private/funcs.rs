@@ -211,8 +211,9 @@ pub unsafe fn newt_unset_destroy_callback(co: newtComponent)
 //
 // Initialize the HelpCallback.
 //
-pub unsafe fn newt_init_help_callback<F, T>(_cb: &HelpCallback<F, T>)
-where F: FnMut(&Form, Option<&T>)
+pub unsafe fn newt_init_help_callback<F, T>()
+where
+    F: FnMut(&Form, Option<&T>)
 {
     newtSetHelpCallback(Some(help_callback::<F, T>));
 }
