@@ -80,7 +80,7 @@ use crate::constants;
 ///     let selection = tree.get_selection();
 ///     println!("selection: {:?}", selection);
 ///     for i in selection.iter() {
-///         println!("{} is set to {}", i, tree.get_entry_value(*i));
+///         println!("{} is set to {}", i, tree.get_entry_value(&*i));
 ///     }
 /// }
 /// ```
@@ -217,7 +217,7 @@ impl<D: Data> CheckboxTree<D> {
     ///
     /// * `data` - Associated user `Data` of the item to be selected.
     ///
-    pub fn set_current(&self, data: D) {
+    pub fn set_current(&self, data: &D) {
         unsafe {
             newtCheckboxTreeSetCurrent(
                 self.co(),
@@ -274,7 +274,7 @@ impl<D: Data> CheckboxTree<D> {
     /// `Returns` an array of integers representing the item's location
     /// index in the tree.
     ///
-    pub fn find_item(&self, data: D) -> Box<[i32]> {
+    pub fn find_item(&self, data: &D) -> Box<[i32]> {
         let mut vec: Vec<i32> = Vec::new();
         unsafe {
             let rv = newtCheckboxTreeFindItem(
@@ -301,7 +301,7 @@ impl<D: Data> CheckboxTree<D> {
     /// * `data` - The user `Data` associated with the checkbox item.
     /// * `text` - The new display text of the item.
     ///
-    pub fn set_entry(&self, data: D, text: &str) {
+    pub fn set_entry(&self, data: &D, text: &str) {
         let c_str = CString::new(text).unwrap();
         unsafe {
             newtCheckboxTreeSetEntry(
@@ -329,7 +329,7 @@ impl<D: Data> CheckboxTree<D> {
     /// [C]: crate::constants::checkboxtree::CHECKBOXTREE_COLLAPSED
     /// [E]: crate::constants::checkboxtree::CHECKBOXTREE_EXPANDED
     ///
-    pub fn get_entry_value(&self, data: D) -> char {
+    pub fn get_entry_value(&self, data: &D) -> char {
         unsafe {
             newtCheckboxTreeGetEntryValue(
                 self.co(),
@@ -348,7 +348,7 @@ impl<D: Data> CheckboxTree<D> {
     /// * `data` - The user `Data` associated with the checkbox.
     /// * `value` - The value to set the checkbox item to.
     ///
-    pub fn set_entry_value(&self, data: D, value: char) {
+    pub fn set_entry_value(&self, data: &D, value: char) {
         unsafe {
             newtCheckboxTreeSetEntryValue(
                 self.co(),

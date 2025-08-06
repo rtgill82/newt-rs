@@ -62,6 +62,6 @@ pub fn main() {
     let selection = tree.get_selection();
     println!("selection: {:?}", selection);
     for i in selection.iter() {
-        println!("{} is set to {}", i, tree.get_entry_value(*i));
+        println!("{} is set to {}", i, tree.get_entry_value(&*i));
     }
 }
