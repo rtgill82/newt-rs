@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 0.7.0
+
+* CheckboxTree and Listbox accept &Data references in functions that select and
+  modify items. This is an API breaking change.
+
 ## 0.6.12
 
 * Implement `Data` trait for floating point primitives.
