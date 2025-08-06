@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.7.1
+
+* Minor update to README.md.
+
 ## 0.7.0
 
 * CheckboxTree and Listbox accept &Data references in functions that select and
