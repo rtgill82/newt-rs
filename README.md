@@ -18,7 +18,7 @@ Include _newt_ as a dependency of in your `Cargo.toml` file as follows.
 
 ```
 [dependencies]
-newt = "0.6"
+newt = "0.7"
 ```
 
 The library API is currently subject to change and there are likely to be
