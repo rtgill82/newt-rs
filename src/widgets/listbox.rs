@@ -33,6 +33,39 @@ use crate::constants::FlagsSense;
 ///
 /// A widget for displaying a list of selectable items.
 ///
+/// ## Example
+/// ```rust no_run
+/// extern crate newt;
+/// use newt::widgets::listbox::Flag;
+/// use newt::prelude::*;
+///
+/// pub fn main() {
+///     newt::init().unwrap();
+///     newt::cls();
+///     newt::centered_window(15, 6, Some("Options")).unwrap();
+///
+///     let listbox: Listbox = Listbox::new(1, 1, 3, Some(Flag::Multiple));
+///     let ok = CompactButton::new(1, 5, "Ok");
+///     let clear = CompactButton::new(6, 5, "Clear");
+///
+///     for i in 1..10 {
+///         let text = format!("Entry {}", i);
+///         listbox.append_entry(&text, i).unwrap();
+///     }
+///
+///     let mut form = Form::new(None, None);
+///     form.add_components(&[&listbox, &ok, &clear]).unwrap();
+///
+///     while form.run().unwrap() == clear { listbox.clear(); }
+///     newt::finished();
+///
+///     let current = listbox.current();
+///     let selected = listbox.selection();
+///     println!("current = {:?}", current);
+///     println!("selected = {:?}", selected);
+/// }
+/// ```
+///
 #[derive(Component)]
 pub struct Listbox<D: Data = isize> {
     co: Cell<newtComponent>,
