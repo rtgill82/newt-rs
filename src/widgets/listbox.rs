@@ -113,7 +113,7 @@ impl<D: Data> Listbox<D> {
     /// * `key` - The user `Data` of the item this item is to be inserted
     ///           before.
     ///
-    pub fn insert_entry(&self, text: &str, data: D, key: D)
+    pub fn insert_entry(&self, text: &str, data: D, key: &D)
           -> Result<(), ()> {
         let c_str = CString::new(text).unwrap();
         let rv = unsafe {
@@ -152,7 +152,7 @@ impl<D: Data> Listbox<D> {
     /// * `key` - The user `Data` associated with the item to be set as the
     ///           currently selected item.
     ///
-    pub fn set_current_by_key(&self, key: D) {
+    pub fn set_current_by_key(&self, key: &D) {
         unsafe {
             newtListboxSetCurrentByKey(
                 self.co(),
@@ -197,7 +197,7 @@ impl<D: Data> Listbox<D> {
     /// * `num` - The index number of the item to be modified.
     /// * `data` - The new user `Data` to be associated with the item.
     ///
-    pub fn set_data(&self, num: i32, data: D) {
+    pub fn set_data(&self, num: i32, data: &D) {
         unsafe {
             newtListboxSetData(
                 self.co(),
@@ -214,7 +214,7 @@ impl<D: Data> Listbox<D> {
     ///
     /// `Returns` the index number of the deleted item.
     ///
-    pub fn delete_entry(&self, data: D) -> i32 {
+    pub fn delete_entry(&self, data: &D) -> i32 {
         unsafe {
             newtListboxDeleteEntry(
                 self.co(),
@@ -252,7 +252,7 @@ impl<D: Data> Listbox<D> {
     /// * `sense` - The sense in which the selection should be modified
     ///             (`Set`, `Reset`, or `Toggle`).
     ///
-    pub fn select_item(&self, key: D, sense: FlagsSense) {
+    pub fn select_item(&self, key: &D, sense: FlagsSense) {
         unsafe {
             newtListboxSelectItem(
                 self.co(),
@@ -269,7 +269,7 @@ impl<D: Data> Listbox<D> {
     /// * `sense` - The sense in which the selection should be modified
     ///             (`Set`, `Reset`, or `Toggle`).
     ///
-    pub fn select_items(&self, keys: &[D], sense: FlagsSense) {
+    pub fn select_items(&self, keys: &[&D], sense: FlagsSense) {
         unsafe {
             for key in keys {
                 newtListboxSelectItem(

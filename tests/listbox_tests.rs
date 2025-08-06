@@ -82,7 +82,7 @@ fn listbox_set_current_by_key() {
     listbox.append_entry("entry 1", 5).unwrap();
     listbox.append_entry("entry 2", 10).unwrap();
     assert!(listbox.get_current() == Some(5));
-    listbox.set_current_by_key(10);
+    listbox.set_current_by_key(&10);
     assert!(listbox.get_current() == Some(10));
 }
 
@@ -103,7 +103,7 @@ fn listbox_delete_entry() {
     listbox.append_entry("entry 2", 10).unwrap();
     listbox.append_entry("entry 3", 15).unwrap();
     assert!(listbox.item_count() == 3);
-    listbox.delete_entry(10);
+    listbox.delete_entry(&10);
     assert!(listbox.item_count() == 2);
 }
 
@@ -142,7 +142,7 @@ fn listbox_set_data() {
     let listbox: Listbox = Listbox::new(0, 0, 5, 0);
     listbox.append_entry("entry 1", 5).unwrap();
     { let (_s, d) = listbox.get_entry(0); assert!(d == 5); }
-    listbox.set_data(0, 10);
+    listbox.set_data(0, &10);
     let (_s, d) = listbox.get_entry(0);
     assert!(d == 10);
 }
@@ -161,7 +161,7 @@ fn listbox_select_item() {
     let listbox: Listbox = Listbox::new(0, 0, 5, FLAG_MULTIPLE);
     listbox.append_entry("entry 1", 5).unwrap();
     listbox.append_entry("entry 2", 10).unwrap();
-    listbox.select_item(10, Set);
+    listbox.select_item(&10, Set);
     let result = listbox.get_selection();
     assert!(result.len() == 1);
     assert!(result[0] == 10);
@@ -174,7 +174,7 @@ fn listbox_select_items() {
         let text = format!("entry {}", i);
         listbox.append_entry(&text, i).unwrap();
     }
-    listbox.select_items(&[3, 6, 9], Set);
+    listbox.select_items(&[&3, &6, &9], Set);
 
     let result = listbox.get_selection();
     assert!(result.len() == 3);
@@ -182,14 +182,14 @@ fn listbox_select_items() {
     assert!(result[1] == 6);
     assert!(result[2] == 9);
 
-    listbox.select_items(&[6], Toggle);
+    listbox.select_items(&[&6], Toggle);
     let result = listbox.get_selection();
     assert!(result.len() == 2);
     assert!(result[0] == 3);
     assert!(result[1] == 9);
 
-    listbox.select_items(&[6], Toggle);
-    listbox.select_items(&[3], Reset);
+    listbox.select_items(&[&6], Toggle);
+    listbox.select_items(&[&3], Reset);
     let result = listbox.get_selection();
     assert!(result.len() == 2);
     assert!(result[0] == 6);
@@ -202,8 +202,8 @@ fn listbox_get_selection() {
     listbox.append_entry("entry 1", 5).unwrap();
     listbox.append_entry("entry 2", 10).unwrap();
     listbox.append_entry("entry 3", 15).unwrap();
-    listbox.select_item(10, Set);
-    listbox.select_item(15, Set);
+    listbox.select_item(&10, Set);
+    listbox.select_item(&15, Set);
     let result = listbox.get_selection();
     assert!(result.len() == 2);
     assert!(result[0] == 10);
@@ -216,8 +216,8 @@ fn listbox_clear_selection() {
     listbox.append_entry("entry 1", 5).unwrap();
     listbox.append_entry("entry 2", 10).unwrap();
     listbox.append_entry("entry 3", 15).unwrap();
-    listbox.select_item(10, Set);
-    listbox.select_item(15, Set);
+    listbox.select_item(&10, Set);
+    listbox.select_item(&15, Set);
     let result = listbox.get_selection();
     assert!(result.len() == 2);
     listbox.clear_selection();
@@ -231,8 +231,8 @@ fn listbox_get_selection_char() {
     listbox.append_entry("entry1", 'a').unwrap();
     listbox.append_entry("entry2", 'b').unwrap();
     listbox.append_entry("entry3", 'c').unwrap();
-    listbox.select_item('a', Set);
-    listbox.select_item('c', Set);
+    listbox.select_item(&'a', Set);
+    listbox.select_item(&'c', Set);
     let result = listbox.get_selection();
     assert!(result.len() == 2);
     assert!(*result == ['a', 'c']);
@@ -244,8 +244,8 @@ fn listbox_get_selection_i8() {
     listbox.append_entry("entry1", i8::MAX).unwrap();
     listbox.append_entry("entry2", 0).unwrap();
     listbox.append_entry("entry3", i8::MIN).unwrap();
-    listbox.select_item(i8::MAX, Set);
-    listbox.select_item(i8::MIN, Set);
+    listbox.select_item(&i8::MAX, Set);
+    listbox.select_item(&i8::MIN, Set);
     let result = listbox.get_selection();
     assert!(result.len() == 2);
     assert!(*result == [i8::MAX, i8::MIN]);
@@ -257,8 +257,8 @@ fn listbox_get_selection_i32() {
     listbox.append_entry("entry1", i32::MAX).unwrap();
     listbox.append_entry("entry2", 0).unwrap();
     listbox.append_entry("entry3", i32::MIN).unwrap();
-    listbox.select_item(i32::MAX, Set);
-    listbox.select_item(i32::MIN, Set);
+    listbox.select_item(&i32::MAX, Set);
+    listbox.select_item(&i32::MIN, Set);
     let result = listbox.get_selection();
     assert!(result.len() == 2);
     assert!(*result == [i32::MAX, i32::MIN]);
@@ -270,8 +270,8 @@ fn listbox_get_selection_isize() {
     listbox.append_entry("entry1", isize::MAX).unwrap();
     listbox.append_entry("entry2", 0).unwrap();
     listbox.append_entry("entry3", isize::MIN).unwrap();
-    listbox.select_item(isize::MAX, Set);
-    listbox.select_item(isize::MIN, Set);
+    listbox.select_item(&isize::MAX, Set);
+    listbox.select_item(&isize::MIN, Set);
     let result = listbox.get_selection();
     assert!(result.len() == 2);
     assert!(*result == [isize::MAX, isize::MIN]);
@@ -283,8 +283,8 @@ fn listbox_get_selection_u8() {
     listbox.append_entry("entry1", u8::MAX).unwrap();
     listbox.append_entry("entry2", 0).unwrap();
     listbox.append_entry("entry3", u8::MIN).unwrap();
-    listbox.select_item(u8::MAX, Set);
-    listbox.select_item(u8::MIN, Set);
+    listbox.select_item(&u8::MAX, Set);
+    listbox.select_item(&u8::MIN, Set);
     let result = listbox.get_selection();
     assert!(result.len() == 2);
     assert!(*result == [u8::MAX, u8::MIN]);
@@ -296,8 +296,8 @@ fn listbox_get_selection_u32() {
     listbox.append_entry("entry1", u32::MAX).unwrap();
     listbox.append_entry("entry2", 0).unwrap();
     listbox.append_entry("entry3", u32::MIN).unwrap();
-    listbox.select_item(u32::MAX, Set);
-    listbox.select_item(u32::MIN, Set);
+    listbox.select_item(&u32::MAX, Set);
+    listbox.select_item(&u32::MIN, Set);
     let result = listbox.get_selection();
     assert!(result.len() == 2);
     assert!(*result == [u32::MAX, u32::MIN]);
@@ -309,8 +309,8 @@ fn listbox_get_selection_usize() {
     listbox.append_entry("entry1", usize::MAX).unwrap();
     listbox.append_entry("entry2", 0).unwrap();
     listbox.append_entry("entry3", usize::MIN).unwrap();
-    listbox.select_item(usize::MAX, Set);
-    listbox.select_item(usize::MIN, Set);
+    listbox.select_item(&usize::MAX, Set);
+    listbox.select_item(&usize::MIN, Set);
     let result = listbox.get_selection();
     assert!(result.len() == 2);
     assert!(*result == [usize::MAX, usize::MIN]);
@@ -325,8 +325,8 @@ fn listbox_get_selection_struct() {
 
     listbox.append_entry("entry1", Data(&st1)).unwrap();
     listbox.append_entry("entry2", Data(&st2)).unwrap();
-    listbox.select_item(Data(&st1), Set);
-    listbox.select_item(Data(&st2), Set);
+    listbox.select_item(&Data(&st1), Set);
+    listbox.select_item(&Data(&st2), Set);
 
     let result = listbox.get_selection();
     assert!(result.len() == 2);

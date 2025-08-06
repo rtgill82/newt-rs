@@ -31,6 +31,7 @@ use std::{fmt,mem};
 use rand::Rng;
 
 use newt::data::Data;
+use newt::constants::FlagsSense;
 use newt::constants::listbox::LISTBOX_MULTIPLE;
 use newt::widgets::{CompactButton,Form,Listbox};
 
@@ -50,6 +51,8 @@ pub fn main() {
         let s = format!("Entry {}", x);
         let ms = MyString::from(&s);
         listbox.append_entry(&s, ms.clone()).unwrap();
+
+        if x == 2 { listbox.select_item(&ms, FlagsSense::Set); }
     }
 
     let mut form = Form::new(None, 0);
