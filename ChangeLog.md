@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 0.6.13
+
+* Derive the Clone, Copy, Debug, Eq, and PartialEq traits for the
+  `component::Data` struct.
+
 ## 0.6.12
 
 * Implement `Data` trait for floating point primitives.
