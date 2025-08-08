@@ -75,6 +75,13 @@ impl RadiobuttonSet {
     }
 
     ///
+    /// Returns `true` if the `RadiobuttonSet` contains no `Radiobutton`s.
+    ///
+    pub fn is_empty(&self) -> bool {
+        self.radiobuttons.is_empty()
+    }
+
+    ///
     /// Get the number of `Radiobuttons` in the `RadiobuttonSet`.
     ///
     /// `Returns` the number of `Radiobuttons` in the `RadiobuttonSet`.
