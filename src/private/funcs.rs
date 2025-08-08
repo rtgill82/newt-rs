@@ -99,9 +99,10 @@ pub fn char_slice_to_cstring(slice: &[char]) -> CString {
 // Call a Callback.
 //
 unsafe extern "C"
-fn callback<'a, F: 'a, T: 'a>(co: newtComponent, data: *mut c_void)
+fn callback<'a, F, T>(co: newtComponent, data: *mut c_void)
 where
-    F: FnMut(&dyn Component, Option<&T>)
+    F: 'a + FnMut(&dyn Component, Option<&T>),
+    T: 'a
 {
     let cb = &mut *(data as *mut Callback<'a, F, T>);
     cb.call(co);
@@ -111,9 +112,10 @@ where
 // Call a DestroyCallback.
 //
 unsafe extern "C"
-fn destroy_callback<'a, F: 'a, T: 'a>(co: newtComponent, data: *mut c_void)
+fn destroy_callback<'a, F, T>(co: newtComponent, data: *mut c_void)
 where
-    F: FnMut(&dyn Component, Option<&T>)
+    F: 'a + FnMut(&dyn Component, Option<&T>),
+    T: 'a
 {
     let cb = &mut *(data as *mut DestroyCallback<'a, F, T>);
     cb.call(co);
@@ -151,14 +153,15 @@ where
 // Call an EntryFilter.
 //
 unsafe extern "C"
-fn entry_filter<'a, F: 'a, T: 'a>(
+fn entry_filter<'a, F, T>(
     entry: newtComponent,
     data: *mut c_void,
     ch: c_int,
     cursor: c_int
 ) -> i32
 where
-    F: FnMut(&Entry, Option<&T>, char, i32) -> char
+    F: 'a + FnMut(&Entry, Option<&T>, char, i32) -> char,
+    T: 'a
 {
     let cb = &mut *(data as *mut EntryFilter<'a, F, T>);
     let ch = char::from_u32(ch as u32).unwrap();
@@ -168,12 +171,13 @@ where
 //
 // Set a Callback.
 //
-pub unsafe fn newt_set_callback<'a, F: 'a, T: 'a>(
+pub unsafe fn newt_set_callback<'a, F, T>(
     co: newtComponent,
     cb: &Callback<'a, F, T>
 )
 where
-    F: FnMut(&dyn Component, Option<&T>)
+    F: 'a + FnMut(&dyn Component, Option<&T>),
+    T: 'a
 {
     let c_ptr = cb as *const _ as *mut c_void;
     newtComponentAddCallback(co, Some(callback::<F, T>), c_ptr);
@@ -190,11 +194,12 @@ pub unsafe fn newt_unset_callback(co: &dyn Component)
 //
 // Set a DestroyCallback.
 //
-pub unsafe fn newt_set_destroy_callback<'a, F: 'a, T: 'a>
+pub unsafe fn newt_set_destroy_callback<'a, F, T>
     (co: newtComponent,
      cb: &DestroyCallback<'a, F, T>)
 where
-    F: FnMut(&dyn Component, Option<&T>)
+    F: 'a + FnMut(&dyn Component, Option<&T>),
+    T: 'a
 {
     let c_ptr = cb as *const _ as *mut c_void;
     newtComponentAddDestroyCallback(co, Some(destroy_callback::<F, T>), c_ptr);
@@ -240,12 +245,13 @@ pub unsafe fn newt_unset_suspend_callback()
 //
 // Set an EntryFilter.
 //
-pub unsafe fn newt_entry_set_filter<'a, F: 'a, T: 'a>(
+pub unsafe fn newt_entry_set_filter<'a, F, T>(
     co: newtComponent,
     cb: &EntryFilter<'a, F, T>
 )
 where
-    F: FnMut(&Entry, Option<&T>, char, i32) -> char
+    F: 'a + FnMut(&Entry, Option<&T>, char, i32) -> char,
+    T: 'a
 {
     let c_ptr = cb as *const _ as *mut c_void;
     newtEntrySetFilter(co, Some(entry_filter::<F, T>), c_ptr)
