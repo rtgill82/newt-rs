@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 0.7.2
+
+* Derive the Clone, Copy, Debug, Eq, and PartialEq traits for the
+  `component::Data` struct.
+
 ## 0.7.1
 
 * Minor update to README.md.
@@ -8,6 +13,11 @@
 
 * CheckboxTree and Listbox accept &Data references in functions that select and
   modify items. This is an API breaking change.
+
+## 0.6.13
+
+* Derive the Clone, Copy, Debug, Eq, and PartialEq traits for the
+  `component::Data` struct.
 
 ## 0.6.12
 
