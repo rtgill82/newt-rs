@@ -70,7 +70,7 @@ impl ButtonBar {
     /// `Returns` the array of buttons contained by the grid.
     ///
     pub fn buttons(&self) -> &[Button] {
-        return self.children.as_slice();
+        self.children.as_slice()
     }
 }
 
