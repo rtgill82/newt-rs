@@ -55,10 +55,8 @@ impl<'a> BasicWindow<'a> {
             newtGridBasicWindow(text.co(), middle.grid_ptr(), buttons.grid_ptr())
         };
 
-        let mut children: Vec<&'a dyn Component> = Vec::new();
-        children.push(text);
-        children.push(middle);
-        children.push(buttons);
+        let children: Vec<&'a dyn Component> =
+            vec![text, middle, buttons];
 
         BasicWindow {
             co: Cell::new(grid),
