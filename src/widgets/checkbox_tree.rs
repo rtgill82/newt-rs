@@ -186,9 +186,7 @@ impl<D: Data> CheckboxTree<D> {
             }
             c_array.push(constants::ARG_LAST);
         } else {
-            c_array = Vec::with_capacity(2);
-            c_array.push(constants::ARG_APPEND);
-            c_array.push(constants::ARG_LAST);
+            c_array = vec![constants::ARG_APPEND, constants::ARG_LAST];
         }
 
         let c_str = CString::new(text).unwrap();
