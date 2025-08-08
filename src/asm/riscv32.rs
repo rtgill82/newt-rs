@@ -30,8 +30,7 @@ use crate::asm::funcs::*;
 
 #[inline]
 pub unsafe fn
-grid_new<'t, 'a>(components: &'t [&'a dyn Component],
-                 func: *const c_void)
+grid_new<'a>(components: &[&'a dyn Component], func: *const c_void)
   -> (newtGrid, Vec<&'a dyn Component>)
 {
     let mut grid: newtGrid;
