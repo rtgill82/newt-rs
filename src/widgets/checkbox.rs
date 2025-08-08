@@ -61,7 +61,7 @@ impl Checkbox {
         let cstr: CString;
         let c_seq = match sequence {
             Some(seq) => {
-                cstr = char_slice_to_cstring(&seq);
+                cstr = char_slice_to_cstring(seq);
                 cstr.as_ptr()
             },
             None => ptr::null()

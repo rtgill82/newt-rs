@@ -111,7 +111,7 @@ where F: FnMut(&dyn Component, Option<&T>)
     {
         unsafe {
             self.components.push((component, data));
-            newt_set_callback(component.co(), &self);
+            newt_set_callback(component.co(), self);
         }
     }
 
