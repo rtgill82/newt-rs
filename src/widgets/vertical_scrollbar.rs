@@ -73,8 +73,8 @@ impl VerticalScrollbar {
     ///
     /// * `where` - The new scroll position of the `VerticalScrollbar`.
     /// * `total` - The amount of the range of the `VerticalScrollbar` used
-    ///             to calculate the new position. `0` or `1` means to use
-    ///             the entirety of the range.
+    ///   to calculate the new position. `0` or `1` means to use the entirety
+    ///   of the range.
     ///
     pub fn set(&self, where_: i32, total: i32) {
         unsafe {

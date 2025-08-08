@@ -78,7 +78,7 @@ where F: FnMut(Option<&T>)
     ///
     /// * `data` - The optional user data to pass to the function.
     /// * `function` - The function or closure to be called when a suspend
-    ///                event occurs.
+    ///   event occurs.
     ///
     pub fn new(data: Option<T>, function: F)
       -> Box<SuspendCallback<F, T>> {

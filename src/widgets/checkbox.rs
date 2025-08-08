@@ -45,10 +45,9 @@ impl Checkbox {
     /// * `top` - The top-most position of the `Checkbox`.
     /// * `text` - The label to be displayed with the `Checkbox`.
     /// * `default` - The optional default state of the `Checkbox`.
-    ///               (The default value to be held from the sequence of
-    ///               possible values).
+    ///   (The default value to be held from the sequence of possible values).
     /// * `sequence` - The optional sequence of values possible in the
-    ///                `Checkbox`. (Defaults to ` ` and `*` if not provided).
+    ///   `Checkbox`. (Defaults to ` ` and `*` if not provided).
     ///
     pub fn new(left: i32, top: i32, text: &str, default: Option<char>,
                sequence: Option<&[char]>)
@@ -99,8 +98,8 @@ impl Checkbox {
     /// Set the current value of the `Checkbox`.
     ///
     /// * `value` - The value to set the `Checkbox` to. It does not necessarily
-    ///             need to be one specified in `sequence` during the `Checkbox`
-    ///             creation.
+    ///   need to be one specified in `sequence` during the `Checkbox`
+    ///   creation.
     ///
     pub fn set_value(&self, value: char) {
         unsafe { newtCheckboxSetValue(self.co(), char_to_c_char(value)); }
@@ -113,7 +112,7 @@ impl Checkbox {
     ///
     /// * `flags` - A logical `or`ed list of flags.
     /// * `sense` - The operation used to set the flags
-    ///             (`Set`, `Reset`, or `Toggle`).
+    ///   (`Set`, `Reset`, or `Toggle`).
     ///
     /// [flags]: crate::constants::flags
     ///

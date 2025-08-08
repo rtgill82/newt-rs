@@ -108,7 +108,7 @@ impl Entry {
     /// * `initial_value` - The optional inital text of the `Entry`.
     /// * `width` - The width of the `Entry`.
     /// * `flags` - [Flags][entry] modifying the behavior of the `Entry`.
-    ///             See also [generalized flags][flags].
+    ///   See also [generalized flags][flags].
     ///
     /// [entry]: crate::constants::entry
     /// [flags]: crate::constants::flags
@@ -151,7 +151,7 @@ impl Entry {
     ///
     /// * `text` - The text to enter into the `Entry`.
     /// * `cursor_at_end` - Move the cursor to the end of the string after
-    ///                     setting the text.
+    ///   setting the text.
     ///
     pub fn set_text(&self, text: &str, cursor_at_end: bool) {
         let c_str = CString::new(text).unwrap();
@@ -167,7 +167,7 @@ impl Entry {
     ///
     /// * `flags` - A logical `or`ed list of flags.
     /// * `sense` - The operation used to set the flags
-    ///             (`Set`, `Reset`, or `Toggle`).
+    ///   (`Set`, `Reset`, or `Toggle`).
     ///
     /// [entry]: crate::constants::entry
     /// [flags]: crate::constants::flags
