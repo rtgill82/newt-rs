@@ -120,3 +120,9 @@ impl RadiobuttonSet {
         self.radiobuttons[index].set_current();
     }
 }
+
+impl Default for RadiobuttonSet {
+    fn default() -> Self {
+        Self::new()
+    }
+}
