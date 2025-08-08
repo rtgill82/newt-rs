@@ -97,7 +97,7 @@ where F: FnMut(&Entry, Option<&T>, char, i32) -> char
     {
         for (entry, data) in self.entries.iter() {
             if entry.co() == co {
-                return (self.function)(*entry, data.as_ref(), ch, cursor);
+                return (self.function)(entry, data.as_ref(), ch, cursor);
             }
         }
         '\0'

@@ -59,7 +59,7 @@ impl<'a, T: 'a> crate::data::Data for Data<'a, T> {
 impl<'a, T> Deref for Data<'a, T> {
     type Target = T;
     fn deref(&self) -> &T {
-        &self.0
+        self.0
     }
 }
 

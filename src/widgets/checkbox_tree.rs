@@ -113,7 +113,7 @@ impl<D: Data> CheckboxTree<D> {
     {
         let co: newtComponent = match sequence {
             Some(seq) => {
-                let c_seq = char_slice_to_cstring(&seq);
+                let c_seq = char_slice_to_cstring(seq);
                 unsafe {
                     newtCheckboxTreeMulti(
                         left,
