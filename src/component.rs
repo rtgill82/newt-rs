@@ -42,6 +42,7 @@ use crate::private::*;
 /// [listbox]: crate::widgets::Listbox
 /// [data]: crate::data::Data
 ///
+#[derive(Clone,Copy,Debug,Eq,PartialEq)]
 pub struct Data<'a, T: 'a>(pub &'a T);
 
 impl<'a, T: 'a> crate::data::Data for Data<'a, T> {
