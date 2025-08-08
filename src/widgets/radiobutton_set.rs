@@ -114,7 +114,7 @@ impl RadiobuttonSet {
     /// Set the currently selected `Radiobutton` in the `RadiobuttonSet`.
     ///
     /// * `index` - The index number of the `Radiobutton` in the
-    ///             `RadiobuttonSet` to be selected.
+    ///   `RadiobuttonSet` to be selected.
     ///
     pub fn set_current(&self, index: usize) {
         self.radiobuttons[index].set_current();

@@ -40,7 +40,7 @@ impl<'a> BasicWindow<'a> {
     /// * `text` - A text component to be displayed at the top of the window.
     /// * `middle` - A sub-grid to display in the middle of the window.
     /// * `buttons` - A sub-grid to display at the bottom of the window,
-    ///               hopefully containing buttons.
+    ///   hopefully containing buttons.
     ///
     pub fn new(text: &'a dyn Component, middle: &'a dyn Component,
                buttons: &'a dyn Component)

@@ -80,7 +80,7 @@ impl<D: Data> Listbox<D> {
     /// * `top` - The top-most position of the `Listbox`.
     /// * `height` - The height of the `Listbox`.
     /// * `flags` - [Flags][listbox] modifying the behavior of the `Listbox`.
-    ///             See also [generalized flags][flags].
+    ///   See also [generalized flags][flags].
     ///
     /// [listbox]: crate::constants::listbox
     /// [flags]: crate::constants::flags
@@ -143,7 +143,7 @@ impl<D: Data> Listbox<D> {
     /// * `text` - The displayed text of the item.
     /// * `data` - The user `Data` associated with the item.
     /// * `key` - The user `Data` of the item this item is to be inserted
-    ///           before.
+    ///   before.
     ///
     pub fn insert_entry(&self, text: &str, data: D, key: D)
           -> Result<(), ()> {
@@ -171,7 +171,7 @@ impl<D: Data> Listbox<D> {
     /// Set the currently selected item in the `Listbox` by index number.
     ///
     /// * `num` - The index number of the item to be set as the currently
-    ///           selected item.
+    ///   selected item.
     ///
     pub fn set_current(&self, num: i32) {
         unsafe { newtListboxSetCurrent(self.co(), num); }
@@ -182,7 +182,7 @@ impl<D: Data> Listbox<D> {
     /// user `Data`.
     ///
     /// * `key` - The user `Data` associated with the item to be set as the
-    ///           currently selected item.
+    ///   currently selected item.
     ///
     pub fn set_current_by_key(&self, key: D) {
         unsafe {
@@ -282,7 +282,7 @@ impl<D: Data> Listbox<D> {
     ///
     /// * `key` - The user `Data` associated with the item.
     /// * `sense` - The sense in which the selection should be modified
-    ///             (`Set`, `Reset`, or `Toggle`).
+    ///   (`Set`, `Reset`, or `Toggle`).
     ///
     pub fn select_item(&self, key: D, sense: FlagsSense) {
         unsafe {
@@ -299,7 +299,7 @@ impl<D: Data> Listbox<D> {
     ///
     /// * `keys` - An array of user `Data` associated with the items.
     /// * `sense` - The sense in which the selection should be modified
-    ///             (`Set`, `Reset`, or `Toggle`).
+    ///   (`Set`, `Reset`, or `Toggle`).
     ///
     pub fn select_items(&self, keys: &[D], sense: FlagsSense) {
         unsafe {

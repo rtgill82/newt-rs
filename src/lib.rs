@@ -61,17 +61,15 @@
 //! ## Features
 //!
 //! - `asm` - Allows building of the [`Grid`][grid] module and the
-//!           [`windows::win_entries`] and [`windows::win_menu`] functions.
-//!           These require the inline assembly feature of Rust which is only
-//!           available in compiler versions after 1.59. Supported
-//!           architectures include _x86_, _x86_64_, _arm_, _aarch64_,
-//!           _riscv32_, and _riscv64_.
+//!   [`windows::win_entries`] and [`windows::win_menu`] functions.
+//!   These require the inline assembly feature of Rust which is only
+//!   available in compiler versions after 1.59. Supported architectures
+//!   include _x86_, _x86_64_, _arm_, _aarch64_, _riscv32_, and _riscv64_.
 //!
 //! - `static` - Builds and links [`newt-sys`][newt_sys] statically against
-//!              its included libraries rather than linking dynamically
-//!              against available system libraries. This is done
-//!              automatically if the required system libraries are
-//!              unavailable.
+//!   its included libraries rather than linking dynamically against available
+//!   system libraries.  This is done automatically if the required system
+//!   libraries are unavailable.
 //!
 //! [grid]: crate::grid::Grid
 //! [newt_sys]: https://crates.io/crates/newt-sys

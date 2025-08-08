@@ -62,7 +62,7 @@ where F: FnMut(&Entry, Option<&T>, char, i32) -> char
     /// * `entry` - The `Entry` to associate with the callback.
     /// * `data` - The optonal user data to pass to the function.
     /// * `function` - The function or closure to be called when a character
-    ///                is entered.
+    ///   is entered.
     ///
     pub fn new(entry: &'a Entry, data: Option<T>, function: F)
       -> Box<EntryFilter<'a, F, T>>

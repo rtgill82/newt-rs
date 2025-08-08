@@ -98,7 +98,7 @@ where F: FnMut(&Form, Option<&T>)
     /// and `HelpCallback` are returned as a tuple pair.
     ///
     /// * `scrollbar` - A `VerticalScrollbar` to be attached to the created
-    ///                 form.
+    ///   form.
     /// * `form_flags` - The flags the form is to be initialized with.
     /// * `data` - The optional user data to pass to the function.
     /// * `function` - The function or closure to associate with the `Form`.

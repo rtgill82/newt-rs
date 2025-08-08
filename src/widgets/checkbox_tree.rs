@@ -100,9 +100,9 @@ impl<D: Data> CheckboxTree<D> {
     /// * `top` - The top-most position of the `CheckboxTree`.
     /// * `height` - The height of the `CheckboxTree`.
     /// * `sequence` - The optional sequence of values possible in the
-    ///                checkboxes. See [Checkbox][checkbox].
+    ///   checkboxes. See [Checkbox][checkbox].
     /// * `flags` - [Flags][checkboxtree] modifying the `CheckboxTree`
-    ///             behavior. See also [general flags][flags].
+    ///   behavior. See also [general flags][flags].
     ///
     /// [checkbox]: crate::widgets::Checkbox::new
     /// [checkboxtree]: crate::constants::checkboxtree

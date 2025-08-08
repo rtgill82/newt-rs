@@ -43,7 +43,7 @@ impl Textbox {
     /// * `width` - The width of the `Textbox`.
     /// * `height` - The height of the `Textbox`.
     /// * `flags` - The [flags][textbox] specifying `Textbox` behavior.
-    ///             See also [general flags][flags].
+    ///   See also [general flags][flags].
     ///
     /// [textbox]: crate::constants::textbox
     /// [flags]: crate::constants::flags
@@ -76,11 +76,11 @@ impl Textbox {
     /// * `text` - The text for the `Textbox` to display.
     /// * `width` - The width of the `Textbox`.
     /// * `flex_down` - The minimum difference from target width for word
-    ///                 wrapping.
+    ///   wrapping.
     /// * `flex_up` - The maximum difference from target width for word
-    ///               wrapping.
+    ///   wrapping.
     /// * `flags` - The [flags][textbox] specifying widget behavior.
-    ///             See also [general flags][flags].
+    ///   See also [general flags][flags].
     ///
     /// [textbox]: crate::constants::textbox
     /// [flags]: crate::constants::flags

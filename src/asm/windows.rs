@@ -143,13 +143,13 @@ impl<'a> Drop for WinEntryBuf<'a> {
 /// * `text` - The message to display in the window.
 /// * `suggested_width` - The preferred width for the window.
 /// * `flex_down` - The minimum allowed difference between `suggested_width`
-///                 and actual width.
+///   and actual width.
 /// * `flex_up` - The maximum allowed difference between `suggested_width`
-///               and actual width.
+///   and actual width.
 /// * `max_list_height` - The maximum height to display the list of items.
 /// * `items` - A slice containing the text for each item in the list.
 /// * `buttons` - A slice containing the text for a number of buttons to display
-///               in the window.
+///   in the window.
 ///
 /// `Returns` a tuple pair as `(`button`, `item`)` where `button` is the
 /// button number pressed to close the window and `item` is the item number
@@ -189,14 +189,14 @@ pub fn win_menu(title: &str, text: &str, suggested_width: i32, flex_down: i32,
 /// * `text` - The message to display in the window.
 /// * `suggested_width` - The preferred width for the window.
 /// * `flex_down` - The minimum allowed difference between `suggested_width`
-///                 and actual width.
+///   and actual width.
 /// * `flex_up` - The maximum allowed difference between `suggested_width`
-///               and actual width.
+///   and actual width.
 /// * `data_width` - The field width for all `Entry`s.
 /// * `entries` - A slice containing a list of [`WinEntry`s][win_entry]
-///               providing initial settings for each `Entry` field.
+///   providing initial settings for each `Entry` field.
 /// * `buttons` - A slice containing the text for a number of buttons to
-///               display in the window.
+///   display in the window.
 ///
 /// `Returns` the number of the button pressed to close the window, indexed
 /// from `1`.

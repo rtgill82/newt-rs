@@ -100,10 +100,10 @@ impl Radiobutton {
     /// * `top` - The top-most position of the `Radiobutton`.
     /// * `text` - The text to be displayed as the label of the `Radiobutton`.
     /// * `default` - Set this `Radiobutton` as the selected default of its
-    ///               set.
+    ///   set.
     /// * `prev_button` - The optional previous `Radiobutton` in the set.
-    ///                   Providing `None` here makes the created
-    ///                   `Radiobutton` the first in a set.
+    ///   Providing `None` here makes the created `Radiobutton` the first
+    ///   in a set.
     ///
     pub fn new(left: i32, top: i32, text: &str, default: bool,
                prev_button: Option<&Radiobutton>) -> Radiobutton {

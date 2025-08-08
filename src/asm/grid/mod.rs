@@ -93,8 +93,7 @@ impl<'a> Grid<'a> {
     /// * `pad_right` - The amount of padding towards the right of the cell.
     /// * `pad_bottom` - The amount of padding towards the bottom of the cell.
     /// * `anchor` - Anchor the component towards the specified direction of
-    ///              its cell compared to surrounding cells. See
-    ///              [anchor flags][anchors].
+    ///   its cell compared to surrounding cells. See [anchor flags][anchors].
     /// * `flags` - [Flags][flags] modifying sub-Grid behavior.
     ///
     /// [flags]: crate::constants::grid

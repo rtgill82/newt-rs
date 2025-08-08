@@ -88,7 +88,7 @@ where F: FnMut(&dyn Component, Option<&T>)
     /// * `component` - The `Component` associated with the callback.
     /// * `data` - Optional user data to pass to the function.
     /// * `function` - The function or closure to call when the
-    ///                `Component` is activated.
+    ///   `Component` is activated.
     ///
     pub fn new(component: &'a dyn Component, data: Option<T>, function: F)
       -> Box<DestroyCallback<'a, F, T>> {
