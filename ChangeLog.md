@@ -4,6 +4,16 @@
 
 * Derive the Clone, Copy, Debug, Eq, and PartialEq traits for the
   `component::Data` struct.
+  
+* Add `Error` type and `Result` types.
+
+* Implement `Default` for `RadiobuttonSet`
+
+* Add `RadiobuttonSet::is_empty()` function.
+
+* Declare the `Data` trait as `unsafe`.
+
+* Clean up `clippy` warnings.
 
 ## 0.7.1
 
@@ -13,11 +23,6 @@
 
 * CheckboxTree and Listbox accept &Data references in functions that select and
   modify items. This is an API breaking change.
-
-## 0.6.13
-
-* Derive the Clone, Copy, Debug, Eq, and PartialEq traits for the
-  `component::Data` struct.
 
 ## 0.6.12
 
