@@ -193,14 +193,18 @@ impl<D: Data> CheckboxTree<D> {
 
         let c_str = CString::new(text).unwrap();
         unsafe {
-            let rv = newtCheckboxTreeAddArray(self.co(), c_str.as_ptr(),
-                                              data.newt_to_ptr(), flags,
-                                              c_array.as_ptr() as *mut i32);
+            let rv = newtCheckboxTreeAddArray(
+                self.co(),
+                c_str.as_ptr(),
+                data.newt_to_ptr(),
+                flags,
+                c_array.as_ptr() as *mut i32
+            );
 
-            if rv < 0 {
-                Err(Error::ItemAdd)
-            } else {
-                Ok(())
+            match rv {
+                 0 => Ok(()),
+                -1 => Err(Error::ItemAdd),
+                 _ => unreachable!("Invalid result returned by `newtCheckboxTreeAddArray()`.")
             }
         }
     }
