@@ -116,12 +116,12 @@ impl<'a> Clone for MyString<'a> {
     }
 }
 
-impl<'a> Data for MyString<'a> {
-    unsafe fn newt_to_ptr(&self) -> *const c_void {
+unsafe impl<'a> Data for MyString<'a> {
+    fn newt_to_ptr(&self) -> *const c_void {
         self.id() as *const c_void
     }
 
-    unsafe fn newt_from_ptr(ptr: *const c_void) -> Self {
+    fn newt_from_ptr(ptr: *const c_void) -> Self {
         let id = Id::from(ptr);
         let map = STRINGS.lock().unwrap();
         let owned = map.get(&id.0.get())
