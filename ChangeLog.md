@@ -4,6 +4,16 @@
 
 * Derive the Clone, Copy, Debug, Eq, and PartialEq traits for the
   `component::Data` struct.
+  
+* Add `Error` type and `Result` types.
+
+* Implement `Default` for `RadiobuttonSet`
+
+* Add `RadiobuttonSet::is_empty()` function.
+
+* Declare the `Data` trait as `unsafe`.
+
+* Clean up `clippy` warnings.
 
 ## 0.6.12
 
