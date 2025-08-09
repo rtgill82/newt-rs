@@ -26,6 +26,7 @@ pub use crate::component::Component;
 #[allow(ambiguous_glob_reexports)]
 pub use crate::constants::*;
 pub use crate::widgets::*;
+pub use crate::error::Error;
 
 #[doc(no_inline)]
 pub use crate::widgets::form::ExitReason;
