@@ -25,6 +25,7 @@ use std::os::raw::{c_char,c_void};
 use newt_sys::*;
 use crate::component::Component;
 use crate::data::Data;
+use crate::error::Error;
 use crate::private::funcs::*;
 use crate::constants;
 
@@ -168,7 +169,8 @@ impl<D: Data> CheckboxTree<D> {
     /// [example]: #example
     ///
     pub fn add_item(&self, text: &str, data: D, flags: i32,
-                    indexes: Option<&[i32]>) -> i32 {
+                    indexes: Option<&[i32]>) -> Result<(), Error>
+    {
         let mut i = 0;
         let mut c_array: Vec<i32>;
         if let Some(indexes) = indexes {
@@ -191,9 +193,15 @@ impl<D: Data> CheckboxTree<D> {
 
         let c_str = CString::new(text).unwrap();
         unsafe {
-            newtCheckboxTreeAddArray(self.co(), c_str.as_ptr(),
-                                     data.newt_to_ptr(), flags,
-                                     c_array.as_ptr() as *mut i32)
+            let rv = newtCheckboxTreeAddArray(self.co(), c_str.as_ptr(),
+                                              data.newt_to_ptr(), flags,
+                                              c_array.as_ptr() as *mut i32);
+
+            if rv < 0 {
+                Err(Error::ItemAdd)
+            } else {
+                Ok(())
+            }
         }
     }
 
