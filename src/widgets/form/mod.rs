@@ -24,6 +24,7 @@ use std::ptr;
 
 use newt_sys::*;
 use crate::component::Component;
+use crate::error::Error;
 use crate::callbacks::HelpCallback;
 use crate::widgets::VerticalScrollbar;
 use crate::private::{Child,Nullify};
@@ -253,7 +254,7 @@ impl<'a> Form<'a>
     /// Run the form displaying all added components and accept input from
     /// the user.
     ///
-    pub fn run(&self) -> Result<ExitReason, ()> {
+    pub fn run(&self) -> Result<ExitReason, Error> {
         use self::ExitReason::{HotKey,Component,FDReady,Timer};
 
         let mut es = newtExitStruct {
@@ -273,7 +274,7 @@ impl<'a> Form<'a>
                 ),
                 NEWT_EXIT_FDREADY => Ok(FDReady(es.u.watch)),
                 NEWT_EXIT_TIMER => Ok(Timer),
-                NEWT_EXIT_ERROR => Err(()),
+                NEWT_EXIT_ERROR => Err(Error::FormRun),
                 _ => panic!("Unexpected newt exit reason.")
             }
         }

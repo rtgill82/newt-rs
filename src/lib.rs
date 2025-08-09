@@ -106,6 +106,7 @@ pub mod callbacks;
 pub mod component;
 pub mod constants;
 pub mod data;
+pub mod error;
 pub mod grid;
 pub mod prelude;
 pub mod widgets;
@@ -116,6 +117,9 @@ pub use self::component::Component;
 
 #[doc(hidden)]
 pub use self::callbacks::Callback;
+
+#[doc(inline)]
+pub use self::error::Error;
 
 #[doc(hidden)]
 pub use self::windows::win_message;
@@ -273,9 +277,9 @@ impl<'a> Default for Colors<'a> {
 ///
 /// Initialize the newt library.
 ///
-pub fn init() -> Result<(), ()> {
+pub fn init() -> Result<(), Error> {
     let rv = unsafe { newtInit() };
-    if rv == 0 { Ok(()) } else { Err(()) }
+    if rv == 0 { Ok(()) } else { Err(Error::Init) }
 }
 
 ///
@@ -328,7 +332,9 @@ pub fn delay(usecs: u32) {
 /// Open a window at the specified location.
 ///
 pub fn open_window(left: i32, top: i32, width: u32, height: u32,
-                   title: Option<&str>) -> Result<(), ()> {
+                   title: Option<&str>)
+    -> Result<(), Error>
+{
     let c_str: CString;
     let c_ptr = match title {
         Some(title) => {
@@ -339,7 +345,7 @@ pub fn open_window(left: i32, top: i32, width: u32, height: u32,
     };
 
     let rv = unsafe { newtOpenWindow(left, top, width, height, c_ptr) };
-    if rv == 0 { Ok(()) } else { Err(()) }
+    if rv == 0 { Ok(()) } else { Err(Error::WindowOpen) }
 }
 
 ///
@@ -350,7 +356,8 @@ pub fn open_window(left: i32, top: i32, width: u32, height: u32,
 /// * `title` - The optional title of the window.
 ///
 pub fn centered_window(width: u32, height: u32, title: Option<&str>)
-      -> Result<(), ()> {
+    -> Result<(), Error>
+{
     let c_str: CString;
     let c_ptr = match title {
         Some(title) => {
@@ -361,7 +368,7 @@ pub fn centered_window(width: u32, height: u32, title: Option<&str>)
     };
 
     let rv = unsafe { newtCenteredWindow(width, height, c_ptr) };
-    if rv == 0 { Ok(()) } else { Err(()) }
+    if rv == 0 { Ok(()) } else { Err(Error::WindowOpen) }
 }
 
 ///
