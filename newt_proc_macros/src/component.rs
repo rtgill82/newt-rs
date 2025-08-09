@@ -46,10 +46,9 @@ fn impl_component_base(name: &Ident, generics: &Generics)
         impl #impl_ crate::private::Child for #name #type_
             #where_
         {
-            fn add_to_parent(&self)
-              -> Result<(), &'static str> {
+            fn add_to_parent(&self) -> crate::Result<()> {
                 if self.added_to_parent.get() {
-                    return Err("Component already belongs to a Form.");
+                    return Err(crate::Error::FormAdd);
                 }
                 self.added_to_parent.set(true);
                 Ok(())

@@ -26,7 +26,7 @@ use std::ptr;
 use newt_sys::*;
 use crate::component::Component;
 use crate::data::Data;
-use crate::error::Error;
+use crate::error::{Error,Result};
 use crate::private::funcs::*;
 
 use crate::constants::FlagsSense;
@@ -125,7 +125,7 @@ impl<D: Data> Listbox<D> {
     /// * `text` - The displayed text of the item.
     /// * `data` - The user `Data` associated with the item.
     ///
-    pub fn append_entry(&self, text: &str, data: D) -> Result<(), Error> {
+    pub fn append_entry(&self, text: &str, data: D) -> Result<()> {
         let c_str = CString::new(text).unwrap();
         let rv = unsafe {
             newtListboxAppendEntry(
@@ -146,9 +146,7 @@ impl<D: Data> Listbox<D> {
     /// * `key` - The user `Data` of the item this item is to be inserted
     ///   before.
     ///
-    pub fn insert_entry(&self, text: &str, data: D, key: &D)
-        -> Result<(), Error>
-    {
+    pub fn insert_entry(&self, text: &str, data: D, key: &D) -> Result<()> {
         let c_str = CString::new(text).unwrap();
         let rv = unsafe {
             newtListboxInsertEntry(self.co(), c_str.as_ptr(),

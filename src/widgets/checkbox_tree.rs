@@ -25,7 +25,7 @@ use std::os::raw::{c_char,c_void};
 use newt_sys::*;
 use crate::component::Component;
 use crate::data::Data;
-use crate::error::Error;
+use crate::error::{Error,Result};
 use crate::private::funcs::*;
 use crate::constants;
 
@@ -169,7 +169,7 @@ impl<D: Data> CheckboxTree<D> {
     /// [example]: #example
     ///
     pub fn add_item(&self, text: &str, data: D, flags: i32,
-                    indexes: Option<&[i32]>) -> Result<(), Error>
+                    indexes: Option<&[i32]>) -> Result<()>
     {
         let mut i = 0;
         let mut c_array: Vec<i32>;

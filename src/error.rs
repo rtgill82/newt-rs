@@ -21,14 +21,22 @@
 
 use std::error;
 use std::fmt;
+use std::result;
+
+/// Result type for `newt-rs` errors.
+pub type Result<T> = result::Result<T, Error>;
 
 /// An enum representing errors raised by `libnewt`.
 #[derive(Clone,Copy,Debug,Eq,PartialEq)]
 pub enum Error {
     /// Error initializing libnewt.
     Init,
-    /// Error running Form.
+    /// Error adding a component to a [`Form`][crate::widgets::form::Form].
+    FormAdd,
+    /// Error running [`Form`][crate::widgets::form::Form].
     FormRun,
+    /// Error adding a [`Grid`][crate::grid::Grid] to a parent.
+    GridAdd,
     /// Error adding an item to a list widget.
     ItemAdd,
     /// Error opening window.
@@ -39,7 +47,9 @@ impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Error::Init => write!(f, "Error initializing libnewt."),
+            Error::FormAdd => write!(f, "Component already belongs to a Form."),
             Error::FormRun => write!(f, "Error running Form."),
+            Error::GridAdd => write!(f, "Grid already belongs to a parent."),
             Error::ItemAdd => write!(f, "Error adding an item to a list widget."),
             Error::WindowOpen => write!(f, "Error opening window.")
         }

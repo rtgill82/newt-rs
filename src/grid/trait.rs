@@ -18,6 +18,7 @@
 //
 
 use crate::component::Component;
+use crate::error::Result;
 use crate::widgets::{Form,WidgetFns};
 
 use crate::private::{Child,ComponentPtr,Nullify};
@@ -66,7 +67,7 @@ pub trait GridFns: AsComponent + Child + ComponentPtr + Parent {
     /// * `form` - The form to add the `Grid` to.
     ///
     fn add_to_form<'a>(&'a self, form: &mut Form<'a>)
-      -> Result<(), &'static str>
+        -> Result<()>
     {
         self.add_to_parent()?;
         unsafe { newtGridAddComponentsToForm(self.grid_ptr(), form.co(), 1); }

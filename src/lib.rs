@@ -121,6 +121,9 @@ pub use self::callbacks::Callback;
 #[doc(inline)]
 pub use self::error::Error;
 
+#[doc(inline)]
+pub use self::error::Result;
+
 #[doc(hidden)]
 pub use self::windows::win_message;
 #[doc(hidden)]
@@ -277,7 +280,7 @@ impl<'a> Default for Colors<'a> {
 ///
 /// Initialize the newt library.
 ///
-pub fn init() -> Result<(), Error> {
+pub fn init() -> Result<()> {
     let rv = unsafe { newtInit() };
     if rv == 0 { Ok(()) } else { Err(Error::Init) }
 }
@@ -333,7 +336,7 @@ pub fn delay(usecs: u32) {
 ///
 pub fn open_window(left: i32, top: i32, width: u32, height: u32,
                    title: Option<&str>)
-    -> Result<(), Error>
+    -> Result<()>
 {
     let c_str: CString;
     let c_ptr = match title {
@@ -356,7 +359,7 @@ pub fn open_window(left: i32, top: i32, width: u32, height: u32,
 /// * `title` - The optional title of the window.
 ///
 pub fn centered_window(width: u32, height: u32, title: Option<&str>)
-    -> Result<(), Error>
+    -> Result<()>
 {
     let c_str: CString;
     let c_ptr = match title {
