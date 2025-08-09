@@ -18,6 +18,7 @@
 //
 
 use crate::component::Component;
+use crate::error::Result;
 use crate::widgets::{Form,Radiobutton};
 
 ///
@@ -95,9 +96,7 @@ impl RadiobuttonSet {
     ///
     /// * `form` - The `Form` to add the `Radiobutton`s to.
     ///
-    pub fn add_to_form<'a>(&'a self, form: &mut Form<'a>)
-        -> Result<(), &'static str>
-    {
+    pub fn add_to_form<'a>(&'a self, form: &mut Form<'a>) -> Result<()> {
         for radiobutton in &self.radiobuttons {
             form.add_component(radiobutton)?;
         }

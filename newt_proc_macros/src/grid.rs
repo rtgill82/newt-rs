@@ -86,10 +86,9 @@ fn impl_grid_child(name: &Ident, generics: &Generics)
         impl #impl_ crate::private::Child for #name #type_
             #where_
         {
-            fn add_to_parent(&self)
-              -> Result<(), &'static str> {
+            fn add_to_parent(&self) -> crate::Result<()> {
                 if self.added_to_parent.get() {
-                    return Err("Grid already belongs to a parent.");
+                    return Err(crate::Error::GridAdd);
                 }
 
                 for child in self.children.iter() {

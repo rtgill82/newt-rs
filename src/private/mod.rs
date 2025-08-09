@@ -22,8 +22,10 @@ pub mod funcs;
 use std::os::raw::c_void;
 use newt_sys::*;
 
+use crate::error::Result;
+
 pub trait Child {
-    fn add_to_parent(&self) -> Result<(), &'static str>;
+    fn add_to_parent(&self) -> Result<()>;
     fn added_to_parent(&self) -> bool;
 }
 

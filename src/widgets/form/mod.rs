@@ -23,9 +23,9 @@ use std::os::unix::io::RawFd;
 use std::ptr;
 
 use newt_sys::*;
-use crate::component::Component;
-use crate::error::Error;
 use crate::callbacks::HelpCallback;
+use crate::component::Component;
+use crate::error::{Error,Result};
 use crate::widgets::VerticalScrollbar;
 use crate::private::{Child,Nullify};
 use crate::private::funcs::*;
@@ -126,7 +126,7 @@ impl<'a> Form<'a>
     /// Add a `Component` to the `Form` to be displayed when the `Form` is run.
     ///
     pub fn add_component(&mut self, component: &'a dyn Component)
-        -> Result<(), &'static str>
+        -> Result<()>
     {
         component.add_to_parent()?;
         self.components.push(component);
@@ -138,7 +138,7 @@ impl<'a> Form<'a>
     /// Add multiple `Component`s to the `Form`.
     ///
     pub fn add_components<'t>(&mut self, components: &'t [&'a dyn Component])
-        -> Result<(), &'static str>
+        -> Result<()>
     {
         for component in components.iter() {
             self.add_component(*component)?;
@@ -150,7 +150,7 @@ impl<'a> Form<'a>
     /// Add a `Component` to the `Form`, taking ownership.
     ///
     pub fn take_component<T>(&mut self, component: T)
-        -> Result<(), &'static str>
+        -> Result<()>
     where
         T: Component
     {
@@ -254,7 +254,7 @@ impl<'a> Form<'a>
     /// Run the form displaying all added components and accept input from
     /// the user.
     ///
-    pub fn run(&self) -> Result<ExitReason, Error> {
+    pub fn run(&self) -> Result<ExitReason> {
         use self::ExitReason::{HotKey,Component,FDReady,Timer};
 
         let mut es = newtExitStruct {
