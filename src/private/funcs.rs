@@ -50,7 +50,7 @@ pub unsafe
 fn c_ptr_array_to_boxed_slice<D>(ptr: *const *const c_void, numitems: i32)
     -> Box<[D]> where D: Data
 {
-    let mut vec: Vec<D> = Vec::new();
+    let mut vec: Vec<D> = Vec::with_capacity(numitems as usize);
     if !ptr.is_null() && numitems > 0 {
         let mut count = 0;
         let mut p = ptr;
@@ -86,7 +86,8 @@ pub fn char_to_c_char(ch: char) -> c_char {
 // Convert a character slice to a C string.
 //
 pub fn char_slice_to_cstring(slice: &[char]) -> CString {
-    let mut vec: Vec<u8> = Vec::new();
+    let len = slice.len();
+    let mut vec: Vec<u8> = Vec::with_capacity(len);
     for ch in slice.iter() {
         vec.push(char_to_c_char(*ch) as u8);
     }

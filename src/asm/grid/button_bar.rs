@@ -54,7 +54,7 @@ impl ButtonBar {
             buttons_buf.set_len(len);
         }
 
-        let mut buttons = Vec::new();
+        let mut buttons = Vec::with_capacity(len);
         for co in buttons_buf {
             buttons.push(Button::new_co(co));
         }
@@ -76,7 +76,8 @@ impl ButtonBar {
 
 impl Parent for ButtonBar {
     fn children(&self) -> Vec<&dyn Component> {
-        let mut vec: Vec<&dyn Component> = Vec::new();
+        let len = self.children.len();
+        let mut vec: Vec<&dyn Component> = Vec::with_capacity(len);
         for child in self.children.iter() {
             vec.push(child);
         }

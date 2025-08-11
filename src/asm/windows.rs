@@ -88,12 +88,13 @@ pub(crate) struct WinEntryBuf<'a> {
 impl<'a> WinEntryBuf<'a> {
     pub fn new(entries: &'a mut [WinEntry]) -> WinEntryBuf<'a> {
         unsafe {
-            let mut values_text = Vec::new();
-            let size = size_of::<newtWinEntry>() * (entries.len() + 1);
+            let entries_len = entries.len();
+            let mut values_text = Vec::with_capacity(entries_len);
+            let size = size_of::<newtWinEntry>() * (entries_len + 1);
             let entries_buf = libc::malloc(size) as *mut newtWinEntry;
             libc::memset(entries_buf as *mut c_void, 0, size);
 
-            let size = size_of::<*mut c_char>() * (entries.len());
+            let size = size_of::<*mut c_char>() * (entries_len);
             let values_buf = libc::malloc(size) as *mut *mut c_char;
             libc::memset(values_buf as *mut c_void, 0, size);
 

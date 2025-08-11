@@ -34,19 +34,7 @@ grid_new<'a>(components: &[&'a dyn Component], func: *const c_void)
   -> (newtGrid, Vec<&'a dyn Component>)
 {
     let mut grid: newtGrid;
-    let mut children = Vec::new();
-
-    let mut types: Vec<newtGridElement> = Vec::new();
-    let mut values: Vec<newtComponent> = Vec::new();
-    for component in components.iter() {
-        types.push(component.grid_element_type());
-        values.push(component.co());
-        children.push(*component);
-    }
-
-    let types_ptr = types.as_ptr();
-    let values_ptr = values.as_ptr();
-    let len = components.len();
+    init_ptr_arrays!(components, children, types_ptr, values_ptr, len);
 
     asm! {
         "push   {{r0}}

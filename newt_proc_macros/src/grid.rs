@@ -123,9 +123,12 @@ fn impl_grid_parent(name: &Ident, generics: &Generics)
                 use crate::constants::NEWT_GRID_COMPONENT;
                 use crate::private::GridElementType;
 
-                let mut vec: Vec<&crate::Component> = Vec::new();
+                let len = self.children.len();
+                let mut vec: Vec<&crate::Component> = Vec::with_capacity(len);
                 for child in self.children.iter() {
                     if let Some(grid) = child.as_grid() {
+                        let len = grid.children().len();
+                        vec.reserve(len);
                         for child in grid.children().iter() {
                             vec.push(*child);
                         }
@@ -133,6 +136,7 @@ fn impl_grid_parent(name: &Ident, generics: &Generics)
                         vec.push(*child);
                     }
                 }
+                vec.shrink_to_fit();
                 vec
             }
         }
