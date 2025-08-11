@@ -117,6 +117,8 @@ impl<'a> Form<'a>
 
     #[cfg(feature = "asm")]
     pub(crate) fn add_refs(&mut self, components: Vec<&'a dyn Component>) {
+        let len = components.len();
+        self.components.reserve(len);
         for co in components.iter() {
             self.components.push(*co);
         }
@@ -140,6 +142,8 @@ impl<'a> Form<'a>
     pub fn add_components<'t>(&mut self, components: &'t [&'a dyn Component])
         -> Result<()>
     {
+        let len = components.len();
+        self.components.reserve(len);
         for component in components.iter() {
             self.add_component(*component)?;
         }

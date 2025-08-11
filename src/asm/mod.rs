@@ -23,6 +23,7 @@ use crate::Component;
 #[cfg(feature = "asm")]
 use crate::grid::r#trait::Grid;
 
+#[macro_use]
 mod funcs;
 
 #[cfg(all(feature = "asm", target_arch = "arm"))]
