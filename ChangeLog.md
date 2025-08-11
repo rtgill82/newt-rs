@@ -13,6 +13,8 @@
 
 * Declare the `Data` trait as `unsafe`.
 
+* Optimize `Vec` initializations.
+
 * Clean up `clippy` warnings.
 
 ## 0.7.1
