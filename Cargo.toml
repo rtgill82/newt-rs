@@ -17,7 +17,7 @@ f16    = []
 
 [dependencies]
 libc             = "0.2"
-newt_proc_macros = "=0.0.15"
+newt_proc_macros = "=0.0.16"
 newt-sys         = "0.2"
 
 [build-dependencies]
